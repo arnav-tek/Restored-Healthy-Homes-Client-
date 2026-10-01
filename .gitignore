@@ -1,0 +1,25 @@
+node_modules/
+.next/
+.env*
+!.env.example
+*.tsbuildinfo
+output/
+playwright-report/
+test-results/
+Project overview/
+docs/client-style-guide.html
+# Local secrets, private source documents and generated artifacts
+*.pem
+*.key
+*.pfx
+*.p12
+*.log
+next-env.d.ts
+next.config.compiled.js
+.vercel/
+.codex/
+attachments/
+*.docx
+*.pdf
+# Installed third-party guidance; provenance is recorded in docs/skills.md
+.agents/skills/
