@@ -4,6 +4,7 @@ A demo platform that helps people find professionals who support healthier homes
 
 - Search eight professional categories by keyword, category, city or ZIP.
 - Explore public business profiles and try a demo inquiry form.
+- Browse fictional questions and answers, or submit a pending demo question.
 - Submit a sample business application and edit it in the member workspace.
 - Review applications, credentials and listing eligibility in the admin workspace.
 
@@ -32,4 +33,4 @@ Run `npm run check` for typecheck, lint, unit tests and a demo build. For browse
 
 Member and admin workspaces use focused, linkable sections. Unsaved drafts remain in React memory during client-side navigation; reset asks for confirmation.
 
-See the [latest handoff](docs/phase-2d-handoff.md), [build checklist](docs/build-checklist.md) and [architecture](docs/architecture.md).
+See the [latest handoff](docs/phase-2e1-handoff.md), [build checklist](docs/build-checklist.md) and [architecture](docs/architecture.md).

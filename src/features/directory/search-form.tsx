@@ -1,16 +1,19 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import Form from "next/form";
 
 /** Keep restored browser drafts from overriding the server-validated URL state. */
 export function SearchForm({
   children,
   className,
   label,
+  action = "/directory",
 }: {
   children: ReactNode;
   className?: string;
   label: string;
+  action?: string;
 }) {
   const form = useRef<HTMLFormElement>(null);
   useEffect(() => {
@@ -31,15 +34,14 @@ export function SearchForm({
   }, []);
 
   return (
-    <form
+    <Form
       ref={form}
-      action="/directory"
-      method="get"
+      action={action}
       className={className}
       aria-label={label}
       autoComplete="off"
     >
       {children}
-    </form>
+    </Form>
   );
 }

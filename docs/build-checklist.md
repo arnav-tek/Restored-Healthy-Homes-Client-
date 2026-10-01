@@ -63,6 +63,21 @@ The [overview](../Project%20overview/restored-healthy-homes-project-overview.md)
 - [x] Reuse existing decision/credential/category rules, shared session and public projections; no integrations or later features.
 - [x] Final checks, rendered review and [Phase 2D handoff](phase-2d-handoff.md).
 
+## Phase 2E-1 — public demo Q&A
+
+- [x] Public navigation, published-only list/detail pages, keyword/category filters, URL state and pagination.
+- [x] Stable IDs, safe results returns, eligibility-aware professional links and explicit public projections.
+- [x] Validated question form, pending session submissions, truthful confirmation and shared drafts/reset.
+- [x] Server-only unpublished seeds; no contact collection, side effects, publication or moderation controls.
+- [x] Final checks, rendered review and [Phase 2E-1 handoff](phase-2e1-handoff.md).
+
+## Phase 2E-2 — demo answers and moderation (not started)
+
+- [ ] Define member-answer eligibility separately from public-listing eligibility; implement permitted answer drafts/submission.
+- [ ] Admin question/answer publication, rejection and removal with confirmations, clear feedback and parent visibility rules.
+- [ ] Combine public seed snapshots and session submissions through explicit projections and session moderation overrides; never expose private server fixture records.
+- [ ] Shared member/admin/public session journeys, moderation boundaries, regression checks and handoff.
+
 ## Phase 3 — real accounts and administration integrations
 
 - [ ] Supabase schema/migrations, Auth/Storage, server authorization, RLS/grants and ownership tests.
@@ -81,7 +96,7 @@ The [overview](../Project%20overview/restored-healthy-homes-project-overview.md)
 
 ## Phase 5 — community, consultations and content
 
-- [ ] Real inquiry persistence/delivery, questions/answers, category matching, alerts and moderation (demo inquiry flow is Phase 2B).
+- [ ] Real inquiry persistence/delivery, questions/answers, category matching, alerts and moderation (demo inquiries: 2B; public demo Q&A: 2E-1; demo answers/moderation: planned 2E-2).
 - [ ] Reviews/ratings with agreed verification/moderation.
 - [ ] Paid consultations after routing/matching/scheduling/refund/delivery decisions; commercial terms remain in the private authoritative scope.
 - [ ] External certification/education resources, blog/resources CMS, newsletter consent/signup.
@@ -232,3 +247,26 @@ Executed 2026-10-01, dashboard refinement only:
 Earlier browser runs exposed a wrapped table-link hit area and a rapid clear-filter/navigation race. Links now have a full block hit area; controlled filter drafts and pending-navigation guards preserve interactions. The final complete suite above passed after both fixes. Injected adapter-error logs are expected fixtures and contain no form values.
 
 Limits: React-session drafts disappear on refresh/full-page navigation/reset. Chromium emulation only; physical devices, Safari/Firefox and a full accessibility audit remain unverified. No real accounts, persistence, publication, delivery or integrations.
+
+## Phase 2E-1 verification record
+
+Executed 2026-10-02, public demo Q&A only:
+
+| Check | Result |
+| --- | --- |
+| `npm run typecheck` | Pass, including final browser-test additions |
+| `npm run lint` | Pass, zero warnings |
+| `npm test` | 41 pass; six Q&A tests cover field/query bounds, safe returns, publication/parent rules, projections, eligible links, filtering/pages and pending/reset state |
+| `npm run build:demo` | Pass, including final mobile spacing adjustment; existing process-only 768 MB Node heap cap used |
+| New desktop Q&A browser run | 5 pass |
+| `npm run test:e2e -- --workers=1 --max-failures=1` | 80 pass, one intentional desktop-menu skip, 4.5 minutes; existing dashboards/directory/profile/inquiry journeys preserved |
+| Final targeted Q&A layout/submission run | 6 pass across desktop/tablet/mobile after mobile result-heading adjustment and strengthened confirmation/refresh checks |
+| `npm run build` | Expected rejection without explicit demo opt-in |
+| Public boundary | Missing/unpublished/session-only IDs return generic 404s; HTML, metadata, RSC/script payload tests exclude hidden fixtures/private moderation fields; generated browser assets contain no private Q&A fixture markers |
+| State and side effects | Draft survives client navigation and search; successful submission forces pending and stays absent from public results; reset cancellation/confirmation and refresh clearing pass; no non-GET/form-payload requests or browser-storage writes |
+| Accessibility/visual review | Desktop/tablet/mobile (1440/768/390 px), plus 900 px navigation; list/detail, long titles, answers, empty/error/form/confirmation screens inspected; no detected axe violations or page overflow in tested Q&A screens |
+| No JavaScript | Seeded list/search/detail remain readable and usable; question mutation controls disabled with an explanation |
+| Code review and scope | Explicit projections, one shared reducer/draft provider, typed adapter and validation; no duplicate catalog, raw HTML, new dependencies, delivery endpoints or moderation controls |
+| Git | Phase 2D preserved in local checkpoint `713c45c` before editing; no push or deployment |
+
+Full regression checks passed before a final CSS-only mobile result-heading adjustment; the affected layout and submission cases were rerun afterward. Screenshots are in `output/playwright/phase-2e1-*`. Expected injected adapter failures contain no submitted text. Chromium emulation and automated accessibility checks do not replace physical-device/Safari/Firefox checks or a full audit. Phase 2E-2 is not started; all real integrations remain deferred.

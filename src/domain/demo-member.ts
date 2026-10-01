@@ -2,6 +2,8 @@ import type { ApprovalStatus, SubscriptionStatus } from "./professional";
 import { isPubliclyEligible } from "./listing";
 import { categories } from "./categories";
 import { parseCategoryName, parseReviewReason } from "../validation/admin";
+import type { DemoQuestionSubmission, QuestionFields } from "./qa";
+import { parseQuestion } from "../validation/qa";
 
 export interface MemberProfileFields {
   name: string;
@@ -46,6 +48,8 @@ export interface DemoSessionSeed {
   inquiries: readonly DemoInboxItem[];
 }
 export interface DemoSession extends DemoSessionSeed {
+  questions: readonly DemoQuestionSubmission[];
+  questionId: string | null;
   categoryNames: Record<string, string>;
   selectedId: string;
   applicationId: string | null;
@@ -53,6 +57,8 @@ export interface DemoSession extends DemoSessionSeed {
   notice: string;
 }
 export type DemoMemberAction =
+  | { type: "submit-question"; question: QuestionFields }
+  | { type: "new-question" }
   | { type: "submit"; profile: MemberProfileFields }
   | { type: "edit"; id: string; profile: MemberProfileFields }
   | { type: "select"; id: string }
@@ -98,6 +104,8 @@ export function createDemoSession(seed: DemoSessionSeed): DemoSession {
     ),
     selectedId: seed.records[0].id,
     applicationId: null,
+    questions: [],
+    questionId: null,
     revision: 0,
     notice: "",
   };
@@ -109,6 +117,25 @@ export function reduceDemoSession(
 ): DemoSession {
   const revision = state.revision + 1;
   switch (action.type) {
+    case "submit-question": {
+      const parsed = parseQuestion(action.question);
+      if (!parsed.ok) return state;
+      const question: DemoQuestionSubmission = {
+        id: `demo-session-question-${revision}`,
+        title: parsed.question.title,
+        categoryId: parsed.question.categoryId,
+        body: parsed.question.body,
+        status: "pending",
+      };
+      return {
+        ...state,
+        questions: [...state.questions, question],
+        questionId: question.id,
+        revision,
+      };
+    }
+    case "new-question":
+      return { ...state, questionId: null, revision };
     case "reset":
       return {
         ...createDemoSession(seed),

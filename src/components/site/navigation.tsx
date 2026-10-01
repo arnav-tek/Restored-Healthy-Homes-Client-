@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 const links = [
   { href: "/", label: "Home" },
   { href: "/directory", label: "Find professionals" },
+  { href: "/questions", label: "Ask a Specialist" },
   { href: "/demo/member", label: "Member preview" },
 ];
 export function Navigation() {
@@ -47,7 +48,12 @@ export function Navigation() {
             key={link.href}
             href={link.href}
             onClick={close}
-            aria-current={pathname === link.href ? "page" : undefined}
+            aria-current={
+              pathname === link.href ||
+              (link.href === "/questions" && pathname.startsWith("/questions/"))
+                ? "page"
+                : undefined
+            }
           >
             {link.label}
           </Link>

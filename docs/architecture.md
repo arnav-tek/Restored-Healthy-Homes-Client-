@@ -68,3 +68,7 @@ Replace adapters at `src/data/index.ts`. Build authenticated owner/admin service
 - Expand the current framing/base/object/form CSP into a nonce-based script policy before real untrusted content/integrations. Current headers are not a complete script-src policy.
 
 No service-role credentials belong in the browser. Re-run threat modeling and real authorization/storage/payment security tests when services connect.
+
+## Phase 2E-1 Q&A boundary
+
+Public Q&A routes use `QaRepository` and server-only fixtures, with publication gates before explicit projections and search/counts. Only question submissions created in this tab enter the existing demo reducer; their status is forced to pending. The shared draft mechanism stores unfinished question fields in React memory. No hidden Q&A seed or moderation note is imported into the provider. The [2E-1 handoff](phase-2e1-handoff.md) records the public query contract and the planned session overlay for later moderation.

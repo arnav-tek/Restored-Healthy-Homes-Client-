@@ -13,7 +13,7 @@ export function SessionReset({ onReset }: { onReset?: () => void }) {
       onClick={() => {
         if (
           !window.confirm(
-            "Reset this demo session? Applications, edits, review decisions and unsaved drafts will be discarded.",
+            "Reset this demo session? Applications, questions, edits, review decisions and unsaved drafts will be discarded.",
           )
         )
           return;

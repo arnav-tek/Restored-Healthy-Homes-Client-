@@ -51,7 +51,7 @@ test("mobile menu supports touch, keyboard, Escape, and route dismissal", async 
 }, testInfo) => {
   test.skip(
     testInfo.project.name === "desktop",
-    "Disclosure navigation applies below 820px",
+    "Disclosure navigation applies below 1050px",
   );
   await page.goto("/");
   const toggle = page.getByRole("button", { name: "Open navigation" });
