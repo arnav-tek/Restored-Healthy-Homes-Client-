@@ -322,3 +322,19 @@ export function memberEligibilityMessage(record: DemoMemberRecord): string {
     ? "This example meets the approval, active subscription and no-suspension rules. Local edits still do not update the public directory."
     : "This example is not eligible for public listing. Approval, an active subscription and no suspension are all required.";
 }
+export function demoDashboardCounts(records: readonly DemoMemberRecord[]) {
+  return {
+    applications: records.length,
+    pending: records.filter((record) => record.approval === "pending").length,
+    eligible: records.filter(isPubliclyEligible).length,
+    suspended: records.filter((record) => record.suspended).length,
+    unverified: records.reduce(
+      (total, record) =>
+        total +
+        record.credentials.filter(
+          (claim) => claim.verification === "unverified",
+        ).length,
+      0,
+    ),
+  };
+}

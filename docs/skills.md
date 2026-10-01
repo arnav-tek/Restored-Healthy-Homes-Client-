@@ -39,3 +39,5 @@ Phase 2B reused the existing frontend-design, react-best-practices and playwrigh
 Phase 2C-1 reused frontend-design, react-best-practices and playwright, and read composition-patterns plus its state-lift-state rule for the shared context provider. No dependencies or skills were installed. User-authorized tab-local React state supersedes the earlier read-only member shell; it adds no storage or authorization.
 
 Phase 2C-2 reused the installed frontend-design, react-best-practices, composition-patterns and playwright guidance. The existing provider remains the shared source for demo application/member/admin views; browser test files extend the user-requested regression suite. No skills or dependencies were installed.
+
+Phase 2D reuses those same installed design, React/composition and Playwright instructions already read in this conversation. Focused components, one shared provider and explicit draft state preserve the existing rules; no skill or dependency installation was needed.

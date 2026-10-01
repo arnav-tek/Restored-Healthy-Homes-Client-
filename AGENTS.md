@@ -2,7 +2,7 @@
 
 Read the authoritative [overview](Project%20overview/restored-healthy-homes-project-overview.md) and [alignment](Project%20overview/client-conversation-alignment.md). They override the original Word brief. Preserve these confidential sources outside public assets; do not duplicate commercial details in code or docs.
 
-- Phase 2C-2 is authorized: shared demo admin workflows. Stop before real integrations or further features. Read docs/phase-2c2-handoff.md for the latest handoff. All final features remain in scope; see docs/build-checklist.md.
+- Phase 2D is authorized: refine member/admin dashboard presentation and navigation while preserving demo rules. Stop before integrations or another phase. Read docs/phase-2d-handoff.md for the latest handoff. All final features remain in scope; see docs/build-checklist.md.
 - Next.js App Router, strict TypeScript, Tailwind, npm with package-lock.json. Server Components by default. Small client islands only for interactions.
 - src/domain owns types/catalog/rules; src/data owns typed contracts and server-only adapters; src/validation validates external input. Routes compose feature/UI components.
 - Catalog IDs are immutable and independent of labels and billing keys. Multi-category billing is unresolved. Never derive prices from a display name.

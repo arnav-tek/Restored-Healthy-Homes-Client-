@@ -11,6 +11,7 @@ import {
 } from "@/validation/application";
 import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
+import { useDemoDraft } from "./demo-session";
 
 export type ApplicationCategory = Pick<Category, "id" | "name" | "monthlyUsd">;
 const basicFields = [
@@ -50,12 +51,17 @@ export function ProfileFieldsForm({
   initial,
   submitLabel,
   onValid,
+  draftKey = "application",
+  disabled = false,
 }: {
   catalog: readonly ApplicationCategory[];
   initial?: MemberProfileFields;
   submitLabel: string;
   onValid: (profile: MemberProfileFields) => void;
+  draftKey?: string;
+  disabled?: boolean;
 }) {
+  const { draft, saveDraft, clearDraft } = useDemoDraft(draftKey);
   const ready = useDemoReady();
   const form = useRef<HTMLFormElement>(null);
   const [errors, setErrors] = useState<ApplicationErrors>({});
@@ -80,12 +86,26 @@ export function ProfileFieldsForm({
       return;
     }
     setErrors({});
+    clearDraft();
     onValid(result.profile);
   }
   return (
     <form
       ref={form}
       onSubmit={submit}
+      onChange={(event) => {
+        const data = new FormData(event.currentTarget);
+        saveDraft(
+          Object.fromEntries(
+            applicationFieldOrder.map((field) => [
+              field,
+              field === "categoryIds"
+                ? data.getAll(field).map(String)
+                : String(data.get(field) ?? ""),
+            ]),
+          ),
+        );
+      }}
       noValidate
       autoComplete="off"
       className="member-fields-form"
@@ -96,7 +116,7 @@ export function ProfileFieldsForm({
           so nothing can be submitted to a server.
         </p>
       </noscript>
-      <fieldset disabled={!ready} className="member-form-fields">
+      <fieldset disabled={!ready || disabled} className="member-form-fields">
         <legend className="sr-only">Fictional business details</legend>
         <p className="field-help">
           Use fictional information only. All fields are required unless marked
@@ -124,7 +144,7 @@ export function ProfileFieldsForm({
                 type={type}
                 required={name !== "phone" && name !== "website"}
                 maxLength={applicationLimits[name]}
-                defaultValue={initial?.[name] ?? ""}
+                defaultValue={draft?.[name] ?? initial?.[name] ?? ""}
                 aria-invalid={!!errors[name]}
                 aria-describedby={errors[name] ? `${name}-error` : undefined}
               />
@@ -148,7 +168,11 @@ export function ProfileFieldsForm({
                   type="checkbox"
                   name="categoryIds"
                   value={category.id}
-                  defaultChecked={initial?.categoryIds.includes(category.id)}
+                  defaultChecked={(
+                    draft?.categoryIds ??
+                    initial?.categoryIds ??
+                    []
+                  ).includes(category.id)}
                   aria-invalid={!!errors.categoryIds}
                 />
                 <span>
@@ -170,7 +194,7 @@ export function ProfileFieldsForm({
           </p>
         </fieldset>
         {detailFields.map(({ name, label, help }) => {
-          const value = initial?.[name];
+          const value = draft?.[name] ?? initial?.[name];
           return (
             <div className="search-field" key={name}>
               <label htmlFor={`member-form-${name}`}>{label}</label>

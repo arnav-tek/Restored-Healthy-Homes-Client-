@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { categories } from "../../src/domain/categories";
 import { mkdir } from "node:fs/promises";
+import { section } from "./helpers/dashboard";
 
 test("directory category interactions, disclosure and back navigation", async ({
   page,
@@ -105,6 +106,7 @@ test("shells, screenshots, overflow, accessibility and no browser errors", async
     });
   }
   expect(errors).toEqual([]);
+  await section(page, "Admin", "Listings");
   await expect(
     page.getByTestId("session-directory").getByRole("article"),
   ).toHaveCount(1);

@@ -1,8 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { useDemoReady } from "@/components/ui/use-demo-ready";
+import { SessionReset } from "@/features/dashboard/session-reset";
 import {
   ProfileFieldsForm,
   type ApplicationCategory,
@@ -16,7 +15,6 @@ export function ApplicationExperience({
 }) {
   const { state, dispatch } = useDemoSession();
   const sessionCatalog = useDemoCatalog(catalog);
-  const ready = useDemoReady();
   const heading = useRef<HTMLHeadingElement>(null);
   const application = state.records.find(
     (record) => record.id === state.applicationId,
@@ -63,13 +61,7 @@ export function ApplicationExperience({
         </section>
       )}
       <div className="session-reset">
-        <Button
-          type="button"
-          disabled={!ready}
-          onClick={() => dispatch({ type: "reset" })}
-        >
-          Reset demo session
-        </Button>
+        <SessionReset />
         <p>
           Clears applications, edits, category labels and review decisions in
           this tab.

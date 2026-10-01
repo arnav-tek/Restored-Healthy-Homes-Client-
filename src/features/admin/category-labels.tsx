@@ -2,86 +2,124 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
-import { useDemoSession } from "@/features/member/demo-session";
+import { useDemoDraft, useDemoSession } from "@/features/member/demo-session";
 import type { ApplicationCategory } from "@/features/member/profile-fields-form";
+import { formatMonthlyPrice } from "@/domain/categories";
 import { parseCategoryName } from "@/validation/admin";
+import { useDashboardNavigation } from "@/features/dashboard/use-dashboard-navigation";
 
+function CategoryForm({
+  category,
+  catalog,
+  pending,
+}: {
+  category: ApplicationCategory;
+  catalog: readonly ApplicationCategory[];
+  pending: boolean;
+}) {
+  const { dispatch } = useDemoSession();
+  const { draft, saveDraft, clearDraft } = useDemoDraft(
+    `category:${category.id}`,
+  );
+  const ready = useDemoReady();
+  const [error, setError] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const input = useRef<HTMLInputElement>(null);
+  const status = useRef<HTMLParagraphElement>(null);
+  return (
+    <form
+      noValidate
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (!ready) return;
+        const name = parseCategoryName(
+          new FormData(event.currentTarget).get("label"),
+          category.id,
+          catalog,
+        );
+        if (!name) {
+          setError(
+            "Use a distinct name of 3–80 characters. Empty or equivalent labels are not allowed.",
+          );
+          input.current?.focus();
+          return;
+        }
+        setError("");
+        dispatch({ type: "rename-category", id: category.id, name });
+        clearDraft();
+        setFeedback(`Display name updated to ${name} in this session.`);
+        requestAnimationFrame(() => status.current?.focus());
+      }}
+    >
+      <fieldset className="member-form-fields" disabled={!ready || pending}>
+        <legend className="sr-only">Rename a demo category</legend>
+        <div className="search-field">
+          <label htmlFor="category-label">Display name</label>
+          <input
+            id="category-label"
+            name="label"
+            ref={input}
+            value={String(draft?.label ?? category.name)}
+            onChange={(event) => saveDraft({ label: event.target.value })}
+            maxLength={80}
+            aria-invalid={!!error}
+            aria-describedby="category-label-error"
+          />
+          <p id="category-label-error" role="alert" className="field-error">
+            {error}
+          </p>
+        </div>
+        <p>
+          Individual price:{" "}
+          <strong>{formatMonthlyPrice(category.monthlyUsd)} / month</strong>{" "}
+          (unchanged)
+        </p>
+        <Button type="submit">Rename demo category</Button>
+      </fieldset>
+      <p ref={status} role="status" tabIndex={-1} className="session-status">
+        {feedback}
+      </p>
+    </form>
+  );
+}
 export function CategoryLabels({
   catalog,
 }: {
   catalog: readonly ApplicationCategory[];
 }) {
-  const { dispatch } = useDemoSession();
   const ready = useDemoReady();
-  const [id, setId] = useState(catalog[0].id);
-  const [error, setError] = useState("");
-  const input = useRef<HTMLInputElement>(null);
+  const { query, navigate, pending } = useDashboardNavigation("admin");
+  const id = query.category || catalog[0].id;
+  const category = catalog.find((item) => item.id === id)!;
   return (
-    <details className="panel member-editor">
-      <summary>Category display names</summary>
+    <section className="panel">
+      <h2>Category display names</h2>
       <p>
-        Rename labels in this session. IDs, associations, individual prices and
-        billing identifiers stay unchanged. The public directory is unchanged.
+        Rename a label without changing category associations, IDs, individual
+        prices or billing identifiers. The public directory keeps its original
+        labels.
       </p>
-      <form
-        noValidate
-        onSubmit={(event) => {
-          event.preventDefault();
-          if (!ready) return;
-          const name = parseCategoryName(
-            new FormData(event.currentTarget).get("label"),
-            id,
-            catalog,
-          );
-          if (!name) {
-            setError(
-              "Use a distinct name of 3–80 characters. Empty or equivalent labels are not allowed.",
-            );
-            input.current?.focus();
-            return;
-          }
-          setError("");
-          dispatch({ type: "rename-category", id, name });
-        }}
-      >
-        <fieldset className="member-form-fields" disabled={!ready}>
-          <legend className="sr-only">Rename a demo category</legend>
-          <div className="search-field">
-            <label htmlFor="rename-category">Category to rename</label>
-            <select
-              id="rename-category"
-              value={id}
-              onChange={(event) => {
-                setId(event.target.value);
-                setError("");
-              }}
-            >
-              {catalog.map((item) => (
-                <option value={item.id} key={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="search-field">
-            <label htmlFor="category-label">Display name</label>
-            <input
-              key={`${id}-${catalog.find((item) => item.id === id)?.name}`}
-              id="category-label"
-              name="label"
-              ref={input}
-              defaultValue={catalog.find((item) => item.id === id)?.name}
-              maxLength={80}
-              aria-invalid={!!error}
-              aria-describedby="category-label-error"
-            />
-            <p id="category-label-error" role="alert" className="field-error">
-              {error}
-            </p>
-          </div>
-          <Button type="submit">Rename demo category</Button>
-        </fieldset>
-      </form>
-    </details>
+      <div className="search-field category-select">
+        <label htmlFor="rename-category">Category to rename</label>
+        <select
+          id="rename-category"
+          disabled={!ready || pending}
+          value={id}
+          onChange={(event) => navigate({ category: event.target.value })}
+        >
+          {catalog.map((item) => (
+            <option value={item.id} key={item.id}>
+              {item.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <CategoryForm
+        key={id}
+        category={category}
+        catalog={catalog}
+        pending={pending}
+      />
+    </section>
   );
 }

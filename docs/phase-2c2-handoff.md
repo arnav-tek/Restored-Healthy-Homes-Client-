@@ -1,5 +1,7 @@
 # Phase 2C-2 handoff
 
+Superseded for ongoing work by [Phase 2D handoff](phase-2d-handoff.md); this records the prior workflow milestone.
+
 Implemented 2026-10-01. Shared demo admin workflows only. Stop before real integrations or further features. All remaining client-approved scope stays in `docs/build-checklist.md`.
 
 ## Behavior

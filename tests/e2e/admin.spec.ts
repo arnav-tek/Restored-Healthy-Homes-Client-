@@ -1,28 +1,20 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { fillApplication, mainNav } from "./helpers/application";
+import {
+  workspace,
+  section,
+  review,
+  decision,
+  resetSession,
+} from "./helpers/dashboard";
+test.setTimeout(90000);
 
-async function workspace(
-  page: Page,
-  name: "Admin overview" | "Member overview",
-) {
-  await page
-    .getByRole("navigation", { name: "Demo workspaces" })
-    .getByRole("link", { name })
-    .click();
-}
-async function decision(page: Page, action: string, reason: string) {
-  await page.getByLabel("Demo action", { exact: true }).selectOption(action);
-  await page.getByLabel("Applicant-facing demo reason").fill(reason);
-  await page
-    .getByRole("button", { name: "Apply demo decision" })
-    .press("Enter");
-}
 test("application admin decision member confirmation and protected edits stay coherent", async ({
   page,
 }) => {
-  const mutations: string[] = [];
-  const errors: string[] = [];
+  const mutations: string[] = [],
+    errors: string[] = [];
   page.on("request", (request) => {
     if (request.method() !== "GET" || request.postData())
       mutations.push(request.url());
@@ -33,16 +25,16 @@ test("application admin decision member confirmation and protected edits stay co
   await page.getByRole("button", { name: "Create demo application" }).click();
   await page.getByRole("link", { name: "Open demo member workspace" }).click();
   await workspace(page, "Admin overview");
-  await expect(
-    page.getByRole("heading", { name: "Review Session Sample Business" }),
-  ).toBeVisible();
+  await section(page, "Admin", "Applications");
   await expect(page.getByText(/5 of 5 applications shown/)).toBeVisible();
+  await review(page, "Session Sample Business");
   await page
     .getByRole("button", { name: "Apply demo decision" })
     .press("Enter");
   await expect(page.getByLabel("Applicant-facing demo reason")).toBeFocused();
   await decision(page, "approved", "Fictional application accepted");
   await expect(page.getByTestId("admin-approval")).toHaveText("approved");
+  await page.getByRole("link", { name: "Listing status", exact: true }).click();
   await expect(page.getByTestId("session-directory")).not.toContainText(
     "Session Sample Business",
   );
@@ -54,16 +46,16 @@ test("application admin decision member confirmation and protected edits stay co
   await expect(
     page.getByText("Demo decision reason: Fictional application accepted"),
   ).toBeVisible();
-  await page.getByText("Edit sample profile", { exact: true }).click();
+  await section(page, "Member", "Profile");
   await page
     .getByLabel("Business name", { exact: true })
     .fill("Edited Admin Sample");
   await page.getByRole("button", { name: "Update local preview" }).click();
+  await section(page, "Member", "Overview");
   await expect(page.getByTestId("member-approval")).toHaveText("approved");
   await workspace(page, "Admin overview");
-  await expect(
-    page.getByRole("heading", { name: "Review Edited Admin Sample" }),
-  ).toBeVisible();
+  await section(page, "Admin", "Applications");
+  await review(page, "Edited Admin Sample");
   page.once("dialog", async (dialog) => {
     expect(dialog.message()).toContain("Reject Edited Admin Sample");
     await dialog.dismiss();
@@ -96,14 +88,14 @@ test("application admin decision member confirmation and protected edits stay co
 test("admin suspension credentials category labels public projection and reset", async ({
   page,
 }, testInfo) => {
-  const mutations: string[] = [];
-  const errors: string[] = [];
+  const mutations: string[] = [],
+    errors: string[] = [];
   page.on("request", (request) => {
     if (request.method() !== "GET" || request.postData())
       mutations.push(request.url());
   });
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/demo/admin");
+  await page.goto("/demo/admin?section=listings");
   const directory = page.getByTestId("session-directory");
   await expect(directory.getByRole("article")).toHaveCount(1);
   for (const text of [
@@ -113,56 +105,69 @@ test("admin suspension credentials category labels public projection and reset",
   ])
     await expect(directory).not.toContainText(text);
   await page.getByLabel("Search applications").fill("unmatched search");
+  await page.getByRole("button", { name: "Apply filters" }).click();
   await expect(page.getByText(/No applications match/)).toBeVisible();
   await page.getByRole("button", { name: "Clear filters" }).click();
   await page
     .getByLabel("Application status", { exact: true })
     .selectOption("pending");
+  await page.getByRole("button", { name: "Apply filters" }).click();
   await expect(page.getByText(/1 of 4 applications shown/)).toBeVisible();
   await page.getByRole("button", { name: "Clear filters" }).click();
+  await review(page, "Meadow Sample Studio");
   page.once("dialog", async (dialog) => {
     expect(dialog.message()).toContain("Suspend Meadow Sample Studio");
     await dialog.accept();
   });
   await decision(page, "suspend", "Fictional suspension check");
   await expect(directory.getByRole("article")).toHaveCount(0);
+  await page.getByRole("link", { name: "Back to listings" }).click();
   await page.getByLabel("Suspension filter").selectOption("suspended");
+  await page.getByRole("button", { name: "Apply filters" }).click();
   await expect(page.getByText(/1 of 4 applications shown/)).toBeVisible();
+  await review(page, "Meadow Sample Studio");
   await decision(page, "reinstate", "Fictional reinstatement check");
   await expect(directory.getByRole("article")).toHaveCount(1);
+  await page.getByRole("link", { name: "Back to listings" }).click();
   await page.getByRole("button", { name: "Clear filters" }).click();
-  await page
-    .getByRole("button", { name: "Review Inactive Sample Studio", exact: true })
-    .click();
+  await review(page, "Inactive Sample Studio");
   page.once("dialog", async (dialog) => {
     await dialog.accept();
   });
   await decision(page, "suspend", "Fictional inactive suspension");
   await decision(page, "reinstate", "Fictional inactive reinstatement");
   await expect(directory).not.toContainText("Inactive Sample Studio");
+  await page.getByRole("link", { name: "Back to listings" }).click();
+  await review(page, "Meadow Sample Studio");
   await page
-    .getByRole("button", { name: "Review Meadow Sample Studio", exact: true })
+    .getByRole("link", { name: "Review credentials", exact: true })
     .click();
   await page
     .getByRole("button", { name: "Verify in demo", exact: true })
     .click();
-  await expect(directory).toContainText("verified in demo only");
+  await expect(
+    page.getByText("Verified in demo only", { exact: true }),
+  ).toBeVisible();
   page.once("dialog", async (dialog) => {
     expect(dialog.message()).toContain("Meadow Sample Studio");
     expect(dialog.message()).toContain("Sample course attendance");
     await dialog.dismiss();
   });
   await page.getByRole("button", { name: "Remove demo verification" }).click();
-  await expect(directory).toContainText("verified in demo only");
+  await expect(
+    page.getByText("Verified in demo only", { exact: true }),
+  ).toBeVisible();
   page.once("dialog", async (dialog) => {
     await dialog.accept();
   });
   await page.getByRole("button", { name: "Remove demo verification" }).click();
-  await expect(directory).toContainText("— unverified");
+  await expect(page.getByText("Unverified", { exact: true })).toBeVisible();
   await page
     .getByRole("button", { name: "Verify in demo", exact: true })
     .click();
-  await page.getByText("Category display names", { exact: true }).click();
+  await page.getByRole("link", { name: "Listing status", exact: true }).click();
+  await expect(directory).toContainText("verified in demo only");
+  await section(page, "Admin", "Categories");
   await page.getByLabel("Category to rename").selectOption("healthy-designers");
   await page
     .getByLabel("Display name", { exact: true })
@@ -176,6 +181,7 @@ test("admin suspension credentials category labels public projection and reset",
   await page
     .getByRole("button", { name: "Rename demo category" })
     .press("Enter");
+  await section(page, "Admin", "Listings");
   await expect(directory).toContainText("Thoughtful Sample Designers");
   expect(
     (
@@ -193,10 +199,11 @@ test("admin suspension credentials category labels public projection and reset",
     fullPage: true,
   });
   await workspace(page, "Member overview");
+  await section(page, "Member", "Profile");
+  await page.getByText("Public-profile preview", { exact: true }).click();
   await expect(
     page.getByText(/Sample course attendance.*verified in demo only/),
   ).toBeVisible();
-  await page.getByText("Edit sample profile", { exact: true }).click();
   await expect(
     page.getByRole("checkbox", { name: /Thoughtful Sample Designers/ }),
   ).toBeChecked();
@@ -215,10 +222,12 @@ test("admin suspension credentials category labels public projection and reset",
   ).toBeVisible();
   await mainNav(page, "Member preview");
   await workspace(page, "Admin overview");
+  await section(page, "Admin", "Listings");
   await expect(directory).toContainText(
     "Changed fictional credential — unverified",
   );
-  await page.getByRole("button", { name: "Reset demo session" }).click();
+  await resetSession(page);
+  await section(page, "Admin", "Listings");
   await expect(directory).toContainText("Healthy Home Designers");
   await expect(directory).toContainText(
     "Sample course attendance — fictional — unverified",
@@ -236,18 +245,24 @@ test("admin controls cannot submit without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   try {
     const page = await context.newPage();
-    await page.goto("http://127.0.0.1:3100/demo/admin");
+    await page.goto(
+      "http://127.0.0.1:3100/demo/admin?section=applications&record=member-example-approved",
+    );
     await expect(
-      page.getByText(/Enable JavaScript for local admin actions/),
+      page.getByText(/Enable JavaScript for local demo actions/),
     ).toBeVisible();
     await expect(
       page.getByRole("button", { name: "Apply demo decision" }),
     ).toBeDisabled();
+    await page.goto(
+      "http://127.0.0.1:3100/demo/admin?section=credentials&record=member-example-approved",
+    );
     await expect(
       page.getByRole("button", { name: "Verify in demo", exact: true }),
     ).toBeDisabled();
+    await page.goto("http://127.0.0.1:3100/demo/admin?section=applications");
     await expect(page.getByLabel("Search applications")).toBeDisabled();
-    await page.getByText("Category display names", { exact: true }).click();
+    await page.goto("http://127.0.0.1:3100/demo/admin?section=categories");
     await expect(
       page.getByLabel("Display name", { exact: true }),
     ).toBeDisabled();

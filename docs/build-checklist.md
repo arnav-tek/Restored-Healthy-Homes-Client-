@@ -54,6 +54,15 @@ The [overview](../Project%20overview/restored-healthy-homes-project-overview.md)
 - [x] Responsive/keyboard/no-JavaScript journeys and rendered review; [Phase 2C-2 handoff](phase-2c2-handoff.md).
 - [ ] User review of demo workflows before starting real integrations.
 
+## Phase 2D — focused member and admin dashboards
+
+- [x] Member overview/profile/inquiries/membership and admin overview/applications/listings/credentials/categories.
+- [x] Validated URL sections, filters and record/category selections; client navigation and browser history.
+- [x] Persistent desktop rail, native mobile menu, compact state summaries, scoped tables and focused forms.
+- [x] In-memory drafts survive section/record changes; shared reset requires confirmation and clears drafts.
+- [x] Reuse existing decision/credential/category rules, shared session and public projections; no integrations or later features.
+- [x] Final checks, rendered review and [Phase 2D handoff](phase-2d-handoff.md).
+
 ## Phase 3 — real accounts and administration integrations
 
 - [ ] Supabase schema/migrations, Auth/Storage, server authorization, RLS/grants and ownership tests.
@@ -200,3 +209,26 @@ Executed 2026-10-01, local demo only:
 | Git | Pre-edit tree checkpoint `refs/checkpoints/pre-phase-2c2`; identity unset, no commit invented; no remote, push or deployment |
 
 Browser coverage includes application → admin → member → current confirmation, inactive approval, suspension/reinstatement, credential verification/removal/editing, category propagation, public-field exclusions, filters/empty states, reset, keyboard validation and no network mutations/browser storage. Existing search/profile/inquiry regressions remain in the suite. Expected injected adapter failures contain no form contents.
+
+## Phase 2D verification record
+
+Executed 2026-10-01, dashboard refinement only:
+
+| Check | Result |
+| --- | --- |
+| `npm run typecheck` | Pass |
+| `npm run lint` | Pass, zero warnings |
+| `npm test` | 35 pass; validated dashboard URLs and derived counts added, existing eligibility/credential/category/public-field rules retained |
+| `npm run build:demo` | Pass with process-scoped `NODE_OPTIONS=--max-old-space-size=768`; no permanent setting changes |
+| `npm run test:e2e -- --workers=1 --max-failures=1` | Final full run: 65 pass, one intentional desktop-menu skip, 4.1 minutes |
+| `npm run build` | Expected rejection without explicit demo opt-in |
+| Navigation/drafts | Direct sections, malformed parameters, back/forward, filtered list → record → list, missing records, section/record/category drafts, unapplied filter drafts, confirmed/cancelled reset and refresh reset pass |
+| Existing workflows | Application → admin → member coherence, protected fields, independent eligibility, credential changes, stable category associations, public projection and search → profile → inquiry regressions pass |
+| Accessibility/rendered review | Desktop/tablet/mobile at 1440/768/390 px; long names, profile forms, empty inbox, application tables, errors, confirmation, category and credential screens inspected; no detected axe violations or page overflow in tested views |
+| Demo safety | No-JavaScript forms disabled; browser tests confirm no form payload submission or storage writes; public directory remains unchanged |
+| Code review | Shared navigation, draft provider, status summary, register, decision form and reset; existing reducer remains the accepted-state writer; no new dependencies or integrations |
+| Git/scope | Clean starting tree; local checkpoint `381651d`; no Phase 2D push or deployment, later backlog preserved |
+
+Earlier browser runs exposed a wrapped table-link hit area and a rapid clear-filter/navigation race. Links now have a full block hit area; controlled filter drafts and pending-navigation guards preserve interactions. The final complete suite above passed after both fixes. Injected adapter-error logs are expected fixtures and contain no form values.
+
+Limits: React-session drafts disappear on refresh/full-page navigation/reset. Chromium emulation only; physical devices, Safari/Firefox and a full accessibility audit remain unverified. No real accounts, persistence, publication, delivery or integrations.

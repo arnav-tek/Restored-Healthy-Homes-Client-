@@ -30,4 +30,6 @@ All businesses and inquiries are fictional. Application, member and admin change
 
 Run `npm run check` for typecheck, lint, unit tests and a demo build. For browser tests, install Chromium with `npx playwright install chromium`, then run `npm run test:e2e`.
 
-See the [latest handoff](docs/phase-2c2-handoff.md), [build checklist](docs/build-checklist.md) and [architecture](docs/architecture.md).
+Member and admin workspaces use focused, linkable sections. Unsaved drafts remain in React memory during client-side navigation; reset asks for confirmation.
+
+See the [latest handoff](docs/phase-2d-handoff.md), [build checklist](docs/build-checklist.md) and [architecture](docs/architecture.md).

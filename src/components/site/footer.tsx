@@ -30,7 +30,7 @@ export function Footer() {
       </div>
       <div className="container footer-bottom">
         <span>© {new Date().getFullYear()} Restored Healthy Homes</span>
-        <span>Phase 2C-2 · Demo preview</span>
+        <span>Phase 2D · Demo preview</span>
       </div>
     </footer>
   );
