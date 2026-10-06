@@ -23,7 +23,7 @@ test("consultation navigation and responsive page keep the proposed offer and de
 }, testInfo) => {
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: "Have a project question in mind?" }),
+    page.getByRole("heading", { name: "Have a specific project in mind?" }),
   ).toBeVisible();
   const menu = page.getByRole("button", { name: "Open navigation" });
   if (await menu.isVisible()) await menu.press("Enter");

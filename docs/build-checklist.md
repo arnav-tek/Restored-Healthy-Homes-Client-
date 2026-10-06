@@ -137,8 +137,27 @@ Review verification, duplicates/abuse, disputes and removal policies remain unre
 - [x] Dedicated `/about` layout, typed replacement content and an honest static video placeholder; desktop/mobile header and footer navigation.
 - [ ] Final client company story, personal “Why,” approved copy, video, captions and transcript. Layout completion does not approve placeholder content.
 - [x] Typecheck/lint, 78 unit tests, demo build and production guard; 92 affected browser cases passed across completed runs (one intentional skip), with desktop/tablet/mobile and intermediate navigation renders reviewed. See [Phase 2H-1 handoff](phase-2h1-handoff.md) for scope, a test scrolling fix and outstanding assets.
+- [x] Separate 2026-10-06 visual refinement: search before secondary actions, catalog icon grid, compact statistics/disclosure, connected steps, asymmetric Q&A/consultation features, editorial About introduction, dedicated business closing CTA, composed About story/video/purpose/closing and grouped footer. Functional rules and public data boundaries preserved.
+- [x] Actual before/after home/About captures at 1440/768/390 px, 1280/1279 px navigation, 320 px and 200% text reflow reviewed. Mobile Search now ends at y=568 in a 390 × 844 initial viewport (previously y=1,051); no fixed hero height or clipped content.
+- [ ] Visual client/user approval of the refined presentation. Final copy and media remain outstanding; implementation and internal visual review are not approval.
 
 Stop before 2H-2. Education, resources/blog, newsletter, featured listings, search refinements and integrations remain outside this phase.
+
+### Phase 2H-1 visual-refinement verification — 2026-10-06
+
+| Check | Actual result |
+| --- | --- |
+| Typecheck / lint | `npm run typecheck` and zero-warning `npm run lint` passed; final changed tests also passed ESLint and `tsc --noEmit` |
+| Unit tests | `npm test`: 78 passed; domain/state calculations unchanged |
+| Demo build | Passed, including final shared-style rebuild; process-only 768 MB heap cap |
+| Production guard | Ordinary build correctly rejected missing demo opt-in; existing `.env.local` was safely restored after the check |
+| Focused browser suite | 72 passed, three intentional viewport skips, 4.1 minutes; `home-about`, `search`, `preview`, `profiles`, `demo-sign-in`, `consultations` across desktop/tablet/mobile |
+| Final affected-layout rerun | 24 passed, three intentional skips, 2.6 minutes; `home-about` and `preview` after final logo/footer adjustments |
+| Behavior | All eight category destinations, city/ZIP/category search, no-script behavior, About navigation, live publish/reject rating updates, identity navigation and shared directory/profile/dashboard/consultation regressions passed |
+| Rendering/accessibility | Actual 1440/768/390 px home/About before/after captures reviewed; signed-in/out 1280/1279 px navigation, 320 px and doubled-text reflow checked; short-screen menu/touch targets, focus, axe and overflow checks passed; no tested normal-page browser errors |
+| Code/scope | Static sections remain server-rendered; no new state, domain/rule/repository changes, catalog duplication, packages or media; public projections and production guard preserved; `git diff --check` passed |
+
+The initial focused attempt found a test selector using the replaced consultation headline. Updated that selector and the renamed secondary browse-link selector, retaining behavioral assertions. Actual captures and geometry are in `output/playwright/phase-2h1-refinement-*`; the [handoff](phase-2h1-handoff.md) records composition, pixel measurements and limits. Previews were stopped before builds. This is focused coverage, not a new uninterrupted full-repository browser run. Three skips are the existing desktop mobile-menu case and two duplicate narrow/text checks that run once with explicit viewport changes. Text enlargement is a 200% computed-font simulation; physical devices, Safari/Firefox, a complete accessibility audit and actual approved-video playback/captions/transcript remain unverified. Final story/Why/copy/media and visual client/user approval remain pending. No Phase 2H-2, integrations, push or deployment.
 
 ## Scope audit — remaining details to preserve
 

@@ -32,26 +32,47 @@ test("homepage categories, truthful statistics and About Us navigation work with
   await page.goto("/");
   await expect(page).toHaveTitle(/Find healthy-home professionals/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+  if (info.project.name === "mobile") {
+    const search = page.getByRole("button", { name: "Search", exact: true });
+    await expect(search).toBeInViewport({ ratio: 1 });
+    const bounds = await search.boundingBox();
+    expect(bounds).not.toBeNull();
+    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(844);
+  }
   const browse = page.getByRole("list", { name: "Browse specialties" });
   await expect(browse.getByRole("link")).toHaveCount(8);
   for (const category of categories) {
     await expect(
-      browse
-        .getByRole("link")
-        .filter({
-          has: page.getByRole("heading", { name: category.name, exact: true }),
-        }),
+      browse.getByRole("link").filter({
+        has: page.getByRole("heading", { name: category.name, exact: true }),
+      }),
     ).toHaveAttribute("href", `/directory?category=${category.id}`);
   }
   await expect(page.getByTestId("home-professional-count")).toHaveText("8");
   await expect(page.getByTestId("home-state-count")).toHaveText("7");
   await expect(page.getByTestId("home-rating")).toHaveText("4.2 out of 5");
+  await page.getByText("How these figures work", { exact: true }).click();
+  await expect(page.getByTestId("home-statistics")).toContainText(
+    "averages individual published reviews",
+  );
+  await page.getByText("How these figures work", { exact: true }).click();
   await browse.getByRole("link").first().focus();
   await expect(browse.getByRole("link").first()).toBeFocused();
   await inspect(page, `home-${info.project.name}`);
   await browse.getByRole("link").first().press("Enter");
   await expect(page).toHaveURL("/directory?category=mold-inspection");
   await expect(page.getByTestId("professional-card")).toHaveCount(1);
+  for (const category of categories.slice(1)) {
+    await mainNav(page, "Home");
+    await browse
+      .getByRole("link")
+      .filter({
+        has: page.getByRole("heading", { name: category.name, exact: true }),
+      })
+      .click();
+    await expect(page).toHaveURL(`/directory?category=${category.id}`);
+    await expect(page.getByTestId("professional-card")).toHaveCount(1);
+  }
   await mainNav(page, "About Us");
   await expect(page).toHaveURL("/about");
   await expect(page).toHaveTitle(/About Us/);
@@ -77,7 +98,7 @@ test("homepage categories, truthful statistics and About Us navigation work with
   ).toBeFocused();
   await inspect(page, `about-${info.project.name}`);
   if (info.project.name === "desktop") {
-    for (const width of [1280, 1180]) {
+    for (const width of [1280, 1279]) {
       await page.setViewportSize({ width, height: 1000 });
       await inspect(page, `about-navigation-${width}`);
       await mainNav(page, "Home");
@@ -152,8 +173,12 @@ test("homepage rating follows the existing review moderation session and refresh
     "HOMEPAGE_INTERNAL_NOTE",
   );
   if (info.project.name === "desktop") {
-    await page.setViewportSize({ width: 1280, height: 1000 });
-    await inspect(page, "signed-in-navigation-1280");
+    for (const width of [1280, 1279]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await inspect(page, `signed-in-navigation-${width}`);
+      await mainNav(page, "About Us");
+      await mainNav(page, "Home");
+    }
   }
   await mainNav(page, "Dashboard");
   await expect(
@@ -179,6 +204,87 @@ test("homepage rating follows the existing review moderation session and refresh
   await expect(page.getByTestId("home-rating")).toHaveText("4.2 out of 5");
   await expect(page.locator("[data-demo-account]")).toHaveCount(0);
   expect(mutations).toEqual([]);
+});
+
+test("refined pages reflow at 320px and with enlarged text; short-screen navigation remains usable", async ({
+  page,
+}, info) => {
+  test.skip(
+    info.project.name !== "desktop",
+    "Explicit narrow and text-size checks run once.",
+  );
+  test.setTimeout(120000);
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  for (const route of ["/", "/about"]) {
+    await page.setViewportSize({ width: 320, height: 844 });
+    await page.goto(route);
+    await inspect(page, `${route === "/" ? "home" : "about"}-320`);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(route);
+    if (route === "/") {
+      await expect(
+        page.getByRole("form", { name: "Find professionals", exact: true }),
+      ).toHaveAttribute("data-ready", "true");
+    } else {
+      // Wait for the shared header to hydrate before applying text-size overrides.
+      await mainNav(page, "Home");
+      await mainNav(page, "About Us");
+    }
+    // Simulate 200% text enlargement without changing the viewport or hiding content.
+    await page.evaluate(() => {
+      const elements = [
+        ...document.querySelectorAll<HTMLElement>(
+          "body, h1, h2, h3, p, span, a, button, label, input, select, summary, dt, dd, li",
+        ),
+      ];
+      const sizes = elements.map((element) =>
+        parseFloat(getComputedStyle(element).fontSize),
+      );
+      elements.forEach((element, index) => {
+        element.style.fontSize = `${sizes[index] * 2}px`;
+      });
+    });
+    await inspect(page, `${route === "/" ? "home" : "about"}-text-200`);
+    for (const mark of await page.locator(".brand-mark").all()) {
+      expect(
+        await mark.evaluate((element) => element.scrollWidth),
+      ).toBeLessThanOrEqual(
+        await mark.evaluate((element) => element.clientWidth),
+      );
+    }
+    if (route === "/") {
+      const search = page.getByRole("button", { name: "Search", exact: true });
+      await search.scrollIntoViewIfNeeded();
+      await expect(search).toBeInViewport({ ratio: 1 });
+      await page.getByLabel("City or ZIP code").fill("27601");
+      await page
+        .getByLabel("Professional category")
+        .selectOption("healthy-trades");
+      await search.click();
+      await expect(page).toHaveURL(/category=healthy-trades&location=27601$/);
+    }
+  }
+  await page.setViewportSize({ width: 390, height: 480 });
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "Open navigation", exact: true })
+    .click();
+  const nav = page.getByRole("navigation", { name: "Main navigation" });
+  await nav
+    .getByRole("link", { name: "List Your Business", exact: true })
+    .scrollIntoViewIfNeeded();
+  await expect(
+    nav.getByRole("link", { name: "List Your Business", exact: true }),
+  ).toBeInViewport({ ratio: 1 });
+  await nav
+    .getByRole("link", { name: "List Your Business", exact: true })
+    .press("Escape");
+  await expect(
+    page.getByRole("button", { name: "Open navigation", exact: true }),
+  ).toBeFocused();
+  await inspect(page, "short-screen-navigation");
+  expect(errors).toEqual([]);
 });
 
 test("static homepage and About Us remain useful without JavaScript; statistics failures do not invent zeros", async ({

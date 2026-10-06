@@ -4,7 +4,6 @@ import {
   type PublicListingLocation,
 } from "@/domain/home-statistics";
 import { useDemoSession } from "@/features/member/demo-session";
-import { ReviewRating } from "@/features/reviews/review-content";
 
 export function HomeStatistics({
   listings,
@@ -39,21 +38,24 @@ export function HomeStatistics({
       <h2 id="statistics-heading">A look at the demo directory</h2>
       <dl className="home-statistic-values">
         <div>
-          <dt>Eligible public professionals</dt>
+          <dt>Professionals</dt>
           <dd data-testid="home-professional-count">{stats.professionals}</dd>
         </div>
         <div>
-          <dt>States represented by listing locations</dt>
+          <dt>States represented</dt>
           <dd data-testid="home-state-count">{stats.states}</dd>
         </div>
         <div>
-          <dt>Average published-review rating</dt>
+          <dt>Average review rating</dt>
           <dd>
             <div data-testid="home-rating">
               {stats.average === null ? (
                 <span className="stat-empty">No published ratings yet</span>
               ) : (
-                <ReviewRating value={stats.average} />
+                <>
+                  <span className="stat-number">{stats.average}</span>{" "}
+                  <span className="stat-rating-scale">out of 5</span>
+                </>
               )}
             </div>
             <p>
@@ -63,13 +65,23 @@ export function HomeStatistics({
           </dd>
         </div>
       </dl>
-      <p className="field-help">
-        Fictional demo figures, not live platform activity. States describe
-        listing locations, not verified service coverage. Ratings reflect
-        published reviews in this tab; refresh restores the samples.
-      </p>
+      <div className="home-statistics-note">
+        <p>
+          Fictional demo figures · States reflect listing locations, not service
+          coverage.
+        </p>
+        <details>
+          <summary>How these figures work</summary>
+          <p>
+            Only approved, active, unsuspended listings are counted. The rating
+            averages individual published reviews and changes with demo review
+            decisions. Refresh restores the samples; these figures are not live
+            platform activity.
+          </p>
+        </details>
+      </div>
       {stats.professionals === 0 && (
-        <p>No eligible public professionals in this demo snapshot.</p>
+        <p>No public professionals to show in this demo.</p>
       )}
       {stats.missingStates > 0 && (
         <p className="field-help">

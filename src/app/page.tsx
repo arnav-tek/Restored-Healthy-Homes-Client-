@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { ArrowRight, Sprout } from "lucide-react";
-import { ButtonLink } from "@/components/ui/button";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { directoryRepository, locationAdapter } from "@/data";
 import { HomeSearch } from "@/features/directory/home-search";
 import {
@@ -8,6 +8,7 @@ import {
   HomeJourney,
   HomeFeatures,
   HomeAbout,
+  HomeBusiness,
 } from "@/features/home/home-sections";
 import { HomeStatistics } from "@/features/home/home-statistics";
 
@@ -28,36 +29,28 @@ export default async function Home() {
   return (
     <>
       <section className="home-hero">
-        <div className="container hero-grid">
+        <div className="container home-hero-inner">
           <div className="hero-copy">
             <p className="hero-kicker">
-              <Sprout size={18} aria-hidden="true" /> A healthier home starts
-              here
+              Restored Healthy Homes · Professional directory
             </p>
-            <h1>
-              Find the right people
-              <br className="desktop-break" /> for your healthy home.
-            </h1>
+            <h1>Find a professional for your healthier home.</h1>
             <p>
-              Explore professionals in mold testing, building, design and
-              personal health. Find a specialty, understand the services, and
-              plan your next conversation.
-            </p>
-            <div className="public-page-actions">
-              <ButtonLink href="/directory">
-                Explore the directory{" "}
-                <ArrowRight size={18} aria-hidden="true" />
-              </ButtonLink>
-              <ButtonLink className="hero-secondary" href="/list-your-business">
-                List Your Business
-              </ButtonLink>
-            </div>
-            <p className="hero-demo">
-              Demo preview · Fictional listings and local forms. Nothing is
-              delivered.
+              From a moisture concern to a new build, find the specialty and
+              services for your next step.
             </p>
           </div>
           <HomeSearch catalog={catalog} locations={locations} />
+          <div className="hero-followup">
+            <p className="hero-demo">
+              Demo preview · Fictional listings. Forms are not delivered or
+              saved permanently.
+            </p>
+            <Link href="/directory">
+              Browse all professionals{" "}
+              <ArrowRight size={16} aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </section>
       <CategoryBrowse catalog={catalog} />
@@ -65,6 +58,7 @@ export default async function Home() {
       <HomeJourney />
       <HomeFeatures />
       <HomeAbout />
+      <HomeBusiness />
     </>
   );
 }

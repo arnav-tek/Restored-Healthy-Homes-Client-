@@ -142,7 +142,7 @@ test("public output excludes private fixtures and unpublished businesses", async
   expect(response.headers()["x-robots-tag"]).toContain("noindex");
   await page.goto("/");
   await page
-    .getByRole("link", { name: "Explore the directory", exact: true })
+    .getByRole("link", { name: "Browse all professionals", exact: true })
     .click();
   await expect(page.getByTestId("professional-card")).toHaveCount(6);
   await page.goto("/does-not-exist");

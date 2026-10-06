@@ -62,3 +62,17 @@ Mobile: stack sections and category links; keep controls full-width where needed
 ```
 
 Brief review: category links use compact open rows instead of eight decorative cards; the three numbered steps are an actual sequence. Statistics describe sample data, not marketing traction. About Us content is explicitly provisional and the video area has no playback control until an approved asset exists. Shared navigation collapses before the extra About Us link crowds account actions.
+
+## Phase 2H-1 visual refinement — 2026-10-06
+
+The user requested a presentation redesign within the completed functional phase. This supersedes the original 2H-1 layout direction above, while preserving its data and workflow boundaries.
+
+The sage hero has a short introduction followed immediately by a horizontal, labeled search panel on desktop. Tablet uses two fields above Search; mobile stacks the controls before secondary browsing. Eight catalog categories form four columns at wide widths, two through tablet and single compact icon/text links on mobile. Icons are mapped by immutable IDs in the presentation layer; catalog copy remains shared.
+
+A compact three-value statistics strip uses consistent numeral sizes and one shared fictional-data/location disclaimer. A native disclosure holds definitions. Numbered steps follow a connected sequence, becoming vertical on mobile. A quiet sage Q&A spotlight sits beside a lighter consultation introduction. An editorial purpose introduction leads to About Us, followed by the sole large professional application CTA on sage.
+
+About Us pairs its heading with a serif introduction, puts the company-story slot beside a responsive video frame, gives purpose copy a separate clay-edged paper treatment and finishes with a composed directory invitation. All pending content remains labeled; the supplied-video branch retains native controls, captions/transcript support and no autoplay. No media was invented.
+
+The footer now groups visitor and professional/workspace links, with a concise bottom demo notice. The shared brand can reflow under text enlargement; the mobile menu keeps a viewport-bounded scrolling area. Existing fonts, palette, control sizes and focus behavior remain. Obsolete home-only hero/path styles were removed after checking their usages; the home/About block was refactored rather than layered with contradictory overrides.
+
+Visual client/user approval and final company copy/media remain pending. Browser evidence and actual checks are recorded separately in the Phase 2H-1 handoff and checklist.

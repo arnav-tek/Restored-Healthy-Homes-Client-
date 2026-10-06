@@ -32,3 +32,34 @@ Await client-approved story/copy, professionally produced video, optional poster
 - Reviewed the changed code for public projections, duplicate state/calculations, controls and side effects. No new dependencies, remote imagery/player, storage or network submissions. `git diff --check` passed. Actual supplied-video playback/caption behavior remains unverified until assets exist.
 
 Education/certifications, blog/resources, newsletter, featured placement, search refinements, legal copy and all accepted integration/backlog items remain open. No later-phase scope was implemented.
+
+## Visual refinement — 2026-10-06
+
+Implemented the user's design-refinement request within Phase 2H-1, separately from the original functional completion. Existing catalog/search URLs, public projections, statistics calculations, session workflows, moderation rules, offer configuration and production guard remain unchanged. Static home/About sections remain Server Components; statistics reuse the existing client island. No dependencies, skills, imagery, media assets, stores or integrations were added.
+
+### Final composition
+
+- Home: concise sage introduction → primary search panel → catalog icon grid → compact statistics strip → connected numbered journey → asymmetric Q&A/consultation introductions → editorial About introduction → one dedicated sage business application CTA.
+- Search: horizontal desktop fields/action, two-field tablet row and stacked mobile controls. Secondary browsing and the general fictional-data/form notice follow search. At 390 × 844, Search moved from y=1,004 to y=521 and ends at y=568, fully inside the initial viewport. At 320 px it ends at y=653. No fixed hero height, clipping or reduced control/text sizes were used.
+- Categories: four columns above 1050 px, two through tablet and one compact icon/text row per link on mobile. Full names/descriptions come from the existing catalog. Lucide icons are mapped by stable IDs with a neutral fallback; entire links have equivalent hover/focus feedback.
+- Statistics: consistent numerals and plain labels, one concise fictional-data/location disclaimer, and an accessible native definitions disclosure. Individual published-review weighting, eligibility filtering, zero/no-rating/unavailable states and immediate review-moderation updates remain intact.
+- About: balanced title/introduction; distinct company-story and purpose hierarchy; story beside a responsive static 16:9 video frame; complete directory closing invitation with a secondary application link. Short labeled replacement copy stays in `src/data/content/about.ts`. Native video controls, `preload="none"`, no autoplay and optional captions/transcript branches are preserved.
+- Shared layout: visitor and professional/workspace footer groups keep every existing destination and 44 px link targets. Header brand text and its decorative mark can reflow/grow under text enlargement; menu scroll height remains bounded on short viewports. The navigation breakpoint and account behavior remain unchanged. Obsolete home-only hero/path rules were confirmed unused and removed; existing home/About styles were refactored in place.
+
+### Evidence and checks
+
+Before/after captures are local artifacts in `output/playwright/phase-2h1-refinement-{before,after}-{home,about}-{desktop,tablet,mobile,narrow,navigation-1280,navigation-1279}.png`. Mobile captures use 390 × 844; narrow captures use 320 × 844. First-screen, header-only and 200% text-size captures are also retained. Geometry records are `phase-2h1-refinement-{before,after}-geometry.json`.
+
+Reviewed actual home/About renders at 1440, 768 and 390 px, plus 1280/1279 px navigation, 320 px and enlarged text. Visual review caught header overflow under doubled text and insufficient space for the decorative mark; those were corrected. Enlarged-text testing doubles measured element font sizes in a fixed 390 px viewport, allowing natural vertical scrolling. It is a text-reflow simulation, not a physical-device or every-browser text-zoom claim. Search remains usable in the enlarged-text test.
+
+Typecheck, zero-warning lint, 78 unit tests, demo build and missing-opt-in production rejection passed. The existing `.env.local` has explicit demo opt-in; it was temporarily moved for the missing-opt-in build check, then restored in `finally`. No environment contents were logged. Builds and previews were coordinated, with previews stopped before rebuilding. A process-only 768 MB heap cap was retained for builds.
+
+Focused browser run: **72 passed, three intentional skips**, using `home-about`, `search`, `preview`, `profiles`, `demo-sign-in` and `consultations`, all three viewport projects. Skips are the existing desktop mobile-menu case and two duplicate narrow/text checks, which run once under the desktop project with explicitly resized viewports. Tests now visit all eight category destinations and check first-screen mobile Search, definitions disclosure, 320 px/200% text reflow and short-screen keyboard menu behavior. Existing state, privacy, no-script, side-effect, accessibility, overflow and error assertions remain. Updated two selectors for legitimate headline/link copy changes; the initial old-headline failure did not require application changes. Expected injected adapter failures remain synthetic test fixtures.
+
+After the final logo/text-size and footer touch-target adjustments, the demo rebuild passed and the affected `home-about`/`preview` rerun passed **24 cases with three intentional skips**. Final changed tests passed ESLint and `tsc --noEmit`; `git diff --check` passed. Final screenshots were refreshed on that build and inspected, including signed-in navigation at 1280 px and About Us at 320 px. The local preview is running at `http://127.0.0.1:3200/` and `/about` for review.
+
+This is focused regression coverage, not a full repository browser rerun for the refinement. Physical devices, Safari/Firefox, a full accessibility audit and supplied-video playback/caption/transcript checks remain unverified. Ignored project-local design skills and confidential source documents are absent from this checkout; no skill installation or source reconstruction was attempted.
+
+### Still outstanding
+
+Final company story, personal “Why,” approved copy, professionally produced video, optional poster, captions and transcript remain client-supplied work. **Visual client/user approval remains pending until reviewed.** No later public-page milestone is marked complete. Stop before Phase 2H-2; no push, deployment or real integrations.

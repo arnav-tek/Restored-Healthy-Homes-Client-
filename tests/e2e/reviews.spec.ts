@@ -122,6 +122,8 @@ test("review validation, pending confirmation and repeated clicks never publish 
     name: "Submit demo review",
     exact: true,
   });
+  // Keyboard presses do not wait for the form's hydration guard to enable it.
+  await expect(submit).toBeEnabled();
   await submit.press("Enter");
   await expect(
     page.getByLabel("Display name (sample)", { exact: true }),

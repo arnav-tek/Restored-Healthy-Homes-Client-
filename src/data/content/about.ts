@@ -20,17 +20,16 @@ export const aboutContent: AboutContent = {
   story: {
     heading: "Our company story",
     label: "Client story pending",
-    body: "The story behind Restored Healthy Homes will appear here in the client’s own words. Final company history and supporting copy are awaiting approval.",
+    body: "A space for the story behind Restored Healthy Homes, in the company’s own words.",
   },
   purpose: {
     heading: "Why this directory exists",
     label: "Provisional purpose copy",
-    body: "Finding a starting point can be difficult when a project spans different specialties. This directory is designed to help visitors explore services, understand each professional’s focus and prepare for a conversation. The client’s personal “Why” will replace this introduction once supplied.",
+    body: "Home projects can span different specialties. Bringing them together helps visitors explore services, understand each professional’s focus and prepare for a conversation.",
   },
   video: {
     heading: "The story, in their own words.",
-    placeholder:
-      "The client’s professionally produced video will appear here once supplied and approved.",
+    placeholder: "Professionally produced video awaiting approval.",
     src: null,
     poster: null,
     captions: null,
