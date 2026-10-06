@@ -19,17 +19,17 @@ export const aboutContent: AboutContent = {
     "A place to explore the people and specialties involved in healthier homes, from investigating a concern to planning a new space.",
   story: {
     heading: "Our company story",
-    label: "Client story pending",
-    body: "A space for the story behind Restored Healthy Homes, in the company’s own words.",
+    label: "Our story is coming soon",
+    body: "We look forward to sharing the story behind Restored Healthy Homes.",
   },
   purpose: {
     heading: "Why this directory exists",
-    label: "Provisional purpose copy",
+    label: "",
     body: "Home projects can span different specialties. Bringing them together helps visitors explore services, understand each professional’s focus and prepare for a conversation.",
   },
   video: {
     heading: "The story, in their own words.",
-    placeholder: "Professionally produced video awaiting approval.",
+    placeholder: "Our company film will be shared here soon.",
     src: null,
     poster: null,
     captions: null,

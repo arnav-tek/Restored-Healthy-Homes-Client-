@@ -17,10 +17,10 @@ export function HomeStatistics({
         className="home-statistics container"
         aria-labelledby="statistics-heading"
       >
-        <h2 id="statistics-heading">A look at the demo directory</h2>
+        <h2 id="statistics-heading">Explore the directory</h2>
         <p>
-          Demo statistics are unavailable. Reload to try again; you can still
-          explore the categories above.
+          Directory statistics are unavailable. Reload to try again; you can
+          still explore the categories above.
         </p>
       </section>
     );
@@ -37,7 +37,7 @@ export function HomeStatistics({
     >
       <div className="home-statistics-heading">
         <p className="section-label">The directory at a glance</p>
-        <h2 id="statistics-heading">A look at the demo directory</h2>
+        <h2 id="statistics-heading">Explore the directory</h2>
       </div>
       <dl className="home-statistic-values">
         <div>
@@ -62,29 +62,25 @@ export function HomeStatistics({
               )}
             </div>
             <p>
-              {stats.reviewCount} published fictional{" "}
+              {stats.reviewCount} published{" "}
               {stats.reviewCount === 1 ? "review" : "reviews"}
             </p>
           </dd>
         </div>
       </dl>
       <div className="home-statistics-note">
-        <p>
-          Fictional demo figures · States reflect listing locations, not service
-          coverage.
-        </p>
+        <p>States reflect listing locations, not service coverage.</p>
         <details>
           <summary>How these figures work</summary>
           <p>
             Only approved, active, unsuspended listings are counted. The rating
-            averages individual published reviews and changes with demo review
-            decisions. Refresh restores the samples; these figures are not live
-            platform activity.
+            averages individual published reviews. Figures reflect the listings
+            and reviews currently shown.
           </p>
         </details>
       </div>
       {stats.professionals === 0 && (
-        <p>No public professionals to show in this demo.</p>
+        <p>No public professionals to show right now.</p>
       )}
       {stats.missingStates > 0 && (
         <p className="field-help">

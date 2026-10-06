@@ -5,8 +5,8 @@ import { section } from "./helpers/dashboard";
 
 test.setTimeout(150000);
 const profile = "/professionals/demo-mold-inspection";
-const originalSummary = "4.5 out of 54 published fictional reviews";
-const updatedSummary = "4.6 out of 55 published fictional reviews";
+const originalSummary = "4.5 out of 54 published reviews";
+const updatedSummary = "4.6 out of 55 published reviews";
 const author = "Sample Review Walkthrough";
 const body =
   "Fictional service discussion <img src=x onerror=alert(1)> " +
@@ -105,14 +105,14 @@ test("review walkthrough publishes across accounts, rejects with confirmation an
   });
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto(profile);
-  await page.getByLabel("Display name (sample)", { exact: true }).fill(author);
-  await page.getByLabel("Rating (sample)", { exact: true }).selectOption("5");
-  await page.getByLabel("Written review (sample)", { exact: true }).fill(body);
+  await page.getByLabel("Display name", { exact: true }).fill(author);
+  await page.getByLabel("Rating", { exact: true }).selectOption("5");
+  await page.getByLabel("Written review", { exact: true }).fill(body);
   await page
-    .getByRole("button", { name: "Submit demo review", exact: true })
+    .getByRole("button", { name: "Submit review", exact: true })
     .press("Enter");
   await expect(
-    page.getByRole("heading", { name: "Demo review pending", exact: true }),
+    page.getByRole("heading", { name: "Review pending", exact: true }),
   ).toBeFocused();
   await summary(page, originalSummary);
   await workspace(page, "Admin");
@@ -136,10 +136,9 @@ test("review walkthrough publishes across accounts, rejects with confirmation an
     "published",
   );
   await expect(
-    page.getByText(
-      "Demo review published. This decision affects only this tab.",
-      { exact: true },
-    ),
+    page.getByText("Demo review published. This decision affects only this tab.", {
+      exact: true,
+    }),
   ).toBeFocused();
   await page
     .getByRole("button", { name: "Publish review", exact: true })
@@ -153,11 +152,11 @@ test("review walkthrough publishes across accounts, rejects with confirmation an
   await publicPreview(page);
   await summary(page, updatedSummary);
   await expect(
-    page.getByRole("heading", { name: "Demo review published", exact: true }),
+    page.getByRole("heading", { name: "Review published", exact: true }),
   ).toBeVisible();
   await expect(
     page
-      .getByRole("list", { name: "Published fictional reviews" })
+      .getByRole("list", { name: "Published reviews" })
       .getByRole("article")
       .first(),
   ).toContainText(body);
@@ -165,9 +164,7 @@ test("review walkthrough publishes across accounts, rejects with confirmation an
   await workspace(page, "Member");
   await summary(page, updatedSummary);
   await expect(
-    page
-      .getByRole("list", { name: "Published fictional reviews" })
-      .getByRole("article"),
+    page.getByRole("list", { name: "Published reviews" }).getByRole("article"),
   ).toHaveCount(5);
   await expect(page.locator("main")).not.toContainText(note);
   await expect(
@@ -187,10 +184,10 @@ test("review walkthrough publishes across accounts, rejects with confirmation an
   await publicPreview(page);
   await summary(page, originalSummary);
   await expect(
-    page.getByRole("heading", { name: "Demo review rejected", exact: true }),
+    page.getByRole("heading", { name: "Review rejected", exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole("list", { name: "Published fictional reviews" }),
+    page.getByRole("list", { name: "Published reviews" }),
   ).not.toContainText(author);
   await workspace(page, "Member");
   await summary(page, originalSummary);
@@ -204,10 +201,10 @@ test("review walkthrough publishes across accounts, rejects with confirmation an
   await publicPreview(page);
   await summary(page, updatedSummary);
   page.once("dialog", (dialog) => dialog.dismiss());
-  await page.getByRole("button", { name: "Reset demo session" }).press("Enter");
+  await page.getByRole("button", { name: "Reset session" }).press("Enter");
   await summary(page, updatedSummary);
   page.once("dialog", (dialog) => dialog.accept());
-  await page.getByRole("button", { name: "Reset demo session" }).press("Enter");
+  await page.getByRole("button", { name: "Reset session" }).press("Enter");
   await summary(page, originalSummary);
   await expect(page.locator(".review-confirmation")).toHaveCount(0);
   await expect(page.locator("[data-demo-account]")).toHaveCount(0);
@@ -339,7 +336,7 @@ test("seed rejection clamps public pagination, preserves result returns and rest
   )
     await page.goBack();
   await expect(page).toHaveURL(startUrl);
-  await summary(page, "4.3 out of 53 published fictional reviews");
+  await summary(page, "4.3 out of 53 published reviews");
   await expect(page.getByRole("article")).toHaveCount(3);
   await expect(
     page.getByRole("navigation", { name: "Review pages" }),
@@ -402,7 +399,12 @@ test("review moderation boundaries keep hidden seeds and controls out of server,
       response.request().resourceType() === "script" ||
       response.headers()["content-type"]?.includes("text/x-component")
     )
-      payloads.push(response.text().catch(() => ""));
+      payloads.push(
+        Promise.race([
+          response.text().catch(() => ""),
+          new Promise<string>((resolve) => setTimeout(() => resolve(""), 3000)),
+        ]),
+      );
   });
   await page.goto("/login");
   await signIn(page, "admin");
@@ -427,7 +429,7 @@ test("review moderation boundaries keep hidden seeds and controls out of server,
     await offline.goto(profile);
     await summary(offline, originalSummary);
     await expect(
-      offline.getByRole("button", { name: "Submit demo review", exact: true }),
+      offline.getByRole("button", { name: "Submit review", exact: true }),
     ).toBeDisabled();
     await expect(offline.locator(".review-stars").first()).toHaveAttribute(
       "aria-hidden",

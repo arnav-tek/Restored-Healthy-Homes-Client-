@@ -5,7 +5,6 @@ import { isSessionQuestionId } from "@/domain/qa";
 import { publicSessionQuestions } from "@/domain/qa-session";
 import { useDemoSession } from "@/features/member/demo-session";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
-import { Notice } from "@/components/ui/notice";
 import { AnswersView } from "./answers-view";
 export function PublicQuestionPage({
   id,
@@ -20,11 +19,11 @@ export function PublicQuestionPage({
     return (
       <div className="container qa-page qa-reading">
         <h1>Session question</h1>
-        <p role="status">Checking this tab’s demo session…</p>
+        <p role="status">Checking this tab’s session…</p>
         <noscript>
           <p>
             JavaScript is required for session-created questions. Published
-            server samples remain available.
+            published content remain available.
           </p>
         </noscript>
         <Link className="text-link" href={returnTo}>
@@ -39,7 +38,7 @@ export function PublicQuestionPage({
         <h1>Question unavailable in this session</h1>
         <p>
           Only published questions can be viewed. Refresh or reset restores
-          server samples and clears session-created questions and decisions.
+          published content and clears session-created questions and decisions.
         </p>
         <Link className="button" href={returnTo}>
           Back to questions
@@ -60,11 +59,6 @@ export function PublicQuestionPage({
         </p>
         <h1>{question.title}</h1>
       </header>
-      <Notice>
-        <strong>Fictional question and answers.</strong> Sample service
-        discussions, not advice or endorsements. Session decisions affect this
-        tab only; refresh or reset restores the original samples.
-      </Notice>
       <article aria-label="Question" className="qa-question-body">
         <h2>The question</h2>
         <p>{question.body}</p>
@@ -78,7 +72,7 @@ export function PublicQuestionPage({
           className="button"
           href={`/questions/ask?${new URLSearchParams({ returnTo })}`}
         >
-          Ask a demo question
+          Ask a question
         </Link>
       </div>
     </div>

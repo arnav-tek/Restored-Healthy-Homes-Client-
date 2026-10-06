@@ -36,12 +36,10 @@ test("consultation navigation and responsive page keep the proposed offer and de
     page.getByText("$50 USD / 15 minutes", { exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByText(
-      /Submitting does not confirm an appointment or charge money/,
-    ),
+    page.getByText(/No appointment is booked or payment collected/),
   ).toBeVisible();
   await page
-    .getByRole("link", { name: "Try a demo request", exact: true })
+    .getByRole("link", { name: "Prepare a request", exact: true })
     .click();
   await expect(page).toHaveURL("/consultations#request");
   await inspect(page, `page-${testInfo.project.name}`);
@@ -64,26 +62,21 @@ test("consultation validation, drafts, requested confirmation, another request a
   });
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/consultations");
-  await page
-    .getByRole("button", { name: "Record demo request" })
-    .press("Enter");
-  await expect(page.getByLabel("Name (sample)", { exact: true })).toBeFocused();
+  await expect(page.getByLabel("Name", { exact: true })).toBeEnabled();
+  await page.getByRole("button", { name: "Record request" }).press("Enter");
+  await expect(page.getByLabel("Name", { exact: true })).toBeFocused();
   await expect(
     page.getByText(
       "Check the highlighted fields. No request has been recorded.",
     ),
   ).toBeVisible();
   await inspect(page, `validation-${testInfo.project.name}`);
+  await page.getByLabel("Name", { exact: true }).fill("Sample Requester");
+  await page.getByLabel("Email", { exact: true }).fill("bad-address");
+  await page.getByRole("button", { name: "Record request" }).click();
+  await expect(page.getByLabel("Email", { exact: true })).toBeFocused();
   await page
-    .getByLabel("Name (sample)", { exact: true })
-    .fill("Sample Requester");
-  await page.getByLabel("Email (sample)", { exact: true }).fill("bad-address");
-  await page.getByRole("button", { name: "Record demo request" }).click();
-  await expect(
-    page.getByLabel("Email (sample)", { exact: true }),
-  ).toBeFocused();
-  await page
-    .getByLabel("Email (sample)", { exact: true })
+    .getByLabel("Email", { exact: true })
     .fill("requester@example.invalid");
   await page
     .getByLabel("Professional category", { exact: true })
@@ -92,7 +85,7 @@ test("consultation validation, drafts, requested confirmation, another request a
     .getByLabel("Preferred format", { exact: true })
     .selectOption("video");
   await page
-    .getByLabel("Question or topic (sample)", { exact: true })
+    .getByLabel("Question or topic", { exact: true })
     .fill(
       "CONSULTATION_PRIVATE_SAMPLE: A fictional topic <script>alert('sample')</script>.",
     );
@@ -109,19 +102,19 @@ test("consultation validation, drafts, requested confirmation, another request a
     .getByRole("contentinfo")
     .getByRole("link", { name: "Consultations", exact: true })
     .click();
-  await expect(page.getByLabel("Name (sample)", { exact: true })).toHaveValue(
+  await expect(page.getByLabel("Name", { exact: true })).toHaveValue(
     "Sample Requester",
   );
   await expect(
-    page.getByLabel("Question or topic (sample)", { exact: true }),
+    page.getByLabel("Question or topic", { exact: true }),
   ).toHaveValue(/CONSULTATION_PRIVATE_SAMPLE/);
   await resetSession(page, false);
-  await expect(page.getByLabel("Email (sample)", { exact: true })).toHaveValue(
+  await expect(page.getByLabel("Email", { exact: true })).toHaveValue(
     "requester@example.invalid",
   );
-  await page.getByRole("button", { name: "Record demo request" }).click();
+  await page.getByRole("button", { name: "Record request" }).click();
   await expect(
-    page.getByRole("heading", { name: "Demo request recorded" }),
+    page.getByRole("heading", { name: "Request recorded in this tab" }),
   ).toBeFocused();
   await expect(
     page.getByText(
@@ -136,7 +129,7 @@ test("consultation validation, drafts, requested confirmation, another request a
     "$50 USD / 15 minutes",
   );
   await expect(
-    page.getByRole("button", { name: "Record demo request" }),
+    page.getByRole("button", { name: "Record request" }),
   ).toHaveCount(0);
   await expect(page.locator("main")).not.toContainText(
     "requester@example.invalid",
@@ -154,21 +147,17 @@ test("consultation validation, drafts, requested confirmation, another request a
   ).toBeVisible();
   await page.goBack();
   await expect(
-    page.getByRole("heading", { name: "Demo request recorded" }),
+    page.getByRole("heading", { name: "Request recorded in this tab" }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Make another demo request" }).click();
-  await expect(page.getByLabel("Name (sample)", { exact: true })).toBeFocused();
-  await expect(page.getByLabel("Email (sample)", { exact: true })).toHaveValue(
-    "",
-  );
+  await page.getByRole("button", { name: "Make another request" }).click();
+  await expect(page.getByLabel("Name", { exact: true })).toBeFocused();
+  await expect(page.getByLabel("Email", { exact: true })).toHaveValue("");
   await expect(
-    page.getByLabel("Question or topic (sample)", { exact: true }),
+    page.getByLabel("Question or topic", { exact: true }),
   ).toHaveValue("");
+  await page.getByLabel("Name", { exact: true }).fill("Another Sample");
   await page
-    .getByLabel("Name (sample)", { exact: true })
-    .fill("Another Sample");
-  await page
-    .getByLabel("Email (sample)", { exact: true })
+    .getByLabel("Email", { exact: true })
     .fill("another@example.invalid");
   await page
     .getByLabel("Professional category", { exact: true })
@@ -177,35 +166,29 @@ test("consultation validation, drafts, requested confirmation, another request a
     .getByLabel("Preferred format", { exact: true })
     .selectOption("no-preference");
   await page
-    .getByLabel("Question or topic (sample)", { exact: true })
+    .getByLabel("Question or topic", { exact: true })
     .fill("A second fictional request about a sample project plan.");
-  await page.getByRole("button", { name: "Record demo request" }).click();
+  await page.getByRole("button", { name: "Record request" }).click();
   await expect(
-    page.getByRole("heading", { name: "Demo request recorded" }),
+    page.getByRole("heading", { name: "Request recorded in this tab" }),
   ).toBeVisible();
   await resetSession(page, false);
   await expect(
-    page.getByRole("heading", { name: "Demo request recorded" }),
+    page.getByRole("heading", { name: "Request recorded in this tab" }),
   ).toBeVisible();
   await resetSession(page);
-  await expect(page.getByLabel("Name (sample)", { exact: true })).toHaveValue(
-    "",
-  );
+  await expect(page.getByLabel("Name", { exact: true })).toHaveValue("");
   await page
-    .getByLabel("Name (sample)", { exact: true })
+    .getByLabel("Name", { exact: true })
     .fill("Refresh clears this draft");
   await page.reload();
-  await expect(page.getByLabel("Name (sample)", { exact: true })).toHaveValue(
-    "",
-  );
+  await expect(page.getByLabel("Name", { exact: true })).toHaveValue("");
   expect(
     await page.evaluate(() => [localStorage.length, sessionStorage.length]),
   ).toEqual([0, 0]);
+  await page.getByLabel("Name", { exact: true }).fill("Refresh Request");
   await page
-    .getByLabel("Name (sample)", { exact: true })
-    .fill("Refresh Request");
-  await page
-    .getByLabel("Email (sample)", { exact: true })
+    .getByLabel("Email", { exact: true })
     .fill("refresh@example.invalid");
   await page
     .getByLabel("Professional category", { exact: true })
@@ -214,18 +197,16 @@ test("consultation validation, drafts, requested confirmation, another request a
     .getByLabel("Preferred format", { exact: true })
     .selectOption("phone");
   await page
-    .getByLabel("Question or topic (sample)", { exact: true })
+    .getByLabel("Question or topic", { exact: true })
     .fill("A temporary fictional request to check the refresh boundary.");
-  await page.getByRole("button", { name: "Record demo request" }).click();
+  await page.getByRole("button", { name: "Record request" }).click();
   await expect(
-    page.getByRole("heading", { name: "Demo request recorded" }),
+    page.getByRole("heading", { name: "Request recorded in this tab" }),
   ).toBeVisible();
   await page.reload();
-  await expect(page.getByLabel("Name (sample)", { exact: true })).toHaveValue(
-    "",
-  );
+  await expect(page.getByLabel("Name", { exact: true })).toHaveValue("");
   await expect(
-    page.getByRole("heading", { name: "Demo request recorded" }),
+    page.getByRole("heading", { name: "Request recorded in this tab" }),
   ).toHaveCount(0);
   expect(mutations).toEqual([]);
   expect(errors).toEqual([]);
@@ -247,17 +228,15 @@ test("consultations remain public-data-free and cannot submit before hydration o
       mutations.push(request.url());
   });
   await page.goto("/consultations");
+  await expect(page.getByLabel("Name", { exact: true })).toBeDisabled();
   await expect(
-    page.getByLabel("Name (sample)", { exact: true }),
-  ).toBeDisabled();
-  await expect(
-    page.getByRole("button", { name: "Record demo request" }),
+    page.getByRole("button", { name: "Record request" }),
   ).toBeDisabled();
   await expect(
     page.getByText(/Submission is disabled; no submission endpoint exists/),
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "The intended workflow" }),
+    page.getByRole("heading", { name: "How consultations work" }),
   ).toBeVisible();
   expect(mutations).toEqual([]);
   await context.close();
@@ -266,10 +245,10 @@ test("consultations remain public-data-free and cannot submit before hydration o
   const waiting = await delayed.newPage();
   await waiting.goto("/consultations");
   await expect(
-    waiting.getByRole("button", { name: "Record demo request" }),
+    waiting.getByRole("button", { name: "Record request" }),
   ).toBeDisabled();
   await expect(
-    waiting.getByLabel("Question or topic (sample)", { exact: true }),
+    waiting.getByLabel("Question or topic", { exact: true }),
   ).toBeDisabled();
   await delayed.close();
 });

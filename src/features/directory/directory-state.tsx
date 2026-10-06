@@ -6,7 +6,7 @@ export function EmptyDirectory() {
       <SearchX size={30} aria-hidden="true" />
       <h2>No matching professionals</h2>
       <p>
-        No sample businesses match these filters. Try a broader keyword, another
+        No businesses match these filters. Try a broader keyword, another
         specialty or a larger radius around a supported location.
       </p>
       <ButtonLink href="/directory">Browse all professionals</ButtonLink>

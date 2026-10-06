@@ -27,21 +27,21 @@ export function ApplicationExperience({
       {application ? (
         <section className="panel application-confirmation">
           <h2 ref={heading} tabIndex={-1}>
-            Demo application created
+            Application created in this tab
           </h2>
           <p>
             <strong>Application status: {application.approval}.</strong>{" "}
             {application.profile.businessName} is available in this tab’s member
-            preview. It has not been sent to the owner or published.
+            workspace. It has not been sent to the owner or published.
           </p>
           {application.decisionReason && (
-            <p>Demo decision reason: {application.decisionReason}</p>
+            <p>Decision reason: {application.decisionReason}</p>
           )}
           <p>
             Nothing is saved permanently. Refreshing or resetting clears this
             application. This creates no real account. Use the
-            submitted-application preset on Demo sign-in to explore its member
-            preview.
+            submitted-application preset on the sign-in page to explore its
+            member workspace.
           </p>
           <Link
             className="button"
@@ -52,16 +52,16 @@ export function ApplicationExperience({
                 : "/login?account=application&returnTo=%2Fdemo%2Fmember"
             }
           >
-            Open demo member workspace
+            Open member workspace
           </Link>
         </section>
       ) : (
         <section className="panel application-form-panel">
-          <h2>Your sample business</h2>
+          <h2>Your business</h2>
           <ProfileFieldsForm
             key={state.revision}
             catalog={sessionCatalog}
-            submitLabel="Create demo application"
+            submitLabel="Create application"
             onValid={(profile) => dispatch({ type: "submit", profile })}
           />
         </section>

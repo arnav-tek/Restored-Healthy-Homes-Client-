@@ -13,7 +13,7 @@ export function SessionReset({ onReset }: { onReset?: () => void }) {
       onClick={() => {
         if (
           !window.confirm(
-            "Reset this demo session? You will be signed out. Applications, questions, answers, reviews, consultation requests, edits, review decisions and unsaved drafts will be discarded.",
+            "Reset this session? You will be signed out. Applications, questions, answers, reviews, consultation requests, edits, review decisions and unsaved drafts will be discarded.",
           )
         )
           return;
@@ -21,7 +21,7 @@ export function SessionReset({ onReset }: { onReset?: () => void }) {
         onReset?.();
       }}
     >
-      Reset demo session
+      Reset session
     </Button>
   );
 }

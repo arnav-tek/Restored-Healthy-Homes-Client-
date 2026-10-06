@@ -3,16 +3,16 @@ import type { PublicAnswer } from "@/domain/qa";
 export function AnswersView({ answers }: { answers: readonly PublicAnswer[] }) {
   return (
     <section aria-labelledby="answers-heading" className="qa-answers">
-      <h2 id="answers-heading">Published sample answers ({answers.length})</h2>
+      <h2 id="answers-heading">Published answers ({answers.length})</h2>
       {answers.length ? (
         answers.map((answer) => (
           <article key={answer.id} className="qa-answer">
             <h3>{answer.attribution}</h3>
-            <p className="qa-meta">Fictional professional · Sample answer</p>
+
             <p>{answer.body}</p>
             {answer.profileHref && (
               <Link className="text-link" href={answer.profileHref}>
-                View fictional professional profile
+                View professional profile
               </Link>
             )}
           </article>
@@ -20,10 +20,7 @@ export function AnswersView({ answers }: { answers: readonly PublicAnswer[] }) {
       ) : (
         <div className="workspace-empty">
           <h3>No published answers yet</h3>
-          <p>
-            This question has no published sample answers. No notification has
-            been sent.
-          </p>
+          <p>There are no published answers to this question yet.</p>
         </div>
       )}
     </section>

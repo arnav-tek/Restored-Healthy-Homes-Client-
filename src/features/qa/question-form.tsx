@@ -71,10 +71,10 @@ export function QuestionForm({
           className="panel qa-confirmation"
           aria-labelledby="question-confirmation"
         >
-          <span className="demo-pill">{status} demo question</span>
+          <span className="demo-pill">{status} question</span>
           <h2 id="question-confirmation" ref={confirmation} tabIndex={-1}>
             {status === "pending"
-              ? "Awaiting fictional review"
+              ? "Awaiting review"
               : status === "published"
                 ? "Published in this session"
                 : "Not published in this session"}
@@ -84,7 +84,7 @@ export function QuestionForm({
           </p>
           <p>
             Your question has not been sent to professionals, and is not saved
-            permanently. It exists only in this tab’s demo session. Its current
+            permanently. It exists only in this tab’s session. Its current
             publication status is {status}.
           </p>
           {status === "published" && (
@@ -103,7 +103,7 @@ export function QuestionForm({
               );
             }}
           >
-            Ask another demo question
+            Ask another question
           </Button>
         </section>
       ) : (
@@ -116,14 +116,13 @@ export function QuestionForm({
           aria-describedby="question-demo-note"
         >
           <p id="question-demo-note">
-            <strong>Demo only.</strong> Use fictional information. Do not
-            include medical histories, contact details or other personal
-            information. Nothing is sent to professionals or saved permanently.
+            Questions stay in this tab and are not sent to professionals or
+            saved permanently. Please leave out sensitive personal information.
           </p>
           <noscript>
             <p>
               Enable JavaScript to try this form. Submission is disabled and no
-              submission endpoint exists. You can still browse published sample
+              submission endpoint exists. You can still browse published
               questions.
             </p>
           </noscript>
@@ -138,7 +137,7 @@ export function QuestionForm({
             </p>
           )}
           <fieldset disabled={!ready} className="member-form-fields">
-            <legend className="sr-only">Your fictional question</legend>
+            <legend className="sr-only">Your question</legend>
             <div className="search-field">
               <label htmlFor="question-title">Question title</label>
               <input
@@ -191,14 +190,14 @@ export function QuestionForm({
                 }
               />
               <p id="body-help" className="field-help">
-                20–2,000 characters. Describe a fictional project and what you
-                would like to ask.
+                20–2,000 characters. Describe a project and what you would like
+                to ask.
               </p>
               <p id="body-error" className="field-error">
                 {errors.body}
               </p>
             </div>
-            <Button type="submit">Submit demo question</Button>
+            <Button type="submit">Submit question</Button>
           </fieldset>
         </form>
       )}
@@ -217,8 +216,8 @@ export function QuestionForm({
       </div>
       <p className="field-help">
         Refresh, full-page navigation or confirmed reset clears submissions and
-        drafts. Reset clears the entire shared demo session, including member
-        and admin changes.
+        drafts. Reset clears the entire shared session, including member and
+        admin changes.
       </p>
     </>
   );

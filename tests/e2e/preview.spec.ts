@@ -147,6 +147,6 @@ test("public output excludes private fixtures and unpublished businesses", async
   await expect(page.getByTestId("professional-card")).toHaveCount(6);
   await page.goto("/does-not-exist");
   await expect(
-    page.getByRole("heading", { name: "This page isn’t in the preview." }),
+    page.getByRole("heading", { name: "This page could not be found." }),
   ).toBeVisible();
 });

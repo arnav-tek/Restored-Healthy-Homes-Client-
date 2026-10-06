@@ -26,7 +26,6 @@ export function ProfessionalCard({
         <span className="avatar" aria-hidden="true">
           {initials}
         </span>
-        <span className="sample-label">Demo listing</span>
       </div>
       <div className="card-body">
         <p className="category-label">
@@ -50,12 +49,12 @@ export function ProfessionalCard({
           {professional.verifiedCredentials.length > 0 ? (
             <>
               <FileCheck2 size={16} aria-hidden="true" />
-              Sample credential reviewed
+              Credentials listed
             </>
           ) : (
             <>
               <Sprout size={16} aria-hidden="true" />
-              Sample business information
+              Business information
             </>
           )}
         </div>
@@ -71,8 +70,7 @@ export function ProfessionalCard({
             ))}
           </ul>
           <p>
-            Sample services. Explore the profile for more details and a demo
-            inquiry.
+            Explore the profile for service details and an inquiry form.
           </p>
         </details>
         <Link

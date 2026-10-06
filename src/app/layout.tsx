@@ -9,10 +9,10 @@ import "./globals.css";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: {
-    default: "Restored Healthy Homes | Demo preview",
+    default: "Restored Healthy Homes",
     template: "%s | Restored Healthy Homes",
   },
-  description: "Explore a preview of the healthy-home professional directory.",
+  description: "Explore the healthy-home professional directory.",
   robots: { index: false, follow: false },
 };
 export default async function RootLayout({

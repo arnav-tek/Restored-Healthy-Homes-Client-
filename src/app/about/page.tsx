@@ -5,9 +5,9 @@ import { ButtonLink } from "@/components/ui/button";
 import { aboutContent as content } from "@/data/content/about";
 
 export const metadata: Metadata = {
-  title: "About Us | Demo preview",
+  title: "About Us",
   description:
-    "Explore the purpose of Restored Healthy Homes and preview the space for the client’s company story and video.",
+    "Explore the purpose of Restored Healthy Homes and the specialties behind healthier homes.",
 };
 export default function AboutPage() {
   return (
@@ -16,9 +16,6 @@ export default function AboutPage() {
         <div>
           <p className="section-label">Restored Healthy Homes</p>
           <h1>About Us</h1>
-          <p className="about-preview-note">
-            Preview · Final story and media awaiting client approval.
-          </p>
         </div>
         <p className="about-lead">{content.introduction}</p>
       </header>
@@ -83,9 +80,7 @@ export default function AboutPage() {
           <h2 id="about-purpose-heading">{content.purpose.heading}</h2>
         </div>
         <div>
-          <p className="content-placeholder-label">{content.purpose.label}</p>
           <p>{content.purpose.body}</p>
-          <p className="field-help">Personal “Why” awaiting client content.</p>
         </div>
       </section>
       <section

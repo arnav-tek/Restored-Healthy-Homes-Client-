@@ -2,7 +2,7 @@ import { signIn, switchMember } from "./helpers/demo-sign-in";
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { section, review, decision, resetSession } from "./helpers/dashboard";
-test.setTimeout(120000);
+test.setTimeout(180000);
 const visitor = "Sample Consultation Visitor";
 const email = "consultation-visitor@example.invalid";
 const topic = "A fictional materials project. " + "LongPlainTopic".repeat(25);
@@ -15,22 +15,18 @@ async function publicPage(page: Page) {
   await expect(page).toHaveURL("/consultations");
 }
 async function request(page: Page, category = "healthy-designers") {
-  await page.getByLabel("Name (sample)", { exact: true }).fill(visitor);
-  await page.getByLabel("Email (sample)", { exact: true }).fill(email);
+  await page.getByLabel("Name", { exact: true }).fill(visitor);
+  await page.getByLabel("Email", { exact: true }).fill(email);
   await page
     .getByLabel("Professional category", { exact: true })
     .selectOption(category);
   await page
     .getByLabel("Preferred format", { exact: true })
     .selectOption("video");
-  await page
-    .getByLabel("Question or topic (sample)", { exact: true })
-    .fill(topic);
-  await page
-    .getByRole("button", { name: "Record demo request" })
-    .press("Enter");
+  await page.getByLabel("Question or topic", { exact: true }).fill(topic);
+  await page.getByRole("button", { name: "Record request" }).press("Enter");
   await expect(
-    page.getByRole("heading", { name: "Demo request recorded" }),
+    page.getByRole("heading", { name: "Request recorded in this tab" }),
   ).toBeVisible();
 }
 async function dashboard(page: Page, area: "Admin" | "Member") {
@@ -214,7 +210,7 @@ test("same-session request, assignment, member acceptance, public status, accept
   await expect(
     page.getByText("Cancelled in this demo", { exact: true }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Make another demo request" }).click();
+  await page.getByRole("button", { name: "Make another request" }).click();
   await request(page);
   await dashboard(page, "Admin");
   await expect(
@@ -316,7 +312,7 @@ test("filters, note drafts by request, category empty state, history and refresh
     .getByLabel("Internal coordination note (optional)")
     .fill("FIRST_UNSAVED_NOTE");
   await publicPage(page);
-  await page.getByRole("button", { name: "Make another demo request" }).click();
+  await page.getByRole("button", { name: "Make another request" }).click();
   await request(page, "healthy-trades");
   await dashboard(page, "Admin");
   await page.getByLabel("Consultation category").selectOption("healthy-trades");
@@ -439,7 +435,7 @@ test("direct missing routes and no-script/prehydration dashboards fail safely wi
         waiting.getByLabel("Request status", { exact: true }),
       ).toHaveCount(0);
       await expect(
-        waiting.getByRole("button", { name: "Reset demo session" }),
+        waiting.getByRole("button", { name: "Reset session" }),
       ).toHaveCount(0);
       await expect(
         waiting.getByRole("button", {

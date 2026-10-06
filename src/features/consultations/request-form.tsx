@@ -94,14 +94,14 @@ function RequestForm() {
     >
       {submitted ? (
         <div className="panel consultation-confirmation">
-          <p className="section-label">{submitted.status} · Session demo</p>
+          <p className="section-label">{submitted.status} · This session</p>
           <h2 id="consultation-form-heading" ref={confirmation} tabIndex={-1}>
-            Demo request recorded
+            Request recorded in this tab
           </h2>
           <p>
             {submitted.status === "requested"
               ? "No appointment is booked, no specialist has been assigned, no payment was taken and no message was sent."
-              : "No appointment is booked, no payment was taken and no message was sent. Assignment and acceptance are demo coordination only."}
+              : "No appointment is booked, no payment was taken and no message was sent. Assignment and acceptance are coordination only."}
           </p>
           <dl className="consultation-summary">
             <div>
@@ -134,8 +134,8 @@ function RequestForm() {
             <div>
               <dt>Proposed offer</dt>
               <dd>
-                {consultationOfferLabel(submitted.offer)} · Pending client
-                confirmation
+                {consultationOfferLabel(submitted.offer)} · Details to be
+                confirmed
               </dd>
             </div>
             <div>
@@ -144,9 +144,9 @@ function RequestForm() {
             </div>
           </dl>
           <p className="field-help">
-            This request exists only in this tab’s demo session. Refresh,
-            full-page navigation or reset clears it. Format is a preference, not
-            a booked service.
+            This request exists only in this tab’s session. Refresh, full-page
+            navigation or reset clears it. Format is a preference, not a booked
+            service.
           </p>
           <Button
             type="button"
@@ -157,7 +157,7 @@ function RequestForm() {
               focusName();
             }}
           >
-            Make another demo request
+            Make another request
           </Button>
           <Link className="text-link" href="/consultations#consultation-intro">
             Back to consultations
@@ -172,14 +172,11 @@ function RequestForm() {
           className="panel consultation-form"
           aria-describedby="consultation-demo-note"
         >
-          <h2 id="consultation-form-heading">
-            Try a demo consultation request
-          </h2>
+          <h2 id="consultation-form-heading">Prepare a consultation request</h2>
           <p id="consultation-demo-note">
-            <strong>Use fictional details only.</strong> Nothing is delivered or
-            saved permanently. Do not include medical histories, phone numbers,
-            exact addresses or other sensitive information. This request does
-            not book an appointment or charge money.
+            Requests stay in this tab and are not sent or saved permanently. No
+            appointment is booked or payment collected. Please leave out
+            sensitive personal information.
           </p>
           <noscript>
             <p>
@@ -199,16 +196,14 @@ function RequestForm() {
             </p>
           )}
           <fieldset disabled={!ready} className="member-form-fields">
-            <legend className="sr-only">
-              Fictional consultation request details
-            </legend>
+            <legend className="sr-only">Consultation request details</legend>
             <div className="consultation-field-pair">
               <div className="search-field">
-                <label htmlFor="consultation-name">Name (sample)</label>
+                <label htmlFor="consultation-name">Name</label>
                 <input
                   {...fieldProps("name")}
                   maxLength={consultationLimits.name}
-                  placeholder="Sample Homeowner"
+                  placeholder="Your name"
                 />
                 <p id="consultation-name-help" className="field-help">
                   2–100 characters.
@@ -216,7 +211,7 @@ function RequestForm() {
                 {error("name")}
               </div>
               <div className="search-field">
-                <label htmlFor="consultation-email">Email (sample)</label>
+                <label htmlFor="consultation-email">Email</label>
                 <input
                   {...fieldProps("email")}
                   type="email"
@@ -225,7 +220,7 @@ function RequestForm() {
                   spellCheck={false}
                 />
                 <p id="consultation-email-help" className="field-help">
-                  A fictional email address; up to 254 characters.
+                  A email address; up to 254 characters.
                 </p>
                 {error("email")}
               </div>
@@ -243,8 +238,8 @@ function RequestForm() {
                 ))}
               </select>
               <p id="consultation-categoryId-help" className="field-help">
-                Choose the specialty relevant to your sample question. No
-                specialist is assigned.
+                Choose the specialty relevant to your question. No specialist is
+                assigned.
               </p>
               {error("categoryId")}
             </div>
@@ -265,21 +260,19 @@ function RequestForm() {
               {error("format")}
             </div>
             <div className="search-field">
-              <label htmlFor="consultation-topic">
-                Question or topic (sample)
-              </label>
+              <label htmlFor="consultation-topic">Question or topic</label>
               <textarea
                 {...fieldProps("topic")}
                 rows={6}
                 maxLength={consultationLimits.topic}
               />
               <p id="consultation-topic-help" className="field-help">
-                20–2,000 characters. Describe a fictional home project or
-                service question in plain text.
+                20–2,000 characters. Describe a home project or service question
+                in plain text.
               </p>
               {error("topic")}
             </div>
-            <Button type="submit">Record demo request</Button>
+            <Button type="submit">Record request</Button>
           </fieldset>
         </form>
       )}
@@ -291,7 +284,7 @@ function RequestForm() {
       </div>
       <p className="field-help">
         Reset clears this request, all drafts and the shared application,
-        member, admin and Q&A demo changes.
+        member, admin and Q&A changes.
       </p>
     </section>
   );

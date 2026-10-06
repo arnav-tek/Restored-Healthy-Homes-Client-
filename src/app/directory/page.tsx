@@ -15,7 +15,6 @@ import {
   EmptyDirectory,
   DirectoryUnavailable,
 } from "@/features/directory/directory-state";
-import { Notice } from "@/components/ui/notice";
 export const metadata: Metadata = { title: "Find professionals" };
 export default async function Directory({
   searchParams,
@@ -65,11 +64,6 @@ export default async function Directory({
         <h1>A healthier home. The right help.</h1>
         <p>Explore professionals by specialty, service and location.</p>
       </header>
-      <Notice>
-        <strong>Directory preview.</strong> All businesses and credential checks
-        shown here are fictional examples. Contact and booking are not available
-        yet.
-      </Notice>
       <div className="directory-layout">
         <DirectoryFilters
           key={directoryHref(query) + JSON.stringify(errors)}
@@ -85,12 +79,11 @@ export default async function Directory({
               <p aria-live="polite">
                 {results
                   ? results.total === 0
-                    ? "0 matching sample professionals"
-                    : `Showing ${(results.page - 1) * DIRECTORY_PAGE_SIZE + 1}–${Math.min(results.page * DIRECTORY_PAGE_SIZE, results.total)} of ${results.total} sample professionals`
+                    ? "0 matching professionals"
+                    : `Showing ${(results.page - 1) * DIRECTORY_PAGE_SIZE + 1}–${Math.min(results.page * DIRECTORY_PAGE_SIZE, results.total)} of ${results.total} professionals`
                   : "Results unavailable"}
               </p>
             </div>
-            <span className="demo-pill">Demo preview</span>
           </div>
           {unavailable ? (
             <DirectoryUnavailable href={directoryHref(query)} />
@@ -136,8 +129,8 @@ export default async function Directory({
                   {query.radius === undefined
                     ? `In ${results.origin.city}, ${results.origin.state}.`
                     : `Within ${query.radius} miles of ${results.origin.city}, ${results.origin.state}.`}{" "}
-                  Distances are approximate, measured between demo city centers,
-                  not travel distances or service areas.
+                  Distances are approximate, measured between city centers, not
+                  travel distances or service areas.
                   {results.missingCoordinates > 0
                     ? " Some matching listings lack coordinates; distance is unavailable and they are excluded from radius searches."
                     : ""}

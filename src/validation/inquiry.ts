@@ -10,7 +10,7 @@ export function validateInquiry(
   for (const field of ["name", "email", "message"] as const) {
     const value = input[field];
     if (typeof value !== "string" || !value.trim()) {
-      errors[field] = `Enter a sample ${field}.`;
+      errors[field] = `Enter a ${field}.`;
     } else if (value.length > inquiryLimits[field]) {
       errors[field] = `Use ${inquiryLimits[field]} characters or fewer.`;
     }
@@ -20,15 +20,14 @@ export function validateInquiry(
     typeof input.email === "string" &&
     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim())
   ) {
-    errors.email =
-      "Enter a valid sample email, such as homeowner@example.invalid.";
+    errors.email = "Enter a valid email, such as homeowner@example.invalid.";
   }
   if (
     !errors.message &&
     typeof input.message === "string" &&
     input.message.trim().length < 10
   ) {
-    errors.message = "Enter at least 10 characters for your sample message.";
+    errors.message = "Enter at least 10 characters for your message.";
   }
   return errors;
 }

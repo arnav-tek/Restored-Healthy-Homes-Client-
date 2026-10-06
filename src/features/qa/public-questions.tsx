@@ -10,7 +10,6 @@ import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { qaHref, questionHref, type QaQueryErrors } from "@/validation/qa";
 import { SearchForm } from "@/features/directory/search-form";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/ui/notice";
 export function PublicQuestions({
   query,
   errors,
@@ -46,15 +45,9 @@ export function PublicQuestions({
           className="button"
           href={`/questions/ask?${new URLSearchParams({ returnTo })}`}
         >
-          Ask a demo question
+          Ask a question
         </Link>
       </header>
-      <Notice>
-        <strong>Fictional Q&A.</strong> All questions, answers and professional
-        attributions are sample content, not advice or endorsements. No messages
-        are delivered. Session publication changes affect this tab only; refresh
-        or reset restores the original samples.
-      </Notice>
       <SearchForm
         key={returnTo + JSON.stringify(errors)}
         action="/questions"
@@ -122,9 +115,7 @@ export function PublicQuestions({
         ) : unavailable ? (
           <div className="result-state" role="alert">
             <h2>Questions are unavailable</h2>
-            <p>
-              The demo questions could not be loaded. Try this search again.
-            </p>
+            <p>The questions could not be loaded. Try this search again.</p>
             <Link className="button" href={returnTo}>
               Retry question search
             </Link>
@@ -132,11 +123,11 @@ export function PublicQuestions({
         ) : results ? (
           <>
             <div className="results-heading">
-              <h2>Published sample questions</h2>
+              <h2>Published questions</h2>
               <p aria-live="polite">
                 {results.total
-                  ? `Showing ${(results.page - 1) * QA_PAGE_SIZE + 1}–${Math.min(results.page * QA_PAGE_SIZE, results.total)} of ${results.total} fictional questions`
-                  : "0 matching fictional questions"}
+                  ? `Showing ${(results.page - 1) * QA_PAGE_SIZE + 1}–${Math.min(results.page * QA_PAGE_SIZE, results.total)} of ${results.total} questions`
+                  : "0 matching questions"}
               </p>
             </div>
             {results.items.length ? (
@@ -159,7 +150,7 @@ export function PublicQuestions({
                       <p>{question.excerpt}</p>
                       <span className="qa-answer-count">
                         {question.answerCount
-                          ? `${question.answerCount} sample ${question.answerCount === 1 ? "answer" : "answers"}`
+                          ? `${question.answerCount} ${question.answerCount === 1 ? "answer" : "answers"}`
                           : "No published answers yet"}
                       </span>
                     </article>
@@ -171,7 +162,7 @@ export function PublicQuestions({
                 <h3>No questions match</h3>
                 <p>
                   Try a broader keyword or another category, or explore all
-                  published examples.
+                  published questions.
                 </p>
                 <Link className="text-link" href="/questions">
                   Browse all questions

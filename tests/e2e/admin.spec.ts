@@ -23,8 +23,8 @@ test("application admin decision member confirmation and protected edits stay co
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/list-your-business");
   await fillApplication(page);
-  await page.getByRole("button", { name: "Create demo application" }).click();
-  await page.getByRole("link", { name: "Open demo member workspace" }).click();
+  await page.getByRole("button", { name: "Create application" }).click();
+  await page.getByRole("link", { name: "Open member workspace" }).click();
   await signIn(page, "application");
   await workspace(page, "Admin overview");
   await section(page, "Admin", "Applications");
@@ -76,9 +76,7 @@ test("application admin decision member confirmation and protected edits stay co
     page.getByText("Application status: rejected.", { exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByText(
-      "Demo decision reason: Fictional service details need revision",
-    ),
+    page.getByText("Decision reason: Fictional service details need revision"),
   ).toBeVisible();
   expect(
     await page.evaluate(() => [localStorage.length, sessionStorage.length]),
@@ -272,7 +270,7 @@ test("admin controls cannot submit without JavaScript", async ({ browser }) => {
       page.getByRole("button", { name: "Rename demo category" }),
     ).toHaveCount(0);
     await expect(
-      page.getByRole("button", { name: "Reset demo session" }),
+      page.getByRole("button", { name: "Reset session" }),
     ).toHaveCount(0);
   } finally {
     await context.close();

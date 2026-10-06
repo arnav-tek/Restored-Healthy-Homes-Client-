@@ -69,19 +69,19 @@ function LocalInquiryForm() {
   }
   return (
     <section className="inquiry-panel" aria-labelledby="inquiry-heading">
-      <h2 id="inquiry-heading">Try a demo inquiry</h2>
+      <h2 id="inquiry-heading">Prepare an inquiry</h2>
       <p id="inquiry-demo-note" className="inquiry-notice">
-        Use sample information only. Nothing is sent or saved. Do not include
-        medical histories or other sensitive details.
+        Messages are not sent or saved. You can check your inquiry here before
+        contacting a professional.
       </p>
       {confirmed ? (
         <div className="inquiry-confirmation">
           <h3 ref={confirmation} tabIndex={-1}>
-            Demo inquiry complete
+            Inquiry checked
           </h3>
           <p>
-            Your sample entries passed validation and were cleared. Nothing was
-            sent or saved, and no professional will receive a message.
+            Your entries passed validation and were cleared. Nothing was sent or
+            saved, and no professional will receive a message.
           </p>
           <Button
             type="button"
@@ -93,7 +93,7 @@ function LocalInquiryForm() {
               );
             }}
           >
-            Start another demo inquiry
+            Start another inquiry
           </Button>
         </div>
       ) : (
@@ -113,12 +113,12 @@ function LocalInquiryForm() {
         >
           <noscript>
             <p>
-              Enable JavaScript to try this local demo form. No inquiry endpoint
-              is available.
+              Enable JavaScript to try this local form. No inquiry endpoint is
+              available.
             </p>
           </noscript>
           <fieldset disabled={!ready}>
-            <legend className="sr-only">Sample inquiry details</legend>
+            <legend className="sr-only">Inquiry details</legend>
             <p className="field-help">All fields are required.</p>
             {Object.keys(errors).length > 0 ? (
               <p className="field-error" role="alert">
@@ -126,16 +126,16 @@ function LocalInquiryForm() {
               </p>
             ) : null}
             <div className="search-field">
-              <label htmlFor="inquiry-name">Name (sample)</label>
+              <label htmlFor="inquiry-name">Name</label>
               <input
                 {...fieldProps("name")}
                 type="text"
-                placeholder="Sample Homeowner"
+                placeholder="Your name"
               />
               {error("name")}
             </div>
             <div className="search-field">
-              <label htmlFor="inquiry-email">Email (sample)</label>
+              <label htmlFor="inquiry-email">Email</label>
               <input
                 {...fieldProps("email")}
                 type="email"
@@ -145,20 +145,19 @@ function LocalInquiryForm() {
               {error("email")}
             </div>
             <div className="search-field">
-              <label htmlFor="inquiry-message">Message (sample)</label>
+              <label htmlFor="inquiry-message">Message</label>
               <textarea
                 {...fieldProps("message")}
                 rows={5}
                 minLength={10}
-                placeholder="I would like to learn about your services for a sample project."
+                placeholder="I would like to learn about your services for a project."
               />
               <p className="field-help">
-                10–2,000 characters. Describe a fictional project or service
-                question.
+                10–2,000 characters. Describe a project or service question.
               </p>
               {error("message")}
             </div>
-            <Button type="submit">Preview demo inquiry</Button>
+            <Button type="submit">Check inquiry</Button>
           </fieldset>
         </form>
       )}

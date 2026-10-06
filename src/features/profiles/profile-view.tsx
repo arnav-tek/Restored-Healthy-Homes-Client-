@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { PublicProfile } from "@/domain/professional";
 import type { Category } from "@/domain/categories";
-import { Notice } from "@/components/ui/notice";
 import { InquiryForm } from "./inquiry-form";
 import { ReviewsSection } from "@/features/reviews/reviews-section";
 
@@ -29,8 +28,8 @@ export function ProfileView({
         {returnTo === "/directory" ? "Back to directory" : "Back to results"}
       </Link>
       <header className="profile-heading">
-        <p className="section-label">Sample professional profile</p>
-        <h1>{profile.businessName || "Sample professional"}</h1>
+        <p className="section-label">Professional profile</p>
+        <h1>{profile.businessName || "Professional"}</h1>
         <p className="category-label">
           {categoryNames.join(" · ") || "Category not provided"}
         </p>
@@ -39,11 +38,6 @@ export function ProfileView({
             "Location not provided"}
         </p>
       </header>
-      <Notice>
-        <strong>Fictional business.</strong> Profile information and credential
-        checks are samples. The inquiry form is a local demo; nothing is sent or
-        saved.
-      </Notice>
       <div className="profile-layout">
         <div className="profile-details">
           <section aria-labelledby="about-heading">
@@ -53,7 +47,7 @@ export function ProfileView({
             ) : null}
             <p>
               {profile.summary ||
-                "A business description has not been provided for this sample profile."}
+                "A business description has not been provided for this profile."}
             </p>
           </section>
           <section aria-labelledby="service-area-heading">
@@ -72,23 +66,21 @@ export function ProfileView({
                 ))}
               </ul>
             ) : (
-              <p>
-                Service details have not been provided for this sample profile.
-              </p>
+              <p>Service details have not been provided for this profile.</p>
             )}
           </section>
           <section aria-labelledby="credentials-heading">
             <h2 id="credentials-heading">Credentials</h2>
             <p>
-              Restored Healthy Homes does not issue certifications. All
-              credentials and verification states below are fictional examples.
+              Restored Healthy Homes does not issue certifications. Confirm
+              credentials directly with the issuing organization.
             </p>
             {profile.verifiedCredentials.length ? (
               <div className="profile-credentials">
-                <h3>Verified credentials (demo)</h3>
+                <h3>Credentials on file</h3>
                 <ul>
                   {profile.verifiedCredentials.map((name) => (
-                    <li key={name}>{name} — sample verification only</li>
+                    <li key={name}>{name}</li>
                   ))}
                 </ul>
               </div>
@@ -113,8 +105,8 @@ export function ProfileView({
             {contact.length ? (
               <>
                 <p>
-                  Sample contact details for display only; these are not live
-                  contact channels.
+                  Contact details are for display only; direct contact is not
+                  available here.
                 </p>
                 <dl className="profile-contact">
                   {contact.map(([label, value]) => (
@@ -133,8 +125,8 @@ export function ProfileView({
               </>
             ) : (
               <p>
-                No public contact details have been provided for this sample
-                profile. You can still try the demo inquiry form.
+                No public contact details have been provided for this profile.
+                You can still try the inquiry form.
               </p>
             )}
           </section>

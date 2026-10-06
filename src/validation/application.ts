@@ -68,7 +68,7 @@ export function parseApplication(
   const description = text("description", false, 20),
     practices = text("practices", false, 20);
   if (!errors.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-    errors.email = "Enter a valid sample email address.";
+    errors.email = "Enter a valid email address.";
   if (
     phone &&
     !errors.phone &&
@@ -91,7 +91,7 @@ export function parseApplication(
         throw new Error("invalid");
     } catch {
       errors.website =
-        "Use a complete http:// or https:// sample website without login details.";
+        "Use a complete http:// or https:// website without login details.";
     }
   }
   const categories = raw.categoryIds;

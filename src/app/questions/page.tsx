@@ -5,9 +5,8 @@ import { parseQaQuery, qaHref } from "@/validation/qa";
 import type { RawSearchParams } from "@/validation/directory";
 import { PublicQuestions } from "@/features/qa/public-questions";
 export const metadata: Metadata = {
-  title: "Ask a Specialist | Demo Q&A",
-  description:
-    "Browse fictional healthy-home service questions and sample answers.",
+  title: "Ask a Specialist",
+  description: "Browse healthy-home service questions and answers.",
   robots: { index: false, follow: false },
 };
 export default async function QuestionsPage({

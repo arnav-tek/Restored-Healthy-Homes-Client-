@@ -7,7 +7,7 @@ test("Q&A filters, pagination, history, details and safe return URLs", async ({
 }) => {
   await page.goto("/questions");
   await expect(
-    page.getByText("Showing 1–6 of 10 fictional questions"),
+    page.getByText("Showing 1–6 of 10 questions"),
   ).toBeVisible();
   await page.getByRole("link", { name: "Next page" }).press("Enter");
   await expect(page).toHaveURL(/questions\?page=2$/);
@@ -15,7 +15,7 @@ test("Q&A filters, pagination, history, details and safe return URLs", async ({
   await expect(page.getByText("Page 2 of 2")).toBeVisible();
   await page.getByRole("list").getByRole("link").first().click();
   await expect(
-    page.getByRole("heading", { name: /Published sample answers/ }),
+    page.getByRole("heading", { name: /Published answers/ }),
   ).toBeVisible();
   await page
     .getByRole("link", { name: /Back to questions/ })
@@ -33,7 +33,7 @@ test("Q&A filters, pagination, history, details and safe return URLs", async ({
     "/questions?q=inspection&category=mold-inspection",
   );
   await expect(
-    page.getByText("Showing 1–2 of 2 fictional questions"),
+    page.getByText("Showing 1–2 of 2 questions"),
   ).toBeVisible();
   await page.goBack();
   await expect(page).toHaveURL(/page=2$/);
@@ -101,25 +101,28 @@ test("Q&A direct routes and payloads exclude unpublished data; attributed profil
       response.request().resourceType() === "script" ||
       response.headers()["content-type"]?.includes("text/x-component")
     )
-      payloads.push(response.text().catch(() => ""));
+      payloads.push(
+        Promise.race([
+          response.text().catch(() => ""),
+          new Promise<string>((resolve) => setTimeout(() => resolve(""), 3000)),
+        ]),
+      );
   });
   await page.goto("/questions/planning-inspection");
   await expect(
-    page.getByRole("heading", { name: "Published sample answers (2)" }),
+    page.getByRole("heading", { name: "Published answers (2)" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "View fictional professional profile" }),
+    page.getByRole("link", { name: "View professional profile" }),
   ).toHaveCount(1);
-  await page
-    .getByRole("link", { name: "View fictional professional profile" })
-    .click();
+  await page.getByRole("link", { name: "View professional profile" }).click();
   await expect(page).toHaveURL(/professionals\/demo-mold-inspection$/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "Fern & Field",
   );
   await page.goto("/questions/design-handover");
   await expect(
-    page.getByRole("link", { name: "View fictional professional profile" }),
+    page.getByRole("link", { name: "View professional profile" }),
   ).toHaveCount(0);
   expect((await Promise.all(payloads)).join("\n")).not.toMatch(
     /QA_PRIVATE|QA_UNPUBLISHED|QA_HIDDEN|QA_PUBLISHED_ANSWER_HIDDEN_PARENT/,
@@ -135,9 +138,10 @@ test("question validation, shared drafts, pending confirmation and confirmed res
       mutations.push(request.url());
   });
   await page.goto("/questions/ask");
-  await page
-    .getByRole("button", { name: "Submit demo question" })
-    .press("Enter");
+  await expect(
+    page.getByLabel("Question title", { exact: true }),
+  ).toBeEnabled();
+  await page.getByRole("button", { name: "Submit question" }).press("Enter");
   await expect(
     page.getByLabel("Question title", { exact: true }),
   ).toBeFocused();
@@ -165,9 +169,7 @@ test("question validation, shared drafts, pending confirmation and confirmed res
   await page
     .getByRole("button", { name: "Search questions", exact: true })
     .click();
-  await page
-    .getByRole("link", { name: "Ask a demo question", exact: true })
-    .click();
+  await page.getByRole("link", { name: "Ask a question", exact: true }).click();
   await expect(page.getByLabel("Question title", { exact: true })).toHaveValue(
     "A fictional materials planning question",
   );
@@ -175,9 +177,9 @@ test("question validation, shared drafts, pending confirmation and confirmed res
   await expect(
     page.getByLabel("Question text", { exact: true }),
   ).not.toHaveValue("");
-  await page.getByRole("button", { name: "Submit demo question" }).click();
+  await page.getByRole("button", { name: "Submit question" }).click();
   await expect(
-    page.getByRole("heading", { name: "Awaiting fictional review" }),
+    page.getByRole("heading", { name: "Awaiting review" }),
   ).toBeFocused();
   await expect(
     page.getByText(/has not been sent to professionals/),
@@ -207,14 +209,12 @@ test("question validation, shared drafts, pending confirmation and confirmed res
   await page
     .getByRole("button", { name: "Search questions", exact: true })
     .click();
-  await expect(page.getByText("0 matching fictional questions")).toBeVisible();
-  await page
-    .getByRole("link", { name: "Ask a demo question", exact: true })
-    .click();
+  await expect(page.getByText("0 matching questions")).toBeVisible();
+  await page.getByRole("link", { name: "Ask a question", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "Awaiting fictional review" }),
+    page.getByRole("heading", { name: "Awaiting review" }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Ask another demo question" }).click();
+  await page.getByRole("button", { name: "Ask another question" }).click();
   await expect(page.getByLabel("Question title", { exact: true })).toHaveValue(
     "",
   );
@@ -241,16 +241,16 @@ test("question validation, shared drafts, pending confirmation and confirmed res
     .fill(
       "What could a fictional materials schedule include for a sample home project?",
     );
-  await page.getByRole("button", { name: "Submit demo question" }).click();
+  await page.getByRole("button", { name: "Submit question" }).click();
   await expect(
-    page.getByRole("heading", { name: "Awaiting fictional review" }),
+    page.getByRole("heading", { name: "Awaiting review" }),
   ).toBeVisible();
   await page.reload();
   await expect(page.getByLabel("Question title", { exact: true })).toHaveValue(
     "",
   );
   await expect(
-    page.getByRole("heading", { name: "Awaiting fictional review" }),
+    page.getByRole("heading", { name: "Awaiting review" }),
   ).toHaveCount(0);
   expect(
     await page.evaluate(() => [localStorage.length, sessionStorage.length]),
@@ -298,7 +298,7 @@ test("Q&A screens handle long titles, errors, empty states and accessible naviga
   ]) {
     await page.goto(path);
     if (name === "form")
-      await page.getByRole("button", { name: "Submit demo question" }).click();
+      await page.getByRole("button", { name: "Submit question" }).click();
     expect(
       (
         await new AxeBuilder({ page })
@@ -343,18 +343,18 @@ test("without JavaScript seeded Q&A is readable and question submission is disab
     .getByRole("button", { name: "Search questions", exact: true })
     .click();
   await expect(
-    page.getByText("Showing 1–2 of 2 fictional questions"),
+    page.getByText("Showing 1–2 of 2 questions"),
   ).toBeVisible();
   await page.getByRole("list").getByRole("link").first().click();
   await expect(
-    page.getByRole("heading", { name: /Published sample answers/ }),
+    page.getByRole("heading", { name: /Published answers/ }),
   ).toBeVisible();
   await page.goto("/questions/ask");
   await expect(
     page.getByLabel("Question title", { exact: true }),
   ).toBeDisabled();
   await expect(
-    page.getByRole("button", { name: "Submit demo question" }),
+    page.getByRole("button", { name: "Submit question" }),
   ).toBeDisabled();
   await expect(
     page.getByText(/Submission is disabled and no submission endpoint exists/),

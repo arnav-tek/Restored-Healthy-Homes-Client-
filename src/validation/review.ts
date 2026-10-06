@@ -25,11 +25,11 @@ export function parseReview(
       ? Number(input.rating)
       : input.rating;
   if (displayName.length < 2 || displayName.length > reviewLimits.displayName)
-    errors.displayName = "Enter a sample display name using 2–80 characters.";
+    errors.displayName = "Enter a display name using 2–80 characters.";
   if (!isReviewRating(rating))
     errors.rating = "Choose a whole-number rating from 1 to 5.";
   if (body.length < 20 || body.length > reviewLimits.body)
-    errors.body = "Write a fictional review using 20–2,000 characters.";
+    errors.body = "Write a review using 20–2,000 characters.";
   return !Object.keys(errors).length && isReviewRating(rating)
     ? { ok: true, fields: { displayName, rating, body } }
     : { ok: false, errors };

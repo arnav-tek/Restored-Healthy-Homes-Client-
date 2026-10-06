@@ -22,17 +22,13 @@ export function Footer() {
         <div>
           <h2>For professionals</h2>
           <Link href="/list-your-business">List Your Business</Link>
-          <Link href="/login">Demo sign-in</Link>
+          <Link href="/login">Sign in</Link>
           <Link href="/demo/member">Member area</Link>
           <Link href="/demo/admin">Admin area</Link>
         </div>
       </div>
       <div className="container footer-bottom">
         <span>© {new Date().getFullYear()} Restored Healthy Homes</span>
-        <span>
-          Demo preview · Fictional businesses. Forms are not delivered or saved
-          permanently.
-        </span>
       </div>
     </footer>
   );

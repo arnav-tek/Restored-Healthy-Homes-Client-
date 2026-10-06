@@ -40,7 +40,7 @@ export function parseConsultation(
     email = text("email", 1),
     topic = text("topic", 20);
   if (!errors.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-    errors.email = "Enter a valid sample email address.";
+    errors.email = "Enter a valid email address.";
   const categoryId =
     typeof raw.categoryId === "string" ? raw.categoryId.trim() : "";
   if (!categories.some((category) => category.id === categoryId))

@@ -31,6 +31,12 @@ test("homepage categories, truthful statistics and About Us navigation work with
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
   await expect(page).toHaveTitle(/Find healthy-home professionals/);
+  await expect(page.getByRole("main")).not.toContainText(
+    /demo preview|fictional demo figures|published fictional/i,
+  );
+  await expect(page.getByRole("contentinfo")).not.toContainText(
+    /demo preview|fictional businesses/i,
+  );
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   if (info.project.name === "mobile") {
     const search = page.getByRole("button", { name: "Search", exact: true });
@@ -78,7 +84,7 @@ test("homepage categories, truthful statistics and About Us navigation work with
   await expect(page).toHaveTitle(/About Us/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("About Us");
   await expect(
-    page.getByText("Client story pending", { exact: true }),
+    page.getByText("Our story is coming soon", { exact: true }),
   ).toBeVisible();
   await expect(page.getByTestId("about-video-placeholder")).toBeVisible();
   await expect(page.locator("main video, main iframe")).toHaveCount(0);
@@ -120,17 +126,17 @@ test("homepage rating follows the existing review moderation session and refresh
   });
   await page.goto("/professionals/demo-mold-inspection");
   await page
-    .getByLabel("Display name (sample)", { exact: true })
+    .getByLabel("Display name", { exact: true })
     .fill("Homepage Sample");
-  await page.getByLabel("Rating (sample)", { exact: true }).selectOption("1");
+  await page.getByLabel("Rating", { exact: true }).selectOption("1");
   await page
-    .getByLabel("Written review (sample)", { exact: true })
+    .getByLabel("Written review", { exact: true })
     .fill("A fictional service conversation for this homepage example.");
   await page
-    .getByRole("button", { name: "Submit demo review", exact: true })
+    .getByRole("button", { name: "Submit review", exact: true })
     .press("Enter");
   await expect(
-    page.getByRole("heading", { name: "Demo review pending", exact: true }),
+    page.getByRole("heading", { name: "Review pending", exact: true }),
   ).toBeVisible();
   await mainNav(page, "Home");
   await expect(page.getByTestId("home-rating")).toHaveText("4.2 out of 5");
@@ -162,12 +168,12 @@ test("homepage rating follows the existing review moderation session and refresh
     .getByRole("link", { name: "View public review preview", exact: true })
     .click();
   await expect(page.getByTestId("review-summary")).toHaveText(
-    "3.8 out of 55 published fictional reviews",
+    "3.8 out of 55 published reviews",
   );
   await mainNav(page, "Home");
   await expect(page.getByTestId("home-rating")).toHaveText("3.7 out of 5");
   await expect(page.getByTestId("home-statistics")).toContainText(
-    "7 published fictional reviews",
+    "7 published reviews",
   );
   await expect(page.locator("main")).not.toContainText(
     "HOMEPAGE_INTERNAL_NOTE",
@@ -323,7 +329,9 @@ test("static homepage and About Us remain useful without JavaScript; statistics 
       expect(html).not.toContain(hidden);
   }
   await page.goto("http://127.0.0.1:3101/");
-  await expect(page.getByText(/Demo statistics are unavailable/)).toBeVisible();
+  await expect(
+    page.getByText(/Directory statistics are unavailable/),
+  ).toBeVisible();
   await expect(page.getByTestId("home-professional-count")).toHaveCount(0);
   await inspect(page, `unavailable-${info.project.name}`);
 });

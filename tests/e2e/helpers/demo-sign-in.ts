@@ -26,6 +26,9 @@ export async function signIn(page: Page, account = "approved") {
     name: "Go to demo sign-in",
     exact: true,
   });
+  if (new URL(page.url()).pathname.startsWith("/demo/")) {
+    await gate.waitFor({ state: "visible", timeout: 10000 }).catch(() => {});
+  }
   if (await gate.isVisible()) await gate.click();
   else if (!new URL(page.url()).pathname.startsWith("/login")) {
     const change = page.getByRole("button", {
@@ -41,7 +44,7 @@ export async function signIn(page: Page, account = "approved") {
     } else
       await page
         .getByRole("contentinfo")
-        .getByRole("link", { name: "Demo sign-in", exact: true })
+        .getByRole("link", { name: "Sign in", exact: true })
         .click();
   }
   await expect(

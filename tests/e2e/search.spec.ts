@@ -31,9 +31,7 @@ test("homepage keyboard search to results, reload, radius and nearest-first", as
   await expect(page.getByTestId("professional-card").first()).toContainText(
     "Willow Home Trades",
   );
-  await expect(
-    page.getByText("Showing 1–3 of 3 sample professionals"),
-  ).toBeVisible();
+  await expect(page.getByText("Showing 1–3 of 3 professionals")).toBeVisible();
   expect(
     (
       await new AxeBuilder({ page })
@@ -65,9 +63,7 @@ test("pagination preserves query, filter submit resets page, out-of-range page c
   await expect(page).toHaveURL(/sort=za&page=2$/);
   await expect(page.getByTestId("professional-card")).toHaveCount(2);
   await page.reload();
-  await expect(
-    page.getByText("Showing 7–8 of 8 sample professionals"),
-  ).toBeVisible();
+  await expect(page.getByText("Showing 7–8 of 8 professionals")).toBeVisible();
   await page.getByLabel("Keyword", { exact: true }).fill("mold sampling");
   await page.getByRole("button", { name: "Apply filters" }).click();
   await expect(page).toHaveURL(/q=mold\+sampling&sort=za$/);

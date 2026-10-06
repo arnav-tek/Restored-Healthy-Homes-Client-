@@ -4,8 +4,7 @@ export default function QuestionNotFound() {
     <div className="container result-state">
       <h1>Question not found</h1>
       <p>
-        This question is not available. Explore the published fictional
-        questions instead.
+        This question is not available. Explore the published questions instead.
       </p>
       <Link className="button" href="/questions">
         Browse questions

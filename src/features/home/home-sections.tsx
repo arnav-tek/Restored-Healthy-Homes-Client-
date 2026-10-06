@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import type { Category } from "@/domain/categories";
-import { consultationOfferLabel } from "@/domain/consultation";
 
 // Presentation only; names and descriptions continue to come from the catalog.
 const categoryIcons: Readonly<Record<string, LucideIcon>> = {
@@ -96,8 +95,7 @@ export function HomeJourney() {
         <li>
           <h3>Start an inquiry</h3>
           <p>
-            Prepare your questions and try an inquiry. Demo inquiries are not
-            delivered.
+            Prepare your questions and outline what you would like to discuss.
           </p>
         </li>
       </ol>
@@ -122,9 +120,6 @@ export function HomeFeatures() {
             <Link className="text-link" href="/questions">
               Ask a Specialist <ArrowRight size={18} aria-hidden="true" />
             </Link>
-            <p className="feature-note">
-              Sample questions and answers for this preview.
-            </p>
           </article>
           <article className="home-consultation-spotlight">
             <p className="feature-label">Consultations</p>
@@ -136,10 +131,6 @@ export function HomeFeatures() {
             <Link className="text-link" href="/consultations">
               Explore consultations <ArrowRight size={18} aria-hidden="true" />
             </Link>
-            <p className="feature-note">
-              Proposed {consultationOfferLabel()}, pending client confirmation.
-              Demo requests do not book appointments or collect payment.
-            </p>
           </article>
         </div>
       </div>
@@ -170,9 +161,6 @@ export function HomeAbout() {
         <Link className="text-link" href="/about">
           About Us <ArrowRight size={18} aria-hidden="true" />
         </Link>
-        <p className="field-help">
-          Purpose preview · Final story awaiting approval.
-        </p>
       </div>
     </section>
   );
@@ -186,9 +174,6 @@ export function HomeBusiness() {
           <p className="section-label">For professionals</p>
           <h2 id="business-heading">Bring your specialty to the directory.</h2>
           <p>Apply to list your business and introduce the work you do.</p>
-          <p className="business-note">
-            Try the demo application with fictional details.
-          </p>
         </div>
         <ButtonLink href="/list-your-business">
           List Your Business <ArrowRight size={18} aria-hidden="true" />

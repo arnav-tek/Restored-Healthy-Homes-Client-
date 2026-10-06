@@ -3,7 +3,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { signIn } from "./helpers/demo-sign-in";
 test.setTimeout(120000);
 const profile = "/professionals/demo-mold-inspection";
-const summary = "4.5 out of 54 published fictional reviews";
+const summary = "4.5 out of 54 published reviews";
 const sampleBody =
   "This fictional review describes a clear sample service discussion.";
 async function inspect(page: Page, name: string) {
@@ -41,10 +41,10 @@ async function browseProfile(page: Page, business: string) {
 }
 async function fillReview(page: Page, body = sampleBody) {
   await page
-    .getByLabel("Display name (sample)", { exact: true })
+    .getByLabel("Display name", { exact: true })
     .fill("Fictional Visitor");
-  await page.getByLabel("Rating (sample)", { exact: true }).selectOption("4");
-  await page.getByLabel("Written review (sample)", { exact: true }).fill(body);
+  await page.getByLabel("Rating", { exact: true }).selectOption("4");
+  await page.getByLabel("Written review", { exact: true }).fill(body);
 }
 async function signOut(page: Page) {
   const menu = page.getByRole("button", {
@@ -65,9 +65,7 @@ test("published review summaries, same-profile pages, empty and long reviews sta
   );
   await expect(page.getByTestId("review-summary")).toHaveText(summary);
   await expect(
-    page
-      .getByRole("list", { name: "Published fictional reviews" })
-      .getByRole("article"),
+    page.getByRole("list", { name: "Published reviews" }).getByRole("article"),
   ).toHaveCount(3);
   await expect(page.getByRole("article").first()).toContainText(
     "Sample visitor Alex",
@@ -119,48 +117,40 @@ test("review validation, pending confirmation and repeated clicks never publish 
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto(profile);
   const submit = page.getByRole("button", {
-    name: "Submit demo review",
+    name: "Submit review",
     exact: true,
   });
   // Keyboard presses do not wait for the form's hydration guard to enable it.
   await expect(submit).toBeEnabled();
   await submit.press("Enter");
-  await expect(
-    page.getByLabel("Display name (sample)", { exact: true }),
-  ).toBeFocused();
+  await expect(page.getByLabel("Display name", { exact: true })).toBeFocused();
   await expect(page.getByRole("alert").getByRole("link")).toHaveCount(3);
   await page
     .getByRole("alert")
     .getByRole("link", { name: /whole-number rating/ })
     .click();
-  await expect(
-    page.getByLabel("Rating (sample)", { exact: true }),
-  ).toBeFocused();
+  await expect(page.getByLabel("Rating", { exact: true })).toBeFocused();
   await inspect(page, `validation-${info.project.name}`);
   await page
-    .getByLabel("Display name (sample)", { exact: true })
+    .getByLabel("Display name", { exact: true })
     .fill("Fictional Visitor");
   await submit.click();
-  await expect(
-    page.getByLabel("Rating (sample)", { exact: true }),
-  ).toBeFocused();
-  await page.getByLabel("Rating (sample)", { exact: true }).selectOption("3");
-  await page
-    .getByLabel("Written review (sample)", { exact: true })
-    .fill("Too short");
+  await expect(page.getByLabel("Rating", { exact: true })).toBeFocused();
+  await page.getByLabel("Rating", { exact: true }).selectOption("3");
+  await page.getByLabel("Written review", { exact: true }).fill("Too short");
   await submit.click();
   await expect(
-    page.getByLabel("Written review (sample)", { exact: true }),
+    page.getByLabel("Written review", { exact: true }),
   ).toBeFocused();
   await expect(
-    page.getByLabel("Written review (sample)", { exact: true }),
+    page.getByLabel("Written review", { exact: true }),
   ).toHaveAttribute("maxlength", "2000");
   const literal =
     "UNIQUE_REVIEW_TEXT <img src=x onerror=alert(1)> " +
     "LongFictionalText".repeat(110);
   await fillReview(page, literal);
   await page
-    .getByRole("form", { name: "Try a demo review", exact: true })
+    .getByRole("form", { name: "Write a review", exact: true })
     .evaluate((form) => {
       for (const [name, value] of [
         ["professionalId", "demo-pending"],
@@ -176,7 +166,7 @@ test("review validation, pending confirmation and repeated clicks never publish 
     });
   await submit.press("Enter");
   await expect(
-    page.getByRole("heading", { name: "Demo review pending", exact: true }),
+    page.getByRole("heading", { name: "Review pending", exact: true }),
   ).toBeFocused();
   await expect(page.locator(".review-confirmation")).toContainText(
     "demo-session-review-1",
@@ -185,19 +175,19 @@ test("review validation, pending confirmation and repeated clicks never publish 
   await expect(page.locator(".review-confirmation img")).toHaveCount(0);
   await expect(page.getByTestId("review-summary")).toHaveText(summary);
   await expect(
-    page.getByRole("list", { name: "Published fictional reviews" }),
+    page.getByRole("list", { name: "Published reviews" }),
   ).not.toContainText("UNIQUE_REVIEW_TEXT");
   await inspect(page, `pending-${info.project.name}`);
-  await page.getByRole("button", { name: "Start another demo review" }).click();
-  await expect(
-    page.getByLabel("Display name (sample)", { exact: true }),
-  ).toHaveValue("");
+  await page.getByRole("button", { name: "Start another review" }).click();
+  await expect(page.getByLabel("Display name", { exact: true })).toHaveValue(
+    "",
+  );
   await fillReview(page);
   await submit.dblclick();
   await expect(page.locator(".review-confirmation")).toContainText(
     "demo-session-review-2",
   );
-  await page.getByRole("button", { name: "Start another demo review" }).click();
+  await page.getByRole("button", { name: "Start another review" }).click();
   await fillReview(page);
   await submit.click();
   await expect(page.locator(".review-confirmation")).toContainText(
@@ -205,11 +195,11 @@ test("review validation, pending confirmation and repeated clicks never publish 
   );
   await expect(page.getByTestId("review-summary")).toHaveText(summary);
   await page.reload();
+  await expect(page.getByLabel("Display name", { exact: true })).toHaveValue(
+    "",
+  );
   await expect(
-    page.getByLabel("Display name (sample)", { exact: true }),
-  ).toHaveValue("");
-  await expect(
-    page.getByRole("heading", { name: "Demo review pending", exact: true }),
+    page.getByRole("heading", { name: "Review pending", exact: true }),
   ).toHaveCount(0);
   expect(
     await page.evaluate(() => [localStorage.length, sessionStorage.length]),
@@ -230,73 +220,73 @@ test("professional-scoped drafts survive navigation; sign-out discards drafts bu
     "Unsaved fictional review for the first professional.",
   );
   await page.getByRole("link", { name: "Next reviews", exact: true }).click();
-  await expect(
-    page.getByLabel("Written review (sample)", { exact: true }),
-  ).toHaveValue("Unsaved fictional review for the first professional.");
+  await expect(page.getByLabel("Written review", { exact: true })).toHaveValue(
+    "Unsaved fictional review for the first professional.",
+  );
   await browseProfile(page, "Cedar Path Remediation");
-  await expect(
-    page.getByLabel("Written review (sample)", { exact: true }),
-  ).toHaveValue("");
+  await expect(page.getByLabel("Written review", { exact: true })).toHaveValue(
+    "",
+  );
   await fillReview(
     page,
     "Unsaved fictional review for the second professional.",
   );
   await browseProfile(page, "Fern & Field Inspections");
-  await expect(
-    page.getByLabel("Written review (sample)", { exact: true }),
-  ).toHaveValue("Unsaved fictional review for the first professional.");
+  await expect(page.getByLabel("Written review", { exact: true })).toHaveValue(
+    "Unsaved fictional review for the first professional.",
+  );
   page.once("dialog", (dialog) => dialog.dismiss());
   await signOut(page);
-  await expect(
-    page.getByLabel("Written review (sample)", { exact: true }),
-  ).toHaveValue("Unsaved fictional review for the first professional.");
+  await expect(page.getByLabel("Written review", { exact: true })).toHaveValue(
+    "Unsaved fictional review for the first professional.",
+  );
   page.once("dialog", (dialog) => dialog.accept());
   await signOut(page);
   await expect(page).toHaveURL("/login");
   await signIn(page, "admin");
   await browseProfile(page, "Fern & Field Inspections");
-  await expect(
-    page.getByLabel("Written review (sample)", { exact: true }),
-  ).toHaveValue("");
+  await expect(page.getByLabel("Written review", { exact: true })).toHaveValue(
+    "",
+  );
   await browseProfile(page, "Cedar Path Remediation");
-  await expect(
-    page.getByLabel("Written review (sample)", { exact: true }),
-  ).toHaveValue("");
+  await expect(page.getByLabel("Written review", { exact: true })).toHaveValue(
+    "",
+  );
   await fillReview(page);
   await page
-    .getByRole("button", { name: "Submit demo review", exact: true })
+    .getByRole("button", { name: "Submit review", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "Demo review pending", exact: true }),
+    page.getByRole("heading", { name: "Review pending", exact: true }),
   ).toBeVisible();
   await signOut(page);
   await expect(page).toHaveURL("/login");
   await signIn(page);
   await browseProfile(page, "Cedar Path Remediation");
   await expect(
-    page.getByRole("heading", { name: "Demo review pending", exact: true }),
+    page.getByRole("heading", { name: "Review pending", exact: true }),
   ).toBeVisible();
   await expect(page.getByTestId("review-summary")).toHaveText("No reviews yet");
   await browseProfile(page, "Fern & Field Inspections");
   await fillReview(page);
   page.once("dialog", (dialog) => dialog.dismiss());
-  await page.getByRole("button", { name: "Reset demo session" }).click();
-  await expect(
-    page.getByLabel("Written review (sample)", { exact: true }),
-  ).toHaveValue(sampleBody);
+  await page.getByRole("button", { name: "Reset session" }).click();
+  await expect(page.getByLabel("Written review", { exact: true })).toHaveValue(
+    sampleBody,
+  );
   page.once("dialog", (dialog) => dialog.accept());
-  await page.getByRole("button", { name: "Reset demo session" }).click();
-  await expect(
-    page.getByLabel("Written review (sample)", { exact: true }),
-  ).toHaveValue("");
+  await page.getByRole("button", { name: "Reset session" }).click();
+  await expect(page.getByLabel("Written review", { exact: true })).toHaveValue(
+    "",
+  );
   await expect(page.locator("[data-demo-account]")).toHaveCount(0);
   await browseProfile(page, "Cedar Path Remediation");
   await expect(
-    page.getByRole("heading", { name: "Demo review pending", exact: true }),
+    page.getByRole("heading", { name: "Review pending", exact: true }),
   ).toHaveCount(0);
-  await expect(
-    page.getByLabel("Written review (sample)", { exact: true }),
-  ).toHaveValue("");
+  await expect(page.getByLabel("Written review", { exact: true })).toHaveValue(
+    "",
+  );
 });
 
 test("review boundaries exclude hidden seeds and structured data; no-script and prehydration forms cannot submit", async ({
@@ -332,11 +322,16 @@ test("review boundaries exclude hidden seeds and structured data; no-script and 
       response.request().resourceType() === "script" ||
       response.headers()["content-type"]?.includes("text/x-component")
     )
-      payloads.push(response.text().catch(() => ""));
+      payloads.push(
+        Promise.race([
+          response.text().catch(() => ""),
+          new Promise<string>((resolve) => setTimeout(() => resolve(""), 3000)),
+        ]),
+      );
   });
   await page.goto(profile);
   await expect(
-    page.getByRole("button", { name: "Submit demo review", exact: true }),
+    page.getByRole("button", { name: "Submit review", exact: true }),
   ).toBeEnabled();
   await page.getByRole("link", { name: "Next reviews", exact: true }).click();
   await expect(page.getByRole("article")).toHaveCount(1);
@@ -354,13 +349,13 @@ test("review boundaries exclude hidden seeds and structured data; no-script and 
     await noScript.goto(profile);
     await expect(noScript.getByTestId("review-summary")).toHaveText(summary);
     await expect(
-      noScript.getByLabel("Display name (sample)", { exact: true }),
+      noScript.getByLabel("Display name", { exact: true }),
     ).toBeDisabled();
     await expect(
-      noScript.getByRole("button", { name: "Submit demo review", exact: true }),
+      noScript.getByRole("button", { name: "Submit review", exact: true }),
     ).toBeDisabled();
     await expect(
-      noScript.getByRole("button", { name: "Reset demo session" }),
+      noScript.getByRole("button", { name: "Reset session" }),
     ).toBeDisabled();
     await noScript
       .getByRole("link", { name: "Next reviews", exact: true })

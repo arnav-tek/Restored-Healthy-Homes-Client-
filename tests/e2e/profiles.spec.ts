@@ -20,17 +20,15 @@ test("filtered search to profile and local inquiry, validation, reset and return
   await expect(
     page.getByRole("link", { name: "Back to results" }),
   ).toHaveAttribute("href", results);
-  await expect(page.getByText(/Use sample information only/)).toBeVisible();
-  await expect(page.getByLabel("Name (sample)", { exact: true })).toBeEnabled();
-  await page
-    .getByRole("button", { name: "Preview demo inquiry" })
-    .press("Enter");
-  await expect(page.getByLabel("Name (sample)", { exact: true })).toBeFocused();
-  await expect(page.getByLabel("Email (sample)")).toHaveAttribute(
+  await expect(page.getByText(/Messages are not sent or saved/)).toBeVisible();
+  await expect(page.getByLabel("Name", { exact: true })).toBeEnabled();
+  await page.getByRole("button", { name: "Check inquiry" }).press("Enter");
+  await expect(page.getByLabel("Name", { exact: true })).toBeFocused();
+  await expect(page.getByLabel("Email")).toHaveAttribute(
     "aria-invalid",
     "true",
   );
-  await expect(page.getByLabel("Message (sample)")).toHaveAttribute(
+  await expect(page.getByLabel("Message")).toHaveAttribute(
     "aria-invalid",
     "true",
   );
@@ -49,19 +47,17 @@ test("filtered search to profile and local inquiry, validation, reset and return
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(testInfo.project.use.viewport!.width);
-  await page
-    .getByLabel("Name (sample)", { exact: true })
-    .fill("Sample Homeowner");
-  await page.getByLabel("Email (sample)").fill("invalid-email");
-  await page.getByLabel("Message (sample)").fill("Short");
-  await page.getByRole("button", { name: "Preview demo inquiry" }).click();
-  await expect(page.getByLabel("Email (sample)")).toBeFocused();
+  await page.getByLabel("Name", { exact: true }).fill("Sample Homeowner");
+  await page.getByLabel("Email").fill("invalid-email");
+  await page.getByLabel("Message").fill("Short");
+  await page.getByRole("button", { name: "Check inquiry" }).click();
+  await expect(page.getByLabel("Email")).toBeFocused();
   await expect(
-    page.getByText("Enter at least 10 characters for your sample message."),
+    page.getByText("Enter at least 10 characters for your message."),
   ).toBeVisible();
-  await page.getByLabel("Email (sample)").fill("homeowner@example.invalid");
+  await page.getByLabel("Email").fill("homeowner@example.invalid");
   await page
-    .getByLabel("Message (sample)")
+    .getByLabel("Message")
     .fill("A fictional ventilation project inquiry.");
   const requests: string[] = [];
   page.on("request", (request) =>
@@ -70,11 +66,9 @@ test("filtered search to profile and local inquiry, validation, reset and return
     ),
   );
   const before = page.url();
-  await page
-    .getByRole("button", { name: "Preview demo inquiry" })
-    .press("Enter");
+  await page.getByRole("button", { name: "Check inquiry" }).press("Enter");
   await expect(
-    page.getByRole("heading", { name: "Demo inquiry complete" }),
+    page.getByRole("heading", { name: "Inquiry checked" }),
   ).toBeFocused();
   await expect(
     page.getByText(/no professional will receive a message/),
@@ -102,11 +96,9 @@ test("filtered search to profile and local inquiry, validation, reset and return
     path: `output/playwright/inquiry-confirmation-${testInfo.project.name}.png`,
     fullPage: true,
   });
-  await page
-    .getByRole("button", { name: "Start another demo inquiry" })
-    .click();
-  await expect(page.getByLabel("Name (sample)", { exact: true })).toBeFocused();
-  for (const label of ["Name (sample)", "Email (sample)", "Message (sample)"])
+  await page.getByRole("button", { name: "Start another inquiry" }).click();
+  await expect(page.getByLabel("Name", { exact: true })).toBeFocused();
+  for (const label of ["Name", "Email", "Message"])
     await expect(page.getByLabel(label, { exact: true })).toHaveValue("");
   await page.getByRole("link", { name: "Back to results" }).click();
   await expect(page).toHaveURL(`http://127.0.0.1:3100${results}`);
@@ -131,7 +123,7 @@ test("all category profiles are public-only; hidden and missing direct routes re
     const response = await request.get(`/professionals/demo-${category}`);
     expect(response.headers()["x-robots-tag"]).toContain("noindex");
     const html = await response.text();
-    expect(html).toContain("Sample professional profile");
+    expect(html).toContain("Professional profile");
     for (const marker of [
       "synthetic-owner",
       "synthetic-customer",
@@ -157,7 +149,7 @@ test("all category profiles are public-only; hidden and missing direct routes re
     const html = await response.text();
     expect(html).toContain("Profile not found");
     expect(html).not.toContain("Example Practice");
-    expect(html).not.toContain("Sample professional profile");
+    expect(html).not.toContain("Professional profile");
     expect(html).not.toContain("inquiry-message");
     expect(html).not.toContain("synthetic-owner");
   }
@@ -173,12 +165,12 @@ test("all category profiles are public-only; hidden and missing direct routes re
   ).toBeVisible();
   await page.goto("/professionals/demo-mold-inspection");
   await expect(
-    page.getByText("Verified credentials (demo)", { exact: true }),
+    page.getByText("Credentials on file", { exact: true }),
   ).toBeVisible();
   await expect(
     page.getByText("hello@fern-field.example.invalid", { exact: true }),
   ).toBeVisible();
-  await expect(page).toHaveTitle(/Fern & Field Inspections.*Demo profile/);
+  await expect(page).toHaveTitle(/Fern & Field Inspections/);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
     "content",
     /noindex/,
@@ -226,13 +218,11 @@ test("without JavaScript profiles work and inquiry cannot send native form data"
       "Fern & Field Inspections",
     );
     await expect(
-      page.getByText(/Enable JavaScript to try this local demo form/),
+      page.getByText(/Enable JavaScript to try this local form/),
     ).toBeVisible();
+    await expect(page.getByLabel("Name", { exact: true })).toBeDisabled();
     await expect(
-      page.getByLabel("Name (sample)", { exact: true }),
-    ).toBeDisabled();
-    await expect(
-      page.getByRole("button", { name: "Preview demo inquiry" }),
+      page.getByRole("button", { name: "Check inquiry" }),
     ).toBeDisabled();
     await page.getByRole("link", { name: "Back to directory" }).click();
     await expect(page).toHaveURL(/\/directory$/);

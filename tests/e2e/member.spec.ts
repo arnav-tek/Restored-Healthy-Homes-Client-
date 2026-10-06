@@ -16,9 +16,7 @@ test("public application, keyboard validation, shared member edits and reset", a
   );
   await expect(page.getByRole("checkbox")).toHaveCount(8);
   await expect(page.getByLabel("Your name", { exact: true })).toBeEnabled();
-  await page
-    .getByRole("button", { name: "Create demo application" })
-    .press("Enter");
+  await page.getByRole("button", { name: "Create application" }).press("Enter");
   await expect(page.getByLabel("Your name", { exact: true })).toBeFocused();
   await expect(
     page.getByRole("alert").filter({ hasText: "Check the highlighted" }),
@@ -45,11 +43,9 @@ test("public application, keyboard validation, shared member edits and reset", a
       `${request.method()} ${request.url()} ${request.postData() ?? ""}`,
     ),
   );
-  await page
-    .getByRole("button", { name: "Create demo application" })
-    .press("Enter");
+  await page.getByRole("button", { name: "Create application" }).press("Enter");
   await expect(
-    page.getByRole("heading", { name: "Demo application created" }),
+    page.getByRole("heading", { name: "Application created in this tab" }),
   ).toBeFocused();
   await expect(
     page.getByText("Application status: pending.", { exact: true }),
@@ -64,7 +60,7 @@ test("public application, keyboard validation, shared member edits and reset", a
     path: `output/playwright/application-confirmation-${testInfo.project.name}.png`,
     fullPage: true,
   });
-  await page.getByRole("link", { name: "Open demo member workspace" }).click();
+  await page.getByRole("link", { name: "Open member workspace" }).click();
   await signIn(page, "application");
   await expect(page.getByTestId("member-approval")).toHaveText("pending");
   await expect(page.getByTestId("selected-business")).toHaveText(
@@ -102,7 +98,7 @@ test("public application, keyboard validation, shared member edits and reset", a
   await expect(
     page.getByText(/Locally Edited Sample is available/),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Open demo member workspace" }).click();
+  await page.getByRole("link", { name: "Open member workspace" }).click();
   await signIn(page, "application");
   await expect(page.getByTestId("selected-business")).toHaveText(
     "Locally Edited Sample",
@@ -190,9 +186,9 @@ test("example states, seeded inbox, client navigation and refresh lifetime", asy
   );
   await mainNav(page, "List Your Business");
   await fillApplication(page);
-  await page.getByRole("button", { name: "Create demo application" }).click();
+  await page.getByRole("button", { name: "Create application" }).click();
   await expect(
-    page.getByRole("heading", { name: "Demo application created" }),
+    page.getByRole("heading", { name: "Application created in this tab" }),
   ).toBeVisible();
   await page.reload();
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
@@ -208,11 +204,11 @@ test("application and editing cannot natively submit without JavaScript", async 
     const page = await context.newPage();
     await page.goto("http://127.0.0.1:3100/list-your-business");
     await expect(
-      page.getByText(/JavaScript is required for this local demo/),
+      page.getByText(/JavaScript is required for this form/),
     ).toBeVisible();
     await expect(page.getByLabel("Your name", { exact: true })).toBeDisabled();
     await expect(
-      page.getByRole("button", { name: "Create demo application" }),
+      page.getByRole("button", { name: "Create application" }),
     ).toBeDisabled();
     await page.goto("http://127.0.0.1:3100/demo/member?section=profile");
     await expect(
@@ -225,7 +221,7 @@ test("application and editing cannot natively submit without JavaScript", async 
       page.getByRole("button", { name: "Update local preview" }),
     ).toHaveCount(0);
     await expect(
-      page.getByRole("button", { name: "Reset demo session" }),
+      page.getByRole("button", { name: "Reset session" }),
     ).toHaveCount(0);
   } finally {
     await context.close();

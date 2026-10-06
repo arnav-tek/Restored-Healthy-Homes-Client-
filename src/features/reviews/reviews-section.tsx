@@ -40,14 +40,6 @@ export function ReviewsSection({
     >
       <header className="reviews-heading">
         <h2 id="reviews-heading">Reviews</h2>
-        <p>
-          Fictional demo reviews, not real customer experiences. These reviews
-          have not been independently verified.
-        </p>
-        <p className="field-help">
-          Admin publication changes this tab’s preview only. Refresh or reset
-          restores the original samples.
-        </p>
       </header>
       <ReviewSummary reviews={reviews} />
       <ReviewList reviews={visible} start={(page - 1) * reviewPageSize + 1} />

@@ -3,7 +3,7 @@ import { directoryRepository } from "@/data";
 import { Notice } from "@/components/ui/notice";
 import { ApplicationExperience } from "@/features/member/application-experience";
 export const metadata: Metadata = {
-  title: "List Your Business | Demo application",
+  title: "List Your Business",
 };
 export default async function ApplicationPage() {
   const catalog = (await directoryRepository.getCategories()).map(
@@ -14,15 +14,11 @@ export default async function ApplicationPage() {
       <header className="page-heading">
         <p className="section-label">For healthy-home professionals</p>
         <h1>List Your Business</h1>
-        <p>
-          Try a fictional application and explore your demo member workspace.
-        </p>
+        <p>Introduce your business, services and professional specialties.</p>
       </header>
       <Notice>
-        <strong>Demo application.</strong> Use fictional information only.
-        Nothing is sent to the owner or saved permanently. Entries remain only
-        in this tab until refresh or reset. No dashboard, login or payment is
-        required.
+        Applications stay in this tab and are not sent or saved permanently.
+        Refreshing clears your entries.
       </Notice>
       <ApplicationExperience catalog={catalog} />
     </div>

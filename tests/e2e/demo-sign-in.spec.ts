@@ -92,11 +92,11 @@ test("demo sign-in presets, validation and keyboard journey keep credentials loc
     .first()
     .click();
   await page
-    .getByLabel("Name (sample)", { exact: true })
+    .getByLabel("Name", { exact: true })
     .fill("Unsaved fictional inquiry");
   page.once("dialog", (dialog) => dialog.dismiss());
   await headerSignOut(page);
-  await expect(page.getByLabel("Name (sample)", { exact: true })).toHaveValue(
+  await expect(page.getByLabel("Name", { exact: true })).toHaveValue(
     "Unsaved fictional inquiry",
   );
   page.once("dialog", (dialog) => dialog.accept());
@@ -217,7 +217,7 @@ test("explicit switching and sign-out isolate drafts; saved records survive, res
     "Meadow Sample Studio",
   );
   page.once("dialog", (dialog) => dialog.accept());
-  await page.getByRole("button", { name: "Reset demo session" }).click();
+  await page.getByRole("button", { name: "Reset session" }).click();
   await expect(
     page.getByRole("heading", { name: "Demo sign-in required" }),
   ).toBeVisible();

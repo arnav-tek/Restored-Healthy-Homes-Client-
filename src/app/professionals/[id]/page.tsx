@@ -18,9 +18,8 @@ export async function generateMetadata({
   const profile = await loadProfile((await params).id);
   if (!profile) notFound();
   return {
-    title: `${profile.businessName || "Sample professional"} | Demo profile`,
-    description:
-      "Fictional professional profile. Demo inquiries are not sent or saved.",
+    title: `${profile.businessName || "Professional"}`,
+    description: "Explore services, specialties and professional information.",
     robots: { index: false, follow: false },
   };
 }

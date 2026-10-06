@@ -30,15 +30,14 @@ export async function searchEligiblePublic(
       ok: false,
       errors: {
         location:
-          "This location is not in the demo. Choose a city or ZIP from the supported list.",
+          "This location is not supported yet. Choose a city or ZIP from the supported list.",
       },
     };
   if (resolution?.status === "ambiguous")
     return {
       ok: false,
       errors: {
-        location:
-          "More than one demo city matches. Choose a city and state below.",
+        location: "More than one city matches. Choose a city and state below.",
       },
       suggestions: resolution.candidates,
     };

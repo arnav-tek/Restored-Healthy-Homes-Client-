@@ -41,7 +41,7 @@ export function ReviewSummary({
             </strong>
           </p>
           <p>
-            {summary.count} published fictional{" "}
+            {summary.count} published{" "}
             {summary.count === 1 ? "review" : "reviews"}
           </p>
         </>
@@ -58,11 +58,7 @@ export function ReviewList({
 }) {
   if (!reviews.length) return null;
   return (
-    <ol
-      className="review-list"
-      aria-label="Published fictional reviews"
-      start={start}
-    >
+    <ol className="review-list" aria-label="Published reviews" start={start}>
       {reviews.map((review) => (
         <li key={review.id}>
           <article aria-labelledby={`review-${review.id}`}>
@@ -71,7 +67,6 @@ export function ReviewList({
               <ReviewRating value={review.rating} />
             </div>
             <p className="field-help">
-              Fictional review ·{" "}
               <time dateTime={review.publishedAt}>
                 {review.publishedAt.slice(0, 10)}
               </time>

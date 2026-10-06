@@ -90,16 +90,16 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
           aria-labelledby="review-confirmation-heading"
         >
           <h3 id="review-confirmation-heading" tabIndex={-1} ref={confirmation}>
-            Demo review {submitted.status}
+            Review {submitted.status}
           </h3>
           <p>
             {submitted.status === "published"
-              ? "Published in this tab’s demo preview only. This review now contributes to the sample rating."
+              ? "Published in this tab only. This review now contributes to the rating."
               : submitted.status === "rejected"
-                ? "Rejected in this demo session. This review is excluded from public and member review lists and the sample rating."
-                : "Pending in this demo session. Not published or delivered. Your review does not change the public rating."}{" "}
+                ? "Rejected in this session. This review is excluded from public and member review lists and the rating."
+                : "Pending in this session. Not published or delivered. Your review does not change the public rating."}{" "}
             Nothing is sent or saved permanently. Refresh or reset restores the
-            original samples.
+            initial content.
           </p>
           <p className="field-help">Reference: {submitted.id}</p>
           <p>
@@ -119,7 +119,7 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
               );
             }}
           >
-            Start another demo review
+            Start another review
           </Button>
         </section>
       ) : (
@@ -132,12 +132,10 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
           aria-labelledby="review-form-heading"
           aria-describedby="review-demo-note"
         >
-          <h3 id="review-form-heading">Try a demo review</h3>
+          <h3 id="review-form-heading">Write a review</h3>
           <p id="review-demo-note">
-            Use fictional information only. Nothing is sent or saved
-            permanently. Do not include email, medical information or other
-            sensitive details. Guest reviews are a provisional demo policy;
-            service verification and moderation rules remain undecided.
+            Reviews stay in this tab and are not sent or saved permanently.
+            Please leave out sensitive personal information.
           </p>
           <noscript>
             <p>
@@ -171,9 +169,9 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
             className="member-form-fields"
             disabled={!ready || !eligible}
           >
-            <legend className="sr-only">Fictional review details</legend>
+            <legend className="sr-only">Review details</legend>
             <div className="search-field">
-              <label htmlFor="review-displayName">Display name (sample)</label>
+              <label htmlFor="review-displayName">Display name</label>
               <input
                 {...fieldProps("displayName")}
                 type="text"
@@ -181,12 +179,12 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
                 minLength={2}
               />
               <p className="field-help" id="review-displayName-help">
-                2–80 characters. Use a fictional name.
+                2–80 characters.
               </p>
               {error("displayName")}
             </div>
             <div className="search-field">
-              <label htmlFor="review-rating">Rating (sample)</label>
+              <label htmlFor="review-rating">Rating</label>
               <select {...fieldProps("rating")}>
                 <option value="">Choose a rating</option>
                 {[1, 2, 3, 4, 5].map((rating) => (
@@ -201,7 +199,7 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
               {error("rating")}
             </div>
             <div className="search-field">
-              <label htmlFor="review-body">Written review (sample)</label>
+              <label htmlFor="review-body">Written review</label>
               <textarea
                 {...fieldProps("body")}
                 rows={5}
@@ -209,16 +207,16 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
                 minLength={20}
               />
               <p className="field-help" id="review-body-help">
-                20–2,000 characters describing a fictional service experience.
+                20–2,000 characters describing a service experience.
               </p>
               {error("body")}
             </div>
-            <Button type="submit">Submit demo review</Button>
+            <Button type="submit">Submit review</Button>
           </fieldset>
           {ready && !eligible && (
             <p role="status">
               Review submission is unavailable for this profile in this session.
-              Refresh to start a new demo session.
+              Refresh to start a new session.
             </p>
           )}
         </form>
@@ -226,9 +224,8 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
       <div className="review-reset">
         <SessionReset />
         <p className="field-help">
-          Reset clears all demo workflows, drafts and sign-in. Refresh also
-          clears this tab’s session. Repeated-click handling here is a demo
-          convenience, not production duplicate-review or abuse prevention.
+          Reset clears all workflows, drafts and sign-in. Refresh also clears
+          this tab’s session.
         </p>
       </div>
     </div>

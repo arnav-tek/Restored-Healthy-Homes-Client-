@@ -51,7 +51,7 @@ export async function resetSession(page: Page, accept = true) {
     if (accept) await dialog.accept();
     else await dialog.dismiss();
   });
-  await page.getByRole("button", { name: "Reset demo session" }).click();
+  await page.getByRole("button", { name: "Reset session" }).click();
   if (accept && area && account) {
     await expect(page).toHaveURL(`/demo/${area}`);
     await expect(

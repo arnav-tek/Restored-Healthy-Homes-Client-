@@ -3,7 +3,7 @@ import { categories } from "@/domain/categories";
 import { safeQaReturn } from "@/validation/qa";
 import { QuestionForm } from "@/features/qa/question-form";
 export const metadata: Metadata = {
-  title: "Ask a demo question",
+  title: "Ask a question",
   robots: { index: false, follow: false },
 };
 export default async function AskPage({
@@ -15,7 +15,7 @@ export default async function AskPage({
   return (
     <div className="container qa-page qa-reading">
       <header className="page-heading">
-        <h1>Ask a demo question</h1>
+        <h1>Ask a question</h1>
         <p>
           Try a service or home-project question. No account or contact details
           are needed.

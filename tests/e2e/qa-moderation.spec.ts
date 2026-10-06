@@ -10,7 +10,7 @@ async function admin(page: Page) {
     "Your directory at a glance",
   );
   await expect(
-    page.getByRole("button", { name: "Reset demo session" }),
+    page.getByRole("button", { name: "Reset session" }),
   ).toBeEnabled();
   await section(page, "Admin", "Q&A");
 }
@@ -22,7 +22,7 @@ async function member(page: Page) {
     "Your business at a glance",
   );
   await expect(
-    page.getByRole("button", { name: "Reset demo session" }),
+    page.getByRole("button", { name: "Reset session" }),
   ).toBeEnabled();
   await section(page, "Member", "Q&A");
 }
@@ -51,11 +51,9 @@ test("session publications can add a third public results page without server cl
   for (let index = 1; index <= 3; index++) {
     if (index > 1) {
       await page
-        .getByRole("link", { name: "Ask a demo question", exact: true })
+        .getByRole("link", { name: "Ask a question", exact: true })
         .click();
-      await page
-        .getByRole("button", { name: "Ask another demo question" })
-        .click();
+      await page.getByRole("button", { name: "Ask another question" }).click();
     }
     const title = `Zzz fictional pagination question ${index}`;
     await page.getByLabel("Question title", { exact: true }).fill(title);
@@ -65,7 +63,7 @@ test("session publications can add a third public results page without server cl
     await page
       .getByLabel("Question text", { exact: true })
       .fill("A sample planning question for a fictional design project.");
-    await page.getByRole("button", { name: "Submit demo question" }).click();
+    await page.getByRole("button", { name: "Submit question" }).click();
     await admin(page);
     await page
       .getByRole("link", { name: `Review ${title}`, exact: true })
@@ -81,16 +79,12 @@ test("session publications can add a third public results page without server cl
       .getByRole("link", { name: "← Back to questions", exact: true })
       .click();
   }
-  await expect(
-    page.getByText("Showing 1–6 of 13 fictional questions"),
-  ).toBeVisible();
+  await expect(page.getByText("Showing 1–6 of 13 questions")).toBeVisible();
   await page.getByRole("link", { name: "Next page" }).click();
   await expect(page.getByText("Page 2 of 3")).toBeVisible();
   await page.getByRole("link", { name: "Next page" }).click();
   await expect(page).toHaveURL("/questions?page=3");
-  await expect(
-    page.getByText("Showing 13–13 of 13 fictional questions"),
-  ).toBeVisible();
+  await expect(page.getByText("Showing 13–13 of 13 questions")).toBeVisible();
   await page
     .getByRole("link", {
       name: "Zzz fictional pagination question 3",
@@ -108,11 +102,9 @@ test("session publications can add a third public results page without server cl
     .getByRole("button", { name: "Search questions", exact: true })
     .click();
   await expect(page).toHaveURL("/questions?q=Zzz");
-  await expect(
-    page.getByText("Showing 1–3 of 3 fictional questions"),
-  ).toBeVisible();
+  await expect(page.getByText("Showing 1–3 of 3 questions")).toBeVisible();
   await page.reload();
-  await expect(page.getByText("0 matching fictional questions")).toBeVisible();
+  await expect(page.getByText("0 matching questions")).toBeVisible();
 });
 test("same-session question and answer publication, rejection, parent hiding and reset", async ({
   page,
@@ -134,9 +126,9 @@ test("same-session question and answer publication, rejection, parent hiding and
   await page
     .getByLabel("Question text", { exact: true })
     .fill("What might a fictional team include in a sample project handover?");
-  await page.getByRole("button", { name: "Submit demo question" }).click();
+  await page.getByRole("button", { name: "Submit question" }).click();
   await expect(
-    page.getByRole("heading", { name: "Awaiting fictional review" }),
+    page.getByRole("heading", { name: "Awaiting review" }),
   ).toBeVisible();
   await admin(page);
   await page.getByLabel("Publication status").selectOption("pending");
@@ -169,9 +161,7 @@ test("same-session question and answer publication, rejection, parent hiding and
     .getByRole("link", { name: /Back to questions/ })
     .first()
     .click();
-  await expect(
-    page.getByText("Showing 1–6 of 11 fictional questions"),
-  ).toBeVisible();
+  await expect(page.getByText("Showing 1–6 of 11 questions")).toBeVisible();
   await member(page);
   await page.getByRole("link", { name: title, exact: true }).click();
   await page.getByRole("button", { name: "Submit demo answer" }).press("Enter");
@@ -203,7 +193,7 @@ test("same-session question and answer publication, rejection, parent hiding and
     .getByRole("link", { name: "View public session question" })
     .click();
   await expect(
-    page.getByRole("heading", { name: "Published sample answers (0)" }),
+    page.getByRole("heading", { name: "Published answers (0)" }),
   ).toBeVisible();
   await page.goBack();
   await page
@@ -217,7 +207,7 @@ test("same-session question and answer publication, rejection, parent hiding and
     .getByRole("link", { name: "View public session question" })
     .click();
   await expect(
-    page.getByRole("heading", { name: "Published sample answers (1)" }),
+    page.getByRole("heading", { name: "Published answers (1)" }),
   ).toBeVisible();
   await expect(page.getByText(answer, { exact: true })).toBeVisible();
   await expect(page.locator("main")).not.toContainText("ANSWER_BROWSER_NOTE");
@@ -238,7 +228,7 @@ test("same-session question and answer publication, rejection, parent hiding and
     .getByRole("link", { name: "View public session question" })
     .click();
   await expect(
-    page.getByRole("heading", { name: "Published sample answers (0)" }),
+    page.getByRole("heading", { name: "Published answers (0)" }),
   ).toBeVisible();
   await member(page);
   await expect(page.getByLabel("Your submitted answers")).toContainText(
@@ -267,7 +257,7 @@ test("same-session question and answer publication, rejection, parent hiding and
     .getByRole("link", { name: "View public session question" })
     .click();
   await expect(
-    page.getByRole("heading", { name: /Published sample answers/ }),
+    page.getByRole("heading", { name: /Published answers/ }),
   ).toBeVisible();
   await page.goBack();
   page.once("dialog", (dialog) => dialog.accept());
@@ -282,9 +272,7 @@ test("same-session question and answer publication, rejection, parent hiding and
   await page
     .getByRole("link", { name: "Back to questions", exact: true })
     .click();
-  await expect(
-    page.getByText("Showing 1–6 of 10 fictional questions"),
-  ).toBeVisible();
+  await expect(page.getByText("Showing 1–6 of 10 questions")).toBeVisible();
   await member(page);
   await expect(page.getByLabel("Your submitted answers")).toContainText(
     "Answer status: published",
@@ -382,7 +370,7 @@ test("session routes have neutral HTML and no-script state; seed moderation rese
   expect(response.status()).toBe(200);
   const html = await response.text();
   expect(html).toContain("Checking this tab");
-  expect(html).toContain("Session question | Demo Q&amp;A");
+  expect(html).toContain("Session question | Restored Healthy Homes");
   expect(html).not.toMatch(/QA_PRIVATE|QA_UNPUBLISHED|QA_HIDDEN/);
   const context = await browser.newContext({ javaScriptEnabled: false });
   const noJs = await context.newPage();
@@ -416,7 +404,7 @@ test("session routes have neutral HTML and no-script state; seed moderation rese
     .getByRole("link", { name: "View public session question" })
     .click();
   await expect(
-    page.getByRole("heading", { name: /Published sample answers/ }),
+    page.getByRole("heading", { name: /Published answers/ }),
   ).toBeVisible();
   await page.goBack();
   page.once("dialog", (dialog) => dialog.accept());
@@ -427,6 +415,6 @@ test("session routes have neutral HTML and no-script state; seed moderation rese
   ).toBeVisible();
   await page.reload();
   await expect(
-    page.getByRole("heading", { name: "Published sample answers (2)" }),
+    page.getByRole("heading", { name: "Published answers (2)" }),
   ).toBeVisible();
 });

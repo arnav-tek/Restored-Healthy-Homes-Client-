@@ -13,9 +13,9 @@ import {
 import { HomeStatistics } from "@/features/home/home-statistics";
 
 export const metadata: Metadata = {
-  title: "Find healthy-home professionals | Demo preview",
+  title: "Find healthy-home professionals",
   description:
-    "Explore eight healthy-home specialties, search by city or ZIP, and try the Restored Healthy Homes directory with fictional demo data.",
+    "Explore eight healthy-home specialties, search by city or ZIP, and find a starting point for your next project.",
 };
 export default async function Home() {
   const [catalog, locations, listings] = await Promise.all([
@@ -42,10 +42,6 @@ export default async function Home() {
           </div>
           <HomeSearch catalog={catalog} locations={locations} />
           <div className="hero-followup">
-            <p className="hero-demo">
-              Demo preview · Fictional listings. Forms are not delivered or
-              saved permanently.
-            </p>
             <Link href="/directory">
               Browse all professionals{" "}
               <ArrowRight size={16} aria-hidden="true" />

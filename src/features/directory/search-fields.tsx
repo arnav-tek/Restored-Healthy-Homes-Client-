@@ -89,7 +89,7 @@ export function SupportedLocations({
 }) {
   return (
     <details className="supported-locations">
-      <summary>Supported demo locations</summary>
+      <summary>Supported locations</summary>
       <p>
         Only these city names, city/state pairs and ZIP codes are included. ZIP
         codes use the same approximate center as their city.

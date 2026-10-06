@@ -32,17 +32,17 @@ const detailFields = [
   {
     name: "description",
     label: "Business description",
-    help: "20–2,000 characters. Describe a fictional business.",
+    help: "20–2,000 characters. Describe a business.",
   },
   {
     name: "practices",
     label: "Healthy-home practices",
-    help: "20–1,500 characters. Describe sample practices, without personal or medical information.",
+    help: "20–1,500 characters. Describe practices, without personal or medical information.",
   },
   {
     name: "listedCredentials",
     label: "Listed credentials (optional)",
-    help: "One per line; up to 10, 120 characters each. New or edited claims need review; unchanged claims keep their demo decision. The platform does not issue certifications.",
+    help: "One per line; up to 10, 120 characters each. New or edited claims need review; unchanged claims keep their decision. The platform does not issue certifications.",
   },
 ] as const;
 
@@ -112,15 +112,14 @@ export function ProfileFieldsForm({
     >
       <noscript>
         <p>
-          JavaScript is required for this local demo. Form controls are disabled
-          so nothing can be submitted to a server.
+          JavaScript is required for this form. Form controls are disabled so
+          nothing can be submitted to a server.
         </p>
       </noscript>
       <fieldset disabled={!ready || disabled} className="member-form-fields">
-        <legend className="sr-only">Fictional business details</legend>
+        <legend className="sr-only">Business details</legend>
         <p className="field-help">
-          Use fictional information only. All fields are required unless marked
-          optional.
+          All fields are required unless marked optional.
         </p>
         {Object.keys(errors).length ? (
           <p role="alert" className="field-error">

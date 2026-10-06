@@ -67,7 +67,7 @@ Brief review: category links use compact open rows instead of eight decorative c
 
 The user requested a presentation redesign within the completed functional phase. This supersedes the original 2H-1 layout direction above, while preserving its data and workflow boundaries.
 
-The sage hero has a short introduction followed immediately by a horizontal, labeled search panel on desktop. Tablet uses two fields above Search; mobile stacks the controls before secondary browsing. Eight catalog categories form four columns at wide widths, two through tablet and single compact icon/text links on mobile. Icons are mapped by immutable IDs in the presentation layer; catalog copy remains shared.
+Following the user's 2026-10-07 preference, the sage hero uses two desktop columns: introduction on the left and a search card with stacked fields on the right. At 820 px and below the sections stack; tablet uses two fields above Search and mobile stacks the controls before secondary browsing. Existing copy and all sections below the hero are retained. Eight catalog categories form four columns at wide widths, two through tablet and single compact icon/text links on mobile. Icons are mapped by immutable IDs in the presentation layer; catalog copy remains shared.
 
 A sage statistics panel separates the directory snapshot from the surrounding cream page. Large numerals, contrasting labels and one shared fictional-data/location disclaimer keep the figures readable; a native disclosure holds definitions. Below it, an editorial introduction and directory link sit beside a vertical numbered sequence. Mobile stacks both the statistics and journey introduction, preserving generous text and control sizes. A quiet sage Q&A spotlight sits beside a lighter consultation introduction. An editorial purpose introduction leads to About Us, followed by the sole large professional application CTA on sage.
 
@@ -76,3 +76,8 @@ About Us pairs its heading with a serif introduction, puts the company-story slo
 The footer now groups visitor and professional/workspace links, with a concise bottom demo notice. The shared brand can reflow under text enlargement; the mobile menu keeps a viewport-bounded scrolling area. Existing fonts, palette, control sizes and focus behavior remain. Obsolete home-only hero/path styles were removed after checking their usages; the home/About block was refactored rather than layered with contradictory overrides.
 
 Visual client/user approval and final company copy/media remain pending. Browser evidence and actual checks are recorded separately in the Phase 2H-1 handoff and checklist.
+
+
+## Public copy cleanup - 2026-10-07
+
+At the user's request, repeated demo/preview badges, banners and template instructions are removed from the public site. Public headings, buttons, review counts, metadata and validation messages use concise labels. Form-local messages still describe actual delivery, payment and session-lifetime behavior. About story/video slots use coming-soon copy; no company history or media was invented. Synthetic source records, account selection and workspace-specific explanations remain separate from this presentation cleanup. The restored two-column hero and the new statistics/journey layout remain in place.
