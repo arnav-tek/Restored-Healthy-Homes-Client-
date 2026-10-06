@@ -77,7 +77,6 @@ test("Q&A direct routes and payloads exclude unpublished data; attributed profil
     "pending-seed-question",
     "rejected-seed-question",
     "missing-question",
-    "demo-session-question-1",
   ]) {
     const response = await request.get(`/questions/${id}`);
     expect(response.status()).toBe(404);
@@ -122,7 +121,9 @@ test("Q&A direct routes and payloads exclude unpublished data; attributed profil
   await expect(
     page.getByRole("link", { name: "View fictional professional profile" }),
   ).toHaveCount(0);
-  expect((await Promise.all(payloads)).join("\n")).not.toMatch(forbidden);
+  expect((await Promise.all(payloads)).join("\n")).not.toMatch(
+    /QA_PRIVATE|QA_UNPUBLISHED|QA_HIDDEN|QA_PUBLISHED_ANSWER_HIDDEN_PARENT/,
+  );
 });
 
 test("question validation, shared drafts, pending confirmation and confirmed reset have no side effects", async ({
@@ -179,7 +180,7 @@ test("question validation, shared drafts, pending confirmation and confirmed res
     page.getByRole("heading", { name: "Awaiting fictional review" }),
   ).toBeFocused();
   await expect(
-    page.getByText(/not publicly visible, has not been sent to professionals/),
+    page.getByText(/has not been sent to professionals/),
   ).toBeVisible();
   await expect(page.locator(".qa-confirmation a")).toHaveCount(0);
   expect(

@@ -3,13 +3,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useDemoSession } from "@/features/member/demo-session";
+import { demoDashboard } from "@/domain/demo-identity";
+import { SignOutButton } from "@/features/demo-sign-in/sign-out-button";
 const links = [
   { href: "/", label: "Home" },
   { href: "/directory", label: "Find professionals" },
   { href: "/questions", label: "Ask a Specialist" },
-  { href: "/demo/member", label: "Member preview" },
+  { href: "/consultations", label: "Consultations" },
+  { href: "/about", label: "About Us" },
 ];
 export function Navigation() {
+  const { state } = useDemoSession();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
@@ -58,6 +63,26 @@ export function Navigation() {
             {link.label}
           </Link>
         ))}
+        {state.identity ? (
+          <>
+            <Link
+              href={demoDashboard(state.identity)}
+              data-demo-account={state.identity.accountId}
+              onClick={close}
+            >
+              Dashboard
+            </Link>
+            <SignOutButton className="nav-sign-out" onSignedOut={close} />
+          </>
+        ) : (
+          <Link
+            href="/login"
+            onClick={close}
+            aria-current={pathname === "/login" ? "page" : undefined}
+          >
+            Sign in
+          </Link>
+        )}
         <Link className="nav-cta" href="/list-your-business" onClick={close}>
           List Your Business
         </Link>

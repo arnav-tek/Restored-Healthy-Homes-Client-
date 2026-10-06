@@ -3,15 +3,18 @@ import type { PublicProfile } from "@/domain/professional";
 import type { Category } from "@/domain/categories";
 import { Notice } from "@/components/ui/notice";
 import { InquiryForm } from "./inquiry-form";
+import { ReviewsSection } from "@/features/reviews/reviews-section";
 
 export function ProfileView({
   profile,
   catalog,
   returnTo,
+  reviewPage,
 }: {
   profile: PublicProfile;
   catalog: readonly Category[];
   returnTo: string;
+  reviewPage: unknown;
 }) {
   const categoryNames = profile.categoryIds.flatMap((id) => {
     const category = catalog.find((item) => item.id === id);
@@ -138,6 +141,11 @@ export function ProfileView({
         </div>
         <InquiryForm />
       </div>
+      <ReviewsSection
+        professionalId={profile.id}
+        requestedPage={reviewPage}
+        returnTo={returnTo}
+      />
     </div>
   );
 }

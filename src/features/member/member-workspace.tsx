@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useRef } from "react";
-import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { formatMonthlyPrice } from "@/domain/categories";
 import {
   memberEligibilityMessage,
@@ -15,6 +14,9 @@ import {
 } from "./profile-fields-form";
 import { useDemoSession, useDemoCatalog } from "./demo-session";
 import { useDashboardNavigation } from "@/features/dashboard/use-dashboard-navigation";
+import { MemberQa } from "@/features/qa/member-qa";
+import { MemberReviews } from "@/features/reviews/member-reviews";
+import { MemberConsultations } from "@/features/consultations/member-consultations";
 import { RecordStatus } from "@/features/dashboard/record-status";
 
 export function MemberWorkspace({
@@ -23,19 +25,37 @@ export function MemberWorkspace({
   catalog: readonly ApplicationCategory[];
 }) {
   const { state, dispatch, resetVersion } = useDemoSession();
-  const { query, href, navigate, pending } = useDashboardNavigation("member");
+  const { query, href, pending } = useDashboardNavigation("member");
   const sessionCatalog = useDemoCatalog(catalog);
-  const ready = useDemoReady();
   const feedback = useRef<HTMLParagraphElement>(null);
-  const requested = state.records.find((item) => item.id === query.record);
-  const record =
-    requested ?? state.records.find((item) => item.id === state.selectedId)!;
+  const identity = state.identity;
+  const record = state.records.find(
+    (item) => identity?.kind === "member" && item.id === identity.memberId,
+  );
+  if (!record || (query.record && query.record !== record.id))
+    return (
+      <section className="workspace-empty">
+        <h1 id="workspace-title" tabIndex={-1}>
+          Member record unavailable for this demo account
+        </h1>
+        <p>
+          Sign-in selects the fictional professional. A URL cannot change that
+          identity.
+        </p>
+        <Link className="text-link" href={href({ record: "" })}>
+          Return to your member workspace
+        </Link>
+      </section>
+    );
   const profile = record.profile;
   const selectedCategories = sessionCatalog.filter((category) =>
     profile.categoryIds.includes(category.id),
   );
   const inbox = state.inquiries.filter((item) => item.memberId === record.id);
   const titles: Record<string, string> = {
+    reviews: "Your published reviews",
+    consultations: "Your demo consultations",
+    qa: "Your Q&A workspace",
     overview: "Your business at a glance",
     profile: "Your business profile",
     inquiries: "Your sample inquiries",
@@ -44,43 +64,33 @@ export function MemberWorkspace({
   return (
     <>
       <header className="dashboard-heading">
-        <p className="section-label">Member · {query.section}</p>
+        <p className="section-label">
+          Member · {query.section === "qa" ? "Q&A" : query.section}
+        </p>
         <h1 id="workspace-title" tabIndex={-1}>
           {titles[query.section]}
         </h1>
       </header>
-      <div className="workspace-record-picker search-field">
-        <label htmlFor="member-example">
-          View a fictional example or your application
-        </label>
-        <select
-          id="member-example"
-          value={record.id}
-          disabled={!ready || pending}
-          onChange={(event) => {
-            dispatch({ type: "select", id: event.target.value });
-            navigate({ record: event.target.value });
-          }}
-        >
-          {state.records.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.profile.businessName} · {item.approval}
-            </option>
-          ))}
-        </select>
-      </div>
-      {query.record && !requested && (
-        <p role="status">
-          That session record is unavailable after reset or refresh. Showing the
-          selected example.
-        </p>
-      )}
       <div className="workspace-business">
         <h2 data-testid="selected-business">{profile.businessName}</h2>
         <p>
           {profile.city}, {profile.state}
         </p>
       </div>
+      {query.section === "qa" && (
+        <MemberQa
+          key={resetVersion}
+          memberId={record.id}
+          disabled={pending || state.selectedId !== record.id}
+        />
+      )}
+      {query.section === "reviews" && <MemberReviews />}
+      {query.section === "consultations" && (
+        <MemberConsultations
+          key={resetVersion}
+          disabled={pending || state.selectedId !== record.id}
+        />
+      )}
       {query.section === "overview" && (
         <>
           <RecordStatus record={record} />

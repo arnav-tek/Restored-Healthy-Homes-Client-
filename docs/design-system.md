@@ -42,3 +42,23 @@ Phase 2C-2 uses the same tokens and workspace shell. The application register us
 
 Phase 2D replaces the long workspace pages with focused views. A sticky desktop rail groups section links above the separate demo-workspace link and secondary reset; below 820 px, a native disclosure holds the section menu. Overview numbers come only from current session records. Admin registers use native tables inside their own scroll regions, with business links first. Status summaries place approval, subscription, suspension and eligibility together. Retain existing sage/cream/clay/brown tokens and Georgia/Arial fonts; no charts, decorative images or new motion.
 Phase 2E-1 keeps the same typography and colors for public Q&A. Questions use a separated reading list; answers have a quiet sage edge and clear fictional attribution. Forms reuse existing controls, field errors and focus treatment. The public header now uses its disclosure below 1050 px to accommodate Ask a Specialist; workspace navigation still changes below 820 px.
+
+## Phase 2H-1 direction
+
+Retain sage #3D5C3B, cream #F5F0E8, brown #3B2A1A, dark clay #984B22 and paper #FFFEFB, with Georgia headings and Arial controls/body. Keep the existing 1200 px container and spacing scale. The search-led hero remains the strongest element; the rest uses quiet, left-aligned sections without new imagery, motion or gradients.
+
+```text
+Home:  introduction | search
+       eight catalog links in two columns
+       compact demo statistics
+       three sequential visitor steps
+       questions | consultations | business application
+       purpose introduction / About Us
+About: introduction
+       client story | provisional purpose
+       video heading | static asset placeholder
+       browse / apply
+Mobile: stack sections and category links; keep controls full-width where needed
+```
+
+Brief review: category links use compact open rows instead of eight decorative cards; the three numbered steps are an actual sequence. Statistics describe sample data, not marketing traction. About Us content is explicitly provisional and the video area has no playback control until an approved asset exists. Shared navigation collapses before the extra About Us link crowds account actions.

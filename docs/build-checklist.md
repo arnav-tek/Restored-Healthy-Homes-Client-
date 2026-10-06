@@ -2,6 +2,8 @@
 
 The [overview](../Project%20overview/restored-healthy-homes-project-overview.md) and [alignment](../Project%20overview/client-conversation-alignment.md) define final scope. These milestones sequence implementation, not exclusions.
 
+The [source-to-delivery coverage table](scope-coverage.md) maps all overview sections and original-brief requirements to this plan, including superseded instructions and unresolved decisions. Use it to distinguish missing scope from unfinished implementation; do not expand scope from generic recommendations.
+
 ## Phase 1 — foundation and preview
 
 - [x] Read three source documents, inspect live visual reference, preserve confidential files.
@@ -71,12 +73,99 @@ The [overview](../Project%20overview/restored-healthy-homes-project-overview.md)
 - [x] Server-only unpublished seeds; no contact collection, side effects, publication or moderation controls.
 - [x] Final checks, rendered review and [Phase 2E-1 handoff](phase-2e1-handoff.md).
 
-## Phase 2E-2 — demo answers and moderation (not started)
+## Phase 2E-2 — demo answers and moderation
 
-- [ ] Define member-answer eligibility separately from public-listing eligibility; implement permitted answer drafts/submission.
-- [ ] Admin question/answer publication, rejection and removal with confirmations, clear feedback and parent visibility rules.
-- [ ] Combine public seed snapshots and session submissions through explicit projections and session moderation overrides; never expose private server fixture records.
-- [ ] Shared member/admin/public session journeys, moderation boundaries, regression checks and handoff.
+- [x] Provisional centralized approved/active/unsuspended answer policy; selected-author pending submissions, isolated drafts and own-answer history.
+- [x] Separate admin question/answer queues, publication/rejection with confirmation before hiding published content, private notes and independent parent/answer statuses.
+- [x] Public seed/session overlay with explicit allowlists, same-session search/counts/pages/details and neutral prehydration routes; private server fixtures remain server-only.
+- [x] Shared member/admin/public journeys, moderation/privacy boundaries, responsive regression checks and [Phase 2E-2 handoff](phase-2e2-handoff.md).
+
+## Phase 2F-1 — public demo consultation requests
+
+- [x] Public consultation page, proposed offer, intended workflow and truthful demo limitations.
+- [x] Fictional request form with shared validation, stable category IDs, inline errors and first-error focus.
+- [x] Shared tab-session records/drafts, forced requested/not-collected state, configuration-owned offer, unassigned/unscheduled defaults and duplicate-submit guard.
+- [x] Focused confirmation, deliberate additional requests, navigation preservation and global reset/refresh clearing.
+- [x] Discoverable navigation and one modest homepage teaser; full homepage and About Us work remain below.
+- [x] Final browser/responsive verification and [Phase 2F-1 handoff](phase-2f1-handoff.md).
+
+## Phase 2F-2 — demo consultation management
+
+- [x] Shared session consultation queue, URL filters/details and bounded admin-only note drafts.
+- [x] Centralized provisional assignment, ownership and transition rules; confirmations for cancellation and accepted assignment changes.
+- [x] Member assignments, acceptance/decline, eligibility attention and explicit contact-free projection.
+- [x] Live safe public status summaries, original offer snapshots and independent not-collected payment state.
+- [x] One additional fictional eligible designer for reassignment; existing stable IDs retained.
+- [x] Final regression/rendered verification and [Phase 2F-2 handoff](phase-2f2-handoff.md).
+
+## Phase 2F-3 — demo sign-in and client walkthrough
+
+Added at the user's request before reviews. This previews the account journey; it does not implement real authentication or make demo dashboards secure.
+
+- [x] Shared styled sign-in page with explicitly fictional member/admin accounts, accessible validation and clear demo-only copy; no real credentials, account creation or password-reset delivery.
+- [x] React-memory demo identity and workspace navigation gates; signed-out and wrong-workspace journeys, safe allowlisted return links, neutral prehydration/no-script states.
+- [x] Header sign-in/dashboard/sign-out actions; public browsing and List Your Business remain available without login. Pending/rejected/inactive members can preview their own status without gaining listing eligibility.
+- [x] Sign-out clears identity and form drafts while retaining shared synthetic workflow records for same-tab client demonstrations; warn before discarding unsaved drafts. Confirmed global reset clears identity, drafts and demo records. Refresh/full reload clears session state.
+- [x] Explicit demo-account switching via sign-out/sign-in, with no silent identity changes from dashboard links or member-example controls; stable member IDs and existing domain rules retained.
+- [x] Reuse current provider/reducer, projections and design system; no browser storage, real API integration, external side effects or production-guard weakening.
+- [x] Verify login/logout/direct links/role mismatch, safe returns, draft isolation, shared admin-to-member consultation/Q&A journeys and existing regressions; review desktop/tablet/mobile renders.
+- [x] Concise [Phase 2F-3 handoff and client walkthrough](phase-2f3-handoff.md); 61 unit tests and all 128 applicable browser cases passed across completed runs, plus typecheck/lint/demo build and production guard. One intentional desktop-menu skip. Stop before reviews or integrations.
+
+## Phase 2G-1 — public demo reviews and ratings
+
+- [x] Typed review contract, stable IDs, explicit public projection and server-only unpublished seeds; reuse directory eligibility.
+- [x] Published-only profile reviews and shared averages/counts, honest zero-review state and bounded same-profile pagination. Directory sorting/filters unchanged.
+- [x] Fictional guest review form with bounded validation, accessible errors/focus and disabled no-script/prehydration controls; no contact collection or verification claims.
+- [x] Profile-scoped session drafts, forced-pending submissions, repeated-attempt guard, sign-out isolation and global reset/refresh behavior; no storage or submission requests.
+- [x] Required checks and actual desktop/tablet/mobile renders: 67 unit tests, all 140 applicable browser cases across completed runs (one intentional desktop-menu skip), typecheck/lint/demo build and production guard. See [Phase 2G-1 handoff](phase-2g1-handoff.md) for boundaries, test fixes and remaining decisions.
+
+## Phase 2G-2 — demo review moderation and member visibility
+
+- [x] Explicit stable member/professional associations, two matching fictional account presets and helpful unlinked/empty states; existing accounts preserved.
+- [x] Shared review snapshot/decision overlay, guarded transitions and deterministic republication; immutable submitted content and private notes excluded from public/member projections.
+- [x] Admin Reviews queue/detail, validated status/professional URL filters, isolated note drafts and confirmation before removing published reviews.
+- [x] Same-tab public/member published reviews and derived ratings, current visitor confirmation status, pagination clamping and accessible decorative stars; SSR/no-script seeds preserved.
+- [x] Existing draft/sign-out/reset/refresh rules reused with no storage or submission side effects. Directory sorting and unrelated workflows unchanged.
+- [x] Required checks and actual desktop/tablet/mobile renders: 74 unit tests, all 152 applicable browser cases across completed runs (one intentional desktop-menu skip), typecheck/lint/demo build and production guard. See the [Phase 2G-2 handoff](phase-2g2-handoff.md) for results, walkthrough and limitations.
+
+Review verification, duplicates/abuse, disputes and removal policies remain unresolved. No replies/editing, production review integration or later-phase work is included. Remaining public pages, fuller homepage and client-supplied About Us story/text/video remain in scope below. Real accounts remain Phase 3.
+
+## Phase 2H-1 — homepage and About Us
+
+- [x] Complete search-led homepage: eight catalog-driven category links, visitor journey, Q&A/consultation/application introductions and About Us link.
+- [x] Clearly labeled demo statistics from eligible public listings and individual published review ratings; existing session moderation drives the rating and SSR seeds remain readable.
+- [x] Dedicated `/about` layout, typed replacement content and an honest static video placeholder; desktop/mobile header and footer navigation.
+- [ ] Final client company story, personal “Why,” approved copy, video, captions and transcript. Layout completion does not approve placeholder content.
+- [x] Typecheck/lint, 78 unit tests, demo build and production guard; 92 affected browser cases passed across completed runs (one intentional skip), with desktop/tablet/mobile and intermediate navigation renders reviewed. See [Phase 2H-1 handoff](phase-2h1-handoff.md) for scope, a test scrolling fix and outstanding assets.
+
+Stop before 2H-2. Education, resources/blog, newsletter, featured listings, search refinements and integrations remain outside this phase.
+
+## Scope audit — remaining details to preserve
+
+Reconciled 2026-10-04 against the original Word brief, supplied overview/paste and later client conversation. These unchecked items clarify remaining acceptance, not newly completed work. Later client confirmations override old exclusions, category labels, Netlify hosting and exact-design mandates. Demo completion is not production completion.
+
+- [x] Phase 2H-1 homepage layout: fuller introduction, eight category browse links and statistics derived from eligible public professionals, listing-location states and individual published ratings. Values explicitly describe demo data, not service coverage or live traction.
+- [ ] Remaining public-page delivery: final About Us story/Why/text/client video, education/certifications, blog/resources, newsletter form and relevant navigation/footer links. The About Us layout/navigation is built in 2H-1; final assets and client approval remain outstanding.
+- [ ] Education acceptance: all eight current categories, certification paths, key certifications, typical timelines/cost ranges, external provider links and a registration CTA. Use client-approved/current sourced content or explicit placeholders. The platform does not certify.
+- [ ] Search completion: explicit state and rating filters alongside existing city/ZIP/category/radius search; consistent published rating summaries and agreed featured priority. Radius/service-area/geolocation behavior remains a client decision; an interactive map is not automatically required.
+- [ ] Profile/media completion (Phase 3): photo/logo management and secure uploads, intended public professional/owner display name, contact options and badge presentation. Keep public display fields separate from private application contact identity; confirm which names/contact details may be public.
+- [ ] Admin completion (Phase 3/5): permitted listing/profile edits, not only status decisions; basic analytics including active members, members by category, new applications this month and membership status. Current demo queue counts alone do not satisfy these analytics.
+- [ ] Category architecture (Phase 3): support adding categories without rebuilding and preserve stable IDs on rename. Existing label editing is not evidence of category creation or a billing-configuration editor; define any added admin controls before implementing them.
+- [ ] Email acceptance (Phase 4/5): new-application owner alert, approval/rejection notices, relevant-category Q&A alerts, consultation assignment/request alerts, inquiry delivery and agreed account/subscription notifications.
+- [ ] Content management (Phase 5): owner can manage blog/resources and certification content without code. Place supplied legal asterisks/disclaimers and Privacy/Terms content as agreed; legal-copy self-service editing remains undecided.
+- [ ] Consultation acceptance (Phase 5): connect requests to the agreed payment, scheduling, specialist notification and delivery flow; resolve phone/video, written summary, refund/no-show and money-routing responsibilities. Current assignment/acceptance demo is not a completed booking service.
+- [ ] Launch acceptance (Phase 6): confirm custom-domain access for restoredhealthyhomes.com, HTTPS and owner access/handoff. Reconcile the original brief's latest-two-version Chrome/Safari/Firefox/Edge coverage and under-three-second mobile target with the client's permission to revise technical recommendations; record agreed test conditions and measured results, not an assumed guarantee.
+
+Second-pass clarifications from the same sources (not additional product scope):
+
+- [x] Review presentation: Phase 2G-2 shares numeric labels and decorative stars across public/member reviews and admin detail/queue views; stars do not duplicate screen-reader announcements.
+- [ ] Search completion must reuse the published review summary for future rating filters and any directory-card ratings. Phase 2H-1 homepage statistics already reuse the session-aware published calculation.
+- [ ] Q&A attribution: published member answers link to the correct eligible public professional profile through an explicit stable member-to-professional association. Current session-member attribution has no public profile link. Confirm what "verified member" means and category-based notification eligibility; paid membership is not automatically credential verification.
+- [ ] Certification badges: derive displayed badges from stored credential data under agreed verification rules, update/remove them when underlying credentials change, and distinguish submitted claims from verified credentials. Existing text/verification previews do not complete automatic badge behavior.
+- [ ] Production data continuity: member edits, admin decisions, inquiries, Q&A, reviews and subscriptions operate on shared durable records. Verify changes across independent member/admin/visitor sessions and reloads; the current separate server directory/member demo fixtures and same-tab overlays are temporary.
+- [ ] Billing acceptance: customer payment-method updates, cancellation and failed/inactive-payment visibility follow agreed lifecycle rules. Restored payment cannot override rejection/suspension, and admin approval alone cannot bypass the subscription requirement. Featured purchases likewise cannot make an otherwise ineligible listing public.
+
+After Phase 2H-1, await scoped prompts for the remaining demo milestones above; they must not be silently postponed until after launch. Featured placement, production reviews, newsletter, blog/resources, badges and final About Us content remain part of the accepted final delivery. Referral benefits remain excluded.
 
 ## Phase 3 — real accounts and administration integrations
 
@@ -96,11 +185,12 @@ The [overview](../Project%20overview/restored-healthy-homes-project-overview.md)
 
 ## Phase 5 — community, consultations and content
 
-- [ ] Real inquiry persistence/delivery, questions/answers, category matching, alerts and moderation (demo inquiries: 2B; public demo Q&A: 2E-1; demo answers/moderation: planned 2E-2).
+- [ ] Real inquiry persistence/delivery, questions/answers, category matching, alerts and moderation (demo inquiries: 2B; public demo Q&A: 2E-1; demo answers/moderation: 2E-2).
 - [ ] Reviews/ratings with agreed verification/moderation.
-- [ ] Paid consultations after routing/matching/scheduling/refund/delivery decisions; commercial terms remain in the private authoritative scope.
+- [ ] Real paid consultations after routing/matching/scheduling/refund/delivery decisions (public request demo: 2F-1; member/admin demo coordination: 2F-2); commercial terms remain in the private authoritative scope.
 - [ ] External certification/education resources, blog/resources CMS, newsletter consent/signup.
-- [ ] About Us with client story/text/video and accessible media; agreed client legal-copy placement.
+- [ ] Remaining public pages: dedicated About Us page with the client's company story, the "Why" behind Restored Healthy Homes, supporting client-supplied text, and their professionally produced video. Match the approved site design across desktop/tablet/mobile and provide accessible video controls and captions/transcript support. Clearly labeled placeholders may be used until final copy/video arrives; do not invent the company story or mark final content complete before client review. Video production is supplied by the client.
+- [ ] Agreed client legal-copy placement.
 - [ ] Member/admin tools for all included workflows; end-to-end tests and client review.
 
 ## Phase 6 — launch and handoff
@@ -269,4 +359,59 @@ Executed 2026-10-02, public demo Q&A only:
 | Code review and scope | Explicit projections, one shared reducer/draft provider, typed adapter and validation; no duplicate catalog, raw HTML, new dependencies, delivery endpoints or moderation controls |
 | Git | Phase 2D preserved in local checkpoint `713c45c` before editing; no push or deployment |
 
-Full regression checks passed before a final CSS-only mobile result-heading adjustment; the affected layout and submission cases were rerun afterward. Screenshots are in `output/playwright/phase-2e1-*`. Expected injected adapter failures contain no submitted text. Chromium emulation and automated accessibility checks do not replace physical-device/Safari/Firefox checks or a full audit. Phase 2E-2 is not started; all real integrations remain deferred.
+Full regression checks passed before a final CSS-only mobile result-heading adjustment; the affected layout and submission cases were rerun afterward. Screenshots are in `output/playwright/phase-2e1-*`. Expected injected adapter failures contain no submitted text. Chromium emulation and automated accessibility checks do not replace physical-device/Safari/Firefox checks or a full audit. This was the completed 2E-1 boundary; the 2E-2 work is recorded below. All real integrations remain deferred.
+
+
+## Phase 2E-2 verification record
+
+Implemented 2026-10-02; verification finalized 2026-10-03. Session-only demo; stop before another phase.
+
+| Check | Result |
+| --- | --- |
+| `npm run typecheck` / `npm run lint` | Pass; no lint warnings |
+| `npm test` | 45 pass, including eligibility combinations, selected-author/forced-pending protection, validation bounds, parent/answer transitions, exact public allowlists, stable IDs, repeated/invalid decisions and reset |
+| `npm run build:demo` | Pass with the existing process-only 768 MB Node heap cap |
+| Browser suite | 92 applicable cases passed across completed runs; one intentional desktop-menu skip. All desktop cases and the earlier tablet regressions passed in the full run; after correcting new test navigation waits, eight tablet/mobile Q&A cases, 18 remaining Q&A/search cases and 18 mobile regression cases passed |
+| `npm run build` | Correctly rejects missing demo opt-in; production remains blocked |
+| Session journeys | Public question → admin publication → member pending answer → admin publication → public answer → rejection/hiding → unavailable content → reset; cancellation, drafts, member selection, refresh, filters and third-page pagination pass |
+| Boundaries | Public seed snapshot only; private fixture markers absent from browser assets/HTML/payloads. Own-answer and public projections exclude internal notes; no submission requests, storage or content logging added |
+| Routes and no JavaScript | Neutral HTTP 200 HTML for session IDs, generic no-index metadata and honest hydrated availability; private/missing server IDs remain generic 404s; readable published seeds and disabled mutation controls without scripts |
+| Rendered review | Desktop/tablet/mobile (1440/768/390 px) Q&A member/review/public screens inspected. No detected axe violations, overflow or page errors in tested views; existing design retained |
+| Code/scope review | Shared provider/reducer, focused components and explicit projections; no new dependencies/integrations or private server fixture imports. Existing About Us and all other approved backlog entries preserved. No push or deployment |
+
+Earlier browser failures were test synchronization errors: history/menu actions ran before navigation completed. Destination assertions fixed them; affected cases and previously unrun regressions were completed without rerunning unrelated passing cases. Expected injected adapter-error logs contain no submitted content. Screenshots: `output/playwright/phase-2e2-*`. Physical devices, Safari/Firefox and a full accessibility audit remain unverified. Policy decisions and integration requirements are documented in the handoff.
+
+## Phase 2F-1 verification record
+
+Implemented and verified 2026-10-03. Public request demo only; 2F-2 management remains unstarted.
+
+| Check | Result |
+| --- | --- |
+| `npm run typecheck` / `npm run lint` | Pass; no lint warnings |
+| `npm test` | 49 pass, including consultation bounds/enums, explicit fields, forced lifecycle/offer values, duplicate guard, stable IDs, reset and state isolation |
+| `npm run build:demo` | Pass with the existing process-only 768 MB Node heap cap |
+| Browser suite | 101 applicable cases passed across completed runs; one intentional desktop-menu skip. Includes nine new consultation cases across desktop/tablet/mobile |
+| `npm run build` | Correctly rejects missing demo opt-in; production remains blocked |
+| Request journeys | Homepage/navigation → consultation → validation → draft navigation → confirmation → another request; cancelled/confirmed reset and refresh clearing pass |
+| Boundaries | No form network mutations, browser storage, content logging or public projection of requests; safe no-index HTML and disabled no-JavaScript/prehydration form |
+| Rendered review | Consultation, validation, confirmation and homepage reviewed at 1440/768/390 px; navigation at 1181/1100 px. No detected axe violations, overflow or page errors in consultation journeys |
+| Code/scope review | Existing provider/reducer, typed shared validation and configuration-owned offer reused; no dependencies/integrations. `git diff --check` passed; no push or deployment |
+
+The initial full browser run and later mobile run exposed existing Q&A test navigation races. Destination assertions fixed them; affected and previously unrun cases passed in targeted runs, rather than repeating the whole suite. Screenshots: `output/playwright/phase-2f1-*`. Physical devices, Safari/Firefox and a full accessibility audit remain unverified. Client decisions, state contract and remaining 2F-2/integration work are in the handoff. Full homepage, client-supplied About Us story/text/video and all other approved backlog features remain preserved.
+
+## Phase 2F-2 verification record
+
+Implemented 2026-10-03; verification finalized 2026-10-04. Session-only coordination; stop before another phase or integrations.
+
+| Check | Result |
+| --- | --- |
+| `npm run typecheck` / `npm run lint` | Pass; final changed test/page files also pass focused lint |
+| `npm test` | 56 pass; lifecycle/confirmation guards, eligibility/category matrix, ownership, repeated actions, protected values, stable IDs, projections, note bounds, URL filters and reset/isolation |
+| `npm run build:demo` | Pass with existing process-only 768 MB Node heap cap, including final copy/style refinements |
+| Browser suite | 113 applicable cases passed across completed runs, one intentional desktop-menu skip; all 76 tablet/mobile cases passed together |
+| Coordination journeys | Public request → admin assignment → member acceptance → public status → confirmed unassignment/reassignment/cancellation → reset; dismissed dialogs, decline, eligibility changes and additional requests pass |
+| Boundaries | Unassigned/unowned requests hidden from members; contact details/admin notes absent from member/public summaries; no network mutations/browser storage; missing IDs, no-script/prehydration and no-index checks pass |
+| Rendered review | Desktop/tablet/mobile admin detail/list, member accepted/attention and public confirmation screenshots inspected; no detected axe violations, overflow or consultation page errors |
+| Production guard / review | Default build correctly blocks missing demo opt-in. Explicit projections and reducer rules reviewed; `git diff --check` passes. No new dependencies, services, push or deployment |
+
+Adding the second eligible fixture required existing count assertions and one listing selector to be updated. Failed/unrun regressions were completed in targeted runs; this was not one uninterrupted full passing suite. Affected desktop consultation screenshots/journeys were repeated after final style/copy refinements. Screenshots: `output/playwright/phase-2f2-*`. Physical devices, Safari/Firefox and a full accessibility audit remain unverified. The handoff records provisional policies and remaining client decisions. Fuller homepage, client-supplied About Us story/text/video and all other approved backlog features remain preserved.

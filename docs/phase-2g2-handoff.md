@@ -1,0 +1,33 @@
+# Phase 2G-2 handoff
+
+Implemented 2026-10-05. Fictional, current-tab review moderation and member visibility only. Stop before later phases, integrations, deployment or push.
+
+## Behavior and walkthrough
+
+1. Open Fern & Field Inspections from the directory. Submit a fictional review; it starts pending and does not affect the rating.
+2. Use the footer’s Admin area and the existing demo administrator preset (`admin@example.invalid`, public passcode `home-demo`). Open Reviews, optionally filter by status/professional, then select the visitor’s review and publish it. Internal notes are optional, bounded to 500 characters and never shown publicly.
+3. Follow “View public review preview.” The published review contributes exactly once to the list and rating; its visitor confirmation also changes to published. All changes affect this tab only.
+4. Open Member area, switch explicitly to the Fern & Field preset (`fern@example.invalid`, same public passcode), and open Reviews. Only that linked professional’s published reviews and matching summary appear.
+5. Switch back to admin and reject the published review. Confirmation is required before removal; cancellation preserves it. Accepted rejection removes its public/member contribution and updates the visitor confirmation. Reset or refresh restores the original samples.
+
+Existing accounts retain their IDs and remain unlinked. Two additional fictional accounts use explicit associations in `professional-association.ts`: `member-example-fern` → `demo-mold-inspection`; `member-example-cedar` → `demo-mold-remediation` (`cedar@example.invalid`, initially no reviews). Names, categories, email and URL parameters never establish ownership. The shared resolver is available for later attribution work; Q&A attribution is unchanged. Member listing edits remain separate from the public-directory snapshot.
+
+## State, transitions and projections
+
+- The existing review session now holds a public-only snapshot, submitted records and moderation decisions keyed by stable review ID. `ReviewRepository.publicSnapshot()` applies the existing directory eligibility rule, then projects only public reviews and professional ID/name pairs. Hidden server fixtures/private fields never enter the provider or client bundles.
+- Pending → published/rejected, published → rejected and rejected → published are supported. Returning to pending is not. Repeating a status with an identical note is a no-op; changing only the note preserves publication metadata/order. Rejection retains the last publication metadata. Republication advances a deterministic fictional clock one second beyond the latest sample publication (including retained rejected metadata), placing the review first. These dates are demo ordering metadata, not real timestamps. Form-supplied identity/content/publication fields are ignored.
+- One merge function deduplicates IDs (public seed wins a collision), overlays decisions, then applies eligibility, status/professional filtering and the existing public allowlist before ratings or pagination. Public/member rows contain only ID, professional ID, name, rating, body and publication date; visitor confirmation separately projects current status without notes. Admin decisions are checked in the reducer against the demo identity, target and validated note. Browser identity is an interface simulation, not security.
+- Public profiles retain readable server-rendered seed reviews without JavaScript. The same client session drives subsequent moderation changes without a second store. Numeric labels and restrained decorative stars share a component; stars are hidden from assistive technology. Public pagination remains three per page and clamps after removal. Directory filters/sorting are unchanged.
+- Admin URL state: `section=reviews`, optional `review`/`professional` (single lowercase-alphanumeric/hyphen ID, at most 100 characters), `reviewStatus=pending|published|rejected`; omitted/invalid status means all. Unknown well-formed IDs produce unavailable/empty states. Safe dashboard links retain filters, exclude content/notes, and member links strip review/professional selection. Existing safe directory returns remain intact.
+- Moderation drafts use `review-moderation:<reviewId>`; guest drafts remain `review:<professionalId>`. Section navigation preserves drafts. Confirmed sign-out/account switching clears drafts and retains submitted records/decisions. Global reset clears identity/drafts/submissions/decisions and restores public seeds; reload does likewise. No storage, cookies, submission requests or notifications.
+
+## Verification
+
+- `npm run typecheck`, `npm run lint` and all 74 unit tests passed. The default build rejected missing demo opt-in as intended; `npm run build:demo` passed, including a final rebuild for the sage rating token. No build ran beneath an active test preview.
+- All 12 new moderation browser cases passed across completed runs at desktop/tablet/mobile sizes. Tests use real sign-in/navigation, check current visitor/public/member status, cancellation/rejection/republication, protected notes, drafts, ownership, pagination/empty states, reset/refresh, no-script/prehydration and no mutation/storage side effects. Initial test runs needed explicit waits for route/workspace readiness and corrected history assumptions; assertions were retained. TypeScript and focused lint passed again after these test-only fixes.
+- Reviewed actual screenshots in `output/playwright/phase-2g2-*.png`, including queue/detail, long text, numeric/star ratings, validation/focus, linked/unlinked members and empty states. Accessibility and horizontal-overflow assertions passed. Reviewed the affected code for duplicate state/catalogs, private exposure and side effects; no new dependencies.
+- All 140 existing applicable browser cases also passed: 152 total including the 12 new cases, across completed runs, with one intentional desktop-menu skip. Existing sample-count expectations were updated for the two added member accounts; interrupted desktop sign-out and Q&A cases were rerun explicitly and passed. No failed or unrun checks remain. Final focused lint and `git diff --check` passed.
+
+## Remaining scope
+
+No review editing, deletion, bulk actions, replies, reporting, verification badges or real authorization/persistence. Who may review, service verification, duplicate/abuse prevention, disputes and removal policies still require agreement. Rating search filters, featured placement, About Us, fuller homepage, certification resources/badges, blog/newsletter and all other accepted backlog items remain in the checklist/coverage matrix. No later-phase work, services, deployment or push was performed.

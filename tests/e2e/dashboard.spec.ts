@@ -1,3 +1,4 @@
+import { signIn, switchMember, visitWorkspace } from "./helpers/demo-sign-in";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import {
@@ -12,12 +13,12 @@ test.setTimeout(120000);
 test("dashboard sections, direct URLs, history and filters retain selected records", async ({
   page,
 }) => {
-  await page.goto("/demo/admin?section=applications&status=pending");
+  await visitWorkspace(page, "/demo/admin?section=applications&status=pending");
   await expect(
     page.getByLabel("Application status", { exact: true }),
   ).toHaveValue("pending");
   await expect(
-    page.getByText("1 of 4 applications shown", { exact: true }),
+    page.getByText("1 of 7 applications shown", { exact: true }),
   ).toBeVisible();
   await review(page, "Pending Sample Studio");
   await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
@@ -35,8 +36,9 @@ test("dashboard sections, direct URLs, history and filters retain selected recor
     page.getByLabel("Application status", { exact: true }),
   ).toHaveValue("pending");
   await page.reload();
+  await signIn(page, "admin");
   await expect(
-    page.getByText("1 of 4 applications shown", { exact: true }),
+    page.getByText("1 of 7 applications shown", { exact: true }),
   ).toBeVisible();
   await section(page, "Admin", "Overview");
   await page
@@ -49,12 +51,13 @@ test("dashboard sections, direct URLs, history and filters retain selected recor
     page.getByRole("link", { name: /Pending applications.*0/ }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: /Eligible listings.*1/ }),
+    page.getByRole("link", { name: /Eligible listings.*4/ }),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "No pending applications", exact: true }),
   ).toBeVisible();
-  await page.goto(
+  await visitWorkspace(
+    page,
     "/demo/admin?section=applications&record=demo-local-application",
   );
   await expect(
@@ -65,16 +68,21 @@ test("dashboard sections, direct URLs, history and filters retain selected recor
   ).toBeVisible();
   await page.getByRole("link", { name: "Back to applications" }).click();
   await expect(
-    page.getByText("4 of 4 applications shown", { exact: true }),
+    page.getByText("7 of 7 applications shown", { exact: true }),
   ).toBeVisible();
-  await page.goto(
+  await visitWorkspace(
+    page,
     "/demo/member?section=membership&record=member-example-inactive",
+    "inactive",
   );
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Your sample membership",
   );
   await expect(page.getByText("inactive", { exact: true })).toBeVisible();
-  await page.goto("/demo/member?section=applications&section=profile");
+  await visitWorkspace(
+    page,
+    "/demo/member?section=applications&section=profile",
+  );
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Your business at a glance",
   );
@@ -88,7 +96,7 @@ test("unsaved profile decision and category drafts survive navigation and reset 
     if (request.method() !== "GET" || request.postData())
       mutations.push(request.url());
   });
-  await page.goto("/demo/member?section=profile");
+  await visitWorkspace(page, "/demo/member?section=profile");
   await page
     .getByLabel("Business name", { exact: true })
     .fill("Unsaved fictional business");
@@ -97,34 +105,41 @@ test("unsaved profile decision and category drafts survive navigation and reset 
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
     "Unsaved fictional business",
   );
-  await page
-    .getByLabel("View a fictional example or your application")
-    .selectOption("member-example-pending");
+  await switchMember(page, "member-example-pending");
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
     "Pending Sample Studio",
   );
-  await page
-    .getByLabel("View a fictional example or your application")
-    .selectOption("member-example-approved");
+  await switchMember(page, "member-example-approved");
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
-    "Unsaved fictional business",
+    "Meadow Sample Studio",
   );
+  await section(page, "Member", "Inquiries");
   await page.goBack();
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
-    "Pending Sample Studio",
+    "Meadow Sample Studio",
   );
   await page.goForward();
+  await expect(
+    page.getByRole("heading", { name: "Your sample inquiries" }),
+  ).toBeVisible();
+  await section(page, "Member", "Profile");
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
-    "Unsaved fictional business",
+    "Meadow Sample Studio",
   );
   await workspace(page, "Admin overview");
   await section(page, "Admin", "Applications");
   await page.getByLabel("Search applications", { exact: true }).fill("Pending");
   await section(page, "Admin", "Overview");
   await section(page, "Admin", "Applications");
-  await expect(page.getByLabel("Search applications", { exact: true })).toHaveValue("Pending");
-  await expect(page.getByText("4 of 4 applications shown", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Clear filters", exact: true }).click();
+  await expect(
+    page.getByLabel("Search applications", { exact: true }),
+  ).toHaveValue("Pending");
+  await expect(
+    page.getByText("7 of 7 applications shown", { exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Clear filters", exact: true })
+    .click();
   await review(page, "Meadow Sample Studio");
   await page
     .getByLabel("Applicant-facing demo reason")
@@ -177,6 +192,7 @@ test("unsaved profile decision and category drafts survive navigation and reset 
     .getByLabel("Business name", { exact: true })
     .fill("Refresh clears this draft");
   await page.reload();
+  await signIn(page);
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
     "Meadow Sample Studio",
   );
@@ -212,7 +228,7 @@ test("focused dashboard screens stay accessible with long names errors empty sta
       fullPage: true,
     });
   }
-  await page.goto("/demo/member?section=profile");
+  await visitWorkspace(page, "/demo/member?section=profile");
   await page.getByLabel("Business name", { exact: true }).fill(longBusiness);
   await page.getByRole("button", { name: "Update local preview" }).click();
   await page.getByText("Public-profile preview", { exact: true }).click();
@@ -221,13 +237,9 @@ test("focused dashboard screens stay accessible with long names errors empty sta
   await capture("member-overview");
   await section(page, "Member", "Inquiries");
   await capture("member-inquiries");
-  await page
-    .getByLabel("View a fictional example or your application")
-    .selectOption("member-example-pending");
+  await switchMember(page, "member-example-pending");
   await capture("member-empty");
-  await page
-    .getByLabel("View a fictional example or your application")
-    .selectOption("member-example-approved");
+  await switchMember(page, "member-example-approved");
   await section(page, "Member", "Membership");
   await capture("member-membership");
   await workspace(page, "Admin overview");
@@ -251,7 +263,11 @@ test("focused dashboard screens stay accessible with long names errors empty sta
   await page.getByRole("button", { name: "Rename demo category" }).click();
   await capture("admin-categories");
   await section(page, "Admin", "Listings");
-  await page.getByTestId("session-directory").locator("summary").click();
+  await page
+    .getByTestId("session-directory")
+    .locator("summary")
+    .filter({ hasText: longBusiness })
+    .click();
   await capture("admin-long-list");
   expect(errors).toEqual([]);
 });

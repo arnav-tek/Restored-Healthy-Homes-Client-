@@ -1,4 +1,5 @@
 import type { Page } from "@playwright/test";
+import { signIn } from "./demo-sign-in";
 export async function fillApplication(page: Page) {
   await page.getByLabel("Your name", { exact: true }).fill("Fictional Owner");
   await page
@@ -25,6 +26,19 @@ export async function fillApplication(page: Page) {
     .fill("Fictional sample course");
 }
 export async function mainNav(page: Page, name: string) {
+  if (name === "Member preview") {
+    await page
+      .getByRole("contentinfo")
+      .getByRole("link", { name: "Member area", exact: true })
+      .click();
+    const account = (await page.locator("[data-demo-account]").count())
+      ? await page
+          .locator("[data-demo-account]")
+          .getAttribute("data-demo-account")
+      : null;
+    await signIn(page, account && account !== "admin" ? account : "approved");
+    return;
+  }
   const toggle = page.getByRole("button", { name: "Open navigation" });
   if (await toggle.isVisible()) await toggle.click();
   await page

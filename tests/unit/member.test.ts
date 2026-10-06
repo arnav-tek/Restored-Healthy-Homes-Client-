@@ -213,13 +213,23 @@ test("session selection, edits and reset are coherent, isolated and leave inbox 
   );
   const selected = reduceDemoSession(
     submitted,
-    { type: "select", id: "member-example-rejected" },
+    {
+      type: "demo-sign-in",
+      fields: { email: "rejected@example.invalid", passcode: "home-demo" },
+    },
     seed,
   );
   assert.equal(selected.applicationId, submitted.applicationId);
-  assert.equal(selected.records.length, 5);
+  assert.equal(selected.records.length, 8);
   assert.equal(
-    reduceDemoSession(selected, { type: "select", id: "unknown" }, seed),
+    reduceDemoSession(
+      selected,
+      {
+        type: "demo-sign-in",
+        fields: { email: "unknown@example.invalid", passcode: "home-demo" },
+      },
+      seed,
+    ),
     selected,
   );
   assert.equal(
@@ -237,5 +247,5 @@ test("session selection, edits and reset are coherent, isolated and leave inbox 
   assert.equal(reset.selectedId, initial.selectedId);
   assert.ok(reset.revision > selected.revision);
   assert.equal(createDemoSession(seed).applicationId, null);
-  assert.equal(seed.records.length, 4);
+  assert.equal(seed.records.length, 7);
 });

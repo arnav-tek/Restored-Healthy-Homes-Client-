@@ -13,7 +13,7 @@ export function RecordRegister({
 }: {
   catalog: readonly ApplicationCategory[];
 }) {
-  const { state, dispatch } = useDemoSession();
+  const { state } = useDemoSession();
   const { query, href, navigate, pending } = useDashboardNavigation("admin");
   const { draft, saveDraft, clearDraft } = useDemoDraft(
     `filters:${query.section}`,
@@ -141,12 +141,7 @@ export function RecordRegister({
               {filtered.map((record) => (
                 <tr key={record.id}>
                   <th scope="row">
-                    <Link
-                      href={href({ record: record.id })}
-                      onClick={() =>
-                        dispatch({ type: "select", id: record.id })
-                      }
-                    >
+                    <Link href={href({ record: record.id })}>
                       <span className="sr-only">Review </span>
                       {record.profile.businessName}
                     </Link>

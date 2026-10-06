@@ -29,6 +29,9 @@ export function QuestionForm({
   const submitted = state.questions.find(
     (question) => question.id === state.questionId,
   );
+  const status = submitted
+    ? (state.qa.questionDecisions[submitted.id]?.status ?? submitted.status)
+    : "pending";
   useEffect(() => {
     if (submitted) confirmation.current?.focus();
   }, [submitted]);
@@ -68,18 +71,27 @@ export function QuestionForm({
           className="panel qa-confirmation"
           aria-labelledby="question-confirmation"
         >
-          <span className="demo-pill">Pending demo question</span>
+          <span className="demo-pill">{status} demo question</span>
           <h2 id="question-confirmation" ref={confirmation} tabIndex={-1}>
-            Awaiting fictional review
+            {status === "pending"
+              ? "Awaiting fictional review"
+              : status === "published"
+                ? "Published in this session"
+                : "Not published in this session"}
           </h2>
           <p>
             <strong>{submitted.title}</strong>
           </p>
           <p>
-            Your question is not publicly visible, has not been sent to
-            professionals, and is not saved permanently. It exists only in this
-            tab’s demo session. Review controls will be added in a later phase.
+            Your question has not been sent to professionals, and is not saved
+            permanently. It exists only in this tab’s demo session. Its current
+            publication status is {status}.
           </p>
+          {status === "published" && (
+            <Link className="text-link" href={"/questions/" + submitted.id}>
+              View published session question
+            </Link>
+          )}
           <Button
             type="button"
             disabled={!ready}

@@ -21,11 +21,11 @@ test("filtered search to profile and local inquiry, validation, reset and return
     page.getByRole("link", { name: "Back to results" }),
   ).toHaveAttribute("href", results);
   await expect(page.getByText(/Use sample information only/)).toBeVisible();
-  await expect(page.getByLabel("Name (sample)")).toBeEnabled();
+  await expect(page.getByLabel("Name (sample)", { exact: true })).toBeEnabled();
   await page
     .getByRole("button", { name: "Preview demo inquiry" })
     .press("Enter");
-  await expect(page.getByLabel("Name (sample)")).toBeFocused();
+  await expect(page.getByLabel("Name (sample)", { exact: true })).toBeFocused();
   await expect(page.getByLabel("Email (sample)")).toHaveAttribute(
     "aria-invalid",
     "true",
@@ -49,7 +49,9 @@ test("filtered search to profile and local inquiry, validation, reset and return
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(testInfo.project.use.viewport!.width);
-  await page.getByLabel("Name (sample)").fill("Sample Homeowner");
+  await page
+    .getByLabel("Name (sample)", { exact: true })
+    .fill("Sample Homeowner");
   await page.getByLabel("Email (sample)").fill("invalid-email");
   await page.getByLabel("Message (sample)").fill("Short");
   await page.getByRole("button", { name: "Preview demo inquiry" }).click();
@@ -103,9 +105,9 @@ test("filtered search to profile and local inquiry, validation, reset and return
   await page
     .getByRole("button", { name: "Start another demo inquiry" })
     .click();
-  await expect(page.getByLabel("Name (sample)")).toBeFocused();
+  await expect(page.getByLabel("Name (sample)", { exact: true })).toBeFocused();
   for (const label of ["Name (sample)", "Email (sample)", "Message (sample)"])
-    await expect(page.getByLabel(label)).toHaveValue("");
+    await expect(page.getByLabel(label, { exact: true })).toHaveValue("");
   await page.getByRole("link", { name: "Back to results" }).click();
   await expect(page).toHaveURL(`http://127.0.0.1:3100${results}`);
   await expect(page.getByLabel("City or ZIP code")).toHaveValue("27601");
@@ -226,7 +228,9 @@ test("without JavaScript profiles work and inquiry cannot send native form data"
     await expect(
       page.getByText(/Enable JavaScript to try this local demo form/),
     ).toBeVisible();
-    await expect(page.getByLabel("Name (sample)")).toBeDisabled();
+    await expect(
+      page.getByLabel("Name (sample)", { exact: true }),
+    ).toBeDisabled();
     await expect(
       page.getByRole("button", { name: "Preview demo inquiry" }),
     ).toBeDisabled();

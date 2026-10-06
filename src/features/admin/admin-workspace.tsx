@@ -10,6 +10,10 @@ import { ApplicationReview } from "./application-review";
 import { DecisionForm } from "./decision-form";
 import { CredentialReview } from "./credential-review";
 import { CategoryLabels } from "./category-labels";
+import { AdminQa } from "@/features/qa/admin-qa";
+import { AdminReviews } from "@/features/reviews/admin-reviews";
+import { moderationReviews } from "@/domain/review-session";
+import { AdminConsultations } from "@/features/consultations/admin-consultations";
 import { RecordRegister } from "./record-register";
 
 export function AdminWorkspace({
@@ -24,6 +28,9 @@ export function AdminWorkspace({
   const counts = demoDashboardCounts(state.records);
   const publicRecords = demoPublicDirectory(state.records);
   const titles: Record<string, string> = {
+    reviews: "Review moderation",
+    consultations: "Consultation requests",
+    qa: "Q&A moderation",
     overview: "Your directory at a glance",
     applications: "Applications",
     listings: "Listings",
@@ -36,7 +43,9 @@ export function AdminWorkspace({
   return (
     <>
       <header className="dashboard-heading">
-        <p className="section-label">Admin · {query.section}</p>
+        <p className="section-label">
+          Admin · {query.section === "qa" ? "Q&A" : query.section}
+        </p>
         <h1 id="workspace-title" tabIndex={-1}>
           {reviewing
             ? record
@@ -53,9 +62,20 @@ export function AdminWorkspace({
                 ? "Manage eligibility and explore the session directory."
                 : query.section === "credentials"
                   ? "Review each submitted claim on its own."
-                  : "Manage display names without changing category identity or pricing."}
+                  : query.section === "qa"
+                    ? "Review fictional questions and answers. Publication changes apply only to this tab."
+                    : query.section === "reviews"
+                      ? "Review fictional feedback. Publish or reject it in this tab’s preview only."
+                      : query.section === "consultations"
+                        ? "Coordinate fictional requests in this tab. No bookings, payments or notifications."
+                        : "Manage display names without changing category identity or pricing."}
         </p>
       </header>
+      {query.section === "qa" && <AdminQa key={resetVersion} />}
+      {query.section === "reviews" && <AdminReviews key={resetVersion} />}
+      {query.section === "consultations" && (
+        <AdminConsultations key={resetVersion} />
+      )}
       {query.section === "overview" && (
         <>
           <div className="workspace-metrics">
@@ -126,6 +146,24 @@ export function AdminWorkspace({
           <div className="workspace-shortcuts">
             <Link
               href={href({
+                section: "reviews",
+                review: "",
+                reviewStatus: "pending",
+                professional: "",
+              })}
+            >
+              <strong>
+                {
+                  moderationReviews(state.reviews).filter(
+                    (review) => review.status === "pending",
+                  ).length
+                }{" "}
+                pending reviews
+              </strong>
+              <span>Review fictional visitor feedback</span>
+            </Link>
+            <Link
+              href={href({
                 section: "listings",
                 suspension: "suspended",
                 status: "all",
@@ -154,7 +192,7 @@ export function AdminWorkspace({
             className="text-link workspace-back"
             href={href({ record: "" })}
           >
-            ← Back to {query.section}
+            ← Back to {query.section === "qa" ? "Q&A" : query.section}
           </Link>
           {!record ? (
             <div className="workspace-empty">

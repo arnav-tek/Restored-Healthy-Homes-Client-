@@ -1,3 +1,4 @@
+import { signIn, switchMember, visitWorkspace } from "./helpers/demo-sign-in";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { fillApplication, mainNav } from "./helpers/application";
@@ -64,6 +65,7 @@ test("public application, keyboard validation, shared member edits and reset", a
     fullPage: true,
   });
   await page.getByRole("link", { name: "Open demo member workspace" }).click();
+  await signIn(page, "application");
   await expect(page.getByTestId("member-approval")).toHaveText("pending");
   await expect(page.getByTestId("selected-business")).toHaveText(
     "Session Sample Business",
@@ -101,6 +103,7 @@ test("public application, keyboard validation, shared member edits and reset", a
     page.getByText(/Locally Edited Sample is available/),
   ).toBeVisible();
   await page.getByRole("link", { name: "Open demo member workspace" }).click();
+  await signIn(page, "application");
   await expect(page.getByTestId("selected-business")).toHaveText(
     "Locally Edited Sample",
   );
@@ -142,15 +145,12 @@ test("example states, seeded inbox, client navigation and refresh lifetime", asy
   page,
   context,
 }) => {
-  await page.goto("/demo/member");
-  const examples = page.getByLabel(
-    "View a fictional example or your application",
-  );
-  await examples.selectOption("member-example-rejected");
+  await visitWorkspace(page, "/demo/member");
+  await switchMember(page, "member-example-rejected");
   await expect(page.getByTestId("member-approval")).toHaveText("rejected");
-  await examples.selectOption("member-example-pending");
+  await switchMember(page, "member-example-pending");
   await expect(page.getByTestId("member-approval")).toHaveText("pending");
-  await examples.selectOption("member-example-approved");
+  await switchMember(page, "member-example-approved");
   await expect(page.getByTestId("member-approval")).toHaveText("approved");
   await section(page, "Member", "Inquiries");
   await page
@@ -172,11 +172,19 @@ test("example states, seeded inbox, client navigation and refresh lifetime", asy
   );
   const other = await context.newPage();
   await other.goto("/demo/member");
+  await expect(
+    other.getByRole("heading", { name: "Demo sign-in required" }),
+  ).toBeVisible();
+  await signIn(other);
   await expect(other.getByTestId("selected-business")).toHaveText(
     "Meadow Sample Studio",
   );
   await other.close();
   await page.reload();
+  await expect(
+    page.getByRole("heading", { name: "Demo sign-in required" }),
+  ).toBeVisible();
+  await signIn(page);
   await expect(page.getByTestId("selected-business")).toHaveText(
     "Meadow Sample Studio",
   );
@@ -208,14 +216,17 @@ test("application and editing cannot natively submit without JavaScript", async 
     ).toBeDisabled();
     await page.goto("http://127.0.0.1:3100/demo/member?section=profile");
     await expect(
-      page.getByLabel("Business name", { exact: true }),
-    ).toBeDisabled();
+      page.getByRole("heading", { name: "Checking demo session" }),
+    ).toBeVisible();
+    await expect(page.getByLabel("Business name", { exact: true })).toHaveCount(
+      0,
+    );
     await expect(
       page.getByRole("button", { name: "Update local preview" }),
-    ).toBeDisabled();
+    ).toHaveCount(0);
     await expect(
       page.getByRole("button", { name: "Reset demo session" }),
-    ).toBeDisabled();
+    ).toHaveCount(0);
   } finally {
     await context.close();
   }

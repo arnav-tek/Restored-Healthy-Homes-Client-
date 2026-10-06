@@ -19,15 +19,15 @@ function publicQuestion(question: (typeof demoQuestions)[number]) {
   );
 }
 export const demoQaRepository: QaRepository = {
-  async search(query) {
+  async listPublic() {
     guard();
-    return searchPublicQuestions(
-      demoQuestions.flatMap((question) => {
-        const projected = publicQuestion(question);
-        return projected ? [projected] : [];
-      }),
-      query,
-    );
+    return demoQuestions.flatMap((question) => {
+      const projected = publicQuestion(question);
+      return projected ? [projected] : [];
+    });
+  },
+  async search(query) {
+    return searchPublicQuestions(await demoQaRepository.listPublic(), query);
   },
   async getPublicQuestion(id) {
     guard();

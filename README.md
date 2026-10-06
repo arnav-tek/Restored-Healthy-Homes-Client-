@@ -3,10 +3,14 @@
 A demo platform that helps people find professionals who support healthier homes.
 
 - Search eight professional categories by keyword, category, city or ZIP.
+- Browse the complete demo homepage with derived directory statistics and an About Us layout awaiting final client story/video assets.
 - Explore public business profiles and try a demo inquiry form.
-- Browse fictional questions and answers, or submit a pending demo question.
+- Read fictional reviews and star ratings, submit a session-only review, then try admin moderation and linked professional review views.
+- Browse fictional Q&A, submit demo questions and member answers, and try admin moderation.
+- Explore the proposed consultation offer, record a session-only request and try admin assignment/member coordination; no booking, payment or notifications.
 - Submit a sample business application and edit it in the member workspace.
 - Review applications, credentials and listing eligibility in the admin workspace.
+- Try fictional professional/admin accounts at `/login` using the displayed presets and public passcode `home-demo`. This simulates sign-in; it is not authentication.
 
 Built with Next.js App Router, React, TypeScript and Tailwind CSS.
 
@@ -31,6 +35,6 @@ All businesses and inquiries are fictional. Application, member and admin change
 
 Run `npm run check` for typecheck, lint, unit tests and a demo build. For browser tests, install Chromium with `npx playwright install chromium`, then run `npm run test:e2e`.
 
-Member and admin workspaces use focused, linkable sections. Unsaved drafts remain in React memory during client-side navigation; reset asks for confirmation.
+Member and admin workspaces use focused, linkable sections. Unsaved drafts remain in React memory during client-side navigation. Sign-out clears identity and drafts, with a discard warning, while keeping submitted fictional records for the walkthrough. Confirmed reset or refresh clears the session.
 
-See the [latest handoff](docs/phase-2e1-handoff.md), [build checklist](docs/build-checklist.md) and [architecture](docs/architecture.md).
+See the [latest homepage/About Us handoff](docs/phase-2h1-handoff.md), [review walkthrough](docs/phase-2g2-handoff.md), [demo account walkthrough](docs/phase-2f3-handoff.md), [build checklist](docs/build-checklist.md) and [architecture](docs/architecture.md).

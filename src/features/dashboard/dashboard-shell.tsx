@@ -6,6 +6,10 @@ import { dashboardSections, type DashboardArea } from "@/validation/dashboard";
 import { useDashboardNavigation } from "./use-dashboard-navigation";
 import { SessionReset } from "./session-reset";
 import { useDemoSession } from "@/features/member/demo-session";
+import { useDemoReady } from "@/components/ui/use-demo-ready";
+import { WorkspaceGate } from "@/features/demo-sign-in/workspace-gate";
+import { SignOutButton } from "@/features/demo-sign-in/sign-out-button";
+import { demoAccounts } from "@/domain/demo-identity";
 
 export function DashboardShell({
   area,
@@ -16,22 +20,41 @@ export function DashboardShell({
 }) {
   const { query, href } = useDashboardNavigation(area);
   const { state, drafts } = useDemoSession();
+  const ready = useDemoReady();
   const router = useRouter();
   const mobile = useRef<HTMLDetailsElement>(null);
-  const previous = useRef(`${area}/${query.section}/${query.record}`);
+  const previous = useRef(
+    `${area}/${query.section === "qa" ? "Q&A" : query.section}/${query.record}`,
+  );
   useEffect(() => {
-    const next = `${area}/${query.section}/${query.record}`;
+    const next = `${area}/${query.section === "qa" ? "Q&A" : query.section}/${query.record}/${query.question}/${query.answer}/${query.queue}/${query.consultation}/${query.review}`;
     if (mobile.current) mobile.current.open = false;
     if (previous.current !== next)
       document.getElementById("workspace-title")?.focus();
     previous.current = next;
-  }, [area, query.section, query.record]);
+  }, [
+    area,
+    query.section,
+    query.record,
+    query.question,
+    query.answer,
+    query.queue,
+    query.consultation,
+    query.review,
+  ]);
+  if (!ready || !state.identity || state.identity.kind !== area)
+    return <WorkspaceGate area={area} ready={ready} returnTo={href({})} />;
   const links = (
     <nav aria-label={`${area === "member" ? "Member" : "Admin"} sections`}>
       {dashboardSections[area].map((section) => (
         <Link
           key={section}
-          href={href({ section, record: area === "admin" ? "" : query.record })}
+          href={href({
+            section,
+            record: area === "admin" ? "" : query.record,
+            consultation: "",
+            review: "",
+          })}
           aria-current={query.section === section ? "page" : undefined}
           onClick={() => {
             if (mobile.current) mobile.current.open = false;
@@ -39,7 +62,9 @@ export function DashboardShell({
               document.getElementById("workspace-title")?.focus();
           }}
         >
-          {section[0].toUpperCase() + section.slice(1)}
+          {section === "qa"
+            ? "Q&A"
+            : section[0].toUpperCase() + section.slice(1)}
         </Link>
       ))}
     </nav>
@@ -55,9 +80,24 @@ export function DashboardShell({
         </Link>
       </div>
       <div className="workspace-notice">
-        <strong>Local demo.</strong> Fictional records; nothing is sent or
-        published. Refresh, full-page navigation or reset clears changes and
-        drafts. These pages are not account access.
+        <strong>Local demo.</strong> Fictional records; nothing is sent or saved
+        permanently. Q&A and review publication change this tab’s preview only.
+        Refresh, full-page navigation or reset restores the samples. These
+        workspaces are not authentication or account access.
+      </div>
+      <div className="demo-account-bar">
+        <span
+          data-testid="demo-identity"
+          data-account={state.identity.accountId}
+        >
+          Demo account:{" "}
+          {
+            demoAccounts(state.applicationId).find(
+              (account) => account.id === state.identity?.accountId,
+            )?.label
+          }
+        </span>
+        <SignOutButton label="Switch demo account" returnTo={href({})} />
       </div>
       <div className="dashboard-layout">
         <aside className="dashboard-sidebar workspace-sidebar">
@@ -69,7 +109,8 @@ export function DashboardShell({
           </div>
           <details ref={mobile} className="workspace-mobile-nav">
             <summary>
-              {area === "member" ? "Member" : "Admin"} menu · {query.section}
+              {area === "member" ? "Member" : "Admin"} menu ·{" "}
+              {query.section === "qa" ? "Q&A" : query.section}
             </summary>
             {links}
           </details>

@@ -53,12 +53,15 @@ export interface QaResults {
   pages: number;
 }
 export const QA_PAGE_SIZE = 6;
-
-/** Publication is checked before any content or private fields are projected. */
-export function projectPublicQuestion(
+export const isSessionQuestionId = (id: string) =>
+  /^demo-session-question-[1-9]\d{0,9}$/.test(id);
+export interface PublishableAnswer extends PublicAnswer {
+  questionId: string;
+  status: ModerationStatus;
+}
+export function projectQaContent(
   question: QuestionRecord,
-  answers: readonly AnswerRecord[],
-  eligibleProfileHref: (id: string) => string | undefined,
+  answers: readonly PublishableAnswer[],
 ): PublicQuestion | null {
   if (question.status !== "published") return null;
   return {
@@ -71,18 +74,38 @@ export function projectPublicQuestion(
         (answer) =>
           answer.questionId === question.id && answer.status === "published",
       )
-      .map((answer) => {
-        const href = answer.professionalId
-          ? eligibleProfileHref(answer.professionalId)
-          : undefined;
-        return {
-          id: answer.id,
-          body: answer.body,
-          attribution: answer.attribution,
-          ...(href ? { profileHref: href } : {}),
-        };
-      }),
+      .map((answer) => ({
+        id: answer.id,
+        body: answer.body,
+        attribution: answer.attribution,
+        ...(answer.profileHref ? { profileHref: answer.profileHref } : {}),
+      })),
   };
+}
+
+/** Publication is checked before any content or private fields are projected. */
+export function projectPublicQuestion(
+  question: QuestionRecord,
+  answers: readonly AnswerRecord[],
+  eligibleProfileHref: (id: string) => string | undefined,
+): PublicQuestion | null {
+  if (question.status !== "published") return null;
+  return projectQaContent(
+    question,
+    answers.map((answer) => {
+      const href = answer.professionalId
+        ? eligibleProfileHref(answer.professionalId)
+        : undefined;
+      return {
+        id: answer.id,
+        questionId: answer.questionId,
+        status: answer.status,
+        body: answer.body,
+        attribution: answer.attribution,
+        ...(href ? { profileHref: href } : {}),
+      };
+    }),
+  );
 }
 
 /** Accept public projections only: hidden content never participates in matching/counts. */

@@ -3,7 +3,13 @@ import type { DemoLocation, LocationResolution } from "../domain/location";
 import type { SearchQuery, SearchResponse } from "../domain/directory-search";
 import type { PublicProfessional, PublicProfile } from "../domain/professional";
 import type { PublicQuestion, QaQuery, QaResults } from "../domain/qa";
+import type { PublicReview, PublicReviewSnapshot } from "../domain/review";
+export interface ReviewRepository {
+  listPublic(professionalId: string): Promise<PublicReview[] | null>;
+  publicSnapshot(): Promise<PublicReviewSnapshot>;
+}
 export interface QaRepository {
+  listPublic(): Promise<PublicQuestion[]>;
   search(query: QaQuery): Promise<QaResults>;
   getPublicQuestion(id: string): Promise<PublicQuestion | null>;
 }

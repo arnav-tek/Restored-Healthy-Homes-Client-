@@ -1,3 +1,4 @@
+import { signIn, visitWorkspace } from "./helpers/demo-sign-in";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { fillApplication, mainNav } from "./helpers/application";
@@ -24,9 +25,10 @@ test("application admin decision member confirmation and protected edits stay co
   await fillApplication(page);
   await page.getByRole("button", { name: "Create demo application" }).click();
   await page.getByRole("link", { name: "Open demo member workspace" }).click();
+  await signIn(page, "application");
   await workspace(page, "Admin overview");
   await section(page, "Admin", "Applications");
-  await expect(page.getByText(/5 of 5 applications shown/)).toBeVisible();
+  await expect(page.getByText(/8 of 8 applications shown/)).toBeVisible();
   await review(page, "Session Sample Business");
   await page
     .getByRole("button", { name: "Apply demo decision" })
@@ -38,7 +40,7 @@ test("application admin decision member confirmation and protected edits stay co
   await expect(page.getByTestId("session-directory")).not.toContainText(
     "Session Sample Business",
   );
-  await workspace(page, "Member overview");
+  await workspace(page, "Member overview", "application");
   await expect(page.getByTestId("member-approval")).toHaveText("approved");
   await expect(
     page.getByText("inactive (sample)", { exact: true }),
@@ -67,7 +69,7 @@ test("application admin decision member confirmation and protected edits stay co
   });
   await page.getByRole("button", { name: "Apply demo decision" }).click();
   await expect(page.getByTestId("admin-approval")).toHaveText("rejected");
-  await workspace(page, "Member overview");
+  await workspace(page, "Member overview", "application");
   await expect(page.getByTestId("member-approval")).toHaveText("rejected");
   await mainNav(page, "List Your Business");
   await expect(
@@ -95,9 +97,9 @@ test("admin suspension credentials category labels public projection and reset",
       mutations.push(request.url());
   });
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/demo/admin?section=listings");
+  await visitWorkspace(page, "/demo/admin?section=listings");
   const directory = page.getByTestId("session-directory");
-  await expect(directory.getByRole("article")).toHaveCount(1);
+  await expect(directory.getByRole("article")).toHaveCount(4);
   for (const text of [
     "member@example.invalid",
     "Sample Member",
@@ -112,7 +114,7 @@ test("admin suspension credentials category labels public projection and reset",
     .getByLabel("Application status", { exact: true })
     .selectOption("pending");
   await page.getByRole("button", { name: "Apply filters" }).click();
-  await expect(page.getByText(/1 of 4 applications shown/)).toBeVisible();
+  await expect(page.getByText(/1 of 7 applications shown/)).toBeVisible();
   await page.getByRole("button", { name: "Clear filters" }).click();
   await review(page, "Meadow Sample Studio");
   page.once("dialog", async (dialog) => {
@@ -120,14 +122,14 @@ test("admin suspension credentials category labels public projection and reset",
     await dialog.accept();
   });
   await decision(page, "suspend", "Fictional suspension check");
-  await expect(directory.getByRole("article")).toHaveCount(0);
+  await expect(directory.getByRole("article")).toHaveCount(3);
   await page.getByRole("link", { name: "Back to listings" }).click();
   await page.getByLabel("Suspension filter").selectOption("suspended");
   await page.getByRole("button", { name: "Apply filters" }).click();
-  await expect(page.getByText(/1 of 4 applications shown/)).toBeVisible();
+  await expect(page.getByText(/1 of 7 applications shown/)).toBeVisible();
   await review(page, "Meadow Sample Studio");
   await decision(page, "reinstate", "Fictional reinstatement check");
-  await expect(directory.getByRole("article")).toHaveCount(1);
+  await expect(directory.getByRole("article")).toHaveCount(4);
   await page.getByRole("link", { name: "Back to listings" }).click();
   await page.getByRole("button", { name: "Clear filters" }).click();
   await review(page, "Inactive Sample Studio");
@@ -233,7 +235,7 @@ test("admin suspension credentials category labels public projection and reset",
     "Sample course attendance — fictional — unverified",
   );
   await expect(directory).not.toContainText("Thoughtful Sample Designers");
-  await expect(directory.getByRole("article")).toHaveCount(1);
+  await expect(directory.getByRole("article")).toHaveCount(4);
   expect(
     await page.evaluate(() => [localStorage.length, sessionStorage.length]),
   ).toEqual([0, 0]);
@@ -249,29 +251,29 @@ test("admin controls cannot submit without JavaScript", async ({ browser }) => {
       "http://127.0.0.1:3100/demo/admin?section=applications&record=member-example-approved",
     );
     await expect(
-      page.getByText(/Enable JavaScript for local demo actions/),
+      page.getByRole("heading", { name: "Checking demo session" }),
     ).toBeVisible();
     await expect(
       page.getByRole("button", { name: "Apply demo decision" }),
-    ).toBeDisabled();
+    ).toHaveCount(0);
     await page.goto(
       "http://127.0.0.1:3100/demo/admin?section=credentials&record=member-example-approved",
     );
     await expect(
       page.getByRole("button", { name: "Verify in demo", exact: true }),
-    ).toBeDisabled();
+    ).toHaveCount(0);
     await page.goto("http://127.0.0.1:3100/demo/admin?section=applications");
-    await expect(page.getByLabel("Search applications")).toBeDisabled();
+    await expect(page.getByLabel("Search applications")).toHaveCount(0);
     await page.goto("http://127.0.0.1:3100/demo/admin?section=categories");
-    await expect(
-      page.getByLabel("Display name", { exact: true }),
-    ).toBeDisabled();
+    await expect(page.getByLabel("Display name", { exact: true })).toHaveCount(
+      0,
+    );
     await expect(
       page.getByRole("button", { name: "Rename demo category" }),
-    ).toBeDisabled();
+    ).toHaveCount(0);
     await expect(
       page.getByRole("button", { name: "Reset demo session" }),
-    ).toBeDisabled();
+    ).toHaveCount(0);
   } finally {
     await context.close();
   }

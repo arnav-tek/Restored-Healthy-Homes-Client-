@@ -39,12 +39,18 @@ export function ApplicationExperience({
           )}
           <p>
             Nothing is saved permanently. Refreshing or resetting clears this
-            application.
+            application. This creates no real account. Use the
+            submitted-application preset on Demo sign-in to explore its member
+            preview.
           </p>
           <Link
             className="button"
-            href="/demo/member"
-            onClick={() => dispatch({ type: "select", id: application.id })}
+            href={
+              state.identity?.kind === "member" &&
+              state.identity.memberId === application.id
+                ? "/demo/member"
+                : "/login?account=application&returnTo=%2Fdemo%2Fmember"
+            }
           >
             Open demo member workspace
           </Link>

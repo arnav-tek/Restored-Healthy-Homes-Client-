@@ -139,6 +139,37 @@ test("unsupported, ambiguous, malformed and zero-result searches stay honest", a
   );
 });
 
+test("search preserves a category selected before hydration", async ({
+  page,
+}) => {
+  let releaseScripts = () => {};
+  const scriptsReady = new Promise<void>((resolve) => {
+    releaseScripts = resolve;
+  });
+  await page.route("**/*.js*", async (route) => {
+    await scriptsReady;
+    await route.continue();
+  });
+  try {
+    await page.goto("/directory", { waitUntil: "commit" });
+    const form = page.getByRole("form", {
+      name: "Directory filters",
+      exact: true,
+    });
+    const category = page.getByLabel("Professional category", { exact: true });
+    await expect(form).toHaveAttribute("data-ready", "false");
+    await category.selectOption("mold-inspection");
+    releaseScripts();
+    await expect(form).toHaveAttribute("data-ready", "true");
+    await expect(category).toHaveValue("mold-inspection");
+    await page.getByRole("button", { name: "Apply filters" }).click();
+    await expect(page).toHaveURL(/category=mold-inspection/);
+    await expect(page.getByTestId("professional-card")).toHaveCount(1);
+  } finally {
+    releaseScripts();
+  }
+});
+
 test("search form remains functional without JavaScript", async ({
   browser,
 }) => {
@@ -147,7 +178,11 @@ test("search form remains functional without JavaScript", async ({
     const page = await context.newPage();
     await page.goto("http://127.0.0.1:3100/");
     await page.getByLabel("City or ZIP code").fill("78701");
-    await page.getByRole("button", { name: "Search", exact: true }).click();
+    const search = page.getByRole("button", { name: "Search", exact: true });
+    // Let the native scroll settle before clicking below the mobile fold.
+    await search.scrollIntoViewIfNeeded();
+    await expect(search).toBeInViewport({ ratio: 1 });
+    await search.click();
     await expect(
       page.getByRole("heading", { name: "Cedar Path Remediation" }),
     ).toBeVisible();

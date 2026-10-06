@@ -1,12 +1,29 @@
-import Link from "next/link";
-import { ArrowRight, Leaf, Sprout } from "lucide-react";
+import type { Metadata } from "next";
+import { ArrowRight, Sprout } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { directoryRepository, locationAdapter } from "@/data";
 import { HomeSearch } from "@/features/directory/home-search";
+import {
+  CategoryBrowse,
+  HomeJourney,
+  HomeFeatures,
+  HomeAbout,
+} from "@/features/home/home-sections";
+import { HomeStatistics } from "@/features/home/home-statistics";
+
+export const metadata: Metadata = {
+  title: "Find healthy-home professionals | Demo preview",
+  description:
+    "Explore eight healthy-home specialties, search by city or ZIP, and try the Restored Healthy Homes directory with fictional demo data.",
+};
 export default async function Home() {
-  const [catalog, locations] = await Promise.all([
+  const [catalog, locations, listings] = await Promise.all([
     directoryRepository.getCategories(),
     locationAdapter.listSupported(),
+    directoryRepository
+      .listPublic()
+      .then((records) => records.map(({ id, state }) => ({ id, state })))
+      .catch(() => null),
   ]);
   return (
     <>
@@ -22,40 +39,32 @@ export default async function Home() {
               <br className="desktop-break" /> for your healthy home.
             </h1>
             <p>
-              Connect with professionals who understand the spaces you live in.
-              Explore specialties in mold, building, design and personal health.
+              Explore professionals in mold testing, building, design and
+              personal health. Find a specialty, understand the services, and
+              plan your next conversation.
             </p>
-            <ButtonLink className="button-clay" href="/directory">
-              Explore the directory <ArrowRight size={18} aria-hidden="true" />
-            </ButtonLink>
+            <div className="public-page-actions">
+              <ButtonLink href="/directory">
+                Explore the directory{" "}
+                <ArrowRight size={18} aria-hidden="true" />
+              </ButtonLink>
+              <ButtonLink className="hero-secondary" href="/list-your-business">
+                List Your Business
+              </ButtonLink>
+            </div>
             <p className="hero-demo">
-              An early look · Fictional listings for this preview
+              Demo preview · Fictional listings and local forms. Nothing is
+              delivered.
             </p>
           </div>
           <HomeSearch catalog={catalog} locations={locations} />
         </div>
       </section>
-      <section className="container home-intro">
-        <div>
-          <span className="section-label">
-            <Leaf size={19} aria-hidden="true" /> Built around your home
-          </span>
-          <h2>A clearer place to begin.</h2>
-        </div>
-        <div>
-          <p>
-            Whether you’re investigating a concern or making plans for a new
-            space, finding the right specialty is a useful first step.
-          </p>
-          <p>
-            Browse the sample directory, explore the services each business
-            offers, and see how Restored Healthy Homes is taking shape.
-          </p>
-          <Link className="text-link" href="/directory">
-            Find your specialty <ArrowRight size={17} aria-hidden="true" />
-          </Link>
-        </div>
-      </section>
+      <CategoryBrowse catalog={catalog} />
+      <HomeStatistics listings={listings} />
+      <HomeJourney />
+      <HomeFeatures />
+      <HomeAbout />
     </>
   );
 }

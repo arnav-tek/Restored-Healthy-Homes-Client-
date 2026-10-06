@@ -209,7 +209,12 @@ test("public session projection excludes private fields, filters eligibility fir
   const publicRecords = demoPublicDirectory(demo.state.records);
   assert.deepEqual(
     publicRecords.map((item) => item.id),
-    [record.id],
+    [
+      record.id,
+      "member-example-coordinator",
+      "member-example-fern",
+      "member-example-cedar",
+    ],
   );
   assert.deepEqual(
     Object.keys(publicRecords[0]).sort(),
@@ -244,7 +249,7 @@ test("public session projection excludes private fields, filters eligibility fir
     approval: "rejected",
     reason: "Rejected sample",
   });
-  assert.equal(demoPublicDirectory(demo.state.records).length, 0);
+  assert.equal(demoPublicDirectory(demo.state.records).length, 3);
 });
 test("admin filters, validation and reset have no competing state", () => {
   const demo = session();

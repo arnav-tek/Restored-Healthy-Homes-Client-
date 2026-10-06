@@ -17,6 +17,9 @@ export function Footer() {
           <Link href="/directory">Professional directory</Link>
           <Link href="/questions">Ask a Specialist</Link>
           <Link href="/list-your-business">List Your Business</Link>
+          <Link href="/consultations">Consultations</Link>
+          <Link href="/about">About Us</Link>
+          <Link href="/login">Demo sign-in</Link>
           <Link href="/demo/member">Member area</Link>
           <Link href="/demo/admin">Admin area</Link>
         </div>
@@ -31,7 +34,7 @@ export function Footer() {
       </div>
       <div className="container footer-bottom">
         <span>© {new Date().getFullYear()} Restored Healthy Homes</span>
-        <span>Phase 2E-1 · Demo preview</span>
+        <span>Phase 2H-1 · Demo preview</span>
       </div>
     </footer>
   );

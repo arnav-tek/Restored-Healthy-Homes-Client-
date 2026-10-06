@@ -42,3 +42,17 @@ Phase 2C-2 reused the installed frontend-design, react-best-practices, compositi
 
 Phase 2D reuses those same installed design, React/composition and Playwright instructions already read in this conversation. Focused components, one shared provider and explicit draft state preserve the existing rules; no skill or dependency installation was needed.
 Phase 2E-1 reused the installed frontend-design, react-best-practices and playwright skills. Server-rendered published Q&A, one question-form island and the existing reducer/draft provider preserve boundaries. User-requested tests extend the existing Playwright suite; no skill or dependency installations.
+
+Phase 2E-2 reused the installed frontend-design, React/composition and Playwright guidance already read in this conversation. The existing provider owns Q&A overlays and drafts; focused member/admin/public components share validation and projections. No skills or dependencies were installed.
+
+Phase 2F-1 reused the existing frontend-design, React/composition and Playwright guidance. Server-rendered consultation content surrounds one request-form island; existing reducer/draft/reset patterns and tests are extended. No dependencies or skills were installed.
+
+Phase 2F-2 reused the local React best-practices and Playwright guidance with the existing dashboard design. Consultation rules/projections stay in the domain layer; browser test files extend the installed Playwright suite as requested. No dependencies or skills were installed.
+
+Phase 2F-3 reused frontend-design, React best-practices and the existing Playwright suite. The sign-in form keeps the established tokens; typed identity/return rules extend the existing provider, and browser tests use a shared UI sign-in helper. No skills or dependencies were installed.
+
+Phase 2G-1 reused the installed frontend-design, React best-practices and Playwright guidance. Server-rendered published reviews surround a small session-form island; existing tokens, shared provider and requested browser-test patterns are retained. No skills or dependencies were installed.
+
+Phase 2G-2 reused those same installed skills for the existing dashboard patterns, public-only review snapshot and requested unit/browser coverage. Review presentation now reads the shared session overlay while retaining server-rendered public seeds. No skills or dependencies were installed; typography and theme tokens remain unchanged.
+
+Phase 2H-1 reused frontend-design, React best-practices, Playwright and web-design-guidelines. Applied the retrieved accessibility guidance to the affected public pages/navigation, retained static server-rendered content and isolated session statistics. User-requested tests extend the existing browser suite. No skills or dependencies were installed.

@@ -1,9 +1,41 @@
 import type { ApprovalStatus, SubscriptionStatus } from "./professional";
 import { isPubliclyEligible } from "./listing";
+import type { PublicReviewSnapshot } from "./review";
 import { categories } from "./categories";
 import { parseCategoryName, parseReviewReason } from "../validation/admin";
-import type { DemoQuestionSubmission, QuestionFields } from "./qa";
+import type {
+  DemoQuestionSubmission,
+  QuestionFields,
+  PublicQuestion,
+} from "./qa";
+import {
+  createQaSession,
+  reduceQaAction,
+  type QaAction,
+  type QaSession,
+} from "./qa-session";
 import { parseQuestion } from "../validation/qa";
+import {
+  consultationOffer,
+  type ConsultationFields,
+  type DemoConsultationRequest,
+} from "./consultation";
+import { parseConsultation } from "../validation/consultation";
+import type { DemoIdentity } from "./demo-identity";
+import {
+  createReviewSession,
+  reduceReviewAction,
+  type ReviewAction,
+  type ReviewSession,
+} from "./review-session";
+import {
+  parseDemoSignIn,
+  type DemoSignInFields,
+} from "../validation/demo-sign-in";
+import {
+  reduceConsultationAction,
+  type ConsultationAction,
+} from "./consultation-session";
 
 export interface MemberProfileFields {
   name: string;
@@ -48,6 +80,12 @@ export interface DemoSessionSeed {
   inquiries: readonly DemoInboxItem[];
 }
 export interface DemoSession extends DemoSessionSeed {
+  publicProfessionalIds: readonly string[];
+  reviews: ReviewSession;
+  identity: DemoIdentity | null;
+  consultations: readonly DemoConsultationRequest[];
+  consultationId: string | null;
+  qa: QaSession;
   questions: readonly DemoQuestionSubmission[];
   questionId: string | null;
   categoryNames: Record<string, string>;
@@ -57,11 +95,17 @@ export interface DemoSession extends DemoSessionSeed {
   notice: string;
 }
 export type DemoMemberAction =
+  | ReviewAction
+  | { type: "demo-sign-in"; fields: DemoSignInFields }
+  | { type: "demo-sign-out" }
+  | ConsultationAction
+  | { type: "request-consultation"; fields: ConsultationFields }
+  | { type: "new-consultation" }
+  | QaAction
   | { type: "submit-question"; question: QuestionFields }
   | { type: "new-question" }
   | { type: "submit"; profile: MemberProfileFields }
   | { type: "edit"; id: string; profile: MemberProfileFields }
-  | { type: "select"; id: string }
   | {
       type: "decide";
       id: string;
@@ -96,9 +140,20 @@ export function copyMemberFields(
     practices: input.practices,
   };
 }
-export function createDemoSession(seed: DemoSessionSeed): DemoSession {
+export function createDemoSession(
+  seed: DemoSessionSeed,
+  publicQaSeed: readonly PublicQuestion[] = [],
+  publicProfessionalIds: readonly string[] = [],
+  publicReviewSeed?: PublicReviewSnapshot,
+): DemoSession {
   return {
     ...structuredClone(seed),
+    identity: null,
+    publicProfessionalIds: [...publicProfessionalIds],
+    reviews: createReviewSession(publicReviewSeed),
+    qa: createQaSession(publicQaSeed),
+    consultations: [],
+    consultationId: null,
     categoryNames: Object.fromEntries(
       categories.map(({ id, name }) => [id, name]),
     ),
@@ -117,6 +172,94 @@ export function reduceDemoSession(
 ): DemoSession {
   const revision = state.revision + 1;
   switch (action.type) {
+    case "submit-review":
+    case "moderate-review":
+    case "new-review": {
+      const reviews = reduceReviewAction(
+        state.reviews,
+        action,
+        state.publicProfessionalIds,
+        state.identity,
+      );
+      return reviews === state.reviews
+        ? state
+        : { ...state, reviews, revision };
+    }
+    case "demo-sign-in": {
+      if (state.identity) return state;
+      const result = parseDemoSignIn({ ...action.fields }, state.applicationId);
+      if (
+        !result.ok ||
+        (result.identity.kind === "member" &&
+          !state.records.some(
+            (record) =>
+              record.id ===
+              (result.identity.kind === "member"
+                ? result.identity.memberId
+                : ""),
+          ))
+      )
+        return state;
+      return {
+        ...state,
+        identity: result.identity,
+        selectedId:
+          result.identity.kind === "member"
+            ? result.identity.memberId
+            : state.selectedId,
+        revision,
+        notice: "",
+      };
+    }
+    case "demo-sign-out":
+      return {
+        ...state,
+        identity: null,
+        revision,
+        notice: "Demo signed out. Shared fictional records remain in this tab.",
+      };
+    case "request-consultation": {
+      // Lock this form attempt after success until the explicit "another" action.
+      if (state.consultationId !== null) return state;
+      const parsed = parseConsultation({ ...action.fields });
+      if (!parsed.ok) return state;
+      const { name, email, categoryId, format, topic } = parsed.fields;
+      const request: DemoConsultationRequest = {
+        id: `demo-consultation-${revision}`,
+        name,
+        email,
+        categoryId,
+        format,
+        topic,
+        status: "requested",
+        paymentStatus: "not-collected",
+        offer: { ...consultationOffer },
+        providerId: null,
+        scheduledAt: null,
+        adminNote: "",
+      };
+      return {
+        ...state,
+        consultations: [...state.consultations, request],
+        consultationId: request.id,
+        revision,
+      };
+    }
+    case "new-consultation":
+      return state.consultationId === null
+        ? state
+        : { ...state, consultationId: null, revision };
+    case "assign-consultation":
+    case "unassign-consultation":
+    case "accept-consultation":
+    case "decline-consultation":
+    case "cancel-consultation":
+    case "note-consultation":
+      return reduceConsultationAction(state, action);
+    case "submit-answer":
+    case "moderate-question":
+    case "moderate-answer":
+      return reduceQaAction(state, action);
     case "submit-question": {
       const parsed = parseQuestion(action.question);
       if (!parsed.ok) return state;
@@ -138,14 +281,15 @@ export function reduceDemoSession(
       return { ...state, questionId: null, revision };
     case "reset":
       return {
-        ...createDemoSession(seed),
+        ...createDemoSession(
+          seed,
+          state.qa.snapshot,
+          state.publicProfessionalIds,
+          state.reviews.snapshot,
+        ),
         revision,
         notice: "Demo session reset. All local changes were cleared.",
       };
-    case "select":
-      return state.records.some((record) => record.id === action.id)
-        ? { ...state, selectedId: action.id, notice: "", revision }
-        : state;
     case "submit": {
       const record: DemoMemberRecord = {
         id: "demo-local-application",
@@ -169,7 +313,7 @@ export function reduceDemoSession(
           ...state.records.filter((item) => item.id !== record.id),
           record,
         ],
-        selectedId: record.id,
+        selectedId: state.identity ? state.selectedId : record.id,
         applicationId: record.id,
         revision,
         notice:

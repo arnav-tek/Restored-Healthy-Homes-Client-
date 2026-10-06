@@ -2,6 +2,7 @@
 import {
   createContext,
   use,
+  useCallback,
   useReducer,
   useState,
   type ReactNode,
@@ -14,6 +15,9 @@ import {
 } from "@/domain/demo-member";
 import { getDemoSessionSeed } from "@/data/demo/member-session";
 import type { ApplicationCategory } from "./profile-fields-form";
+import type { PublicQuestion } from "@/domain/qa";
+import type { PublicReviewSnapshot } from "@/domain/review";
+import { parseDemoSignIn } from "@/validation/demo-sign-in";
 
 const seed = getDemoSessionSeed();
 export type DemoDraft = Record<string, string | string[]>;
@@ -25,30 +29,52 @@ const DemoSessionContext = createContext<{
   setDraft: (key: string, draft: DemoDraft | null) => void;
   resetVersion: number;
 } | null>(null);
-export function DemoSessionProvider({ children }: { children: ReactNode }) {
+export function DemoSessionProvider({
+  children,
+  publicQaSeed,
+  publicProfessionalIds,
+  publicReviewSeed,
+}: {
+  children: ReactNode;
+  publicQaSeed: readonly PublicQuestion[];
+  publicProfessionalIds: readonly string[];
+  publicReviewSeed: PublicReviewSnapshot;
+}) {
   const [state, reduce] = useReducer(
     (current: DemoSession, action: DemoMemberAction) =>
       reduceDemoSession(current, action, seed),
     seed,
-    createDemoSession,
+    () =>
+      createDemoSession(
+        seed,
+        publicQaSeed,
+        publicProfessionalIds,
+        publicReviewSeed,
+      ),
   );
   const [drafts, setDrafts] = useState<Record<string, DemoDraft>>({});
   const [resetVersion, setResetVersion] = useState(0);
   function dispatch(action: DemoMemberAction) {
-    if (action.type === "reset") {
+    if (
+      action.type === "reset" ||
+      action.type === "demo-sign-out" ||
+      (action.type === "demo-sign-in" &&
+        !state.identity &&
+        parseDemoSignIn({ ...action.fields }, state.applicationId).ok)
+    ) {
       setDrafts({});
       setResetVersion((value) => value + 1);
     }
     reduce(action);
   }
-  function setDraft(key: string, draft: DemoDraft | null) {
+  const setDraft = useCallback((key: string, draft: DemoDraft | null) => {
     setDrafts((current) => {
       const next = { ...current };
       if (draft) next[key] = draft;
       else delete next[key];
       return next;
     });
-  }
+  }, []);
   return (
     <DemoSessionContext
       value={{ state, dispatch, drafts, setDraft, resetVersion }}

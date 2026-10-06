@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
+import { useDemoSession } from "@/features/member/demo-session";
 import {
   inquiryLimits,
   validateInquiry,
@@ -11,6 +12,12 @@ import {
 } from "@/validation/inquiry";
 
 export function InquiryForm() {
+  const { resetVersion } = useDemoSession();
+  return <LocalInquiryForm key={resetVersion} />;
+}
+
+function LocalInquiryForm() {
+  const { setDraft } = useDemoSession();
   const ready = useDemoReady();
   const [errors, setErrors] = useState<InquiryErrors>({});
   const [confirmed, setConfirmed] = useState(false);
@@ -19,6 +26,8 @@ export function InquiryForm() {
   useEffect(() => {
     if (confirmed) confirmation.current?.focus();
   }, [confirmed]);
+  // Track only dirtiness for sign-out confirmation, never the inquiry contents.
+  useEffect(() => () => setDraft("inquiry-dirty", null), [setDraft]);
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,6 +47,7 @@ export function InquiryForm() {
       return;
     }
     event.currentTarget.reset();
+    setDraft("inquiry-dirty", null);
     setConfirmed(true);
   }
   function fieldProps(field: InquiryField) {
@@ -90,6 +100,13 @@ export function InquiryForm() {
         <form
           ref={form}
           onSubmit={submit}
+          onChange={(event) => {
+            const data = new FormData(event.currentTarget);
+            const dirty = ["name", "email", "message"].some((field) =>
+              Boolean(data.get(field)),
+            );
+            setDraft("inquiry-dirty", dirty ? {} : null);
+          }}
           noValidate
           autoComplete="off"
           aria-describedby="inquiry-demo-note"

@@ -14,6 +14,8 @@ Authoritative scope: [overview](../Project%20overview/restored-healthy-homes-pro
 
 ## Temporary Phase 1 choices
 
+Historical foundation decisions below describe Phase 1 only. They do not describe the current interactive demo: shared session mutations, demo sign-in, Q&A, consultations and public reviews were subsequently implemented. Use the latest handoff and build checklist for current status. The 2026-10-04 scope audit in the checklist preserves remaining detailed acceptance.
+
 - Read-only server fixtures, no persistence/reset requirement. Reserved example.invalid emails and synthetic billing IDs.
 - Public = approved + active + not suspended; no inferred grace periods.
 - Member preview uses one shared fictional business. `/demo/member` and `/demo/admin` are not authentication; no mutation actions.

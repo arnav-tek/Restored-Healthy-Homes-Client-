@@ -1,3 +1,4 @@
+import { signIn } from "./helpers/demo-sign-in";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { categories } from "../../src/domain/categories";
@@ -51,7 +52,7 @@ test("mobile menu supports touch, keyboard, Escape, and route dismissal", async 
 }, testInfo) => {
   test.skip(
     testInfo.project.name === "desktop",
-    "Disclosure navigation applies below 1050px",
+    "Disclosure navigation applies below 1280px",
   );
   await page.goto("/");
   const toggle = page.getByRole("button", { name: "Open navigation" });
@@ -89,6 +90,8 @@ test("shells, screenshots, overflow, accessibility and no browser errors", async
     ["/demo/admin", "admin"],
   ]) {
     await page.goto(route);
+    if (route.startsWith("/demo/"))
+      await signIn(page, route.includes("admin") ? "admin" : "approved");
     await expect(page.getByRole("main")).toBeVisible();
     await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
     // Mobile Chromium can expand innerWidth to fit overflowing content.
@@ -109,11 +112,12 @@ test("shells, screenshots, overflow, accessibility and no browser errors", async
   await section(page, "Admin", "Listings");
   await expect(
     page.getByTestId("session-directory").getByRole("article"),
-  ).toHaveCount(1);
+  ).toHaveCount(4);
   await page
     .getByRole("navigation", { name: "Demo workspaces" })
     .getByRole("link", { name: "Member overview" })
     .click();
+  await signIn(page);
   await expect(
     page.getByText("Meets sample eligibility rules", { exact: true }),
   ).toBeVisible();

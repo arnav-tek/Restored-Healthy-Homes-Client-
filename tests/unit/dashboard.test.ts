@@ -71,9 +71,9 @@ test("overview counts derive from shared records and update after protected deci
   const seed = getDemoSessionSeed();
   const initial = createDemoSession(seed);
   assert.deepEqual(demoDashboardCounts(initial.records), {
-    applications: 4,
+    applications: 7,
     pending: 1,
-    eligible: 1,
+    eligible: 4,
     suspended: 0,
     unverified: 4,
   });
@@ -88,7 +88,7 @@ test("overview counts derive from shared records and update after protected deci
     seed,
   );
   assert.equal(demoDashboardCounts(reviewed.records).pending, 0);
-  assert.equal(demoDashboardCounts(reviewed.records).eligible, 1);
+  assert.equal(demoDashboardCounts(reviewed.records).eligible, 4);
   const suspended = reduceDemoSession(
     reviewed,
     {
@@ -99,7 +99,7 @@ test("overview counts derive from shared records and update after protected deci
     },
     seed,
   );
-  assert.equal(demoDashboardCounts(suspended.records).eligible, 0);
+  assert.equal(demoDashboardCounts(suspended.records).eligible, 3);
   assert.equal(demoDashboardCounts(suspended.records).suspended, 1);
   const verified = reduceDemoSession(
     suspended,

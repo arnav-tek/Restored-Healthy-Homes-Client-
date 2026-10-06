@@ -7,7 +7,10 @@ import { safeDirectoryReturn } from "@/validation/profile";
 
 interface ProfilePageProps {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ returnTo?: string | string[] }>;
+  searchParams: Promise<{
+    returnTo?: string | string[];
+    reviewPage?: string | string[];
+  }>;
 }
 export async function generateMetadata({
   params,
@@ -37,6 +40,7 @@ export default async function ProfilePage({
       profile={profile}
       catalog={catalog}
       returnTo={safeDirectoryReturn(query.returnTo, catalog)}
+      reviewPage={query.reviewPage}
     />
   );
 }
