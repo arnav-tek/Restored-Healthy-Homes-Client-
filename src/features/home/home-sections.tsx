@@ -71,12 +71,16 @@ export function CategoryBrowse({ catalog }: { catalog: readonly Category[] }) {
 export function HomeJourney() {
   return (
     <section
-      className="container home-section"
+      className="container home-section home-journey"
       aria-labelledby="journey-heading"
     >
-      <div className="home-section-heading">
+      <div className="home-journey-intro">
+        <p className="section-label">How it works</p>
         <h2 id="journey-heading">A clearer path to your next step.</h2>
         <p>Find, explore, then start a conversation.</p>
+        <Link className="home-journey-link" href="/directory">
+          Explore the directory <ArrowRight size={18} aria-hidden="true" />
+        </Link>
       </div>
       <ol className="home-steps">
         <li>

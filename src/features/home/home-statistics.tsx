@@ -35,7 +35,10 @@ export function HomeStatistics({
       aria-labelledby="statistics-heading"
       data-testid="home-statistics"
     >
-      <h2 id="statistics-heading">A look at the demo directory</h2>
+      <div className="home-statistics-heading">
+        <p className="section-label">The directory at a glance</p>
+        <h2 id="statistics-heading">A look at the demo directory</h2>
+      </div>
       <dl className="home-statistic-values">
         <div>
           <dt>Professionals</dt>

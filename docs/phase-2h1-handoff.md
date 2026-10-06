@@ -39,7 +39,7 @@ Implemented the user's design-refinement request within Phase 2H-1, separately f
 
 ### Final composition
 
-- Home: concise sage introduction → primary search panel → catalog icon grid → compact statistics strip → connected numbered journey → asymmetric Q&A/consultation introductions → editorial About introduction → one dedicated sage business application CTA.
+- Home: concise sage introduction → primary search panel → catalog icon grid → sage statistics panel → split introduction and vertical numbered journey → asymmetric Q&A/consultation introductions → editorial About introduction → one dedicated sage business application CTA.
 - Search: horizontal desktop fields/action, two-field tablet row and stacked mobile controls. Secondary browsing and the general fictional-data/form notice follow search. At 390 × 844, Search moved from y=1,004 to y=521 and ends at y=568, fully inside the initial viewport. At 320 px it ends at y=653. No fixed hero height, clipping or reduced control/text sizes were used.
 - Categories: four columns above 1050 px, two through tablet and one compact icon/text row per link on mobile. Full names/descriptions come from the existing catalog. Lucide icons are mapped by stable IDs with a neutral fallback; entire links have equivalent hover/focus feedback.
 - Statistics: consistent numerals and plain labels, one concise fictional-data/location disclaimer, and an accessible native definitions disclosure. Individual published-review weighting, eligibility filtering, zero/no-rating/unavailable states and immediate review-moderation updates remain intact.
@@ -63,3 +63,14 @@ This is focused regression coverage, not a full repository browser rerun for the
 ### Still outstanding
 
 Final company story, personal “Why,” approved copy, professionally produced video, optional poster, captions and transcript remain client-supplied work. **Visual client/user approval remains pending until reviewed.** No later public-page milestone is marked complete. Stop before Phase 2H-2; no push, deployment or real integrations.
+
+
+## Statistics and journey follow-up - 2026-10-06
+
+The user requested a redesign of the directory statistics and three-step journey shown in their screenshot, plus a review of remaining scope. Statistics now use a contrasting sage surface with larger numerals, separated columns and an integrated definitions/disclaimer footer. The journey pairs an editorial introduction and directory link with a connected vertical sequence; mobile stacks the introduction above the steps. Existing statistics computations, test IDs, session updates, empty/error states and demo disclaimers are preserved. No new dependencies, data fields or integrations.
+
+Actual desktop/tablet/mobile section captures are in `output/playwright/section-redesign-{desktop,tablet,mobile}.png`; all three were inspected, with no horizontal overflow. Remaining scope is unchanged: approved copy/media and demo review, remaining public content/search details, production accounts/data/admin, billing/email, community/consultation/content integrations, then launch verification and handoff. See the scope audit and Phases 3-6 in `docs/build-checklist.md`.
+
+Verification: typecheck, zero-warning lint, 78 unit tests and optimized demo build passed. The full browser run passed 142 cases, then stopped on a mobile Q&A response-body capture timeout (one concurrent case interrupted; three intentional skips; 18 unrun). The failed, interrupted and remaining mobile cases were covered by a 22-case single-worker rerun, all passing without code changes. Thus all 162 applicable browser cases passed across the two runs; this was not one clean uninterrupted suite. The timed-out test passed in 1.2 seconds on rerun. The trace showed response bodies being captured across navigation; the root cause of the transient timeout is not established. Home/About, responsive screenshots, 320 px, doubled text, accessibility, error, no-script and review-state checks passed in the first run.
+
+The production guard is unchanged and covered by the passing unit suite; the preceding refinement's missing-opt-in build rejection remains the latest direct build-guard check. Chromium emulation only; physical-device and Safari/Firefox review remain outstanding. The user subsequently authorized committing and pushing this follow-up to GitHub. Public deployment remains outside this follow-up.
