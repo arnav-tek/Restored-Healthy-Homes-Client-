@@ -31,6 +31,7 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
   const ready = useDemoReady();
   const eligible = state.publicProfessionalIds.includes(professionalId);
   const [errors, setErrors] = useState<ReviewErrors>({});
+  const [submittedHeight, setSubmittedHeight] = useState<number>();
   const form = useRef<HTMLFormElement>(null);
   const confirmation = useRef<HTMLHeadingElement>(null);
   const submitted = currentReviewSubmission(state.reviews, professionalId);
@@ -56,6 +57,8 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
       return;
     }
     // The eligible server profile supplies the target; no target/status/verification form fields.
+    // Keep the confirmation from pulling footer links underneath a rapid second click.
+    setSubmittedHeight(event.currentTarget.getBoundingClientRect().height);
     dispatch({ type: "submit-review", professionalId, fields: parsed.fields });
     clearDraft();
     setErrors({});
@@ -87,6 +90,7 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
       {submitted ? (
         <section
           className="panel review-confirmation"
+          style={{ minHeight: submittedHeight }}
           aria-labelledby="review-confirmation-heading"
         >
           <h3 id="review-confirmation-heading" tabIndex={-1} ref={confirmation}>

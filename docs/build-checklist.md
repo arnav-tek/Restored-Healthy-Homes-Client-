@@ -170,6 +170,17 @@ The initial focused attempt found a test selector using the replaced consultatio
 
 Stop after 2H-2. Remaining demo milestones and integrations require a separate scoped instruction.
 
+## Phase 2I-1 — directory state and rating discovery
+
+Authorized 2026-10-07 after the user deferred blog/resources and newsletter work for now. Those features remain in final scope.
+
+- [x] State and minimum published-rating filters compose with keyword/category/city/ZIP/radius/sort; bounded URL validation, history/reload, clear filters and safe profile return links.
+- [x] Public cards reuse the profile review average/count calculation and decorative stars; unrated listings stay visible with Any rating and are excluded from minimum-rating searches.
+- [x] Same-tab published review moderation drives cards, filtering, totals and pagination; server-rendered seeds and native no-JavaScript search retained.
+- [x] Final required checks and desktop/tablet/mobile render review; actual results and limitations recorded in the [Phase 2I-1 handoff](phase-2i1-handoff.md).
+
+Real location services, durable reviews and featured priority remain future work. This milestone adds no services or production authorization.
+
 ## Scope audit — remaining details to preserve
 
 Reconciled 2026-10-04 against the original Word brief, supplied overview/paste and later client conversation. These unchecked items clarify remaining acceptance, not newly completed work. Later client confirmations override old exclusions, category labels, Netlify hosting and exact-design mandates. Demo completion is not production completion.
@@ -177,7 +188,8 @@ Reconciled 2026-10-04 against the original Word brief, supplied overview/paste a
 - [x] Phase 2H-1 homepage layout: fuller introduction, eight category browse links and statistics derived from eligible public professionals, listing-location states and individual published ratings. Values explicitly describe demo data, not service coverage or live traction.
 - [ ] Remaining public-page delivery: final About Us story/Why/text/client video, approved education content, blog/resources, newsletter form and relevant navigation/footer links. About Us layout is built in 2H-1; education/pricing layout and navigation in 2H-2. Final assets and client approval remain outstanding.
 - [x] Education layout acceptance in 2H-2: all eight current categories, external certification/training options, explicit pending typical timelines/costs, official provider links and an application CTA. Final program details/content approval remain separately pending. The platform does not certify.
-- [ ] Search completion: explicit state and rating filters alongside existing city/ZIP/category/radius search; consistent published rating summaries and agreed featured priority. Radius/service-area/geolocation behavior remains a client decision; an interactive map is not automatically required.
+- [x] Demo search completion in 2I-1: state and minimum-rating filters alongside existing city/ZIP/category/radius search, with published review averages/counts on directory cards.
+- [ ] Production search and placement: real location/service-area data and agreed featured priority. Radius/service-area/geolocation behavior remains a client decision; an interactive map is not automatically required.
 - [ ] Profile/media completion (Phase 3): photo/logo management and secure uploads, intended public professional/owner display name, contact options and badge presentation. Keep public display fields separate from private application contact identity; confirm which names/contact details may be public.
 - [ ] Admin completion (Phase 3/5): permitted listing/profile edits, not only status decisions; basic analytics including active members, members by category, new applications this month and membership status. Current demo queue counts alone do not satisfy these analytics.
 - [ ] Category architecture (Phase 3): support adding categories without rebuilding and preserve stable IDs on rename. Existing label editing is not evidence of category creation or a billing-configuration editor; define any added admin controls before implementing them.
@@ -189,7 +201,7 @@ Reconciled 2026-10-04 against the original Word brief, supplied overview/paste a
 Second-pass clarifications from the same sources (not additional product scope):
 
 - [x] Review presentation: Phase 2G-2 shares numeric labels and decorative stars across public/member reviews and admin detail/queue views; stars do not duplicate screen-reader announcements.
-- [ ] Search completion must reuse the published review summary for future rating filters and any directory-card ratings. Phase 2H-1 homepage statistics already reuse the session-aware published calculation.
+- [x] Phase 2I-1 rating filters and directory-card summaries reuse the profile published-review summary, including same-tab moderation; homepage statistics retain the existing published calculation.
 - [ ] Q&A attribution: published member answers link to the correct eligible public professional profile through an explicit stable member-to-professional association. Current session-member attribution has no public profile link. Confirm what "verified member" means and category-based notification eligibility; paid membership is not automatically credential verification.
 - [ ] Certification badges: derive displayed badges from stored credential data under agreed verification rules, update/remove them when underlying credentials change, and distinguish submitted claims from verified credentials. Existing text/verification previews do not complete automatic badge behavior.
 - [ ] Production data continuity: member edits, admin decisions, inquiries, Q&A, reviews and subscriptions operate on shared durable records. Verify changes across independent member/admin/visitor sessions and reloads; the current separate server directory/member demo fixtures and same-tab overlays are temporary.
@@ -203,7 +215,7 @@ After Phase 2H-2, await scoped prompts for the remaining demo milestones above; 
 - [ ] Applications, approval/rejection/suspension, profile editing and safe uploads.
 - [ ] Member/admin portals, category renaming, credential review/badges, audit trails.
 - [ ] Notifications once email integration is ready; real role/tenant isolation checks and review.
-- [ ] Extend demo search to real location/service-area data and state/rating filters when relevant data/decisions are ready.
+- [ ] Extend search to real location/service-area data and durable review ratings when relevant data/decisions are ready. Demo state/rating controls are complete in 2I-1.
 
 ## Phase 4 — memberships, featured listings and email
 

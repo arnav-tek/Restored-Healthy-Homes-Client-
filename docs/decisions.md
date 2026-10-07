@@ -39,3 +39,7 @@ Historical foundation decisions below describe Phase 1 only. They do not describ
 | Expanded schedule, revision rounds, post-launch support | Delivery planning |
 
 None blocks Phase 1. No combined billing formula or payout system has been invented.
+
+## Directory follow-up — 2026-10-07
+
+The user deferred blog/resources and newsletter signup for now, then authorized state/rating directory filters and published card summaries. These deferred pages remain in final delivery. State means the business listing location, not service coverage; state and city/radius filters intersect. Minimum rating uses the same one-decimal published review average displayed on profiles/cards; no-review businesses match Any rating only. Featured placement, real location services and production integrations were not included in this instruction.

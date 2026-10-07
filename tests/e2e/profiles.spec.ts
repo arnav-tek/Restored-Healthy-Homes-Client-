@@ -24,7 +24,7 @@ test("filtered search to profile and local inquiry, validation, reset and return
   await expect(page.getByLabel("Name", { exact: true })).toBeEnabled();
   await page.getByRole("button", { name: "Check inquiry" }).press("Enter");
   await expect(page.getByLabel("Name", { exact: true })).toBeFocused();
-  await expect(page.getByLabel("Email")).toHaveAttribute(
+  await expect(page.getByLabel("Email", { exact: true })).toHaveAttribute(
     "aria-invalid",
     "true",
   );
@@ -48,14 +48,16 @@ test("filtered search to profile and local inquiry, validation, reset and return
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(testInfo.project.use.viewport!.width);
   await page.getByLabel("Name", { exact: true }).fill("Sample Homeowner");
-  await page.getByLabel("Email").fill("invalid-email");
+  await page.getByLabel("Email", { exact: true }).fill("invalid-email");
   await page.getByLabel("Message").fill("Short");
   await page.getByRole("button", { name: "Check inquiry" }).click();
-  await expect(page.getByLabel("Email")).toBeFocused();
+  await expect(page.getByLabel("Email", { exact: true })).toBeFocused();
   await expect(
     page.getByText("Enter at least 10 characters for your message."),
   ).toBeVisible();
-  await page.getByLabel("Email").fill("homeowner@example.invalid");
+  await page
+    .getByLabel("Email", { exact: true })
+    .fill("homeowner@example.invalid");
   await page
     .getByLabel("Message")
     .fill("A fictional ventilation project inquiry.");

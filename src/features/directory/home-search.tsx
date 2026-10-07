@@ -25,7 +25,7 @@ export function HomeSearch({
           Search <Search size={18} aria-hidden="true" />
         </Button>
       </SearchForm>
-      <SupportedLocations locations={locations} />
+      <SupportedLocations locations={locations} variant="hero" />
     </div>
   );
 }

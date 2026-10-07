@@ -3,11 +3,13 @@ import type { PublicProfessional } from "../domain/professional";
 import type { LocationAdapter } from "./contracts";
 import type { SearchQuery, SearchResponse } from "../domain/directory-search";
 import { searchPublicDirectory } from "../domain/directory-search";
+import type { PublicReview } from "../domain/review";
 export async function searchEligiblePublic(
   professionals: readonly PublicProfessional[],
   catalog: readonly Category[],
   query: SearchQuery,
   adapter: LocationAdapter,
+  reviews: readonly PublicReview[] = [],
 ): Promise<SearchResponse> {
   if (
     (query.radius !== undefined || query.sort === "nearest") &&
@@ -51,6 +53,7 @@ export async function searchEligiblePublic(
       query,
       locations,
       origin,
+      reviews,
     ),
   };
 }

@@ -1,76 +1,142 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import {
+  MessageSquare,
+  CheckCircle2,
+  FileText,
+  Users,
+  Calendar,
+  ArrowRight,
+} from "lucide-react";
 import { consultationOfferLabel } from "@/domain/consultation";
 import { ConsultationRequestForm } from "@/features/consultations/request-form";
+
 export const metadata: Metadata = {
   title: "Consultations",
   description:
     "Explore a proposed short consultation and try a request. No appointment or payment is made.",
   robots: { index: false, follow: false },
 };
+
 export default function ConsultationsPage() {
   return (
     <div className="container consultation-page">
+      {/* Hero: 2-column desktop layout */}
       <header id="consultation-intro" className="consultation-intro">
-        <div>
-          <p className="section-label">Consultations</p>
-          <h1>A little guidance for your next home project.</h1>
-          <p>
+        <div className="consultation-hero-left">
+          <p className="section-eyebrow">
+            <span className="eyebrow-line" aria-hidden="true">— </span>CONSULTATIONS
+          </p>
+          <h1 className="consultation-hero-title">
+            A little guidance for your next home project.
+          </h1>
+          <p className="consultation-hero-subtitle">
             Explore a short conversation about healthy-home services. Prepare
             the question you would like to discuss.
           </p>
-          <a className="button" href="#request">
-            Prepare a request
+          <a className="button consultation-hero-cta" href="#request">
+            Prepare a request <ArrowRight size={16} aria-hidden="true" />
           </a>
         </div>
         <aside
-          className="consultation-offer"
+          className="consultation-offer-card"
           aria-label="Proposed consultation offer"
         >
-          <p className="section-label">Current proposed offer</p>
-          <p className="consultation-price">{consultationOfferLabel()}</p>
-          <p>
-            Format, availability and delivery arrangements will need to be
-            confirmed.
-          </p>
-          <p className="field-help">
-            Clinical services and written summaries are not included.
-          </p>
+          <div className="offer-card-top">
+            <div className="offer-card-icon" aria-hidden="true">
+              <MessageSquare size={22} />
+            </div>
+            <div>
+              <p className="offer-card-eyebrow">CURRENT PROPOSED OFFER</p>
+              <p className="consultation-price">{consultationOfferLabel()}</p>
+            </div>
+          </div>
+          <ul className="offer-notes-list">
+            <li>
+              <CheckCircle2 size={18} className="offer-check-icon" aria-hidden="true" />
+              <span>Format, availability and delivery arrangements will need to be confirmed.</span>
+            </li>
+            <li>
+              <CheckCircle2 size={18} className="offer-check-icon" aria-hidden="true" />
+              <span>Clinical services and written summaries are not included.</span>
+            </li>
+            <li>
+              <CheckCircle2 size={18} className="offer-check-icon" aria-hidden="true" />
+              <span>You&apos;ll coordinate directly with the selected professional.</span>
+            </li>
+          </ul>
         </aside>
       </header>
+
+      {/* How consultations work: 3 visual process steps */}
       <section
         className="consultation-process"
         aria-labelledby="consultation-process-heading"
       >
-        <h2 id="consultation-process-heading">How consultations work</h2>
-        <p>
-          Start by preparing a request. Scheduling and payment are not available
-          yet.
-        </p>
-        <ol>
-          <li>
-            <h3>Request</h3>
-            <p>Share a topic, a relevant category and a format preference.</p>
+        <div className="process-header">
+          <h2 id="consultation-process-heading" className="section-eyebrow">
+            <span className="eyebrow-line" aria-hidden="true">— </span>HOW CONSULTATIONS WORK
+          </h2>
+          <p className="process-title">Start with a simple process.</p>
+          <p className="process-subtitle">
+            Begin by preparing a request. Scheduling and payment are not available
+            yet.
+          </p>
+        </div>
+        <ol className="process-steps">
+          <li className="process-step">
+            <div className="step-circle-wrapper">
+              <div className="step-circle">
+                <FileText size={24} className="step-icon" aria-hidden="true" />
+              </div>
+              <span className="step-badge" aria-hidden="true">1</span>
+              <div className="step-connector" aria-hidden="true" />
+            </div>
+            <div className="step-content">
+              <h3>Request</h3>
+              <p>Share a topic, a relevant category and a format preference.</p>
+            </div>
           </li>
-          <li>
-            <h3>Coordination</h3>
-            <p>
-              Specialist selection, availability and delivery arrangements would
-              need to be agreed.
-            </p>
+          <li className="process-step">
+            <div className="step-circle-wrapper">
+              <div className="step-circle">
+                <Users size={24} className="step-icon" aria-hidden="true" />
+              </div>
+              <span className="step-badge" aria-hidden="true">2</span>
+              <div className="step-connector" aria-hidden="true" />
+            </div>
+            <div className="step-content">
+              <h3>Coordination</h3>
+              <p>
+                Specialist selection, availability and delivery arrangements
+                would need to be agreed.
+              </p>
+            </div>
           </li>
-          <li>
-            <h3>Confirmation</h3>
-            <p>
-              An appointment would require a separate confirmation once
-              arrangements are settled.
-            </p>
+          <li className="process-step">
+            <div className="step-circle-wrapper">
+              <div className="step-circle">
+                <Calendar size={24} className="step-icon" aria-hidden="true" />
+              </div>
+              <span className="step-badge" aria-hidden="true">3</span>
+            </div>
+            <div className="step-content">
+              <h3>Confirmation</h3>
+              <p>
+                An appointment would require a separate confirmation once
+                arrangements are settled.
+              </p>
+            </div>
           </li>
         </ol>
-        <Link className="text-link" href="/directory">
-          Browse professionals →
-        </Link>
+        <div className="process-footer">
+          <Link className="browse-professionals-link" href="/directory">
+            Browse professionals <ArrowRight size={15} aria-hidden="true" />
+          </Link>
+        </div>
       </section>
+
+      {/* Form card and session actions */}
       <ConsultationRequestForm />
     </div>
   );

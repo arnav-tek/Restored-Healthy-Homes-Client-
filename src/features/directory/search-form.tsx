@@ -2,7 +2,17 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import Form from "next/form";
+import { useFormStatus } from "react-dom";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
+
+function SearchPending() {
+  const { pending } = useFormStatus();
+  return pending ? (
+    <p className="search-pending" role="status">
+      Updating results…
+    </p>
+  ) : null;
+}
 
 /** Keep restored browser drafts from overriding the server-validated URL state. */
 export function SearchForm({
@@ -48,6 +58,7 @@ export function SearchForm({
       data-ready={ready}
     >
       {children}
+      <SearchPending />
     </Form>
   );
 }

@@ -141,6 +141,9 @@ test("example states, seeded inbox, client navigation and refresh lifetime", asy
   page,
   context,
 }) => {
+  // Multiple account switches and independent-tab/reload journeys need more
+  // than the default 45 seconds on the shared local browser-test host.
+  test.setTimeout(90000);
   await visitWorkspace(page, "/demo/member");
   await switchMember(page, "member-example-rejected");
   await expect(page.getByTestId("member-approval")).toHaveText("rejected");

@@ -9,6 +9,8 @@ import { assertDemoConfiguration } from "../../domain/config";
 import { demoProfessionals } from "./fixtures";
 import { demoLocationAdapter } from "./locations";
 import { searchEligiblePublic } from "../search-service";
+import { demoReviews } from "./review-fixtures";
+import { publicReviewsFor } from "../../domain/review";
 const guard = () => assertDemoConfiguration(process.env);
 export const demoDirectory: DirectoryRepository = {
   async getPublicProfile(id) {
@@ -25,6 +27,7 @@ export const demoDirectory: DirectoryRepository = {
       categories,
       query,
       demoLocationAdapter,
+      records.flatMap(({ id }) => publicReviewsFor(demoReviews, id)),
     );
   },
   async getCategories() {

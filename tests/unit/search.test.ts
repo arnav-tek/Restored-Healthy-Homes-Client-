@@ -16,6 +16,13 @@ import { searchEligiblePublic } from "../../src/data/search-service";
 import { approximateMiles } from "../../src/domain/location";
 import { listPublicProfessionals } from "../../src/domain/listing";
 import { demoProfessionals } from "../../src/data/demo/fixtures";
+import { demoReviewRepository } from "../../src/data/demo/review-repository";
+import {
+  createReviewSession,
+  publicSessionReviews,
+  type ReviewSession,
+} from "../../src/domain/review-session";
+import { safeDirectoryReturn } from "../../src/validation/profile";
 const publicRecords = listPublicProfessionals(demoProfessionals);
 const raleigh = demoLocations.find((place) => place.id === "raleigh-nc")!;
 
@@ -139,9 +146,156 @@ test("eligibility and projection precede keyword, counts, sort and pagination", 
     assert.ok(hidden.ok && hidden.results.total === 0);
   }
   for (const hit of first.results.hits)
-    assert.deepEqual(Object.keys(hit).sort(), ["professional"]);
+    assert.deepEqual(Object.keys(hit).sort(), [
+      "professional",
+      "reviewSummary",
+    ]);
   const last = await demoDirectory.search({ ...defaultSearch, page: 10000 });
   assert.ok(last.ok && last.results.page === 2);
+});
+
+test("state and minimum-rating URL validation rejects duplicate/invalid filters and preserves safe returns", () => {
+  const parsed = parseSearchQuery(
+    { state: " nc ", minRating: "4.5", sort: "za", page: "2" },
+    categories,
+  );
+  assert.deepEqual(parsed.errors, {});
+  assert.equal(
+    directoryHref(parsed.query),
+    "/directory?state=NC&minRating=4.5&sort=za&page=2",
+  );
+  assert.equal(
+    safeDirectoryReturn("/directory?state=nc&minRating=4.5&page=2", categories),
+    "/directory?state=NC&minRating=4.5&page=2",
+  );
+  for (const state of ["XX", "North Carolina", "<script>", ["NC", "TX"]])
+    assert.ok(parseSearchQuery({ state }, categories).errors.state);
+  for (const minRating of [
+    "0",
+    "6",
+    "3.5",
+    "4.6",
+    "NaN",
+    "Infinity",
+    "4e0",
+    "04",
+    ["4", "5"],
+  ])
+    assert.ok(parseSearchQuery({ minRating }, categories).errors.minRating);
+  for (const minRating of ["1", "2", "3", "4", "4.5", "5"])
+    assert.deepEqual(parseSearchQuery({ minRating }, categories).errors, {});
+});
+
+test("published rating boundaries exclude unrated and ineligible listings before counts and pagination", async () => {
+  const found = await demoDirectory.search({ ...defaultSearch, minRating: 4 });
+  assert.ok(found.ok);
+  if (!found.ok) return;
+  assert.equal(found.results.total, 2);
+  assert.deepEqual(
+    found.results.hits.map((hit) => hit.reviewSummary),
+    [
+      { count: 4, average: 4.5 },
+      { count: 1, average: 4 },
+    ],
+  );
+  const exact = await demoDirectory.search({
+    ...defaultSearch,
+    state: "NC",
+    minRating: 4.5,
+    page: 10000,
+  });
+  assert.ok(exact.ok && exact.results.total === 1 && exact.results.page === 1);
+  const five = await demoDirectory.search({ ...defaultSearch, minRating: 5 });
+  assert.ok(five.ok && five.results.total === 0);
+  const any = await demoDirectory.search({ ...defaultSearch, state: "TX" });
+  assert.ok(any.ok && any.results.hits[0].reviewSummary.average === null);
+  assert.ok(!JSON.stringify(found).includes("REVIEW_PRIVATE"));
+});
+
+test("state composes with category, city/radius and ratings rather than overriding any filter", async () => {
+  const query = {
+    ...defaultSearch,
+    location: "27601",
+    radius: 250,
+    state: "NC",
+    minRating: 4,
+  };
+  const found = await demoDirectory.search(query);
+  assert.ok(
+    found.ok &&
+      found.results.total === 1 &&
+      found.results.hits[0].professional.id === "demo-mold-inspection",
+  );
+  for (const filter of [
+    { state: "TX" },
+    { category: "healthy-trades" },
+    { radius: undefined },
+  ]) {
+    const empty = await demoDirectory.search({ ...query, ...filter });
+    assert.ok(empty.ok && empty.results.total === 0);
+  }
+  const unsupported = await demoDirectory.search({
+    ...query,
+    location: "99999",
+  });
+  assert.ok(!unsupported.ok && unsupported.errors.location);
+});
+
+test("same-session published review changes drive directory ratings, thresholds and pages", async () => {
+  const snapshot = await demoReviewRepository.publicSnapshot();
+  const initial = createReviewSession(snapshot);
+  const ids = publicRecords.map(({ id }) => id);
+  const calculate = (session: ReviewSession, minRating: number, page = 1) =>
+    searchPublicDirectory(
+      publicRecords,
+      categories,
+      { ...defaultSearch, minRating, page },
+      demoLocations,
+      undefined,
+      ids.flatMap((id) => publicSessionReviews(session, ids, id)),
+    );
+  assert.equal(calculate(initial, 4.5).total, 1);
+  const rejected: ReviewSession = {
+    ...initial,
+    decisions: {
+      "sample-inspection-plan": {
+        status: "rejected",
+        note: "PRIVATE",
+        publishedAt: "",
+      },
+    },
+  };
+  assert.equal(calculate(rejected, 4.5).total, 0);
+  // New published records on all eligible businesses must filter before paging.
+  const submissions = ids.map((professionalId, index) => ({
+    id: `session-${index}`,
+    professionalId,
+    displayName: "Visitor",
+    rating: 5 as const,
+    body: "A synthetic review for the pagination boundary.",
+    status: "pending" as const,
+  }));
+  const pending = { ...initial, submissions };
+  assert.equal(calculate(pending, 1).total, 3);
+  const published = {
+    ...pending,
+    decisions: Object.fromEntries(
+      submissions.map(({ id }) => [
+        id,
+        {
+          status: "published" as const,
+          note: "PRIVATE",
+          publishedAt: "2026-10-07",
+        },
+      ]),
+    ),
+  };
+  const second = calculate(published, 1, 2);
+  assert.equal(second.total, 8);
+  assert.equal(second.pages, 2);
+  assert.equal(second.hits.length, 2);
+  assert.equal(calculate(initial, 1, 2).page, 1);
+  assert.ok(!JSON.stringify(second).includes("PRIVATE"));
 });
 
 test("keyword matches public services/categories, combines filters and sorts reverse", async () => {

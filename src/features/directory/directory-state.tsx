@@ -7,7 +7,8 @@ export function EmptyDirectory() {
       <h2>No matching professionals</h2>
       <p>
         No businesses match these filters. Try a broader keyword, another
-        specialty or a larger radius around a supported location.
+        specialty, another state, a lower minimum rating or a larger radius
+        around a supported location.
       </p>
       <ButtonLink href="/directory">Browse professionals</ButtonLink>
     </div>

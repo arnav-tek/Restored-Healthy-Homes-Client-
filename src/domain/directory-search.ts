@@ -2,11 +2,15 @@ import type { Category } from "./categories";
 import type { PublicProfessional } from "./professional";
 import type { DemoLocation } from "./location";
 import { approximateMiles } from "./location";
+import { summarizeReviews, type PublicReview } from "./review";
+export const minimumRatings = [1, 2, 3, 4, 4.5, 5] as const;
 export const DIRECTORY_PAGE_SIZE = 6;
 export interface SearchQuery {
   q: string;
   category: string;
   location: string;
+  state: string;
+  minRating?: number;
   radius?: number;
   sort: "az" | "za" | "nearest";
   page: number;
@@ -15,6 +19,7 @@ export const defaultSearch: SearchQuery = {
   q: "",
   category: "",
   location: "",
+  state: "",
   sort: "az",
   page: 1,
 };
@@ -23,6 +28,7 @@ export type SearchErrors = Partial<Record<SearchField, string>>;
 export interface SearchHit {
   professional: PublicProfessional;
   distanceMiles?: number;
+  reviewSummary: ReturnType<typeof summarizeReviews>;
 }
 export interface SearchResults {
   hits: SearchHit[];
@@ -40,6 +46,9 @@ export function directoryHref(query: SearchQuery): string {
   if (query.q) params.set("q", query.q);
   if (query.category) params.set("category", query.category);
   if (query.location) params.set("location", query.location);
+  if (query.state) params.set("state", query.state);
+  if (query.minRating !== undefined)
+    params.set("minRating", String(query.minRating));
   if (query.radius !== undefined) params.set("radius", String(query.radius));
   if (query.sort !== "az") params.set("sort", query.sort);
   if (query.page > 1) params.set("page", String(query.page));
@@ -52,11 +61,17 @@ export function searchPublicDirectory(
   query: SearchQuery,
   locations: readonly DemoLocation[],
   origin?: DemoLocation,
+  reviews: readonly PublicReview[] = [],
 ): SearchResults {
   const terms = query.q.toLocaleLowerCase("en-US").split(/\s+/).filter(Boolean);
   let hits = professionals
     .filter((professional) => {
       if (query.category && !professional.categoryIds.includes(query.category))
+        return false;
+      if (
+        query.state &&
+        professional.state.trim().toUpperCase() !== query.state
+      )
         return false;
       const text = [
         professional.businessName,
@@ -82,9 +97,18 @@ export function searchPublicDirectory(
           : undefined;
       return {
         professional,
+        reviewSummary: summarizeReviews(
+          reviews.filter((review) => review.professionalId === professional.id),
+        ),
         ...(distanceMiles === undefined ? {} : { distanceMiles }),
       };
-    });
+    })
+    .filter(
+      ({ reviewSummary }) =>
+        query.minRating === undefined ||
+        (reviewSummary.average !== null &&
+          reviewSummary.average >= query.minRating),
+    );
   const missingCoordinates = origin
     ? hits.filter((hit) => hit.distanceMiles === undefined).length
     : 0;

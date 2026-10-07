@@ -1,10 +1,12 @@
 import type { Category } from "../domain/categories";
 import {
   defaultSearch,
+  minimumRatings,
   type SearchQuery,
   type SearchErrors,
   type SearchField,
 } from "../domain/directory-search";
+import { usStates } from "../domain/us-states";
 export type RawSearchParams = Record<string, string | string[] | undefined>;
 export function parseSearchQuery(
   params: RawSearchParams,
@@ -27,6 +29,18 @@ export function parseSearchQuery(
   };
   query.q = read("q", 100);
   query.location = read("location", 80);
+  const state = read("state", 2).toUpperCase();
+  if (!state || usStates.some(([code]) => code === state)) query.state = state;
+  else errors.state = "Choose an available state.";
+  const minRating = read("minRating", 3);
+  if (minRating) {
+    if (
+      /^[1-5](?:\.5)?$/.test(minRating) &&
+      minimumRatings.some((value) => value === Number(minRating))
+    )
+      query.minRating = Number(minRating);
+    else errors.minRating = "Choose an available minimum rating.";
+  }
   const category = read("category", 80);
   if (parseDirectoryQuery(category, catalog).valid) query.category = category;
   else errors.category = "Choose one of the eight available categories.";
