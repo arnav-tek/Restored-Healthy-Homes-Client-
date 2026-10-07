@@ -9,7 +9,7 @@ export function EmptyDirectory() {
         No businesses match these filters. Try a broader keyword, another
         specialty or a larger radius around a supported location.
       </p>
-      <ButtonLink href="/directory">Browse all professionals</ButtonLink>
+      <ButtonLink href="/directory">Browse professionals</ButtonLink>
     </div>
   );
 }

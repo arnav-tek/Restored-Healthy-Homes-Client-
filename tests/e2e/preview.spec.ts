@@ -67,7 +67,7 @@ test("mobile menu supports touch, keyboard, Escape, and route dismissal", async 
   await expect(
     page
       .getByRole("navigation", { name: "Main navigation" })
-      .getByRole("link", { name: "Home", exact: true }),
+      .getByRole("link", { name: "Find professionals", exact: true }),
   ).toBeFocused();
   await page
     .getByRole("navigation", { name: "Main navigation" })
@@ -75,6 +75,11 @@ test("mobile menu supports touch, keyboard, Escape, and route dismissal", async 
     .tap();
   await expect(page).toHaveURL(/directory/);
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await page
+    .getByRole("banner")
+    .getByRole("link", { name: "Restored Healthy Homes — home", exact: true })
+    .press("Enter");
+  await expect(page).toHaveURL("/");
 });
 
 test("shells, screenshots, overflow, accessibility and no browser errors", async ({
@@ -142,7 +147,7 @@ test("public output excludes private fixtures and unpublished businesses", async
   expect(response.headers()["x-robots-tag"]).toContain("noindex");
   await page.goto("/");
   await page
-    .getByRole("link", { name: "Browse all professionals", exact: true })
+    .getByRole("link", { name: "Browse professionals", exact: true })
     .click();
   await expect(page.getByTestId("professional-card")).toHaveCount(6);
   await page.goto("/does-not-exist");

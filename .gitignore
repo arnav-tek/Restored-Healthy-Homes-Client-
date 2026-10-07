@@ -23,3 +23,4 @@ attachments/
 *.pdf
 # Installed third-party guidance; provenance is recorded in docs/skills.md
 .agents/skills/
+.playwright-cli/

@@ -26,6 +26,13 @@ export async function fillApplication(page: Page) {
     .fill("Fictional sample course");
 }
 export async function mainNav(page: Page, name: string) {
+  if (name === "Home") {
+    await page
+      .getByRole("banner")
+      .getByRole("link", { name: "Restored Healthy Homes — home", exact: true })
+      .press("Enter");
+    return;
+  }
   if (name === "Member preview") {
     await page
       .getByRole("contentinfo")

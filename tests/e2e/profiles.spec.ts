@@ -203,7 +203,9 @@ test("unsafe or absent return destinations use directory fallback; adapter failu
   ).toBeVisible();
   await expect(page.getByRole("button", { name: "Try again" })).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Open directory" }),
+    page
+      .getByRole("main")
+      .getByRole("link", { name: "Find professionals", exact: true }),
   ).toHaveAttribute("href", "/directory");
 });
 

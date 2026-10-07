@@ -126,7 +126,7 @@ test("unsupported, ambiguous, malformed and zero-result searches stay honest", a
   await expect(
     page.getByRole("heading", { name: "No matching professionals" }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Browse all professionals" }).click();
+  await page.getByRole("link", { name: "Browse professionals" }).click();
   await expect(page.getByTestId("professional-card")).toHaveCount(6);
   await page.goto("http://127.0.0.1:3101/directory?q=mold&location=28801");
   await expect(page.getByRole("link", { name: "Try again" })).toHaveAttribute(

@@ -31,7 +31,7 @@ async function inspect(page: Page, name: string) {
 async function browseProfile(page: Page, business: string) {
   await page
     .getByRole("contentinfo")
-    .getByRole("link", { name: "Professional directory", exact: true })
+    .getByRole("link", { name: "Find professionals", exact: true })
     .click();
   await expect(page).toHaveURL("/directory");
   await page

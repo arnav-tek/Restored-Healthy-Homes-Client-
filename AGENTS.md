@@ -2,7 +2,7 @@
 
 Read the authoritative [overview](Project%20overview/restored-healthy-homes-project-overview.md) and [alignment](Project%20overview/client-conversation-alignment.md). They override the original Word brief. Preserve these confidential sources outside public assets; do not duplicate commercial details in code or docs.
 
-- Phase 2H-1 is complete: full demo homepage with catalog browsing/session-aware statistics and an About Us layout. Final client story/copy/video/captions/transcript remain outstanding. See docs/build-checklist.md for acceptance and docs/phase-2h1-handoff.md for the latest handoff. Await instructions before 2H-2, remaining demo milestones or real integrations. All final features remain in scope.
+- Phase 2H-2 layout is complete: Education/Certifications pathways and frontend Membership Pricing extend the refined homepage/About Us. Final education provider/program selection, timelines/costs and client content approval remain pending, alongside About story/copy/video/captions/transcript. See docs/build-checklist.md for acceptance and docs/phase-2h2-handoff.md for the latest phase handoff. Await scoped instructions before remaining demo milestones or real integrations. All final features remain in scope.
 - Next.js App Router, strict TypeScript, Tailwind, npm with package-lock.json. Server Components by default. Small client islands only for interactions.
 - src/domain owns types/catalog/rules; src/data owns typed contracts and server-only adapters; src/validation validates external input. Routes compose feature/UI components.
 - Catalog IDs are immutable and independent of labels and billing keys. Multi-category billing is unresolved. Never derive prices from a display name.

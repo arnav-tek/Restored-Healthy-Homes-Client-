@@ -4,22 +4,27 @@ import { summarizeReviews, type PublicReview } from "@/domain/review";
 export function ReviewRating({ value }: { value: number }) {
   return (
     <span className="review-rating">
-      <span className="review-stars" aria-hidden="true">
-        {[0, 1, 2, 3, 4].map((index) => (
-          <span className="review-star" key={index}>
-            <Star size={14} />
-            <Star
-              size={14}
-              fill="currentColor"
-              className="review-star-fill"
-              style={{
-                clipPath: `inset(0 ${100 - Math.max(0, Math.min(1, value - index)) * 100}% 0 0)`,
-              }}
-            />
-          </span>
-        ))}
-      </span>
+      <ReviewStars value={value} />
       <span>{value} out of 5</span>
+    </span>
+  );
+}
+export function ReviewStars({ value }: { value: number }) {
+  return (
+    <span className="review-stars" aria-hidden="true">
+      {[0, 1, 2, 3, 4].map((index) => (
+        <span className="review-star" key={index}>
+          <Star size={14} />
+          <Star
+            size={14}
+            fill="currentColor"
+            className="review-star-fill"
+            style={{
+              clipPath: `inset(0 ${100 - Math.max(0, Math.min(1, value - index)) * 100}% 0 0)`,
+            }}
+          />
+        </span>
+      ))}
     </span>
   );
 }

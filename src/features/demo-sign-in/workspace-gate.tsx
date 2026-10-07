@@ -52,7 +52,7 @@ export function WorkspaceGate({
           applications remain available without sign-in.
         </p>
         <Link className="text-link" href="/directory">
-          Browse the public directory
+          Browse professionals
         </Link>
       </div>
     </section>

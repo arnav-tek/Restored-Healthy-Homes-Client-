@@ -81,3 +81,118 @@ Visual client/user approval and final company copy/media remain pending. Browser
 ## Public copy cleanup - 2026-10-07
 
 At the user's request, repeated demo/preview badges, banners and template instructions are removed from the public site. Public headings, buttons, review counts, metadata and validation messages use concise labels. Form-local messages still describe actual delivery, payment and session-lifetime behavior. About story/video slots use coming-soon copy; no company history or media was invented. Synthetic source records, account selection and workspace-specific explanations remain separate from this presentation cleanup. The restored two-column hero and the new statistics/journey layout remain in place.
+
+## Phase 2H-2 design plan
+
+
+Extend the refined public pages with a two-column introduction, compact native education disclosures and a two-column membership comparison. Reuse Georgia/Arial, sage/cream/clay tokens, existing buttons and spacing. Category names and prices come from the shared catalog; editorial pathways use stable IDs. Keep limitations beside the relevant information and application actions.
+
+Pre-edit critique: eight expanded pathways or repeated pricing cards would make comparison slow and the pages unnecessarily long. Use an anchor index, keyboard-operable disclosures and aligned prices instead. Check long category names, signed-in navigation, narrow screens and visible focus; no new imagery, fonts or motion.
+
+### Hero statistics placement — 2026-10-07
+
+The single directory snapshot now sits directly beneath the desktop hero description, beside the unchanged search panel. At 820 px and below it follows search. Three compact columns use shared label/value grid rows, aligned numerals, cream decorative stars and a published-review count. Mobile column widths keep labels readable at 320 px. The native “How these figures work” disclosure holds the eligibility, rating and state definitions. The separate statistics surface below category browsing is removed; calculations still come from the existing tab session.
+
+## Hero statistics compact refinement — 2026-10-07
+
+Plan and critique: keep the existing sage/cream palette and Georgia/Arial type, with three aligned definition-list columns. Remove the vertical rules and their padding; reduce the number scale and put stars beside review count where space allows. The previous stretched rules and three rating rows made this supporting information too prominent. Preserve live calculations, label/value alignment, keyboard disclosure and mobile placement after search; no extra decoration or new state.
+
+### Category hover refinement — 2026-10-07
+
+Category cards retain their light border on hover and fade the sage background in and out over 200 ms with ease-in-out timing. Keyboard focus remains visible through the shared focus indicator; the existing reduced-motion rule disables the transition.
+
+The category arrow also moves 2 px upward and right on hover or keyboard focus, returning with the same 200 ms ease-in-out timing. Reduced-motion users retain a stationary arrow.
+
+Arrow follow-up validation: typecheck, lint, all 81 unit tests and demo build passed. Live browser styles confirmed the (2, -2) px hover translation, return to no transform on pointer exit, and no transform or transition with reduced motion enabled. Reviewed output/playwright/category-arrow-hover-desktop.png. The scoped homepage E2E command could not start because the existing preview occupied port 3100; that run is not reported as passing.
+
+Validation: typecheck, lint, 81 unit tests and demo build passed; the default production build rejected missing opt-in. Reviewed desktop hover and tablet/mobile screenshots in output/playwright/category-hover-*.png; browser computed styles confirmed no hover outline, the unchanged light border and the 200 ms ease-in-out transition. Full end-to-end verification was attempted but interrupted by concurrent workspace builds and preview-server shutdowns; it is not a passing result.
+
+### Hero statistics compact white trust bar — 2026-10-07
+
+The hero statistics block beneath the hero description is redesigned as a compact white trust bar card:
+- White raised surface (`#ffffff`) with subtle border (`#dce3db`), soft rounded corners (`12px`), and light elevation shadow.
+- Exactly 3 stats displayed in one horizontal row on desktop and tablet:
+  1. Professionals: 28px bold Georgia serif numeral in dark green (`#244528`) with 13px clean sans-serif label below.
+  2. States represented: 28px bold Georgia serif numeral in dark green (`#244528`) with 13px clean sans-serif label below.
+  3. Average review rating: 28px bold Georgia serif numeral + inline star icons in dark green (`#244528`) with 13px clean sans-serif label below.
+- Subtle 44px vertical dividers separate the three stat items without reaching the card borders.
+- The published review count (e.g. "6 published reviews") is removed completely from visual display, retaining screen-reader text for assistive technology and test parity.
+- On mobile (<= 560px), stats stack cleanly and vertically with compact padding and subtle horizontal dividers, ensuring responsive reflow down to 320px without overflow.
+
+### Explore Restored Healthy Homes two-card refinement — 2026-10-07
+
+Redesigned the feature section beneath the visitor journey into two balanced, premium horizontal cards:
+- Section header retains "WAYS TO GET STARTED" with a terracotta kicker accent line, the Georgia serif headline, and introductory paragraph with directory and education pathway links.
+- Two equal-width cards in one row on desktop (`grid-cols-2`), stacking vertically on tablet and mobile:
+  - **Ask a Specialist**: soft pale sage surface (`#ebf2ea`) with subtle sage border, soft shadow, circular icon badge (`MessageSquare`), uppercase category label in dark green (`#244528`), large Georgia serif headline (`24px`), concise copy, solid dark green CTA button (`#284c2d`), delicate botanical leaf line-art accent, and a lifestyle interior image with an organic curved arch crop (`border-top-left-radius: 110px`).
+  - **Consultations**: soft warm off-white surface (`#faf8f5`) with subtle warm border, soft shadow, circular peach icon badge (`Calendar`), uppercase category label in dark green, large Georgia serif headline, concise copy, solid warm terracotta CTA button (`#984b22`), and a natural limestone/wood home exterior image with an organic curved arch crop.
+- Fully responsive across desktop, tablet (768px), mobile (390px), and narrow viewports (320px) without horizontal scrolling. Validated with Axe WCAG 2.1 AA accessibility checks.
+
+### About, For Professionals CTA, and Footer redesign — 2026-10-07
+
+Redesigned the lower homepage and site-wide footer following the editorial brand style and visual prototype:
+- **About Section**:
+  - Two-column grid layout on desktop, stacking gracefully on mobile.
+  - Left column: terracotta horizontal accent line rule (`20px`) with uppercase bold terracotta eyebrow (`— ABOUT US`) and large Georgia serif heading ("Different specialties. One place to begin.").
+  - Right column: readable sans-serif description copy and a clean dark-green text link (`About Us →`) leading to `/about`.
+- **For Professionals Card**:
+  - Replaced the simple full-width green band with a spacious rounded dark-forest-green card (`#244629`, `border-radius: 24px`, soft elevation shadow) centered within the container.
+  - Left CTA column: pale sage accent line with uppercase eyebrow (`— FOR PROFESSIONALS`), white serif heading ("Bring your specialty to the directory."), light-sage body description, and a solid white pill-button (`List Your Business →`) with dark green text.
+  - Subtle vertical divider (`rgba(255, 255, 255, 0.16)`) separating the CTA column from the benefits.
+  - Right column: 3 compact benefit columns with white circular icon badges:
+    1. **Reach homeowners**: `Users` outline icon, white serif heading, and focused description.
+    2. **Showcase your work**: `FileText` outline icon, white serif heading, and focused description.
+    3. **Be part of a trusted community**: `Sprout` outline icon, white serif heading, and focused description.
+  - Responsive reflow: transitions cleanly on tablets (`<= 1024px`) with a stacked card layout, and stacks benefits vertically on mobile (`<= 560px` down to `320px`).
+- **Footer**:
+  - Upgraded to a clean 4-column layout on desktop:
+    1. Brand mark & logo with brand tagline ("Thoughtful connections. Healthier places to call home.").
+    2. **Explore** column with preserved navigation links (`Find professionals`, `Ask a Specialist`, `Consultations`, `Education`, `About Us`).
+    3. **For professionals** column with preserved links (`Membership pricing`, `List Your Business`, `Sign in`, `Member area`, `Admin area`).
+    4. **Stay connected** column featuring short introductory copy, an accessible client-side newsletter email input with submit button and confirmation state, plus clean outline social links (`Instagram`, `LinkedIn`, `Facebook`).
+  - Thin divider separating the top grid from the bottom row.
+  - Bottom row with copyright notice on the left (`© {year} Restored Healthy Homes`) and legal links on the right (`Terms · Privacy · Contact`).
+  - Implemented dedicated Server Component pages for `/terms`, `/privacy`, and `/contact` to avoid 404s and keep navigation robust.
+  - Verified with Axe WCAG 2.1 AA accessibility checks, zero horizontal overflow across 1440px/768px/390px/320px, and full Playwright test suite passes.
+
+### How it works 3-card redesign — 2026-10-07
+
+Redesigned the "How it works" section into a 2-column layout matching the prototype:
+- **Left Column**:
+  - Eyebrow: `HOW IT WORKS` with a thin horizontal rule extending rightward.
+  - Heading: Large Georgia serif heading ("A clearer path to your next step.") in deep dark green (`#244528`).
+  - Supporting text: "Find, explore, then start a conversation."
+  - Solid warm terracotta CTA button: "Find professionals →" with arrow, rounded corners, and warm elevation shadow.
+- **Right Column**:
+  - 3 stacked white cards (`#ffffff`) with subtle border (`#e2e8df`), soft elevation shadow, and `18px` rounded corners.
+  - Each card layout:
+    1. Large circular step number badge (`01`, `02`, `03`) with a soft warm cream fill (`#f4efe6`) and bold serif terracotta numerals.
+    2. Thin vertical divider separating the number from the content.
+    3. Georgia serif step headline ("Find a specialty", "Explore a profile", "Start an inquiry") and clear sans-serif supporting text.
+    4. Small circular pale sage icon badge (`#ebf2ea`) on the right featuring dark green outline icons:
+       - 01: `Search`
+       - 02: `FileText`
+       - 03: `Send`
+  - Subtle vertical connector line between cards with a centered terracotta circular node between step 01 and 02, and between step 02 and 03.
+- **Responsive reflow**:
+  - Tablet (`<= 820px`): single-column layout with stacked cards.
+### Homepage section spacing harmonization — 2026-10-07
+
+Harmonized vertical spacing across all sections on the homepage to create a cohesive editorial rhythm:
+- **Consistent Inter-section Distance**:
+  - Desktop: Exactly `80px` visual spacing between every section transition and inside full-bleed background bands.
+    - Hero bottom to Category Browse: `80px` (`padding-top: 80px`).
+    - Category Browse cards to How it works: `80px` (`category-browse-section padding-bottom: 40px` + `home-journey padding-top: 40px`).
+    - How it works cards to Ways to get started band: `80px` (`home-journey padding-bottom: 80px`).
+    - Ways to get started band interior: `80px` top and `80px` bottom (`home-features-band .home-section padding-block: 80px`).
+    - Ways to get started band to About Us: `80px` (`home-about padding-top: 80px`).
+    - About Us to For Professionals card: `80px` (`home-about padding-bottom: 40px` + `home-business-section padding-top: 40px`).
+    - For Professionals card to Footer: `80px` (`home-business-section padding-bottom: 40px` + `site-footer margin-top: 40px`).
+  - Tablet (`<= 820px`): Uniform `56px` visual spacing across all sections (`28px` between contiguous unbanded sections).
+  - Mobile (`<= 560px` down to `320px`): Uniform `44px` visual spacing across all sections (`22px` between contiguous unbanded sections).
+- **Quality & Accessibility**:
+  - Full WCAG 2.1 AA accessibility checks pass with 0 violations.
+  - Zero horizontal overflow across all tested viewports.
+  - All unit (81/81) and end-to-end tests passing.
+
+

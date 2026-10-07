@@ -31,9 +31,7 @@ export default async function Home() {
       <section className="home-hero">
         <div className="container home-hero-inner">
           <div className="hero-copy">
-            <p className="hero-kicker">
-              Restored Healthy Homes · Professional directory
-            </p>
+            <p className="hero-kicker">Restored Healthy Homes</p>
             <h1>Find a professional for your healthier home.</h1>
             <p>
               From a moisture concern to a new build, find the specialty and
@@ -41,16 +39,15 @@ export default async function Home() {
             </p>
           </div>
           <HomeSearch catalog={catalog} locations={locations} />
+          <HomeStatistics listings={listings} />
           <div className="hero-followup">
             <Link href="/directory">
-              Browse all professionals{" "}
-              <ArrowRight size={16} aria-hidden="true" />
+              Browse professionals <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
         </div>
       </section>
       <CategoryBrowse catalog={catalog} />
-      <HomeStatistics listings={listings} />
       <HomeJourney />
       <HomeFeatures />
       <HomeAbout />

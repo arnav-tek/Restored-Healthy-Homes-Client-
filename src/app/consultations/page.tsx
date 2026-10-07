@@ -68,7 +68,7 @@ export default function ConsultationsPage() {
           </li>
         </ol>
         <Link className="text-link" href="/directory">
-          Prefer to explore? Browse the professional directory →
+          Browse professionals →
         </Link>
       </section>
       <ConsultationRequestForm />

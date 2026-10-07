@@ -57,6 +57,37 @@ test("homepage categories, truthful statistics and About Us navigation work with
   await expect(page.getByTestId("home-professional-count")).toHaveText("8");
   await expect(page.getByTestId("home-state-count")).toHaveText("7");
   await expect(page.getByTestId("home-rating")).toHaveText("4.2 out of 5");
+  const statistics = page.getByTestId("home-statistics");
+  await expect(statistics).toHaveCount(1);
+  await expect(
+    page.locator(".home-hero").getByTestId("home-statistics"),
+  ).toHaveCount(1);
+  await expect(statistics.locator(".review-stars")).toHaveAttribute(
+    "aria-hidden",
+    "true",
+  );
+  const statsBox = (await statistics.boundingBox())!;
+  const copyBox = (await page.locator(".hero-copy").boundingBox())!;
+  const formBox = (await page.locator(".hero-search").boundingBox())!;
+  const valueRows = await statistics
+    .locator("dd")
+    .evaluateAll((values) =>
+      values.map((value) => value.getBoundingClientRect().y),
+    );
+  if (info.project.name === "desktop" || info.project.name === "tablet") {
+    expect(Math.max(...valueRows) - Math.min(...valueRows)).toBeLessThanOrEqual(
+      1,
+    );
+  } else {
+    expect(valueRows[1]).toBeGreaterThan(valueRows[0]);
+    expect(valueRows[2]).toBeGreaterThan(valueRows[1]);
+  }
+  if (info.project.name === "desktop") {
+    expect(statsBox.y).toBeGreaterThanOrEqual(copyBox.y + copyBox.height);
+    expect(statsBox.x + statsBox.width).toBeLessThan(formBox.x);
+  } else {
+    expect(statsBox.y).toBeGreaterThanOrEqual(formBox.y + formBox.height);
+  }
   await page.getByText("How these figures work", { exact: true }).click();
   await expect(page.getByTestId("home-statistics")).toContainText(
     "averages individual published reviews",
@@ -179,6 +210,7 @@ test("homepage rating follows the existing review moderation session and refresh
     "HOMEPAGE_INTERNAL_NOTE",
   );
   if (info.project.name === "desktop") {
+    await inspect(page, "signed-in-navigation-desktop");
     for (const width of [1280, 1279]) {
       await page.setViewportSize({ width, height: 1000 });
       await inspect(page, `signed-in-navigation-${width}`);

@@ -159,13 +159,24 @@ Stop before 2H-2. Education, resources/blog, newsletter, featured listings, sear
 
 The initial focused attempt found a test selector using the replaced consultation headline. Updated that selector and the renamed secondary browse-link selector, retaining behavioral assertions. Actual captures and geometry are in `output/playwright/phase-2h1-refinement-*`; the [handoff](phase-2h1-handoff.md) records composition, pixel measurements and limits. Previews were stopped before builds. This is focused coverage, not a new uninterrupted full-repository browser run. Three skips are the existing desktop mobile-menu case and two duplicate narrow/text checks that run once with explicit viewport changes. Text enlargement is a 200% computed-font simulation; physical devices, Safari/Firefox, a complete accessibility audit and actual approved-video playback/captions/transcript remain unverified. Final story/Why/copy/media and visual client/user approval remain pending. No Phase 2H-2, integrations, push or deployment.
 
+## Phase 2H-2 — Education and Membership Pricing
+
+- [x] Server-rendered education page: all eight stable catalog IDs, browsable native disclosures, introductions, provider options/links, steps, explicit pending timelines/costs and application CTAs.
+- [x] Distinguish training certificates, professional certifications and local licenses; platform does not certify. Official references recorded in the [handoff](phase-2h2-handoff.md); final provider/program selection and client content approval remain pending.
+- [x] Frontend membership comparison uses catalog names/monthly USD prices, working application links, eligibility guidance and separate education fees. No combined-category totals or checkout.
+- [x] Header/footer links, preserved homepage/About design and signed-in navigation; compact menu through 1359px.
+- [x] Typecheck/lint, 81 unit tests, demo build and production guard; all 70 distinct applicable affected browser cases verified across the broader run and corrected targeted rerun. Desktop/tablet/mobile, 320px, menu boundaries and accessibility captures reviewed; actual results/limits in the handoff.
+- [ ] Client approval of education/provider content, program-specific typical timelines and cost information.
+
+Stop after 2H-2. Remaining demo milestones and integrations require a separate scoped instruction.
+
 ## Scope audit — remaining details to preserve
 
 Reconciled 2026-10-04 against the original Word brief, supplied overview/paste and later client conversation. These unchecked items clarify remaining acceptance, not newly completed work. Later client confirmations override old exclusions, category labels, Netlify hosting and exact-design mandates. Demo completion is not production completion.
 
 - [x] Phase 2H-1 homepage layout: fuller introduction, eight category browse links and statistics derived from eligible public professionals, listing-location states and individual published ratings. Values explicitly describe demo data, not service coverage or live traction.
-- [ ] Remaining public-page delivery: final About Us story/Why/text/client video, education/certifications, blog/resources, newsletter form and relevant navigation/footer links. The About Us layout/navigation is built in 2H-1; final assets and client approval remain outstanding.
-- [ ] Education acceptance: all eight current categories, certification paths, key certifications, typical timelines/cost ranges, external provider links and a registration CTA. Use client-approved/current sourced content or explicit placeholders. The platform does not certify.
+- [ ] Remaining public-page delivery: final About Us story/Why/text/client video, approved education content, blog/resources, newsletter form and relevant navigation/footer links. About Us layout is built in 2H-1; education/pricing layout and navigation in 2H-2. Final assets and client approval remain outstanding.
+- [x] Education layout acceptance in 2H-2: all eight current categories, external certification/training options, explicit pending typical timelines/costs, official provider links and an application CTA. Final program details/content approval remain separately pending. The platform does not certify.
 - [ ] Search completion: explicit state and rating filters alongside existing city/ZIP/category/radius search; consistent published rating summaries and agreed featured priority. Radius/service-area/geolocation behavior remains a client decision; an interactive map is not automatically required.
 - [ ] Profile/media completion (Phase 3): photo/logo management and secure uploads, intended public professional/owner display name, contact options and badge presentation. Keep public display fields separate from private application contact identity; confirm which names/contact details may be public.
 - [ ] Admin completion (Phase 3/5): permitted listing/profile edits, not only status decisions; basic analytics including active members, members by category, new applications this month and membership status. Current demo queue counts alone do not satisfy these analytics.
@@ -184,7 +195,7 @@ Second-pass clarifications from the same sources (not additional product scope):
 - [ ] Production data continuity: member edits, admin decisions, inquiries, Q&A, reviews and subscriptions operate on shared durable records. Verify changes across independent member/admin/visitor sessions and reloads; the current separate server directory/member demo fixtures and same-tab overlays are temporary.
 - [ ] Billing acceptance: customer payment-method updates, cancellation and failed/inactive-payment visibility follow agreed lifecycle rules. Restored payment cannot override rejection/suspension, and admin approval alone cannot bypass the subscription requirement. Featured purchases likewise cannot make an otherwise ineligible listing public.
 
-After Phase 2H-1, await scoped prompts for the remaining demo milestones above; they must not be silently postponed until after launch. Featured placement, production reviews, newsletter, blog/resources, badges and final About Us content remain part of the accepted final delivery. Referral benefits remain excluded.
+After Phase 2H-2, await scoped prompts for the remaining demo milestones above; they must not be silently postponed until after launch. Featured placement, production reviews, newsletter, blog/resources, badges and final About Us content remain part of the accepted final delivery. Referral benefits remain excluded.
 
 ## Phase 3 — real accounts and administration integrations
 
@@ -434,3 +445,7 @@ Implemented 2026-10-03; verification finalized 2026-10-04. Session-only coordina
 | Production guard / review | Default build correctly blocks missing demo opt-in. Explicit projections and reducer rules reviewed; `git diff --check` passes. No new dependencies, services, push or deployment |
 
 Adding the second eligible fixture required existing count assertions and one listing selector to be updated. Failed/unrun regressions were completed in targeted runs; this was not one uninterrupted full passing suite. Affected desktop consultation screenshots/journeys were repeated after final style/copy refinements. Screenshots: `output/playwright/phase-2f2-*`. Physical devices, Safari/Firefox and a full accessibility audit remain unverified. The handoff records provisional policies and remaining client decisions. Fuller homepage, client-supplied About Us story/text/video and all other approved backlog features remain preserved.
+
+- [x] 2026-10-07 homepage refinement: one compact session-aware statistics row beneath the desktop hero description, after search on mobile/tablet; lower panel removed, definitions retained in disclosure and shared decorative stars hidden from assistive technology.
+- [x] 2026-10-07 selective public brand copy: brand-only hero kicker, platform introduction with existing-section links, concise public discovery link labels, retained service explanations and unchanged routes/controls. Lint/typecheck and nine targeted responsive navigation checks passed.
+- [x] 2026-10-07 navbar refinement: remove separate Home link, retain accessible logo home navigation, increase desktop/mobile menu spacing, and verify keyboard/responsive/signed-in navigation with eight passing browser checks.

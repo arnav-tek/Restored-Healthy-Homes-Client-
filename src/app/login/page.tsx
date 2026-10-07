@@ -32,7 +32,7 @@ export default async function LoginPage({
       />
       <div className="login-public-links">
         <Link className="text-link" href="/directory">
-          Browse the public directory
+          Browse professionals
         </Link>
         <Link className="text-link" href="/list-your-business">
           List Your Business
