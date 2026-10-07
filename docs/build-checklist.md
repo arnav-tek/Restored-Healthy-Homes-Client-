@@ -178,6 +178,7 @@ Authorized 2026-10-07 after the user deferred blog/resources and newsletter work
 - [x] Public cards reuse the profile review average/count calculation and decorative stars; unrated listings stay visible with Any rating and are excluded from minimum-rating searches.
 - [x] Same-tab published review moderation drives cards, filtering, totals and pagination; server-rendered seeds and native no-JavaScript search retained.
 - [x] Final required checks and desktop/tablet/mobile render review; actual results and limitations recorded in the [Phase 2I-1 handoff](phase-2i1-handoff.md).
+- [x] 2026-10-08 audit corrections: remove the deferred newsletter's false signup and generic social links; make top sorting work before hydration and without scripts. Focused verification is recorded in the handoff.
 
 Real location services, durable reviews and featured priority remain future work. This milestone adds no services or production authorization.
 

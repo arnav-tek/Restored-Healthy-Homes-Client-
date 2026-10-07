@@ -37,3 +37,14 @@ Implemented 2026-10-07; verification finalized 2026-10-08.
 Initial browser failures identified directory contrast, native no-script streaming, narrow text clipping, stale email-label selectors and review double-click clickthrough; the fixes and previously unrun regressions passed in subsequent runs. The member lifetime case passed with its scoped timeout. Concurrent consultation styling required three contrast corrections, including the status-summary label verified in the final run. Shared-host build/report contention was handled by retrying the build and isolating later browser output directories.
 
 Screenshots: `output/playwright/directory-ratings-desktop.png`, `directory-ratings-tablet.png`, `directory-ratings-mobile.png` and `directory-ratings-320-text.png`. Browser verification uses Chromium emulation; physical devices, Safari/Firefox and a complete manual accessibility audit remain unverified. No deployment was performed for this milestone.
+
+## Audit corrections — 2026-10-08
+
+- Removed the deferred footer newsletter form, its false success message and the native GET path that put email addresses in page URLs. The footer now offers a working directory link; newsletter integration remains deferred.
+- Removed generic social-platform links. Business social links can return when confirmed account URLs are supplied.
+- Added a native GET fallback to the top directory sort control, preserving every active filter and resetting pagination. An Apply sort button is available before hydration and without scripts; enhanced sorting still navigates immediately and retains the tab session. The fallback row wraps at narrow widths.
+- Added browser regressions for footer navigation, sorting/filter preservation, pagination/history, signed-in session continuity, and JavaScript-disabled/blocked-script operation.
+
+Correction verification: typecheck, lint (zero warnings), 85 unit tests and demo build passed. A build without a valid demo opt-in was rejected as expected. The focused browser run passed 34 cases with two intentional duplicate-viewport skips, covering the new audit regressions, sign-in/session behavior and state/rating journeys at desktop/tablet/mobile. Tests ran on isolated port 3317 to avoid shared-server contention; the older hardcoded-port native directory case was excluded, with native filter/sort coverage supplied by the new no-script and blocked-script cases. This was a focused regression run, not a new full-suite pass.
+
+A separate 320 px no-script probe passed sorting, filter-preservation and horizontal-overflow checks. Desktop/tablet/mobile footer and native-sort captures were inspected in `output/playwright/audit-fix-*.png`; the existing doubled-text directory check also passed. Chromium emulation only; physical devices and Safari/Firefox remain unverified. `git diff --check` passes. Concurrent Education-page and unrelated CSS changes were preserved. No deployment was performed for these corrections.
