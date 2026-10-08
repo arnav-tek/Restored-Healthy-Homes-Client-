@@ -76,8 +76,8 @@ export function QuestionForm({
             {status === "pending"
               ? "Awaiting review"
               : status === "published"
-                ? "Published in this session"
-                : "Not published in this session"}
+                ? "Published"
+                : "Not published"}
           </h2>
           <p>
             <strong>{submitted.title}</strong>

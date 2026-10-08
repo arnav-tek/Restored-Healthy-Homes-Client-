@@ -32,10 +32,7 @@ export function MemberQa({
   return (
     <div className="qa-workspace">
       <p className="field-help">
-        Provisional demo policy: approval, an active subscription and no
-        suspension are required to answer. One submitted answer per
-        member/question; no editing or deletion. Demo workspace navigation is
-        not authentication.
+        Approved professionals with an active membership may answer questions. One answer is allowed per professional for each question.
       </p>
       {query.question ? (
         <>
@@ -73,7 +70,7 @@ export function MemberQa({
       ) : (
         <>
           <QaWorkspaceFilters area="member" />
-          <p role="status">{matching.length} published sample questions</p>
+          <p role="status">{matching.length} published questions</p>
           <ol className="qa-list">
             {matching.map((question) => (
               <li key={question.id}>
@@ -90,7 +87,7 @@ export function MemberQa({
                       {question.title}
                     </Link>
                   </h3>
-                  <p>{question.answers.length} published sample answers</p>
+                  <p>{question.answers.length} published answers</p>
                 </article>
               </li>
             ))}

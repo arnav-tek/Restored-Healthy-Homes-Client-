@@ -85,8 +85,8 @@ export function AdminQa() {
                   }{" "}
                   ·{" "}
                   {question.source === "session"
-                    ? "Fictional visitor submission"
-                    : "Published seed example"}
+                    ? "Visitor submission"
+                    : "Published question"}
                 </p>
                 <h2>{question.title}</h2>
                 <p>
@@ -98,7 +98,7 @@ export function AdminQa() {
                 <article className="qa-answer">
                   <h3>Answer by {answer.attribution}</h3>
                   <p className="qa-meta">
-                    Fictional professional · Answer status: {answer.status}
+                    Professional · Answer status: {answer.status}
                   </p>
                   <p className="qa-plain-text">{answer.body}</p>
                   <p className="field-help">
@@ -145,8 +145,8 @@ export function AdminQa() {
                         }{" "}
                         · {item.status} ·{" "}
                         {item.source === "session"
-                          ? "Fictional visitor"
-                          : "Seed example"}
+                          ? "Visitor"
+                          : "Published content"}
                       </p>
                       <h3>
                         <Link href={href({ question: item.id })}>
@@ -197,8 +197,7 @@ export function AdminQa() {
             ? matchingQuestions.length
             : matchingAnswers.length) && (
             <p className="workspace-empty">
-              No {query.queue} match. Clear filters or submit fictional content
-              to explore review.
+              No {query.queue} match. Clear filters or submit content to explore review.
             </p>
           )}
         </>

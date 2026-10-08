@@ -15,7 +15,7 @@ export async function generateMetadata({
   const question = isSessionQuestionId(id) ? null : await loadQuestion(id);
   if (!isSessionQuestionId(id) && !question) notFound();
   return {
-    title: question ? question.title : "Session question",
+    title: question ? question.title : "Community question",
     description: "Questions and answers about healthy-home services.",
     robots: { index: false, follow: false },
   };

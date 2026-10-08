@@ -18,12 +18,12 @@ export function PublicQuestionPage({
   if (!ready && isSessionQuestionId(id))
     return (
       <div className="container qa-page qa-reading">
-        <h1>Session question</h1>
-        <p role="status">Checking this tab’s session…</p>
+        <h1>Community question</h1>
+        <p role="status">Loading question…</p>
         <noscript>
           <p>
             JavaScript is required for session-created questions. Published
-            published content remain available.
+            content remains available.
           </p>
         </noscript>
         <Link className="text-link" href={returnTo}>
@@ -35,7 +35,7 @@ export function PublicQuestionPage({
   if (!question)
     return (
       <div className="container result-state">
-        <h1>Question unavailable in this session</h1>
+        <h1>Question unavailable</h1>
         <p>
           Only published questions can be viewed. Refresh or reset restores
           published content and clears session-created questions and decisions.

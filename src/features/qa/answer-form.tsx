@@ -26,11 +26,9 @@ export function AnswerForm({
   const blocked = answerSubmissionError(state, questionId);
   return (
     <section className="panel">
-      <h2>Your demo answer</h2>
+      <h2>Your answer</h2>
       <p>
-        Use fictional, plain-text service information. Do not include medical
-        histories, personal details or clinical advice. Answers await fictional
-        review; nothing is delivered.
+        Share clear service information. Avoid personal medical details or clinical advice. Answers are reviewed before publication.
       </p>
       {blocked && <p className="workspace-empty">{blocked}</p>}
       {!blocked && (
@@ -61,7 +59,7 @@ export function AnswerForm({
             disabled={!ready || disabled}
             className="member-form-fields"
           >
-            <legend className="sr-only">Draft a demo answer</legend>
+            <legend className="sr-only">Draft an answer</legend>
             <div className="search-field">
               <label htmlFor="qa-answer-body">Answer text</label>
               <textarea
@@ -83,7 +81,7 @@ export function AnswerForm({
                 {error}
               </p>
             </div>
-            <Button type="submit">Submit demo answer</Button>
+            <Button type="submit">Submit answer</Button>
           </fieldset>
         </form>
       )}

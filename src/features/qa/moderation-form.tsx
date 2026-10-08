@@ -62,7 +62,7 @@ export function QaModerationForm({
     });
     clearDraft();
     setError("");
-    setFeedback(`Demo ${kind} ${next}. This decision affects only this tab.`);
+    setFeedback(`${kind === "question" ? "Question" : "Answer"} ${next}. This decision affects only this tab.`);
     requestAnimationFrame(() => feedbackRef.current?.focus());
   }
   return (
@@ -85,8 +85,7 @@ export function QaModerationForm({
             aria-describedby="qa-note-help qa-note-error"
           />
           <p id="qa-note-help" className="field-help">
-            Up to 500 characters. Fictional information only; excluded from
-            public views and member answer history.
+            Up to 500 characters. Internal notes are excluded from public views and member answer history.
           </p>
           <p id="qa-note-error" className="field-error">
             {error}
@@ -104,7 +103,7 @@ export function QaModerationForm({
       <p ref={feedbackRef} tabIndex={-1} role="status">
         {feedback}
       </p>
-      <noscript>JavaScript is required. Demo decisions are disabled.</noscript>
+      <noscript>Enable JavaScript to review submissions.</noscript>
     </form>
   );
 }
