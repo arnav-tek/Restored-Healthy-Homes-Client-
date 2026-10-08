@@ -53,7 +53,7 @@ export function PublicQuestions({
       <header className="qa-hero">
         <div className="qa-hero-left">
           <div className="qa-eyebrow">
-            <span>ASK A SPECIALIST</span>
+            <span role="heading" aria-level={2}>Ask a Specialist</span>
             <span className="qa-eyebrow-bar" aria-hidden="true" />
           </div>
           <h1 className="qa-hero-title">
