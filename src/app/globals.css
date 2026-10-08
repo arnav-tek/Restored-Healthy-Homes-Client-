@@ -2588,7 +2588,7 @@ tbody tr:last-child > * {
 
 .qa-eyebrow-bar {
   display: inline-block;
-  width: 24px;
+  width: 36px;
   height: 2px;
   background-color: var(--dark-clay);
   border-radius: 1px;
@@ -2775,15 +2775,16 @@ tbody tr:last-child > * {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   background: #1f382b;
   color: #ffffff;
-  padding: 11px 24px;
+  padding: 10px 22px;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
-  border: none;
+  border: 1px solid #1f382b;
   cursor: pointer;
-  min-height: 44px;
+  min-height: 42px;
   transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
@@ -2796,21 +2797,22 @@ tbody tr:last-child > * {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
+  gap: 8px;
+  background: #fdfcf9;
   color: #1f382b;
   border: 1px solid #d5e2d9;
-  padding: 11px 20px;
+  padding: 10px 20px;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   text-decoration: none;
-  min-height: 44px;
+  min-height: 42px;
   transition: all 0.15s ease;
 }
 
 .qa-clear-btn:hover {
   border-color: #1f382b;
-  background: #fdfbf7;
+  background: #ffffff;
 }
 
 /* 3. Published Questions Section */
@@ -2909,11 +2911,10 @@ tbody tr:last-child > * {
 }
 
 .qa-card-category {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #1f382b;
+  font-size: 12px;
+  font-weight: 600;
+  color: #315e3b;
+  letter-spacing: -0.01em;
 }
 
 .qa-card-title {
@@ -2945,8 +2946,11 @@ tbody tr:last-child > * {
 }
 
 .qa-card-answers {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   white-space: nowrap;
 }
 
@@ -2956,12 +2960,16 @@ tbody tr:last-child > * {
 
 .qa-card-answers.no-answers {
   color: #475569;
-  font-weight: 400;
+}
+
+.qa-answer-bubble-icon {
+  color: #64748b;
+  flex-shrink: 0;
 }
 
 .qa-card-arrow {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: #f1f4f1;
   color: #556058;
@@ -5894,6 +5902,7 @@ tbody tr:last-child > * {
   .home-business-card .business-cta-button {
     width: 100%;
     justify-content: center;
+  }
   .about-video-placeholder {
     padding: 20px;
     gap: 8px;

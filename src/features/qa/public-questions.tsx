@@ -5,16 +5,17 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Search,
-  Tag,
+  LayoutGrid,
   ChevronRight,
   ChevronLeft,
   HelpCircle,
-  BookOpen,
-  CheckCircle2,
+  MessageSquare,
+  ShieldCheck,
+  RotateCcw,
+  PenLine,
   Home,
   Hammer,
   Wrench,
-  Ruler,
   Stethoscope,
   PawPrint,
 } from "lucide-react";
@@ -63,7 +64,7 @@ function getCategoryIcon(id?: string) {
     case "healthy-trades":
       return Wrench;
     case "healthy-designers":
-      return Ruler;
+      return PenLine;
     case "health-practitioners":
       return Stethoscope;
     case "mold-detection-dogs":
@@ -102,8 +103,8 @@ export function PublicQuestions({
       <header className="qa-hero">
         <div className="qa-hero-left">
           <div className="qa-eyebrow">
-            <span className="qa-eyebrow-bar" aria-hidden="true" />
             <span>ASK A SPECIALIST</span>
+            <span className="qa-eyebrow-bar" aria-hidden="true" />
           </div>
           <h1 className="qa-hero-title">
             Get expert advice
@@ -111,16 +112,16 @@ export function PublicQuestions({
             for a healthier home.
           </h1>
           <p className="qa-hero-desc">
-            Explore questions about healthy-home services and learn from
-            professional answers, or ask your own question to get guidance from
-            qualified specialists in our community.
+            Explore real questions about healthy-home services and get insights
+            from qualified professionals. Learn, compare and plan your next
+            project with confidence.
           </p>
         </div>
 
         <div className="qa-hero-card">
           <div className="qa-benefit-item">
             <div className="qa-benefit-icon" aria-hidden="true">
-              <HelpCircle size={20} strokeWidth={1.8} />
+              <MessageSquare size={20} strokeWidth={1.8} />
             </div>
             <div className="qa-benefit-content">
               <h2 className="qa-benefit-title">Ask real questions</h2>
@@ -132,7 +133,7 @@ export function PublicQuestions({
 
           <div className="qa-benefit-item">
             <div className="qa-benefit-icon" aria-hidden="true">
-              <BookOpen size={20} strokeWidth={1.8} />
+              <PawPrint size={20} strokeWidth={1.8} />
             </div>
             <div className="qa-benefit-content">
               <h2 className="qa-benefit-title">Learn from experience</h2>
@@ -144,7 +145,7 @@ export function PublicQuestions({
 
           <div className="qa-benefit-item">
             <div className="qa-benefit-icon" aria-hidden="true">
-              <CheckCircle2 size={20} strokeWidth={1.8} />
+              <ShieldCheck size={20} strokeWidth={1.8} />
             </div>
             <div className="qa-benefit-content">
               <h2 className="qa-benefit-title">Make better decisions</h2>
@@ -183,7 +184,7 @@ export function PublicQuestions({
                   name="q"
                   defaultValue={query.q}
                   maxLength={120}
-                  placeholder="Search question titles and text"
+                  placeholder="Search question titles and text..."
                   className="qa-input-control"
                   aria-invalid={!!errors.q}
                   aria-describedby={errors.q ? "qa-q-error" : undefined}
@@ -201,7 +202,7 @@ export function PublicQuestions({
                 Category
               </label>
               <div className="qa-input-wrap">
-                <Tag size={18} className="qa-input-icon" aria-hidden="true" />
+                <LayoutGrid size={18} className="qa-input-icon" aria-hidden="true" />
                 <select
                   id="qa-category"
                   name="category"
@@ -230,10 +231,12 @@ export function PublicQuestions({
 
           <div className="qa-search-actions-row filter-actions">
             <Button type="submit" className="qa-search-btn">
-              Search questions
+              <Search size={16} aria-hidden="true" />
+              <span>Search questions</span>
             </Button>
             <Link className="qa-clear-btn" href="/questions">
-              Clear filters
+              <RotateCcw size={15} aria-hidden="true" />
+              <span>Clear filters</span>
             </Link>
           </div>
         </SearchForm>
@@ -318,13 +321,20 @@ export function PublicQuestions({
                                   : "no-answers"
                               }`}
                             >
-                              {question.answerCount
-                                ? `${question.answerCount} ${
-                                    question.answerCount === 1
-                                      ? "answer"
-                                      : "answers"
-                                  }`
-                                : "No published answers yet"}
+                              <MessageSquare
+                                size={14}
+                                aria-hidden="true"
+                                className="qa-answer-bubble-icon"
+                              />
+                              <span>
+                                {question.answerCount
+                                  ? `${question.answerCount} ${
+                                      question.answerCount === 1
+                                        ? "answer"
+                                        : "answers"
+                                    }`
+                                  : "No published answers yet"}
+                              </span>
                             </span>
                             <div
                               className="qa-card-arrow"
