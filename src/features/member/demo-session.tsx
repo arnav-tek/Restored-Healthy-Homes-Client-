@@ -93,7 +93,7 @@ export function useDemoDraft(key: string) {
 }
 export function useDemoSession() {
   const session = use(DemoSessionContext);
-  if (!session) throw new Error("Demo session provider is required");
+  if (!session) throw new Error("Session provider is required");
   return session;
 }
 export function useDemoCatalog(catalog: readonly ApplicationCategory[]) {

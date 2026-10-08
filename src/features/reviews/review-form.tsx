@@ -98,14 +98,16 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
           </h3>
           <p>
             {submitted.status === "published"
-              ? "Published in this tab only. This review now contributes to the rating."
+              ? "Published. This review now contributes to the rating."
               : submitted.status === "rejected"
-                ? "Rejected in this session. This review is excluded from public and member review lists and the rating."
-                : "Pending in this session. Not published or delivered. Your review does not change the public rating."}{" "}
+                ? "Rejected. This review is excluded from public and member review lists and the rating."
+                : "Pending. Not published or delivered. Your review does not change the public rating."}{" "}
             Nothing is sent or saved permanently. Refresh or reset restores the
             initial content.
           </p>
-          <p className="field-help">Reference: {submitted.id}</p>
+          <p className="field-help">
+            Reference: {submitted.id.replace(/^demo-session-review-/, "")}
+          </p>
           <p>
             <strong>{submitted.displayName}</strong> ·{" "}
             <ReviewRating value={submitted.rating} />
@@ -219,8 +221,7 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
           </fieldset>
           {ready && !eligible && (
             <p role="status">
-              Review submission is unavailable for this profile in this session.
-              Refresh to start a new session.
+              Review submission is unavailable for this profile. Refresh to start a new session.
             </p>
           )}
         </form>

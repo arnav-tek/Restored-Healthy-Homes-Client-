@@ -29,13 +29,13 @@ export function parseDemoSignIn(
   );
   if (!account)
     errors.email =
-      "Choose a fictional account below and use its displayed email.";
+      "Choose an account below and use its displayed email.";
   if (
     typeof input.passcode !== "string" ||
     input.passcode.length > 64 ||
     input.passcode !== demoPasscode
   )
-    errors.passcode = `Use the public demo passcode: ${demoPasscode}. Do not enter a real password.`;
+    errors.passcode = `Use the public passcode: ${demoPasscode}. Do not enter a real password.`;
   return account && !Object.keys(errors).length
     ? { ok: true, identity: { ...account.identity } }
     : { ok: false, errors };
@@ -97,5 +97,6 @@ export function safeDemoReturn(value: unknown, identity: DemoIdentity): string {
   return dashboardHref(identity.kind, query);
 }
 export function demoLoginHref(returnTo: string): string {
-  return `/login?returnTo=${encodeURIComponent(returnTo)}`;
+  const login = returnTo.split("?")[0] === "/demo/admin" ? "/admin/login" : "/login";
+  return `${login}?returnTo=${encodeURIComponent(returnTo)}`;
 }

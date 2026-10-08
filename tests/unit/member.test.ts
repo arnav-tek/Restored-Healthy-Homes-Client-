@@ -215,7 +215,7 @@ test("session selection, edits and reset are coherent, isolated and leave inbox 
     submitted,
     {
       type: "demo-sign-in",
-      fields: { email: "rejected@example.invalid", passcode: "home-demo" },
+      fields: { email: "rejected@example.invalid", passcode: "home-access" },
     },
     seed,
   );
@@ -226,7 +226,7 @@ test("session selection, edits and reset are coherent, isolated and leave inbox 
       selected,
       {
         type: "demo-sign-in",
-        fields: { email: "unknown@example.invalid", passcode: "home-demo" },
+        fields: { email: "unknown@example.invalid", passcode: "home-access" },
       },
       seed,
     ),

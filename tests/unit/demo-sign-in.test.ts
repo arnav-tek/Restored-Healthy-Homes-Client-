@@ -6,6 +6,7 @@ import {
   type DemoIdentity,
 } from "../../src/domain/demo-identity";
 import {
+  demoLoginHref,
   parseDemoSignIn,
   safeDemoReturn,
 } from "../../src/validation/demo-sign-in";
@@ -54,7 +55,7 @@ test("demo sign-in validates only known fictional presets and bounded fields, ne
     1,
     "",
     "wrong",
-    "home-demo ",
+    "home-access ",
     "x".repeat(65),
   ])
     assert.equal(parseDemoSignIn({ ...credentials, passcode }, null).ok, false);
@@ -198,6 +199,10 @@ test("safe returns allow only canonical account dashboards and reject external, 
     memberId: "member-example-approved",
   };
   const admin: DemoIdentity = { kind: "admin", accountId: "admin" };
+  assert.equal(
+    safeDemoReturn("/demo/admin?section=reviews&review=sample-inspection-plan", admin),
+    "/demo/admin?section=reviews&review=sample-inspection-plan",
+  );
   for (const identity of [member, admin])
     for (const value of [
       undefined,
@@ -235,4 +240,10 @@ test("safe returns allow only canonical account dashboards and reject external, 
     ),
     "/demo/admin?section=applications&record=member-example-pending&status=pending",
   );
+});
+
+test("workspace sign-in links use separate entry points", () => {
+  assert.equal(demoLoginHref("/demo/admin?section=applications"), "/admin/login?returnTo=%2Fdemo%2Fadmin%3Fsection%3Dapplications");
+  assert.equal(demoLoginHref("/demo/member"), "/login?returnTo=%2Fdemo%2Fmember");
+  assert.equal(demoLoginHref("/demo/administrator"), "/login?returnTo=%2Fdemo%2Fadministrator");
 });

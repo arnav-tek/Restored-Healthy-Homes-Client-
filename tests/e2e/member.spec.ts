@@ -45,7 +45,7 @@ test("public application, keyboard validation, shared member edits and reset", a
   );
   await page.getByRole("button", { name: "Create application" }).press("Enter");
   await expect(
-    page.getByRole("heading", { name: "Application created in this tab" }),
+    page.getByRole("heading", { name: "Application prepared" }),
   ).toBeFocused();
   await expect(
     page.getByText("Application status: pending.", { exact: true }),
@@ -68,12 +68,12 @@ test("public application, keyboard validation, shared member edits and reset", a
   );
   await section(page, "Member", "Inquiries");
   await expect(
-    page.getByText("No fictional messages for this example.", { exact: true }),
+    page.getByText("No messages yet.", { exact: true }),
   ).toBeVisible();
   await section(page, "Member", "Profile");
   await expect(
     page.locator(
-      'input[name="approval"],input[name="subscription"],input[name="suspended"],input[name="id"],input[name="verifiedCredentials"]',
+      'input[name="approval"],input[name="Subscription"],input[name="suspended"],input[name="id"],input[name="verifiedCredentials"]',
     ),
   ).toHaveCount(0);
   await page
@@ -85,7 +85,7 @@ test("public application, keyboard validation, shared member edits and reset", a
   await page
     .getByRole("button", { name: "Update local preview" })
     .press("Enter");
-  await page.getByText("Public-profile preview", { exact: true }).click();
+  await page.getByText("Public profile", { exact: true }).click();
   await expect(page.getByTestId("member-preview-name")).toHaveText(
     "Locally Edited Sample",
   );
@@ -96,7 +96,7 @@ test("public application, keyboard validation, shared member edits and reset", a
   await expect(page.getByTestId("member-approval")).toHaveText("pending");
   await mainNav(page, "List Your Business");
   await expect(
-    page.getByText(/Locally Edited Sample is available/),
+    page.getByText(/Locally Edited Sample is ready to review/),
   ).toBeVisible();
   await page.getByRole("link", { name: "Open member workspace" }).click();
   await signIn(page, "application");
@@ -120,7 +120,7 @@ test("public application, keyboard validation, shared member edits and reset", a
   ).toBeLessThanOrEqual(page.viewportSize()!.width);
   await resetSession(page);
   await expect(page.getByTestId("selected-business")).toHaveText(
-    "Meadow Sample Studio",
+    "Meadow Studio",
   );
   await mainNav(page, "List Your Business");
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
@@ -153,9 +153,9 @@ test("example states, seeded inbox, client navigation and refresh lifetime", asy
   await expect(page.getByTestId("member-approval")).toHaveText("approved");
   await section(page, "Member", "Inquiries");
   await page
-    .getByText("Fictional material consultation", { exact: true })
+    .getByText("Material consultation", { exact: true })
     .click();
-  await expect(page.getByText(/No reply is expected/)).toBeVisible();
+  await expect(page.getByText(/explore material choices for a renovation/)).toBeVisible();
   await section(page, "Member", "Profile");
   await page
     .getByLabel("Business name", { exact: true })
@@ -165,33 +165,33 @@ test("example states, seeded inbox, client navigation and refresh lifetime", asy
   await expect(
     page.getByText("Temporary Local Edit", { exact: true }),
   ).toHaveCount(0);
-  await mainNav(page, "Member preview");
+  await mainNav(page, "Member dashboard");
   await expect(page.getByTestId("selected-business")).toHaveText(
     "Temporary Local Edit",
   );
   const other = await context.newPage();
   await other.goto("/demo/member");
   await expect(
-    other.getByRole("heading", { name: "Demo sign-in required" }),
+    other.getByRole("heading", { name: "Sign-in required" }),
   ).toBeVisible();
   await signIn(other);
   await expect(other.getByTestId("selected-business")).toHaveText(
-    "Meadow Sample Studio",
+    "Meadow Studio",
   );
   await other.close();
   await page.reload();
   await expect(
-    page.getByRole("heading", { name: "Demo sign-in required" }),
+    page.getByRole("heading", { name: "Sign-in required" }),
   ).toBeVisible();
   await signIn(page);
   await expect(page.getByTestId("selected-business")).toHaveText(
-    "Meadow Sample Studio",
+    "Meadow Studio",
   );
   await mainNav(page, "List Your Business");
   await fillApplication(page);
   await page.getByRole("button", { name: "Create application" }).click();
   await expect(
-    page.getByRole("heading", { name: "Application created in this tab" }),
+    page.getByRole("heading", { name: "Application prepared" }),
   ).toBeVisible();
   await page.reload();
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
@@ -215,7 +215,7 @@ test("application and editing cannot natively submit without JavaScript", async 
     ).toBeDisabled();
     await page.goto("http://127.0.0.1:3100/demo/member?section=profile");
     await expect(
-      page.getByRole("heading", { name: "Checking demo session" }),
+      page.getByRole("heading", { name: "Checking session" }),
     ).toBeVisible();
     await expect(page.getByLabel("Business name", { exact: true })).toHaveCount(
       0,
@@ -224,7 +224,7 @@ test("application and editing cannot natively submit without JavaScript", async 
       page.getByRole("button", { name: "Update local preview" }),
     ).toHaveCount(0);
     await expect(
-      page.getByRole("button", { name: "Reset session" }),
+      page.getByRole("button", { name: "Reset workspace" }),
     ).toHaveCount(0);
   } finally {
     await context.close();

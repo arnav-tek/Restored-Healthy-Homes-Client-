@@ -36,7 +36,7 @@ export function PublicPreviewContent({
             <li key={claim.id}>
               {claim.text} —{" "}
               {claim.verification === "verified"
-                ? "verified in demo only"
+                ? "reviewed"
                 : "unverified"}
             </li>
           ))}
@@ -45,8 +45,7 @@ export function PublicPreviewContent({
         <p>No listed credentials provided.</p>
       )}
       <p>
-        Restored Healthy Homes does not issue certifications. Verification here
-        is a fictional review decision only.
+        Restored Healthy Homes does not issue certifications. Verification here is a review decision only.
       </p>
       <h3>Optional public contact details</h3>
       {profile.phone || profile.website ? (
@@ -56,7 +55,7 @@ export function PublicPreviewContent({
           {profile.website}
         </p>
       ) : (
-        <p>No sample phone or website provided.</p>
+        <p>No phone or website provided.</p>
       )}
     </>
   );

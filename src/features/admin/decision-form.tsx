@@ -59,14 +59,14 @@ export function DecisionForm({
           if (
             decision === "rejected" &&
             !window.confirm(
-              `Reject ${record.profile.businessName} in this demo? Nothing will be sent.`,
+              `Reject ${record.profile.businessName}? No notification will be sent.`,
             )
           )
             return;
           if (
             decision === "suspend" &&
             !window.confirm(
-              `Suspend ${record.profile.businessName} in this demo? It will leave the session directory preview.`,
+              `Suspend ${record.profile.businessName}? It will be removed from the directory overview.`,
             )
           )
             return;
@@ -103,7 +103,7 @@ export function DecisionForm({
             Local decision for {record.profile.businessName}
           </legend>
           <div className="search-field">
-            <label htmlFor="review-decision">Demo action</label>
+            <label htmlFor="review-decision">Action</label>
             <select
               id="review-decision"
               name="decision"
@@ -125,7 +125,7 @@ export function DecisionForm({
             </select>
           </div>
           <div className="search-field">
-            <label htmlFor="review-reason">Applicant-facing demo reason</label>
+            <label htmlFor="review-reason">Applicant-facing reason</label>
             <textarea
               id="review-reason"
               name="reason"
@@ -140,14 +140,13 @@ export function DecisionForm({
               aria-describedby="reason-help reason-error"
             />
             <p id="reason-help" className="field-help">
-              3–300 characters. Visible to the member in this demo; no
-              notification is sent.
+              3–300 characters. Visible to the member. No notification is sent.
             </p>
             <p id="reason-error" className="field-error" role="alert">
               {error}
             </p>
           </div>
-          <Button type="submit">Apply demo decision</Button>
+          <Button type="submit">Apply decision</Button>
         </fieldset>
       </form>
       <p className="field-help">

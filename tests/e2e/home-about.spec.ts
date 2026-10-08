@@ -171,10 +171,6 @@ test("homepage rating follows the existing review moderation session and refresh
   ).toBeVisible();
   await mainNav(page, "Home");
   await expect(page.getByTestId("home-rating")).toHaveText("4.2 out of 5");
-  await page
-    .getByRole("contentinfo")
-    .getByRole("link", { name: "Admin area", exact: true })
-    .click();
   await signIn(page, "admin");
   await expect(
     page.getByRole("heading", {
@@ -196,7 +192,7 @@ test("homepage rating follows the existing review moderation session and refresh
     "published",
   );
   await page
-    .getByRole("link", { name: "View public review preview", exact: true })
+    .getByRole("link", { name: "View Public reviews", exact: true })
     .click();
   await expect(page.getByTestId("review-summary")).toHaveText(
     "3.8 out of 55 published reviews",

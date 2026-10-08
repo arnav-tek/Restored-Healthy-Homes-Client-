@@ -3,7 +3,7 @@ import type { ProfessionalRecord } from "../../domain/professional";
 const samples = [
   {
     businessName: "Fern & Field Inspections",
-    serviceArea: "Asheville and nearby communities (sample service area)",
+    serviceArea: "Asheville and nearby communities",
     publicContact: {
       email: "hello@fern-field.example.invalid",
       website: "https://fern-field.example.invalid",
@@ -23,7 +23,7 @@ const samples = [
   },
   {
     businessName: "Cedar Path Remediation",
-    serviceArea: "Austin area (sample service area)",
+    serviceArea: "Austin area",
     id: "demo-mold-remediation",
     categoryIds: ["mold-remediation"],
     city: "Austin",
@@ -105,7 +105,7 @@ const samples = [
     state: "VA",
     specialty: "Nutrition & environmental health support",
     summary:
-      "A sample multidisciplinary practice bringing nutrition and environmental health into personal care conversations.",
+      "A multidisciplinary practice bringing nutrition and environmental health into personal care conversations.",
     services: [
       "Nutrition consultations",
       "Care coordination",
@@ -120,7 +120,7 @@ const samples = [
     state: "FL",
     specialty: "Canine mold detection",
     summary:
-      "A sample handler-and-dog team supporting investigations alongside inspection professionals.",
+      "A handler-and-dog team supporting investigations alongside inspection professionals.",
     services: [
       "Residential canine detection",
       "Inspection-team coordination",
@@ -132,7 +132,7 @@ const active: ProfessionalRecord[] = samples.map((sample, index) => ({
   ...sample,
   credentials: [
     {
-      name: "Sample training record",
+      name: "Training record",
       verification: index % 2 === 0 ? "verified" : "unverified",
     },
   ],

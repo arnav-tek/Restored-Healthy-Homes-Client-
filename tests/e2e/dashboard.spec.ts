@@ -20,7 +20,7 @@ test("dashboard sections, direct URLs, history and filters retain selected recor
   await expect(
     page.getByText("1 of 7 applications shown", { exact: true }),
   ).toBeVisible();
-  await review(page, "Pending Sample Studio");
+  await review(page, "Pending Studio");
   await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   await expect(page).toHaveURL(/record=member-example-pending.*status=pending/);
   await page.getByRole("link", { name: "Back to applications" }).press("Enter");
@@ -29,7 +29,7 @@ test("dashboard sections, direct URLs, history and filters retain selected recor
   ).toHaveValue("pending");
   await page.goBack();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Review Pending Sample Studio",
+    "Review Pending Studio",
   );
   await page.goForward();
   await expect(
@@ -44,7 +44,7 @@ test("dashboard sections, direct URLs, history and filters retain selected recor
   await page
     .getByRole("link", { name: /Pending applications.*1.*Review applications/ })
     .click();
-  await review(page, "Pending Sample Studio");
+  await review(page, "Pending Studio");
   await decision(page, "approved", "Fictional review complete");
   await section(page, "Admin", "Overview");
   await expect(
@@ -62,7 +62,7 @@ test("dashboard sections, direct URLs, history and filters retain selected recor
   );
   await expect(
     page.getByRole("heading", {
-      name: "Session record unavailable",
+      name: "Record unavailable",
       exact: true,
     }),
   ).toBeVisible();
@@ -76,7 +76,7 @@ test("dashboard sections, direct URLs, history and filters retain selected recor
     "inactive",
   );
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Your sample membership",
+    "Your membership",
   );
   await expect(page.getByText("inactive", { exact: true })).toBeVisible();
   await visitWorkspace(
@@ -107,24 +107,24 @@ test("unsaved profile decision and category drafts survive navigation and reset 
   );
   await switchMember(page, "member-example-pending");
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
-    "Pending Sample Studio",
+    "Pending Studio",
   );
   await switchMember(page, "member-example-approved");
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
-    "Meadow Sample Studio",
+    "Meadow Studio",
   );
   await section(page, "Member", "Inquiries");
   await page.goBack();
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
-    "Meadow Sample Studio",
+    "Meadow Studio",
   );
   await page.goForward();
   await expect(
-    page.getByRole("heading", { name: "Your sample inquiries" }),
+    page.getByRole("heading", { name: "Your inquiries" }),
   ).toBeVisible();
   await section(page, "Member", "Profile");
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
-    "Meadow Sample Studio",
+    "Meadow Studio",
   );
   await workspace(page, "Admin overview");
   await section(page, "Admin", "Applications");
@@ -140,16 +140,16 @@ test("unsaved profile decision and category drafts survive navigation and reset 
   await page
     .getByRole("button", { name: "Clear filters", exact: true })
     .click();
-  await review(page, "Meadow Sample Studio");
+  await review(page, "Meadow Studio");
   await page
-    .getByLabel("Applicant-facing demo reason")
+    .getByLabel("Applicant-facing reason")
     .fill("Unsaved fictional review reason");
   await page.getByRole("link", { name: "Back to applications" }).click();
-  await review(page, "Pending Sample Studio");
-  await expect(page.getByLabel("Applicant-facing demo reason")).toHaveValue("");
+  await review(page, "Pending Studio");
+  await expect(page.getByLabel("Applicant-facing reason")).toHaveValue("");
   await page.getByRole("link", { name: "Back to applications" }).click();
-  await review(page, "Meadow Sample Studio");
-  await expect(page.getByLabel("Applicant-facing demo reason")).toHaveValue(
+  await review(page, "Meadow Studio");
+  await expect(page.getByLabel("Applicant-facing reason")).toHaveValue(
     "Unsaved fictional review reason",
   );
   await section(page, "Admin", "Categories");
@@ -186,7 +186,7 @@ test("unsaved profile decision and category drafts survive navigation and reset 
   await workspace(page, "Member overview");
   await section(page, "Member", "Profile");
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
-    "Meadow Sample Studio",
+    "Meadow Studio",
   );
   await page
     .getByLabel("Business name", { exact: true })
@@ -194,7 +194,7 @@ test("unsaved profile decision and category drafts survive navigation and reset 
   await page.reload();
   await signIn(page);
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
-    "Meadow Sample Studio",
+    "Meadow Studio",
   );
   expect(
     await page.evaluate(() => [localStorage.length, sessionStorage.length]),
@@ -231,7 +231,7 @@ test("focused dashboard screens stay accessible with long names errors empty sta
   await visitWorkspace(page, "/demo/member?section=profile");
   await page.getByLabel("Business name", { exact: true }).fill(longBusiness);
   await page.getByRole("button", { name: "Update local preview" }).click();
-  await page.getByText("Public-profile preview", { exact: true }).click();
+  await page.getByText("Public profile", { exact: true }).click();
   await capture("member-profile");
   await section(page, "Member", "Overview");
   await capture("member-overview");
@@ -247,7 +247,7 @@ test("focused dashboard screens stay accessible with long names errors empty sta
   await section(page, "Admin", "Applications");
   await capture("admin-applications");
   await review(page, longBusiness);
-  await page.getByRole("button", { name: "Apply demo decision" }).click();
+  await page.getByRole("button", { name: "Apply decision" }).click();
   await capture("admin-validation");
   await decision(page, "approved", "Sample review confirmation");
   await capture("admin-confirmation");
@@ -260,7 +260,7 @@ test("focused dashboard screens stay accessible with long names errors empty sta
   await section(page, "Admin", "Categories");
   await page.getByLabel("Category to rename").selectOption("healthy-designers");
   await page.getByLabel("Display name", { exact: true }).fill(longCategory);
-  await page.getByRole("button", { name: "Rename demo category" }).click();
+  await page.getByRole("button", { name: "Rename category" }).click();
   await capture("admin-categories");
   await section(page, "Admin", "Listings");
   await page

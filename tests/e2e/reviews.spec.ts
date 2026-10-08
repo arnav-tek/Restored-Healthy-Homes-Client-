@@ -68,7 +68,7 @@ test("published review summaries, same-profile pages, empty and long reviews sta
     page.getByRole("list", { name: "Published reviews" }).getByRole("article"),
   ).toHaveCount(3);
   await expect(page.getByRole("article").first()).toContainText(
-    "Sample visitor Alex",
+    "Visitor Alex",
   );
   await inspect(page, `published-${info.project.name}`);
   await page
@@ -76,7 +76,7 @@ test("published review summaries, same-profile pages, empty and long reviews sta
     .press("Enter");
   await expect(page).toHaveURL(/demo-mold-inspection\?reviewPage=2.*#reviews$/);
   await expect(page.getByRole("article")).toHaveCount(1);
-  await expect(page.getByRole("article")).toContainText("Sample visitor Robin");
+  await expect(page.getByRole("article")).toContainText("Visitor Robin");
   await expect(page.getByTestId("review-summary")).toHaveText(summary);
   await expect(
     page.getByRole("link", { name: "Back to results" }),
@@ -95,7 +95,7 @@ test("published review summaries, same-profile pages, empty and long reviews sta
   await inspect(page, `empty-${info.project.name}`);
   await page.goto("/professionals/demo-healthy-designers");
   await expect(page.getByRole("article")).toContainText(
-    "shared sample library",
+    "shared library",
   );
   await inspect(page, `long-${info.project.name}`);
 });
@@ -169,7 +169,7 @@ test("review validation, pending confirmation and repeated clicks never publish 
     page.getByRole("heading", { name: "Review pending", exact: true }),
   ).toBeFocused();
   await expect(page.locator(".review-confirmation")).toContainText(
-    "demo-session-review-1",
+    "Reference: 1",
   );
   await expect(page.locator(".review-confirmation")).toContainText(literal);
   await expect(page.locator(".review-confirmation img")).toHaveCount(0);
@@ -185,13 +185,13 @@ test("review validation, pending confirmation and repeated clicks never publish 
   await fillReview(page);
   await submit.dblclick();
   await expect(page.locator(".review-confirmation")).toContainText(
-    "demo-session-review-2",
+    "Reference: 2",
   );
   await page.getByRole("button", { name: "Start another review" }).click();
   await fillReview(page);
   await submit.click();
   await expect(page.locator(".review-confirmation")).toContainText(
-    "demo-session-review-3",
+    "Reference: 3",
   );
   await expect(page.getByTestId("review-summary")).toHaveText(summary);
   await page.reload();
@@ -270,12 +270,12 @@ test("professional-scoped drafts survive navigation; sign-out discards drafts bu
   await browseProfile(page, "Fern & Field Inspections");
   await fillReview(page);
   page.once("dialog", (dialog) => dialog.dismiss());
-  await page.getByRole("button", { name: "Reset session" }).click();
+  await page.getByRole("button", { name: "Reset workspace" }).click();
   await expect(page.getByLabel("Written review", { exact: true })).toHaveValue(
     sampleBody,
   );
   page.once("dialog", (dialog) => dialog.accept());
-  await page.getByRole("button", { name: "Reset session" }).click();
+  await page.getByRole("button", { name: "Reset workspace" }).click();
   await expect(page.getByLabel("Written review", { exact: true })).toHaveValue(
     "",
   );
@@ -355,7 +355,7 @@ test("review boundaries exclude hidden seeds and structured data; no-script and 
       noScript.getByRole("button", { name: "Submit review", exact: true }),
     ).toBeDisabled();
     await expect(
-      noScript.getByRole("button", { name: "Reset session" }),
+      noScript.getByRole("button", { name: "Reset workspace" }),
     ).toBeDisabled();
     await noScript
       .getByRole("link", { name: "Next reviews", exact: true })

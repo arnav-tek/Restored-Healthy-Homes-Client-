@@ -13,8 +13,7 @@ export function CredentialReview({ record }: { record: DemoMemberRecord }) {
     <section className="panel">
       <h2>Credential review</h2>
       <p>
-        Decisions here are fictional. Restored Healthy Homes does not issue
-        certifications. New or changed claims require review.
+        Restored Healthy Homes does not issue certifications. New or changed credentials require review.
       </p>
       {record.credentials.length ? (
         <ul className="credential-review-list">
@@ -24,7 +23,7 @@ export function CredentialReview({ record }: { record: DemoMemberRecord }) {
                 <strong>{claim.text}</strong>
                 <p>
                   {claim.verification === "verified"
-                    ? "Verified in demo only"
+                    ? "Reviewed"
                     : "Unverified"}
                 </p>
               </div>
@@ -35,7 +34,7 @@ export function CredentialReview({ record }: { record: DemoMemberRecord }) {
                   if (
                     claim.verification === "verified" &&
                     !window.confirm(
-                      `Remove demo verification of “${claim.text}” for ${record.profile.businessName}?`,
+                      `Remove review status for “${claim.text}” for ${record.profile.businessName}?`,
                     )
                   )
                     return;
@@ -49,14 +48,14 @@ export function CredentialReview({ record }: { record: DemoMemberRecord }) {
                         : "verified",
                   });
                   setFeedback(
-                    `${claim.text}: ${claim.verification === "verified" ? "verification removed" : "verified in demo only"}.`,
+                    `${claim.text}: ${claim.verification === "verified" ? "verification removed" : "reviewed"}.`,
                   );
                   requestAnimationFrame(() => status.current?.focus());
                 }}
               >
                 {claim.verification === "verified"
-                  ? "Remove demo verification"
-                  : "Verify in demo"}
+                  ? "Remove review status"
+                  : "Mark as reviewed"}
               </Button>
             </li>
           ))}

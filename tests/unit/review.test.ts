@@ -220,7 +220,7 @@ test("shared review session rejects unavailable targets, forces pending, locks e
     state,
     {
       type: "demo-sign-in",
-      fields: { email: "admin@example.invalid", passcode: "home-demo" },
+      fields: { email: "admin@example.invalid", passcode: "home-access" },
     },
     seed,
   );

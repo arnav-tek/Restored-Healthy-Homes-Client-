@@ -16,7 +16,7 @@ export function RecordStatus({ record }: { record: DemoMemberRecord }) {
       </div>
       <div>
         <dt>Subscription</dt>
-        <dd>{record.subscription} (sample)</dd>
+        <dd>{record.subscription} </dd>
       </div>
       <div>
         <dt>Suspension</dt>
@@ -26,7 +26,7 @@ export function RecordStatus({ record }: { record: DemoMemberRecord }) {
         <dt>Eligibility</dt>
         <dd>
           {isPubliclyEligible(record)
-            ? "Meets sample eligibility rules"
+            ? "Meets eligibility rules"
             : "Not eligible"}
         </dd>
       </div>

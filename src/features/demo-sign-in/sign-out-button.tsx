@@ -14,7 +14,7 @@ export function SignOutButton({
   className?: string;
   onSignedOut?: () => void;
 }) {
-  const { dispatch, drafts } = useDemoSession();
+  const { state, dispatch, drafts } = useDemoSession();
   const ready = useDemoReady();
   const router = useRouter();
   return (
@@ -27,13 +27,13 @@ export function SignOutButton({
           !ready ||
           (Object.keys(drafts).length &&
             !window.confirm(
-              "Sign out of this demo account? Unsaved drafts will be discarded. Submitted fictional records remain in this tab.",
+              "Sign out of this account? Unsaved drafts will be discarded. Submitted records remain in this tab.",
             ))
         )
           return;
         dispatch({ type: "demo-sign-out" });
         onSignedOut?.();
-        router.replace(returnTo ? demoLoginHref(returnTo) : "/login");
+        router.replace(returnTo ? demoLoginHref(returnTo) : state.identity?.kind === "admin" ? "/admin/login" : "/login");
       }}
     >
       {label}

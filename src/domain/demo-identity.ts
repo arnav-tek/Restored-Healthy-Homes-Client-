@@ -12,24 +12,24 @@ export interface DemoAccount {
   readonly description: string;
   readonly identity: DemoIdentity;
 }
-export const demoPasscode = "home-demo";
+export const demoPasscode = "home-access";
 const accounts: readonly DemoAccount[] = [
   {
     id: "admin",
-    label: "Demo administrator",
+    label: "Administrator",
     email: "admin@example.invalid",
     description: "Review applications, Q&A and consultation assignments.",
     identity: { kind: "admin", accountId: "admin" },
   },
   ...[
-    ["approved", "Meadow Sample Studio", "Approved · active subscription"],
-    ["pending", "Pending Sample Studio", "Pending · inactive subscription"],
-    ["rejected", "Rejected Sample Studio", "Rejected · inactive subscription"],
-    ["inactive", "Inactive Sample Studio", "Approved · inactive subscription"],
+    ["approved", "Meadow Studio", "Approved · active subscription"],
+    ["pending", "Pending Studio", "Pending · inactive subscription"],
+    ["rejected", "Rejected Studio", "Rejected · inactive subscription"],
+    ["inactive", "Inactive Studio", "Approved · inactive subscription"],
     [
       "coordinator",
-      "Willow Sample Studio",
-      "Approved · active subscription; reassignment example",
+      "Willow Studio",
+      "Approved · active subscription; consultation coordination",
     ],
   ].map(([id, label, description]): DemoAccount => ({
     id,
@@ -46,7 +46,7 @@ const accounts: readonly DemoAccount[] = [
     id: "fern",
     label: "Fern & Field Inspections",
     email: "fern@example.invalid",
-    description: "Fictional public-profile account · review walkthrough",
+    description: "Professional profile · reviews",
     identity: {
       kind: "member",
       accountId: "fern",
@@ -57,7 +57,7 @@ const accounts: readonly DemoAccount[] = [
     id: "cedar",
     label: "Cedar Path Remediation",
     email: "cedar@example.invalid",
-    description: "Fictional public-profile account · initially no reviews",
+    description: "Professional profile · no reviews yet",
     identity: {
       kind: "member",
       accountId: "cedar",
@@ -73,10 +73,10 @@ export function demoAccounts(
         ...accounts,
         {
           id: "application",
-          label: "Your submitted demo application",
+          label: "Your submitted application",
           email: "application@example.invalid",
           description:
-            "Preview the fictional application created in this tab. No real account was created.",
+            "Open your prepared application.",
           identity: {
             kind: "member",
             accountId: "application",

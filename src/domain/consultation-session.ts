@@ -107,7 +107,7 @@ export function reduceConsultationAction(
         providerId: action.providerId,
       };
       notice =
-        "Demo assignment updated. Awaiting the selected member’s response; no appointment booked or message sent.";
+        "Assignment updated. Awaiting the selected member’s response. No appointment has been booked.";
       break;
     }
     case "unassign-consultation":
@@ -118,7 +118,7 @@ export function reduceConsultationAction(
         return state;
       updated = { ...request, status: "requested", providerId: null };
       notice =
-        "Demo assignment removed. Request returned to the unassigned queue.";
+        "Assignment removed. Request returned to the unassigned queue.";
       break;
     case "accept-consultation":
     case "decline-consultation": {
@@ -138,11 +138,11 @@ export function reduceConsultationAction(
           return state;
         updated = { ...request, status: "accepted" };
         notice =
-          "Accepted for demo coordination. No appointment booked, payment taken or message sent.";
+          "Accepted for coordination. An appointment still needs to be arranged.";
       } else {
         updated = { ...request, status: "requested", providerId: null };
         notice =
-          "Demo assignment declined. Returned to the admin’s unassigned queue.";
+          "Assignment declined. Returned to the admin’s unassigned queue.";
       }
       break;
     }
@@ -152,13 +152,13 @@ export function reduceConsultationAction(
       // Retain assignment for closed-record visibility; never expose it publicly.
       updated = { ...request, status: "cancelled" };
       notice =
-        "Request cancelled in this demo. It is closed; no appointment or payment existed.";
+        "Request cancelled. This request is now closed.";
       break;
     case "note-consultation": {
       const note = parseCoordinationNote(action.note);
       if (note === null || note === request.adminNote) return state;
       updated = { ...request, adminNote: note };
-      notice = "Internal coordination note saved in this tab only.";
+      notice = "Internal coordination note updated.";
       break;
     }
   }

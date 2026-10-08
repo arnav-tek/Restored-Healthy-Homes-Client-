@@ -27,7 +27,7 @@ export function RecordRegister({
   return (
     <section
       className="workspace-register"
-      aria-label="Sample application register"
+      aria-label="Application register"
     >
       <form
         noValidate
@@ -49,7 +49,7 @@ export function RecordRegister({
           className="admin-filters"
           aria-busy={pending}
         >
-          <legend className="sr-only">Filter demo records</legend>
+          <legend className="sr-only">Filter records</legend>
           <div className="search-field">
             <label htmlFor="admin-search">Search applications</label>
             <input
@@ -121,13 +121,12 @@ export function RecordRegister({
         <div
           className="table-scroll workspace-table"
           role="region"
-          aria-label="Demo records"
+          aria-label="Records"
           tabIndex={0}
         >
           <table>
             <caption className="sr-only">
-              Fictional records and their independent listing states. Open a
-              business for {query.section}.
+              Records and their independent listing states. Open a business for {query.section}.
             </caption>
             <thead>
               <tr>
@@ -178,8 +177,7 @@ export function RecordRegister({
         <div className="workspace-empty">
           <h2>No applications match</h2>
           <p>
-            Clear filters to see sample records and applications created in this
-            tab.
+            Clear filters to see records and applications created in this tab.
           </p>
         </div>
       )}

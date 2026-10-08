@@ -68,7 +68,7 @@ test("education has eight keyboard pathways, official references and working app
     page.getByRole("heading", { name: "List Your Business", exact: true }),
   ).toBeVisible();
   await expect(page.getByRole("main")).toContainText(
-    "not sent or saved permanently",
+    "Application delivery is not connected yet.",
   );
 });
 
@@ -97,7 +97,7 @@ test("pricing renders exact catalog prices, full names and truthful membership/a
   await expect(page.getByRole("main")).toContainText(
     "Multi-category pricing is pending confirmation",
   );
-  await expect(page.getByRole("main")).toContainText("no payment is collected");
+  await expect(page.getByRole("main")).toContainText("No payment is collected");
   await inspect(page, `pricing-${info.project.name}`);
   await page
     .locator(".membership-table")

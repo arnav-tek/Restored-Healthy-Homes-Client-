@@ -4,11 +4,11 @@ Implemented 2026-10-04. Demo sign-in and client walkthrough only. Stop before re
 
 ## Behavior and boundaries
 
-`/login` offers six public fictional account presets: administrator, Meadow (approved/active), Willow (approved/active), pending, rejected and approved/inactive professionals. Every preset uses the public passcode `home-demo`. A seventh `application@example.invalid` preset appears only after a public demo application exists; submission does not create a real account or sign in automatically. Preset descriptions refer to original fixtures; decisions can change during the session.
+`/login` offers eight public fictional account presets: administrator, Meadow (approved/active), Willow (approved/active), pending, rejected and approved/inactive professionals. Every preset uses the public passcode `home-access`. A ninth `application@example.invalid` preset appears only after a public demo application exists; submission does not create a real account or sign in automatically. Preset descriptions refer to original fixtures; decisions can change during the session.
 
 Shared `DemoSession.identity` stores only an admin/member discriminator, account ID and (for members) stable member ID. Sign-in validates bounded values against available presets and derives identity from that allowlist; it never stores entered credentials. A selected account must sign out before another can be selected. Header actions reflect identity. The provider now also surrounds the header, retaining one session source.
 
-Dashboard shells show neutral prehydration/no-script screens, a signed-out sign-in requirement or a wrong-workspace link to the correct dashboard. These are interface gates, **not authentication, authorization or secure route protection**. Synthetic fixtures remain client-accessible demo data. Member query IDs and admin review links cannot silently select an identity. Member controls use the signed-in stable member; an explicit Switch demo account action replaces the member picker. Existing eligibility, approval, subscription, credentials, Q&A and consultation rules are unchanged.
+Dashboard shells show neutral prehydration/no-script screens, a signed-out sign-in requirement or a wrong-workspace link to the correct dashboard. These are interface gates, **not authentication, authorization or secure route protection**. Synthetic fixtures remain client-accessible demo data. Member query IDs and admin review links cannot silently select an identity. Member controls use the signed-in stable member; an explicit Switch account action replaces the member picker. Existing eligibility, approval, subscription, credentials, Q&A and consultation rules are unchanged.
 
 `returnTo` accepts only the signed-in account's `/demo/member` or `/demo/admin` path with validated dashboard query fields. External/protocol-relative, malformed, duplicate and unknown query destinations fall back to the account dashboard. Member return URLs cannot select another member. No redirect tokens, credentials or private record contents are generated in URLs.
 
@@ -21,10 +21,10 @@ Regression testing also caught a fresh-page search hydration reset that could er
 ## Client walkthrough
 
 1. Browse public pages or submit a fictional consultation at `/consultations` without signing in.
-2. Open Sign in, choose **Demo administrator**, then Sign in to demo. Open Consultations and assign the request to **Meadow Sample Studio** (use the Healthy Home Designers category).
-3. Choose Switch demo account or Sign out. Select **Meadow Sample Studio**, sign in and open Consultations. Accept the assignment; return to the public Consultations page to see the updated confirmation. No booking, payment or notification occurs.
+2. Open `/admin/login` directly, expand **Quick access**, choose **Administrator**, then Sign in. Open Consultations and assign the request to **Meadow Studio** (use the Healthy Home Designers category).
+3. Choose Switch account or Sign out. Expand **Quick access**, select **Meadow Studio**, sign in and open Consultations. Accept the assignment; return to the public Consultations page to see the updated confirmation. No booking, payment or notification occurs.
 4. Try pending/rejected/inactive presets to inspect membership states; sign-in does not grant public listing eligibility. Use List Your Business for a fictional application, then its submitted-application preset to preview it. Admin approval alone still leaves its subscription inactive.
-5. Try public Q&A submission → admin publication → eligible member answer → admin moderation, signing out/in between accounts. Saved records remain; unsaved drafts do not transfer. Use Reset demo session to start over.
+5. Try public Q&A submission → admin publication → eligible member answer → admin moderation, signing out/in between accounts. Saved records remain; unsaved drafts do not transfer. Use Reset workspace to start over.
 
 ## Verification
 
@@ -37,3 +37,7 @@ Regression testing also caught a fresh-page search hydration reset that could er
 ## Remaining work
 
 Real authentication requires server-side sessions, ownership/authorization checks, persistence/RLS and renewed security testing. Public demo credentials must never become production access. Reviews and all integrations remain unstarted. Consultation policies/offer/delivery decisions remain provisional. Fuller homepage, client-supplied About Us story/text/video and all other approved backlog features remain in the checklist.
+
+Website labels and the public access code were revised on 2026-10-08; see [website copy cleanup](normal-website-copy.md). Authentication and session boundaries remain unchanged.
+
+Admin sign-in now has a separate `/admin/login` entry point. Public `/login` shows only professional accounts, and the public footer no longer links to admin access. The existing Other workspace links remain inside walkthrough dashboards for cross-role review. Admin dashboard gates and sign-out return to the admin login. This separation does not add server authentication or authorization.

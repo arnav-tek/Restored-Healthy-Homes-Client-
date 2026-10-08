@@ -51,8 +51,7 @@ export function AdminConsultations() {
             <AdminConsultationDetail key={selected.id} request={selected} />
           ) : (
             <p className="workspace-empty">
-              This consultation is unavailable in this tab. Return to requests
-              or create a fictional request.
+              This consultation is unavailable in this tab. Return to requests or create a request.
             </p>
           )}
         </>
@@ -81,8 +80,7 @@ export function AdminConsultations() {
           </div>
           <ConsultationFilters area="admin" />
           <p role="status">
-            {matches.length} of {state.consultations.length} demo consultation
-            requests shown
+            {matches.length} of {state.consultations.length} consultation requests shown
           </p>
           <ol className="qa-list">
             {matches.map((request) => (
@@ -117,8 +115,7 @@ export function AdminConsultations() {
             <div className="workspace-empty">
               <h2>No matching consultation requests</h2>
               <p>
-                Clear filters or create a fictional request. Refresh and reset
-                clear session requests.
+                Clear filters or create a request. Refresh and reset clear session requests.
               </p>
               <Link className="text-link" href="/consultations#request">
                 Try the public request form →
@@ -157,7 +154,7 @@ function AdminConsultationDetail({
     return (
       request.status !== "accepted" ||
       window.confirm(
-        `Change this accepted demo assignment? ${result} No appointment or payment exists.`,
+        `Change this accepted assignment? ${result} No appointment or payment exists.`,
       )
     );
   }
@@ -184,15 +181,15 @@ function AdminConsultationDetail({
         />
         <dl className="consultation-summary">
           <div>
-            <dt>Fictional visitor name</dt>
+            <dt>Visitor name</dt>
             <dd>{request.name}</dd>
           </div>
           <div>
-            <dt>Fictional visitor email</dt>
+            <dt>Visitor email</dt>
             <dd>{request.email}</dd>
           </div>
         </dl>
-        <h3>Fictional topic</h3>
+        <h3>Topic</h3>
         <p className="consultation-topic">{request.topic}</p>
         <p>
           Assignment:{" "}
@@ -207,15 +204,14 @@ function AdminConsultationDetail({
         )}
         {request.status === "cancelled" ? (
           <p>
-            This demo request is closed. No further assignment actions are
-            available.
+            This request is closed. No further assignment actions are available.
           </p>
         ) : (
           <fieldset disabled={!ready} className="member-form-fields">
-            <legend>Manage demo assignment</legend>
+            <legend>Manage assignment</legend>
             <div className="search-field">
               <label htmlFor="consultation-provider">
-                Eligible fictional professional
+                Eligible professional
               </label>
               <select
                 id="consultation-provider"
@@ -264,8 +260,8 @@ function AdminConsultationDetail({
                 }}
               >
                 {request.providerId
-                  ? "Reassign demo request"
-                  : "Assign demo request"}
+                  ? "Reassign request"
+                  : "Assign request"}
               </button>
               {request.providerId && (
                 <button
@@ -284,7 +280,7 @@ function AdminConsultationDetail({
                       });
                   }}
                 >
-                  Unassign demo request
+                  Unassign request
                 </button>
               )}
               <button
@@ -293,7 +289,7 @@ function AdminConsultationDetail({
                 onClick={() => {
                   if (
                     window.confirm(
-                      `Cancel this ${request.status} demo request? It will be closed. No appointment or payment exists.`,
+                      `Cancel this ${request.status} request? It will be closed. No appointment or payment exists.`,
                     )
                   )
                     act({
@@ -303,7 +299,7 @@ function AdminConsultationDetail({
                     });
                 }}
               >
-                Cancel demo request
+                Cancel request
               </button>
             </div>
           </fieldset>
@@ -327,16 +323,14 @@ function AdminConsultationDetail({
               aria-describedby="consultation-note-help consultation-note-error"
             />
             <p id="consultation-note-help" className="field-help">
-              Fictional plain text only, up to 500 characters. Excluded from
-              member and public summaries. Unsaved notes stay with this request
-              until reset.
+              Plain text only, up to 500 characters. Excluded from member and public summaries. Unsaved notes stay with this request until reset.
             </p>
             <p id="consultation-note-error" className="field-error">
               {error}
             </p>
           </div>
           <button className="button" type="submit">
-            Save demo note
+            Save note
           </button>
         </fieldset>
       </form>

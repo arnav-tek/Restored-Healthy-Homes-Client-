@@ -11,20 +11,20 @@ import {
 } from "../../domain/demo-member";
 
 const sampleProfile: MemberProfileFields = {
-  name: "Sample Member",
-  businessName: "Meadow Sample Studio",
+  name: "Member",
+  businessName: "Meadow Studio",
   email: "member@example.invalid",
   phone: "",
   website: "",
   city: "Raleigh",
   state: "NC",
   categoryIds: ["healthy-designers"],
-  services: ["Sample material consultations", "Sample interior planning"],
+  services: ["Material consultations", "Interior planning"],
   description:
-    "A fictional studio demonstrating thoughtful materials and comfortable interior spaces.",
+    "A studio demonstrating thoughtful materials and comfortable interior spaces.",
   practices:
-    "This sample business considers ventilation, durable materials and moisture-aware design.",
-  listedCredentials: ["Sample course attendance — fictional"],
+    "This business considers ventilation, durable materials and moisture-aware design.",
+  listedCredentials: ["Course attendance"],
 };
 const examples: readonly DemoMemberRecord[] = [
   {
@@ -40,7 +40,7 @@ const examples: readonly DemoMemberRecord[] = [
       "approved",
     ),
     decisionReason:
-      "Fictional application meets the sample review requirements.",
+      "Application meets the review requirements.",
     suspensionReason: "",
     profile: copyMemberFields(sampleProfile),
   },
@@ -60,7 +60,7 @@ const examples: readonly DemoMemberRecord[] = [
     suspensionReason: "",
     profile: copyMemberFields({
       ...sampleProfile,
-      businessName: "Pending Sample Studio",
+      businessName: "Pending Studio",
     }),
   },
   {
@@ -75,11 +75,11 @@ const examples: readonly DemoMemberRecord[] = [
       sampleProfile.listedCredentials,
       "rejected",
     ),
-    decisionReason: "Fictional application needs clearer service information.",
+    decisionReason: "Application needs clearer service information.",
     suspensionReason: "",
     profile: copyMemberFields({
       ...sampleProfile,
-      businessName: "Rejected Sample Studio",
+      businessName: "Rejected Studio",
     }),
   },
   {
@@ -94,11 +94,11 @@ const examples: readonly DemoMemberRecord[] = [
       sampleProfile.listedCredentials,
       "inactive",
     ),
-    decisionReason: "Fictional review approved; subscription remains inactive.",
+    decisionReason: "Review approved; subscription remains inactive.",
     suspensionReason: "",
     profile: copyMemberFields({
       ...sampleProfile,
-      businessName: "Inactive Sample Studio",
+      businessName: "Inactive Studio",
     }),
   },
   {
@@ -110,12 +110,12 @@ const examples: readonly DemoMemberRecord[] = [
     featuredEntitlement: "none",
     credentials: [],
     decisionReason:
-      "Fictional eligible alternative for consultation reassignment.",
+      "Eligible alternative for consultation reassignment.",
     suspensionReason: "",
     profile: copyMemberFields({
       ...sampleProfile,
-      name: "Sample Coordinator",
-      businessName: "Willow Sample Studio",
+      name: "Coordinator",
+      businessName: "Willow Studio",
       email: "coordinator@example.invalid",
       listedCredentials: [],
     }),
@@ -132,15 +132,15 @@ const examples: readonly DemoMemberRecord[] = [
     suspensionReason: "",
     profile: copyMemberFields({
       ...sampleProfile,
-      name: "Sample Fern Professional",
+      name: "Fern Professional",
       businessName: "Fern & Field Inspections",
       email: "fern@example.invalid",
       city: "Asheville",
       state: "NC",
       categoryIds: ["mold-inspection"],
-      services: ["Sample moisture assessments"],
-      description: "Fictional inspection business for the review walkthrough.",
-      practices: "Sample moisture-aware investigation planning.",
+      services: ["Moisture assessments"],
+      description: "Moisture inspections and investigation planning.",
+      practices: "Moisture-aware investigation planning.",
       listedCredentials: [],
     }),
   },
@@ -156,15 +156,15 @@ const examples: readonly DemoMemberRecord[] = [
     suspensionReason: "",
     profile: copyMemberFields({
       ...sampleProfile,
-      name: "Sample Cedar Professional",
+      name: "Cedar Professional",
       businessName: "Cedar Path Remediation",
       email: "cedar@example.invalid",
       city: "Austin",
       state: "TX",
       categoryIds: ["mold-remediation"],
-      services: ["Sample containment planning"],
-      description: "Fictional remediation business for the review walkthrough.",
-      practices: "Sample containment and coordination planning.",
+      services: ["Containment planning"],
+      description: "Remediation planning and coordination.",
+      practices: "Containment and coordination planning.",
       listedCredentials: [],
     }),
   },
@@ -178,17 +178,17 @@ export function getDemoSessionSeed(): DemoSessionSeed {
         id: "inbox-example-1",
         memberId: "member-example-approved",
         sender: "neighbor@example.invalid",
-        subject: "Fictional material consultation",
+        subject: "Material consultation",
         message:
-          "A sample homeowner would like to explore material choices for a fictional renovation. No reply is expected.",
+          "I would like to explore material choices for a renovation.",
       },
       {
         id: "inbox-example-2",
         memberId: "member-example-approved",
         sender: "homeowner@example.invalid",
-        subject: "Fictional planning question",
+        subject: "Planning question",
         message:
-          "This separately seeded example asks about the scope of a sample interior planning service. Nothing was delivered from the public inquiry form.",
+          "What is included in your interior planning service?",
       },
     ],
   });

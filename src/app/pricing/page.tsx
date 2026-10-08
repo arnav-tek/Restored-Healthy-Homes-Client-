@@ -297,8 +297,7 @@ export default async function PricingPage() {
             <p className="pricing-cta-eyebrow">START WITH AN APPLICATION</p>
             <h3>List your business in the directory.</h3>
             <p className="pricing-cta-copy">
-              The current application is a demo: use fictional information.
-              Nothing is sent or saved permanently, and no payment is collected.
+              Explore the application process and choose the membership that suits your business. No payment is collected here.
             </p>
             <div className="pricing-cta-actions">
               <ButtonLink

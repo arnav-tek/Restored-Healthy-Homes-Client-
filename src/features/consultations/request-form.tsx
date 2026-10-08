@@ -107,9 +107,9 @@ function RequestForm() {
       {submitted ? (
         <div className="consultation-form-card consultation-confirmation-card">
           <div className="panel consultation-confirmation">
-            <p className="section-label">{submitted.status} · This session</p>
+            <p className="section-label">{submitted.status}</p>
             <h2 id="consultation-form-heading" ref={confirmation} tabIndex={-1}>
-              Request recorded in this tab
+              Request prepared
             </h2>
             <p>
               {submitted.status === "requested"

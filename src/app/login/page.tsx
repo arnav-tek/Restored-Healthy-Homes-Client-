@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowUpRight, House } from "lucide-react";
 import { DemoLoginForm } from "@/features/demo-sign-in/login-form";
 export const metadata: Metadata = {
-  title: "Demo sign-in",
+  title: "Sign in",
   robots: { index: false, follow: false },
 };
 export default async function LoginPage({
@@ -13,30 +14,30 @@ export default async function LoginPage({
   const params = await searchParams;
   return (
     <div className="container demo-login-page">
-      <header className="demo-login-intro">
-        <p className="section-label">Client walkthrough</p>
-        <h1>Demo sign-in</h1>
-        <p>
-          Explore the professional and admin journeys using fictional accounts.
-          This is a simulation, not authentication or secure account access.
-        </p>
-        <p className="field-help">
-          Nothing entered here is sent or saved permanently. Refresh or a full
-          reload resets this tab’s session. No account creation, password reset
-          or email delivery is available.
-        </p>
-      </header>
-      <DemoLoginForm
-        returnTo={typeof params.returnTo === "string" ? params.returnTo : ""}
-        account={typeof params.account === "string" ? params.account : ""}
-      />
-      <div className="login-public-links">
-        <Link className="text-link" href="/directory">
-          Browse professionals
-        </Link>
-        <Link className="text-link" href="/list-your-business">
-          List Your Business
-        </Link>
+      <div className="login-shell">
+        <aside className="login-story">
+          <span className="login-story-mark"><House size={28} aria-hidden="true" /></span>
+          <div>
+            <p className="login-eyebrow">Restored Healthy Homes</p>
+            <h2>Good connections.<br />Healthier homes.</h2>
+            <p>Your work has a place here. Keep your profile, conversations and next steps together.</p>
+          </div>
+          <Link href="/directory">Explore the directory <ArrowUpRight size={18} aria-hidden="true" /></Link>
+        </aside>
+        <section className="login-panel" aria-labelledby="login-heading">
+          <header className="demo-login-intro">
+            <p className="section-label">Welcome back</p>
+            <h1 id="login-heading">Sign in</h1>
+          </header>
+          <DemoLoginForm
+            returnTo={typeof params.returnTo === "string" ? params.returnTo : ""}
+            account={typeof params.account === "string" ? params.account : ""}
+          />
+          <div className="login-join">
+            <p>New to the directory? <Link href="/list-your-business">List Your Business <ArrowUpRight size={15} aria-hidden="true" /></Link></p>
+            <Link className="login-browse" href="/directory">Browse professionals without signing in</Link>
+          </div>
+        </section>
       </div>
     </div>
   );

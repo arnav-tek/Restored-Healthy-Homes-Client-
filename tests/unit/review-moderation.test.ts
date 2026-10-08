@@ -41,7 +41,7 @@ const act = (state: DemoSession, action: DemoMemberAction) =>
 function signIn(state: DemoSession, account: string) {
   return act(act(state, { type: "demo-sign-out" }), {
     type: "demo-sign-in",
-    fields: { email: `${account}@example.invalid`, passcode: "home-demo" },
+    fields: { email: `${account}@example.invalid`, passcode: "home-access" },
   });
 }
 async function initial() {

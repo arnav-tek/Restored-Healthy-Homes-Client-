@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import {
   demoAccounts,
   demoDashboard,
@@ -18,14 +19,18 @@ import { SignOutButton } from "./sign-out-button";
 export function DemoLoginForm({
   returnTo,
   account,
+  area = "member",
 }: {
   returnTo: string;
   account: string;
+  area?: "member" | "admin";
 }) {
   const { state, dispatch, drafts } = useDemoSession();
   const accounts = demoAccounts(state.applicationId);
+  const [showCode, setShowCode] = useState(false);
+  const shortcuts = useRef<HTMLDetailsElement>(null);
   const [email, setEmail] = useState(
-    () => accounts.find((item) => item.id === account)?.email ?? "",
+    () => accounts.find((item) => item.id === account && item.identity.kind === area)?.email ?? "",
   );
   const [passcode, setPasscode] = useState("");
   const [errors, setErrors] = useState<DemoSignInErrors>({});
@@ -42,10 +47,17 @@ export function DemoLoginForm({
       (result.errors.email ? emailRef : passcodeRef).current?.focus();
       return;
     }
+    if (result.identity.kind !== area) {
+      setErrors({ email: area === "admin"
+        ? "Use an administrator account for this sign-in page."
+        : "Use a professional account for this sign-in page." });
+      emailRef.current?.focus();
+      return;
+    }
     if (
       Object.keys(drafts).length &&
       !window.confirm(
-        "Start this demo account? Unsaved drafts will be discarded. Submitted fictional records remain in this tab.",
+        "Start this account? Unsaved drafts will be discarded. Submitted records remain in this tab.",
       )
     )
       return;
@@ -58,43 +70,41 @@ export function DemoLoginForm({
   if (ready && state.identity)
     return (
       <section className="panel login-current">
-        <h2>A demo account is already selected</h2>
+        <h2>You’re already signed in</h2>
         <p>
           {
             accounts.find((item) => item.id === state.identity?.accountId)
               ?.label
           }
-          . To change accounts, sign out first. This keeps submitted demo
-          records and clears unsaved drafts.
+          . Continue to your workspace or switch accounts.
         </p>
         <div className="filter-actions">
           <Link className="button" href={demoDashboard(state.identity)}>
             Open your dashboard
           </Link>
           <SignOutButton
-            label="Switch demo account"
+            label="Switch account"
             returnTo={returnTo || undefined}
           />
         </div>
       </section>
     );
   return (
-    <div className="demo-login-layout">
+    <div className="login-access">
       <form
-        className="panel demo-login-form"
+        className="demo-login-form"
         noValidate
         onSubmit={submit}
         autoComplete="off"
       >
-        <h2>Try an account</h2>
-        <p>
-          Use a fictional email below and the public passcode{" "}
-          <strong>{demoPasscode}</strong>. Do not enter real credentials.
+        <h2 className="sr-only">{area === "member" ? "Professional access" : "Administrator access"}</h2>
+        <p className="login-access-description">
+          {area === "member" ? "Manage your professional profile and inquiries." : "Manage applications, listings and directory activity."}
         </p>
         <fieldset disabled={!ready} className="member-form-fields">
-          <legend className="sr-only">Demo sign-in credentials</legend>
+          <legend className="sr-only">Sign-in details</legend>
           <div className="search-field">
-            <label htmlFor="demo-email">Demo account email</label>
+            <label htmlFor="demo-email">Account email</label>
             <input
               ref={emailRef}
               id="demo-email"
@@ -112,11 +122,11 @@ export function DemoLoginForm({
             </p>
           </div>
           <div className="search-field">
-            <label htmlFor="demo-passcode">Public demo passcode</label>
-            <input
+            <label htmlFor="demo-passcode">Access code</label>
+            <div className="login-code-field"><input
               ref={passcodeRef}
               id="demo-passcode"
-              type="text"
+              type={showCode ? "text" : "password"}
               maxLength={64}
               autoComplete="off"
               spellCheck={false}
@@ -124,21 +134,22 @@ export function DemoLoginForm({
               value={passcode}
               onChange={(event) => setPasscode(event.target.value)}
               aria-invalid={!!errors.passcode}
-              aria-describedby="demo-passcode-help demo-passcode-error"
+              aria-describedby="demo-passcode-error"
             />
-            <p id="demo-passcode-help" className="field-help">
-              Not a real password. Use {demoPasscode} for every demo account.
-            </p>
+            <button type="button" className="login-code-toggle" aria-label={showCode ? "Hide code" : "Show code"}
+              aria-pressed={showCode} onClick={() => setShowCode(!showCode)}>
+              {showCode ? <EyeOff size={19} aria-hidden="true" /> : <Eye size={19} aria-hidden="true" />}
+            </button></div>
             <p className="field-error" id="demo-passcode-error">
               {errors.passcode}
             </p>
           </div>
-          <button type="submit" className="button">
-            Sign in to demo
+          <button type="submit" className="button login-submit">
+            Sign in <ArrowRight size={18} aria-hidden="true" />
           </button>
         </fieldset>
         <noscript>
-          Enable JavaScript to simulate sign-in. Controls are disabled; nothing
+          Enable JavaScript to sign in. Controls are disabled; nothing
           is submitted.
         </noscript>
         <p role="status" className="field-error">
@@ -147,38 +158,32 @@ export function DemoLoginForm({
             : ""}
         </p>
       </form>
-      <section
-        className="demo-account-presets"
-        aria-labelledby="demo-accounts-heading"
-      >
-        <h2 id="demo-accounts-heading">Fictional accounts</h2>
-        <p>
-          Presets describe the original examples. Approval and other demo
-          decisions can change during this tab’s walkthrough.
-        </p>
+      <details className="login-shortcuts" ref={shortcuts}>
+        <summary>Quick access</summary>
+        <p>Select a workspace to fill in the sign-in details.</p>
         <ul>
-          {accounts.map((item) => (
+          {accounts.filter((item) => item.identity.kind === area).map((item) => (
             <li key={item.id}>
-              <h3>{item.label}</h3>
-              <p>{item.description}</p>
-              <p className="demo-account-email">{item.email}</p>
               <button
                 type="button"
                 className="text-link"
+                aria-label={`Use ${item.label}`}
                 disabled={!ready}
                 onClick={() => {
                   setEmail(item.email);
                   setPasscode(demoPasscode);
                   setErrors({});
+                  if (shortcuts.current) shortcuts.current.open = false;
                   emailRef.current?.focus();
                 }}
               >
-                Use {item.label}
+                <span>Use {item.label}</span>
+                <span className="login-shortcut-description">{item.description}</span>
               </button>
             </li>
           ))}
         </ul>
-      </section>
+      </details>
     </div>
   );
 }

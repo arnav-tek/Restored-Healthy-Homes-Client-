@@ -15,7 +15,7 @@ export function SessionReset({ onReset }: { onReset?: () => void }) {
       onClick={() => {
         if (
           !window.confirm(
-            "Reset this session? You will be signed out. Applications, questions, answers, reviews, consultation requests, edits, review decisions and unsaved drafts will be discarded.",
+            "Reset this workspace? You will be signed out. Applications, questions, answers, reviews, consultation requests, edits, review decisions and unsaved drafts will be discarded.",
           )
         )
           return;
@@ -24,7 +24,7 @@ export function SessionReset({ onReset }: { onReset?: () => void }) {
       }}
     >
       <RotateCcw size={14} aria-hidden="true" />
-      <span>Reset session</span>
+      <span>Reset workspace</span>
     </Button>
   );
 }

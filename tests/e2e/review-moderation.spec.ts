@@ -84,7 +84,7 @@ async function reject(page: Page, accept: boolean) {
 }
 async function publicPreview(page: Page) {
   await page
-    .getByRole("link", { name: "View public review preview", exact: true })
+    .getByRole("link", { name: "View Public reviews", exact: true })
     .press("Enter");
   await expect(page).toHaveURL(`${profile}#reviews`);
   await expect(page.locator("main")).not.toContainText(note);
@@ -136,7 +136,7 @@ test("review walkthrough publishes across accounts, rejects with confirmation an
     "published",
   );
   await expect(
-    page.getByText("Demo review published. This decision affects only this tab.", {
+    page.getByText("Review published. This decision affects only this tab.", {
       exact: true,
     }),
   ).toBeFocused();
@@ -144,7 +144,7 @@ test("review walkthrough publishes across accounts, rejects with confirmation an
     .getByRole("button", { name: "Publish review", exact: true })
     .press("Enter");
   await expect(
-    page.getByText("Already published. No change to this demo review.", {
+    page.getByText("Already published. No change to this review.", {
       exact: true,
     }),
   ).toBeFocused();
@@ -201,10 +201,10 @@ test("review walkthrough publishes across accounts, rejects with confirmation an
   await publicPreview(page);
   await summary(page, updatedSummary);
   page.once("dialog", (dialog) => dialog.dismiss());
-  await page.getByRole("button", { name: "Reset session" }).press("Enter");
+  await page.getByRole("button", { name: "Reset workspace" }).press("Enter");
   await summary(page, updatedSummary);
   page.once("dialog", (dialog) => dialog.accept());
-  await page.getByRole("button", { name: "Reset session" }).press("Enter");
+  await page.getByRole("button", { name: "Reset workspace" }).press("Enter");
   await summary(page, originalSummary);
   await expect(page.locator(".review-confirmation")).toHaveCount(0);
   await expect(page.locator("[data-demo-account]")).toHaveCount(0);
@@ -222,7 +222,7 @@ test("review filters, missing records, isolated moderation drafts and member own
 }, info) => {
   await page.goto("/demo/admin?section=reviews&review=missing");
   await expect(
-    page.getByRole("heading", { name: "Demo sign-in required" }),
+    page.getByRole("heading", { name: "Sign-in required" }),
   ).toBeVisible();
   await signIn(page, "admin");
   await expect(page.getByText(/This review is unavailable/)).toBeVisible();
@@ -234,7 +234,7 @@ test("review filters, missing records, isolated moderation drafts and member own
   await filter(page, "published");
   const filteredUrl = page.url();
   await expect(page.locator(".review-queue li")).toHaveCount(4);
-  await openReview(page, "Sample visitor Alex");
+  await openReview(page, "Visitor Alex");
   await page
     .getByLabel("Internal review note (optional)")
     .fill("DRAFT_REVIEW_A");
@@ -247,7 +247,7 @@ test("review filters, missing records, isolated moderation drafts and member own
     .getByRole("link", { name: "Back to reviews queue" })
     .press("Enter");
   await expect(page).toHaveURL(filteredUrl);
-  await openReview(page, "Sample visitor Jordan");
+  await openReview(page, "Visitor Jordan");
   await expect(page.getByLabel("Internal review note (optional)")).toHaveValue(
     "",
   );
@@ -257,7 +257,7 @@ test("review filters, missing records, isolated moderation drafts and member own
   await page
     .getByRole("link", { name: "Back to reviews queue" })
     .press("Enter");
-  await openReview(page, "Sample visitor Alex");
+  await openReview(page, "Visitor Alex");
   await expect(page.getByLabel("Internal review note (optional)")).toHaveValue(
     "DRAFT_REVIEW_A",
   );
@@ -269,7 +269,7 @@ test("review filters, missing records, isolated moderation drafts and member own
   );
   page.once("dialog", (dialog) => dialog.dismiss());
   await page
-    .getByRole("button", { name: "Switch demo account", exact: true })
+    .getByRole("button", { name: "Switch account", exact: true })
     .press("Enter");
   await expect(page.getByLabel("Internal review note (optional)")).toHaveValue(
     "DRAFT_REVIEW_A",
@@ -278,21 +278,21 @@ test("review filters, missing records, isolated moderation drafts and member own
   await section(page, "Member", "Reviews");
   await expect(page.locator("main")).not.toContainText("DRAFT_REVIEW");
   await workspace(page, "Admin");
-  await openReview(page, "Sample visitor Alex");
+  await openReview(page, "Visitor Alex");
   await expect(page.getByLabel("Internal review note (optional)")).toHaveValue(
     "",
   );
   await page
     .getByRole("link", { name: "Back to reviews queue" })
     .press("Enter");
-  await openReview(page, "Sample visitor Jordan");
+  await openReview(page, "Visitor Jordan");
   await expect(page.getByLabel("Internal review note (optional)")).toHaveValue(
     "",
   );
   await workspace(page, "Member", "approved");
   await expect(
     page.getByRole("heading", {
-      name: "No public professional linked to this demo account",
+      name: "No public professional linked to this account",
     }),
   ).toBeVisible();
   await inspect(page, `unlinked-${info.project.name}`);
@@ -302,7 +302,7 @@ test("review filters, missing records, isolated moderation drafts and member own
   await signIn(page, "cedar");
   await expect(page).toHaveURL("/demo/member?section=reviews");
   await summary(page, "No reviews yet");
-  await expect(page.locator("main")).not.toContainText("Sample visitor Alex");
+  await expect(page.locator("main")).not.toContainText("Visitor Alex");
   await inspect(page, `empty-member-${info.project.name}`);
   await page.goto(
     "/demo/admin?section=reviews&professional=missing&reviewStatus=published",
@@ -326,7 +326,7 @@ test("seed rejection clamps public pagination, preserves result returns and rest
   await page.goto(startUrl);
   await expect(page.getByRole("article")).toHaveCount(1);
   await workspace(page, "Admin");
-  await openReview(page, "Sample visitor Alex");
+  await openReview(page, "Visitor Alex");
   await reject(page, true);
   // Account gates add a history entry; walk back through the real client journey.
   for (
@@ -362,7 +362,7 @@ test("seed rejection clamps public pagination, preserves result returns and rest
   await workspace(page, "Member");
   await summary(page, "No reviews yet");
   await page
-    .getByRole("link", { name: "View your public review preview", exact: true })
+    .getByRole("link", { name: "View your public reviews", exact: true })
     .press("Enter");
   await expect(page).toHaveURL(`${profile}#reviews`);
   await summary(page, "No reviews yet");
@@ -409,7 +409,7 @@ test("review moderation boundaries keep hidden seeds and controls out of server,
   await page.goto("/login");
   await signIn(page, "admin");
   await section(page, "Admin", "Reviews");
-  await openReview(page, "Sample visitor Alex");
+  await openReview(page, "Visitor Alex");
   await page.getByLabel("Internal review note (optional)").fill(note);
   await page
     .getByRole("button", { name: "Publish review", exact: true })
@@ -438,7 +438,7 @@ test("review moderation boundaries keep hidden seeds and controls out of server,
     for (const area of ["admin", "member"]) {
       await offline.goto(`/demo/${area}?section=reviews`);
       await expect(
-        offline.getByRole("heading", { name: "Checking demo session" }),
+        offline.getByRole("heading", { name: "Checking session" }),
       ).toBeVisible();
       await expect(
         offline.getByRole("button", { name: "Publish review", exact: true }),

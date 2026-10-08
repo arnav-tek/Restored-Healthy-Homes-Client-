@@ -114,7 +114,7 @@ test("consultation validation, drafts, requested confirmation, another request a
   );
   await page.getByRole("button", { name: "Record request" }).click();
   await expect(
-    page.getByRole("heading", { name: "Request recorded in this tab" }),
+    page.getByRole("heading", { name: "Request prepared" }),
   ).toBeFocused();
   await expect(
     page.getByText(
@@ -147,7 +147,7 @@ test("consultation validation, drafts, requested confirmation, another request a
   ).toBeVisible();
   await page.goBack();
   await expect(
-    page.getByRole("heading", { name: "Request recorded in this tab" }),
+    page.getByRole("heading", { name: "Request prepared" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Make another request" }).click();
   await expect(page.getByLabel("Name", { exact: true })).toBeFocused();
@@ -170,11 +170,11 @@ test("consultation validation, drafts, requested confirmation, another request a
     .fill("A second fictional request about a sample project plan.");
   await page.getByRole("button", { name: "Record request" }).click();
   await expect(
-    page.getByRole("heading", { name: "Request recorded in this tab" }),
+    page.getByRole("heading", { name: "Request prepared" }),
   ).toBeVisible();
   await resetSession(page, false);
   await expect(
-    page.getByRole("heading", { name: "Request recorded in this tab" }),
+    page.getByRole("heading", { name: "Request prepared" }),
   ).toBeVisible();
   await resetSession(page);
   await expect(page.getByLabel("Name", { exact: true })).toHaveValue("");
@@ -201,12 +201,12 @@ test("consultation validation, drafts, requested confirmation, another request a
     .fill("A temporary fictional request to check the refresh boundary.");
   await page.getByRole("button", { name: "Record request" }).click();
   await expect(
-    page.getByRole("heading", { name: "Request recorded in this tab" }),
+    page.getByRole("heading", { name: "Request prepared" }),
   ).toBeVisible();
   await page.reload();
   await expect(page.getByLabel("Name", { exact: true })).toHaveValue("");
   await expect(
-    page.getByRole("heading", { name: "Request recorded in this tab" }),
+    page.getByRole("heading", { name: "Request prepared" }),
   ).toHaveCount(0);
   expect(mutations).toEqual([]);
   expect(errors).toEqual([]);

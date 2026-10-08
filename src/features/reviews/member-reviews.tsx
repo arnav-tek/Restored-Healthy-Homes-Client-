@@ -10,30 +10,25 @@ export function MemberReviews() {
   if (!professionalId)
     return (
       <div className="workspace-empty">
-        <h2>No public professional linked to this demo account</h2>
+        <h2>No public professional linked to this account</h2>
         <p>
-          The sample studios are independent examples. Switch demo accounts and
-          choose Fern & Field Inspections or Cedar Path Remediation to explore
-          their published reviews.
+          Reviews appear here when your account is linked to a public professional profile.
         </p>
       </div>
     );
   if (!state.publicProfessionalIds.includes(professionalId))
     return (
       <p className="workspace-empty">
-        Your linked public profile is unavailable in this session. Reviews are
-        not displayed for an ineligible profile.
+        Your linked public profile is unavailable. Reviews are not displayed for an ineligible profile.
       </p>
     );
   return (
     <section
       className="member-reviews"
-      aria-label="Your published fictional reviews"
+      aria-label="Your published reviews"
     >
       <p>
-        Published fictional reviews for your explicitly linked public profile.
-        These are not verified customer experiences. Pending/rejected reviews
-        and internal moderation notes are excluded.
+        Published reviews for your professional profile. Pending and rejected reviews are excluded.
       </p>
       <p className="field-help">
         Admin review decisions affect this tab only. Member listing edits remain
@@ -44,7 +39,7 @@ export function MemberReviews() {
         className="text-link"
         href={`/professionals/${professionalId}#reviews`}
       >
-        View your public review preview
+        View your public reviews
       </Link>
       <ReviewSummary reviews={reviews} />
       <ReviewList reviews={reviews} />

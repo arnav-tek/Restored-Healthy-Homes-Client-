@@ -3,14 +3,12 @@ import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { section, resetSession } from "./helpers/dashboard";
 async function admin(page: Page) {
-  await page.getByRole("link", { name: "Admin area", exact: true }).click();
-  await expect(page).toHaveURL("/demo/admin");
   await signIn(page, "admin");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Your directory at a glance",
   );
   await expect(
-    page.getByRole("button", { name: "Reset session" }),
+    page.getByRole("button", { name: "Reset workspace" }),
   ).toBeEnabled();
   await section(page, "Admin", "Q&A");
 }
@@ -22,7 +20,7 @@ async function member(page: Page) {
     "Your business at a glance",
   );
   await expect(
-    page.getByRole("button", { name: "Reset session" }),
+    page.getByRole("button", { name: "Reset workspace" }),
   ).toBeEnabled();
   await section(page, "Member", "Q&A");
 }
@@ -148,7 +146,7 @@ test("same-session question and answer publication, rejection, parent hiding and
     .press("Enter");
   await expect(
     page.getByText(
-      "Demo question published. This decision affects only this tab.",
+      "Question published. This decision affects only this tab.",
     ),
   ).toBeFocused();
   await page
@@ -164,11 +162,11 @@ test("same-session question and answer publication, rejection, parent hiding and
   await expect(page.getByText("Showing 1–6 of 11 questions")).toBeVisible();
   await member(page);
   await page.getByRole("link", { name: title, exact: true }).click();
-  await page.getByRole("button", { name: "Submit demo answer" }).press("Enter");
+  await page.getByRole("button", { name: "Submit answer" }).press("Enter");
   await expect(page.getByLabel("Answer text", { exact: true })).toBeFocused();
   await page.getByLabel("Answer text", { exact: true }).fill(answer);
   await inspect(page, `member-answer-${testInfo.project.name}`);
-  await page.getByRole("button", { name: "Submit demo answer" }).click();
+  await page.getByRole("button", { name: "Submit answer" }).click();
   await expect(
     page.getByText(
       "Answer submitted as pending in this tab. It is not public and no message was sent.",
@@ -185,7 +183,7 @@ test("same-session question and answer publication, rejection, parent hiding and
   await page.getByRole("button", { name: "Filter Q&A", exact: true }).click();
   await page
     .getByRole("link", {
-      name: "Review answer by Meadow Sample Studio",
+      name: "Review answer by Meadow Studio",
       exact: true,
     })
     .click();
@@ -218,7 +216,7 @@ test("same-session question and answer publication, rejection, parent hiding and
     .getByRole("button", { name: "Reject answer", exact: true })
     .click();
   await expect(
-    page.getByText("Fictional professional · Answer status: published"),
+    page.getByText("professional · Answer status: published"),
   ).toBeVisible();
   page.once("dialog", (dialog) => dialog.accept());
   await page
@@ -240,7 +238,7 @@ test("same-session question and answer publication, rejection, parent hiding and
     .click();
   await page
     .getByRole("link", {
-      name: "Review answer by Meadow Sample Studio",
+      name: "Review answer by Meadow Studio",
       exact: true,
     })
     .click();
@@ -266,7 +264,7 @@ test("same-session question and answer publication, rejection, parent hiding and
     .click();
   await page.goForward();
   await expect(
-    page.getByRole("heading", { name: "Question unavailable in this session" }),
+    page.getByRole("heading", { name: "Question unavailable" }),
   ).toBeVisible();
   await expect(page.locator("main")).not.toContainText(answer);
   await page
@@ -288,7 +286,7 @@ test("same-session question and answer publication, rejection, parent hiding and
   ).toBeVisible();
   await page.goto(detailUrl);
   await expect(
-    page.getByRole("heading", { name: "Question unavailable in this session" }),
+    page.getByRole("heading", { name: "Question unavailable" }),
   ).toBeVisible();
   expect(
     await page.evaluate(() => [localStorage.length, sessionStorage.length]),
@@ -314,7 +312,7 @@ test("member drafts remain isolated across questions, member selection and navig
     .getByRole("button", { name: "Filter Q&A", exact: true })
     .press("Enter");
   await expect(
-    page.getByText("1 published sample questions", { exact: true }),
+    page.getByText("1 published questions", { exact: true }),
   ).toBeVisible();
   await page.locator('.qa-list a[href*="question=trade-visit"]').click();
   await expect(page.getByLabel("Answer text", { exact: true })).toHaveValue("");
@@ -369,24 +367,24 @@ test("session routes have neutral HTML and no-script state; seed moderation rese
   const response = await request.get("/questions/demo-session-question-1");
   expect(response.status()).toBe(200);
   const html = await response.text();
-  expect(html).toContain("Checking this tab");
-  expect(html).toContain("Session question | Restored Healthy Homes");
+  expect(html).toContain("Loading question…");
+  expect(html).toContain("Community question | Restored Healthy Homes");
   expect(html).not.toMatch(/QA_PRIVATE|QA_UNPUBLISHED|QA_HIDDEN/);
   const context = await browser.newContext({ javaScriptEnabled: false });
   const noJs = await context.newPage();
   await noJs.goto("/questions/demo-session-question-1");
   await expect(
-    noJs.getByRole("heading", { name: "Session question", exact: true }),
+    noJs.getByRole("heading", { name: "Community question", exact: true }),
   ).toBeVisible();
   await expect(
     noJs.getByText(/JavaScript is required for session-created questions/),
   ).toBeVisible();
   await noJs.goto("/demo/member?section=qa&question=planning-inspection");
   await expect(
-    noJs.getByRole("button", { name: "Submit demo answer" }),
+    noJs.getByRole("button", { name: "Submit answer" }),
   ).toHaveCount(0);
   await expect(
-    noJs.getByRole("heading", { name: "Checking demo session" }),
+    noJs.getByRole("heading", { name: "Checking session" }),
   ).toBeVisible();
   await noJs.goto("/demo/admin?section=qa&question=planning-inspection");
   await expect(
@@ -411,7 +409,7 @@ test("session routes have neutral HTML and no-script state; seed moderation rese
   await page.getByRole("button", { name: "Reject question" }).click();
   await page.goForward();
   await expect(
-    page.getByRole("heading", { name: "Question unavailable in this session" }),
+    page.getByRole("heading", { name: "Question unavailable" }),
   ).toBeVisible();
   await page.reload();
   await expect(

@@ -47,12 +47,12 @@ function CategoryForm({
         setError("");
         dispatch({ type: "rename-category", id: category.id, name });
         clearDraft();
-        setFeedback(`Display name updated to ${name} in this session.`);
+        setFeedback(`Display name updated to ${name} .`);
         requestAnimationFrame(() => status.current?.focus());
       }}
     >
       <fieldset className="member-form-fields" disabled={!ready || pending}>
-        <legend className="sr-only">Rename a demo category</legend>
+        <legend className="sr-only">Rename a category</legend>
         <div className="search-field">
           <label htmlFor="category-label">Display name</label>
           <input
@@ -74,7 +74,7 @@ function CategoryForm({
           <strong>{formatMonthlyPrice(category.monthlyUsd)} / month</strong>{" "}
           (unchanged)
         </p>
-        <Button type="submit">Rename demo category</Button>
+        <Button type="submit">Rename category</Button>
       </fieldset>
       <p ref={status} role="status" tabIndex={-1} className="session-status">
         {feedback}

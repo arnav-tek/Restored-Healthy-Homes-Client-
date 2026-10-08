@@ -28,10 +28,7 @@ export function AdminReviews() {
   return (
     <div className="reviews-workspace">
       <p className="field-help">
-        Fictional public seed reviews and submissions from this tab only. These
-        interface controls are not secure authorization. Listing decisions in
-        the member/admin demo remain separate from the public-directory
-        eligibility snapshot.
+        Review feedback and manage publication. Only eligible professional profiles display published reviews.
       </p>
       {query.review ? (
         <>
@@ -50,7 +47,7 @@ export function AdminReviews() {
                 <p className="field-help">
                   {selected.source === "seed"
                     ? "Published seed example"
-                    : "Fictional visitor submission"}{" "}
+                    : "Visitor submission"}{" "}
                   · Reference: {selected.id}
                 </p>
                 <p>
@@ -67,7 +64,7 @@ export function AdminReviews() {
                     className="text-link"
                     href={`/professionals/${selected.professionalId}#reviews`}
                   >
-                    View public review preview
+                    View Public reviews
                   </Link>
                 )}
               </article>
@@ -154,7 +151,7 @@ export function AdminReviews() {
             </fieldset>
           </form>
           <p role="status">
-            {matching.length} matching fictional{" "}
+            {matching.length} matching{" "}
             {matching.length === 1 ? "review" : "reviews"}
           </p>
           <ol className="review-queue">
@@ -174,7 +171,7 @@ export function AdminReviews() {
                     {review.status} ·{" "}
                     {review.source === "seed"
                       ? "Seed example"
-                      : "Session submission"}
+                      : "Visitor submission"}
                   </p>
                   <p className="review-body">
                     {review.body.slice(0, 160)}
@@ -186,8 +183,7 @@ export function AdminReviews() {
           </ol>
           {!matching.length && (
             <p className="workspace-empty">
-              No reviews match. Clear filters or submit a fictional review on a
-              public profile to try moderation.
+              No reviews match. Clear filters or submit a review on a public profile to try moderation.
             </p>
           )}
         </>

@@ -216,7 +216,7 @@ export function reduceDemoSession(
         ...state,
         identity: null,
         revision,
-        notice: "Demo signed out. Shared fictional records remain in this tab.",
+        notice: "Signed out.",
       };
     case "request-consultation": {
       // Lock this form attempt after success until the explicit "another" action.
@@ -288,12 +288,12 @@ export function reduceDemoSession(
           state.reviews.snapshot,
         ),
         revision,
-        notice: "Demo session reset. All local changes were cleared.",
+        notice: "Workspace reset. All local changes were cleared.",
       };
     case "submit": {
       const record: DemoMemberRecord = {
         id: "demo-local-application",
-        exampleLabel: "Your fictional application",
+        exampleLabel: "Your application",
         approval: "pending",
         subscription: "inactive",
         suspended: false,
@@ -317,7 +317,7 @@ export function reduceDemoSession(
         applicationId: record.id,
         revision,
         notice:
-          "Demo application created in this tab. Nothing was sent to the owner.",
+          "Application prepared. Delivery to the owner is not connected yet.",
       };
     }
     case "edit":
@@ -339,7 +339,7 @@ export function reduceDemoSession(
             : record,
         ),
         revision,
-        notice: "Local preview updated. The public directory has not changed.",
+        notice: "Profile draft updated. The public directory has not changed.",
       };
     case "rename-category": {
       const catalog = categories.map((item) => ({
@@ -352,7 +352,7 @@ export function reduceDemoSession(
             ...state,
             categoryNames: { ...state.categoryNames, [action.id]: name },
             revision,
-            notice: "Category label updated in this demo session only.",
+            notice: "Category label updated.",
           }
         : state;
     }

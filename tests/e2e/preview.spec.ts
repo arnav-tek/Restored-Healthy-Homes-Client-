@@ -119,12 +119,12 @@ test("shells, screenshots, overflow, accessibility and no browser errors", async
     page.getByTestId("session-directory").getByRole("article"),
   ).toHaveCount(4);
   await page
-    .getByRole("navigation", { name: "Demo workspaces" })
+    .getByRole("navigation", { name: "Workspaces" })
     .getByRole("link", { name: "Member overview" })
     .click();
   await signIn(page);
   await expect(
-    page.getByText("Meets sample eligibility rules", { exact: true }),
+    page.getByText("Meets eligibility rules", { exact: true }),
   ).toBeVisible();
 });
 

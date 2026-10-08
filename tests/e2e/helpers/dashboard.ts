@@ -21,7 +21,7 @@ export async function workspace(
   account = name === "Admin overview" ? "admin" : "approved",
 ) {
   await page
-    .getByRole("navigation", { name: "Demo workspaces" })
+    .getByRole("navigation", { name: "Workspaces" })
     .getByRole("link", { name })
     .click();
   await expect(page).toHaveURL(
@@ -51,19 +51,19 @@ export async function resetSession(page: Page, accept = true) {
     if (accept) await dialog.accept();
     else await dialog.dismiss();
   });
-  await page.getByRole("button", { name: "Reset session" }).click();
+  await page.getByRole("button", { name: "Reset workspace" }).click();
   if (accept && area && account) {
     await expect(page).toHaveURL(`/demo/${area}`);
     await expect(
-      page.getByRole("heading", { name: "Demo sign-in required" }),
+      page.getByRole("heading", { name: "Sign-in required" }),
     ).toBeVisible();
     await signIn(page, account === "application" ? "approved" : account);
   }
 }
 export async function decision(page: Page, action: string, reason: string) {
-  await page.getByLabel("Demo action", { exact: true }).selectOption(action);
-  await page.getByLabel("Applicant-facing demo reason").fill(reason);
+  await page.getByLabel("Action", { exact: true }).selectOption(action);
+  await page.getByLabel("Applicant-facing reason").fill(reason);
   await page
-    .getByRole("button", { name: "Apply demo decision" })
+    .getByRole("button", { name: "Apply decision" })
     .press("Enter");
 }

@@ -115,7 +115,7 @@ test("moderation updates directory card averages and threshold results in the sa
   await signIn(page, "admin");
   await section(page, "Admin", "Reviews");
   await page
-    .getByRole("link", { name: "Review by Sample visitor Alex", exact: true })
+    .getByRole("link", { name: "Review by Visitor Alex", exact: true })
     .press("Enter");
   page.once("dialog", (dialog) => dialog.accept());
   await page

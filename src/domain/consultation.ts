@@ -42,11 +42,11 @@ export type ConsultationStatus = (typeof consultationStatuses)[number];
 export const consultationStatusLabels: Record<ConsultationStatus, string> = {
   requested: "Requested",
   assigned: "Assigned · awaiting response",
-  accepted: "Accepted for demo coordination",
-  cancelled: "Cancelled in this demo",
+  accepted: "Accepted for coordination",
+  cancelled: "Cancelled",
 };
 export const consultationPolicy =
-  "Provisional demo policy — requires client confirmation: admin assigns an approved member with an active subscription, no suspension and the requested category. Members may accept or decline their own assignment. Declining returns it to the unassigned queue. Contact sharing is unresolved; visitor contact details are excluded from member views.";
+  "Assign an approved professional with an active subscription, no suspension and the requested category. Professionals may accept or decline their assignment. Declining returns the request to the unassigned queue. Visitor contact details are excluded from professional views.";
 export interface DemoConsultationRequest extends Readonly<ConsultationFields> {
   readonly id: string;
   readonly status: ConsultationStatus;

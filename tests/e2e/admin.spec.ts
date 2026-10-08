@@ -31,9 +31,9 @@ test("application admin decision member confirmation and protected edits stay co
   await expect(page.getByText(/8 of 8 applications shown/)).toBeVisible();
   await review(page, "Session Sample Business");
   await page
-    .getByRole("button", { name: "Apply demo decision" })
+    .getByRole("button", { name: "Apply decision" })
     .press("Enter");
-  await expect(page.getByLabel("Applicant-facing demo reason")).toBeFocused();
+  await expect(page.getByLabel("Applicant-facing reason")).toBeFocused();
   await decision(page, "approved", "Fictional application accepted");
   await expect(page.getByTestId("admin-approval")).toHaveText("approved");
   await page.getByRole("link", { name: "Listing status", exact: true }).click();
@@ -43,10 +43,10 @@ test("application admin decision member confirmation and protected edits stay co
   await workspace(page, "Member overview", "application");
   await expect(page.getByTestId("member-approval")).toHaveText("approved");
   await expect(
-    page.getByText("inactive (sample)", { exact: true }),
+    page.getByText("inactive ", { exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByText("Demo decision reason: Fictional application accepted"),
+    page.getByText("Decision reason: Fictional application accepted"),
   ).toBeVisible();
   await section(page, "Member", "Profile");
   await page
@@ -67,7 +67,7 @@ test("application admin decision member confirmation and protected edits stay co
   page.once("dialog", async (dialog) => {
     await dialog.accept();
   });
-  await page.getByRole("button", { name: "Apply demo decision" }).click();
+  await page.getByRole("button", { name: "Apply decision" }).click();
   await expect(page.getByTestId("admin-approval")).toHaveText("rejected");
   await workspace(page, "Member overview", "application");
   await expect(page.getByTestId("member-approval")).toHaveText("rejected");
@@ -100,7 +100,7 @@ test("admin suspension credentials category labels public projection and reset",
   await expect(directory.getByRole("article")).toHaveCount(4);
   for (const text of [
     "member@example.invalid",
-    "Sample Member",
+    "Member",
     "Fictional application meets",
   ])
     await expect(directory).not.toContainText(text);
@@ -114,9 +114,9 @@ test("admin suspension credentials category labels public projection and reset",
   await page.getByRole("button", { name: "Apply filters" }).click();
   await expect(page.getByText(/1 of 7 applications shown/)).toBeVisible();
   await page.getByRole("button", { name: "Clear filters" }).click();
-  await review(page, "Meadow Sample Studio");
+  await review(page, "Meadow Studio");
   page.once("dialog", async (dialog) => {
-    expect(dialog.message()).toContain("Suspend Meadow Sample Studio");
+    expect(dialog.message()).toContain("Suspend Meadow Studio");
     await dialog.accept();
   });
   await decision(page, "suspend", "Fictional suspension check");
@@ -125,61 +125,61 @@ test("admin suspension credentials category labels public projection and reset",
   await page.getByLabel("Suspension filter").selectOption("suspended");
   await page.getByRole("button", { name: "Apply filters" }).click();
   await expect(page.getByText(/1 of 7 applications shown/)).toBeVisible();
-  await review(page, "Meadow Sample Studio");
+  await review(page, "Meadow Studio");
   await decision(page, "reinstate", "Fictional reinstatement check");
   await expect(directory.getByRole("article")).toHaveCount(4);
   await page.getByRole("link", { name: "Back to listings" }).click();
   await page.getByRole("button", { name: "Clear filters" }).click();
-  await review(page, "Inactive Sample Studio");
+  await review(page, "Inactive Studio");
   page.once("dialog", async (dialog) => {
     await dialog.accept();
   });
   await decision(page, "suspend", "Fictional inactive suspension");
   await decision(page, "reinstate", "Fictional inactive reinstatement");
-  await expect(directory).not.toContainText("Inactive Sample Studio");
+  await expect(directory).not.toContainText("Inactive Studio");
   await page.getByRole("link", { name: "Back to listings" }).click();
-  await review(page, "Meadow Sample Studio");
+  await review(page, "Meadow Studio");
   await page
     .getByRole("link", { name: "Review credentials", exact: true })
     .click();
   await page
-    .getByRole("button", { name: "Verify in demo", exact: true })
+    .getByRole("button", { name: "Mark as reviewed", exact: true })
     .click();
   await expect(
-    page.getByText("Verified in demo only", { exact: true }),
+    page.getByText("Reviewed", { exact: true }),
   ).toBeVisible();
   page.once("dialog", async (dialog) => {
-    expect(dialog.message()).toContain("Meadow Sample Studio");
-    expect(dialog.message()).toContain("Sample course attendance");
+    expect(dialog.message()).toContain("Meadow Studio");
+    expect(dialog.message()).toContain("Course attendance");
     await dialog.dismiss();
   });
-  await page.getByRole("button", { name: "Remove demo verification" }).click();
+  await page.getByRole("button", { name: "Remove review status" }).click();
   await expect(
-    page.getByText("Verified in demo only", { exact: true }),
+    page.getByText("Reviewed", { exact: true }),
   ).toBeVisible();
   page.once("dialog", async (dialog) => {
     await dialog.accept();
   });
-  await page.getByRole("button", { name: "Remove demo verification" }).click();
+  await page.getByRole("button", { name: "Remove review status" }).click();
   await expect(page.getByText("Unverified", { exact: true })).toBeVisible();
   await page
-    .getByRole("button", { name: "Verify in demo", exact: true })
+    .getByRole("button", { name: "Mark as reviewed", exact: true })
     .click();
   await page.getByRole("link", { name: "Listing status", exact: true }).click();
-  await expect(directory).toContainText("verified in demo only");
+  await expect(directory).toContainText("reviewed");
   await section(page, "Admin", "Categories");
   await page.getByLabel("Category to rename").selectOption("healthy-designers");
   await page
     .getByLabel("Display name", { exact: true })
     .fill("Mold Remediation");
-  await page.getByRole("button", { name: "Rename demo category" }).click();
+  await page.getByRole("button", { name: "Rename category" }).click();
   await expect(page.getByLabel("Display name", { exact: true })).toBeFocused();
   await expect(page.getByText(/Use a distinct name/)).toBeVisible();
   await page
     .getByLabel("Display name", { exact: true })
     .fill("Thoughtful Sample Designers");
   await page
-    .getByRole("button", { name: "Rename demo category" })
+    .getByRole("button", { name: "Rename category" })
     .press("Enter");
   await section(page, "Admin", "Listings");
   await expect(directory).toContainText("Thoughtful Sample Designers");
@@ -200,9 +200,9 @@ test("admin suspension credentials category labels public projection and reset",
   });
   await workspace(page, "Member overview");
   await section(page, "Member", "Profile");
-  await page.getByText("Public-profile preview", { exact: true }).click();
+  await page.getByText("Public profile", { exact: true }).click();
   await expect(
-    page.getByText(/Sample course attendance.*verified in demo only/),
+    page.getByText(/Course attendance.*reviewed/),
   ).toBeVisible();
   await expect(
     page.getByRole("checkbox", { name: /Thoughtful Sample Designers/ }),
@@ -220,7 +220,7 @@ test("admin suspension credentials category labels public projection and reset",
   await expect(
     page.getByRole("checkbox", { name: /Thoughtful Sample Designers.*129/ }),
   ).toBeVisible();
-  await mainNav(page, "Member preview");
+  await mainNav(page, "Member dashboard");
   await workspace(page, "Admin overview");
   await section(page, "Admin", "Listings");
   await expect(directory).toContainText(
@@ -230,7 +230,7 @@ test("admin suspension credentials category labels public projection and reset",
   await section(page, "Admin", "Listings");
   await expect(directory).toContainText("Healthy Home Designers");
   await expect(directory).toContainText(
-    "Sample course attendance — fictional — unverified",
+    "Course attendance — unverified",
   );
   await expect(directory).not.toContainText("Thoughtful Sample Designers");
   await expect(directory.getByRole("article")).toHaveCount(4);
@@ -249,16 +249,16 @@ test("admin controls cannot submit without JavaScript", async ({ browser }) => {
       "http://127.0.0.1:3100/demo/admin?section=applications&record=member-example-approved",
     );
     await expect(
-      page.getByRole("heading", { name: "Checking demo session" }),
+      page.getByRole("heading", { name: "Checking session" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Apply demo decision" }),
+      page.getByRole("button", { name: "Apply decision" }),
     ).toHaveCount(0);
     await page.goto(
       "http://127.0.0.1:3100/demo/admin?section=credentials&record=member-example-approved",
     );
     await expect(
-      page.getByRole("button", { name: "Verify in demo", exact: true }),
+      page.getByRole("button", { name: "Mark as reviewed", exact: true }),
     ).toHaveCount(0);
     await page.goto("http://127.0.0.1:3100/demo/admin?section=applications");
     await expect(page.getByLabel("Search applications")).toHaveCount(0);
@@ -267,10 +267,10 @@ test("admin controls cannot submit without JavaScript", async ({ browser }) => {
       0,
     );
     await expect(
-      page.getByRole("button", { name: "Rename demo category" }),
+      page.getByRole("button", { name: "Rename category" }),
     ).toHaveCount(0);
     await expect(
-      page.getByRole("button", { name: "Reset session" }),
+      page.getByRole("button", { name: "Reset workspace" }),
     ).toHaveCount(0);
   } finally {
     await context.close();

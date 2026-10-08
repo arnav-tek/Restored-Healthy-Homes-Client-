@@ -36,11 +36,10 @@ export function MemberWorkspace({
     return (
       <section className="workspace-empty">
         <h1 id="workspace-title" tabIndex={-1}>
-          Member record unavailable for this demo account
+          Member record unavailable for this account
         </h1>
         <p>
-          Sign-in selects the fictional professional. A URL cannot change that
-          identity.
+          Sign-in selects the professional. A URL cannot change that identity.
         </p>
         <Link className="text-link" href={href({ record: "" })}>
           Return to your member workspace
@@ -54,12 +53,12 @@ export function MemberWorkspace({
   const inbox = state.inquiries.filter((item) => item.memberId === record.id);
   const titles: Record<string, string> = {
     reviews: "Your published reviews",
-    consultations: "Your demo consultations",
+    consultations: "Your consultations",
     qa: "Your Q&A workspace",
     overview: "Your business at a glance",
     profile: "Your business profile",
-    inquiries: "Your sample inquiries",
-    membership: "Your sample membership",
+    inquiries: "Your inquiries",
+    membership: "Your membership",
   };
   return (
     <>
@@ -98,14 +97,14 @@ export function MemberWorkspace({
             <h2>Next steps</h2>
             <p>
               {record.suspended
-                ? "This example is suspended. Profile edits cannot remove suspension; explore the admin listing view to review it."
+                ? "Your listing is suspended. Profile edits cannot remove suspension; contact the administrator for review."
                 : record.approval === "pending"
-                  ? "Your sample application is awaiting a demo review. You can check your details while it is pending."
+                  ? "Your application is awaiting a review. You can check your details while it is pending."
                   : record.approval === "rejected"
                     ? "Review the decision below and refine your profile. Editing does not change the decision."
                     : record.subscription !== "active"
-                      ? "Your sample application is approved, but its subscription is inactive. Membership here is read-only."
-                      : "This example meets the listing rules. Review your profile and explore the fictional inquiry inbox."}
+                      ? "Your application is approved, but its subscription is inactive. Membership here is read-only."
+                      : "Your listing meets the publication requirements. Review your profile and explore the inquiry inbox."}
             </p>
             <Link
               className="button"
@@ -118,11 +117,11 @@ export function MemberWorkspace({
             <section className="workspace-note">
               <h2>Review details</h2>
               {record.decisionReason && (
-                <p>Demo decision reason: {record.decisionReason}</p>
+                <p>Decision reason: {record.decisionReason}</p>
               )}
               {record.suspensionReason && (
                 <p>
-                  Demo suspension / reinstatement reason:{" "}
+                  Suspension / reinstatement reason:{" "}
                   {record.suspensionReason}
                 </p>
               )}
@@ -130,8 +129,8 @@ export function MemberWorkspace({
           )}
           <div className="workspace-shortcuts">
             <Link href={href({ section: "inquiries", record: record.id })}>
-              <strong>{inbox.length} fictional inquiries</strong>
-              <span>Explore the separately seeded inbox</span>
+              <strong>{inbox.length} inquiries</strong>
+              <span>View your inquiries</span>
             </Link>
             <Link href={href({ section: "membership", record: record.id })}>
               <strong>Membership details</strong>
@@ -151,7 +150,7 @@ export function MemberWorkspace({
             suspension and verification decisions are protected.
           </p>
           <section className="panel" aria-labelledby="edit-heading">
-            <h2 id="edit-heading">Edit sample profile</h2>
+            <h2 id="edit-heading">Edit profile</h2>
             <ProfileFieldsForm
               disabled={pending}
               key={`${record.id}-${state.revision}-${resetVersion}`}
@@ -174,7 +173,7 @@ export function MemberWorkspace({
             </p>
           </section>
           <details className="panel member-editor member-public-preview">
-            <summary>Public-profile preview</summary>
+            <summary>Public profile</summary>
             <p>
               This previews saved local content, including ineligible
               applications. It does not publish or update the public directory.
@@ -191,25 +190,23 @@ export function MemberWorkspace({
       )}
       {query.section === "inquiries" && (
         <section className="panel member-inbox">
-          <h2>Fictional inquiry inbox</h2>
+          <h2>Inquiry inbox</h2>
           <p>
-            Separately seeded examples; public demo inquiries are never
-            delivered here.
+            Email delivery is not connected yet.
           </p>
           {inbox.length ? (
             inbox.map((item) => (
               <details key={item.id}>
                 <summary>{item.subject}</summary>
-                <p>Fictional sender: {item.sender}</p>
+                <p>Sender: {item.sender}</p>
                 <p>{item.message}</p>
               </details>
             ))
           ) : (
             <div className="workspace-empty">
-              <h3>No fictional messages for this example.</h3>
+              <h3>No messages yet.</h3>
               <p>
-                Choose Meadow Sample Studio to explore the seeded inbox. No real
-                activity or delivery is represented.
+                New inquiries will appear here when delivery is connected.
               </p>
             </div>
           )}
@@ -217,7 +214,7 @@ export function MemberWorkspace({
       )}
       {query.section === "membership" && (
         <section className="panel">
-          <h2>Sample subscription</h2>
+          <h2>Subscription</h2>
           <p>
             Read-only status: <strong>{record.subscription}</strong>. Approval
             alone does not make a listing public.

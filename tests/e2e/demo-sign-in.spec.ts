@@ -3,7 +3,40 @@ import AxeBuilder from "@axe-core/playwright";
 import { signIn, switchMember, visitWorkspace } from "./helpers/demo-sign-in";
 import { section } from "./helpers/dashboard";
 test.setTimeout(90000);
+test("separate login pages reject the other account type", async ({ page }, info) => {
+  await page.goto("/login?account=admin&returnTo=%2Fdemo%2Fadmin");
+  await expect(page.getByLabel("Account email", { exact: true })).toHaveValue("");
+  await expect(page.getByRole("group", { name: "Account type" })).toHaveCount(0);
+  await expect(page.locator('a[href*="/admin"]')).toHaveCount(0);
+  await page.locator(".login-shortcuts summary").click();
+  await expect(page.getByRole("button", { name: "Use Administrator", exact: true })).toHaveCount(0);
+  await page.getByLabel("Account email", { exact: true }).fill("admin@example.invalid");
+  await page.getByLabel("Access code", { exact: true }).fill("home-access");
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await expect(page.getByLabel("Account email", { exact: true })).toHaveAttribute("aria-invalid", "true");
+  await expect(page.locator("[data-demo-account]")).toHaveCount(0);
+  await page.goto("/admin/login?returnTo=%2Fdemo%2Fadmin%3Fsection%3Dapplications");
+  const email = page.getByLabel("Account email", { exact: true });
+  const code = page.getByLabel("Access code", { exact: true });
+  await expect(code).toHaveAttribute("type", "password");
+  await email.fill("approved@example.invalid");
+  await code.fill("home-access");
+  await page.getByRole("button", { name: "Show code", exact: true }).click();
+  await expect(code).toHaveAttribute("type", "text");
+  await page.getByRole("button", { name: "Hide code", exact: true }).click();
+  await expect(code).toHaveAttribute("type", "password");
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await expect(email).toBeFocused();
+  await expect(email).toHaveAttribute("aria-invalid", "true");
+  await expect(page.locator("[data-demo-account]")).toHaveCount(0);
+  await inspect(page, `admin-access-${info.project.name}`);
+  await signIn(page, "admin");
+  await expect(page).toHaveURL("/demo/admin?section=applications");
+});
 async function inspect(page: Page, name: string) {
+  await expect(page.locator("main")).not.toContainText(
+    /\b(demo|temp|temporary|fictional|synthetic)\b/i,
+  );
   expect(
     (
       await new AxeBuilder({ page })
@@ -43,40 +76,42 @@ test("demo sign-in presets, validation and keyboard journey keep credentials loc
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/login");
   await expect(
-    page.getByRole("heading", { name: "Demo sign-in", exact: true }),
+    page.getByRole("heading", { name: "Sign in", exact: true }),
   ).toBeVisible();
-  await expect(page.getByText(/Do not enter real credentials/)).toBeVisible();
-  await expect(page.getByRole("button", { name: /^Use / })).toHaveCount(8);
+  await expect(page.getByLabel("Access code", { exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: /^Use / })).toHaveCount(0);
   await inspect(page, `login-${info.project.name}`);
   await page
-    .getByRole("button", { name: "Sign in to demo", exact: true })
+    .getByRole("button", { name: "Sign in", exact: true })
     .press("Enter");
   await expect(
-    page.getByLabel("Demo account email", { exact: true }),
+    page.getByLabel("Account email", { exact: true }),
   ).toBeFocused();
   await expect(
-    page.getByLabel("Demo account email", { exact: true }),
+    page.getByLabel("Account email", { exact: true }),
   ).toHaveAttribute("aria-invalid", "true");
   await inspect(page, `validation-${info.project.name}`);
+  await page.locator(".login-shortcuts summary").press("Enter");
+  await expect(page.getByRole("button", { name: /^Use / })).toHaveCount(7);
   await page
-    .getByRole("button", { name: "Use Meadow Sample Studio", exact: true })
+    .getByRole("button", { name: "Use Meadow Studio", exact: true })
     .press("Enter");
   await expect(
-    page.getByLabel("Demo account email", { exact: true }),
+    page.getByLabel("Account email", { exact: true }),
   ).toBeFocused();
   await page
-    .getByLabel("Public demo passcode", { exact: true })
+    .getByLabel("Access code", { exact: true })
     .fill("not-the-public-code");
   await page
-    .getByRole("button", { name: "Sign in to demo", exact: true })
+    .getByRole("button", { name: "Sign in", exact: true })
     .press("Enter");
   await expect(
-    page.getByLabel("Public demo passcode", { exact: true }),
+    page.getByLabel("Access code", { exact: true }),
   ).toBeFocused();
   await page
-    .getByLabel("Public demo passcode", { exact: true })
-    .fill("home-demo");
-  await page.getByLabel("Public demo passcode", { exact: true }).press("Enter");
+    .getByLabel("Access code", { exact: true })
+    .fill("home-access");
+  await page.getByLabel("Access code", { exact: true }).press("Enter");
   await expect(page).toHaveURL("/demo/member");
   await expect(page.getByTestId("demo-identity")).toHaveAttribute(
     "data-account",
@@ -115,10 +150,10 @@ test("direct workspace gates, safe returns, wrong workspace and status presets",
 }, info) => {
   await page.goto("/demo/admin?section=applications&status=pending");
   await expect(
-    page.getByRole("heading", { name: "Demo sign-in required" }),
+    page.getByRole("heading", { name: "Sign-in required" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Apply demo decision" }),
+    page.getByRole("button", { name: "Apply decision" }),
   ).toHaveCount(0);
   await inspect(page, `gate-${info.project.name}`);
   await signIn(page, "admin");
@@ -133,7 +168,7 @@ test("direct workspace gates, safe returns, wrong workspace and status presets",
     .getByRole("link", { name: "Member area", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "This is a different demo workspace" }),
+    page.getByRole("heading", { name: "This is a different workspace" }),
   ).toBeVisible();
   await expect(page.getByTestId("selected-business")).toHaveCount(0);
   await page
@@ -179,14 +214,14 @@ test("explicit switching and sign-out isolate drafts; saved records survive, res
     .fill("UNSAVED_ACCOUNT_ONE");
   page.once("dialog", (dialog) => dialog.dismiss());
   await page
-    .getByRole("button", { name: "Switch demo account", exact: true })
+    .getByRole("button", { name: "Switch account", exact: true })
     .click();
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
     "UNSAVED_ACCOUNT_ONE",
   );
   await switchMember(page, "member-example-pending");
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
-    "Pending Sample Studio",
+    "Pending Studio",
   );
   await switchMember(page, "member-example-approved");
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
@@ -210,16 +245,16 @@ test("explicit switching and sign-out isolate drafts; saved records survive, res
   );
   await page.reload();
   await expect(
-    page.getByRole("heading", { name: "Demo sign-in required" }),
+    page.getByRole("heading", { name: "Sign-in required" }),
   ).toBeVisible();
   await signIn(page);
   await expect(page.getByLabel("Business name", { exact: true })).toHaveValue(
-    "Meadow Sample Studio",
+    "Meadow Studio",
   );
   page.once("dialog", (dialog) => dialog.accept());
-  await page.getByRole("button", { name: "Reset session" }).click();
+  await page.getByRole("button", { name: "Reset workspace" }).click();
   await expect(
-    page.getByRole("heading", { name: "Demo sign-in required" }),
+    page.getByRole("heading", { name: "Sign-in required" }),
   ).toBeVisible();
   await expect(page.locator("[data-demo-account]")).toHaveCount(0);
 });
@@ -231,7 +266,7 @@ test("no-script and prehydration views stay neutral; sign-in has no submission e
     const response = await request.get(`/demo/${area}?section=profile`);
     expect(response.headers()["x-robots-tag"]).toContain("noindex");
     const html = await response.text();
-    expect(html).toContain("Checking demo session");
+    expect(html).toContain("Checking session");
     expect(html).not.toContain('data-testid="selected-business"');
     expect(html).not.toContain('id="workspace-title"');
   }
@@ -242,17 +277,18 @@ test("no-script and prehydration views stay neutral; sign-in has no submission e
       await page.route("**/*.js*", (route) => route.abort());
     await page.goto("/login");
     await expect(
-      page.getByLabel("Demo account email", { exact: true }),
+      page.getByLabel("Account email", { exact: true }),
     ).toBeDisabled();
     await expect(
-      page.getByRole("button", { name: "Sign in to demo", exact: true }),
+      page.getByRole("button", { name: "Sign in", exact: true }),
     ).toBeDisabled();
+    await page.locator(".login-shortcuts summary").click();
     await expect(
-      page.getByRole("button", { name: "Use Demo administrator", exact: true }),
+      page.getByRole("button", { name: "Use Meadow Studio", exact: true }),
     ).toBeDisabled();
     await page.goto("/demo/admin?section=applications");
     await expect(
-      page.getByRole("heading", { name: "Checking demo session" }),
+      page.getByRole("heading", { name: "Checking session" }),
     ).toBeVisible();
     await expect(
       page.getByRole("navigation", { name: "Admin sections" }),

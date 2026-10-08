@@ -168,7 +168,7 @@ test("consultation requests remain separate from existing member, inbox and publ
     state,
     {
       type: "demo-sign-in",
-      fields: { email: "pending@example.invalid", passcode: "home-demo" },
+      fields: { email: "pending@example.invalid", passcode: "home-access" },
     },
     seed,
   );

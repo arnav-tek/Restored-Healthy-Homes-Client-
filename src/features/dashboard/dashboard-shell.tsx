@@ -73,31 +73,28 @@ export function DashboardShell({
     <div className="container dashboard-page workspace-page">
       <div className="dashboard-top">
         <span className="demo-pill">
-          {area === "member" ? "Member" : "Admin"} demo workspace
+          {area === "member" ? "Member" : "Admin"} Workspace
         </span>
         <Link href="/directory" className="text-link">
           Public directory ↗
         </Link>
       </div>
       <div className="workspace-notice">
-        <strong>Local demo.</strong> Fictional records; nothing is sent or saved
-        permanently. Q&A and review publication change this tab’s preview only.
-        Refresh, full-page navigation or reset restores the samples. These
-        workspaces are not authentication or account access.
+        <strong>Your workspace.</strong> Manage your profile, review activity and keep track of your next steps.
       </div>
       <div className="demo-account-bar">
         <span
           data-testid="demo-identity"
           data-account={state.identity.accountId}
         >
-          Demo account:{" "}
+          Account:{" "}
           {
             demoAccounts(state.applicationId).find(
               (account) => account.id === state.identity?.accountId,
             )?.label
           }
         </span>
-        <SignOutButton label="Switch demo account" returnTo={href({})} />
+        <SignOutButton label="Switch account" returnTo={href({})} />
       </div>
       <div className="dashboard-layout">
         <aside className="dashboard-sidebar workspace-sidebar">
@@ -115,8 +112,8 @@ export function DashboardShell({
             {links}
           </details>
           <div className="workspace-other">
-            <p>Other demo workspace</p>
-            <nav aria-label="Demo workspaces">
+            <p>Other workspace</p>
+            <nav aria-label="Workspaces">
               <Link href={area === "member" ? "/demo/admin" : "/demo/member"}>
                 {area === "member" ? "Admin overview" : "Member overview"}
               </Link>
@@ -136,8 +133,7 @@ export function DashboardShell({
           </p>
           <noscript>
             <p>
-              Enable JavaScript for local demo actions. Forms are disabled;
-              navigation and sample content remain available.
+              Enable JavaScript for local actions. Forms are disabled; navigation and content remain available.
             </p>
           </noscript>
           {children}

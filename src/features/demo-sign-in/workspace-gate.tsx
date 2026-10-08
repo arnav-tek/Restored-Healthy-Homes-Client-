@@ -18,38 +18,35 @@ export function WorkspaceGate({
   return (
     <section className="container demo-gate">
       <div className="panel">
-        <p className="section-label">Demo workspace</p>
+        <p className="section-label">Workspace</p>
         <h1>
           {!ready
-            ? "Checking demo session"
+            ? "Checking session"
             : state.identity
-              ? "This is a different demo workspace"
-              : "Demo sign-in required"}
+              ? "This is a different workspace"
+              : "Sign-in required"}
         </h1>
         <p>
-          This {area} preview uses a fictional account selection. It is an
-          interface simulation, not secure route protection.
+          This {area} workspace requires the appropriate account selection.
         </p>
         {!ready ? (
           <p>
-            Enable JavaScript to use the session-only demo. No signed-in
-            workspace is shown before the session is ready.
+            Enable JavaScript to sign in and open your workspace.
           </p>
         ) : state.identity ? (
           <div className="filter-actions">
             <Link className="button" href={demoDashboard(state.identity)}>
               Open your dashboard
             </Link>
-            <SignOutButton label="Switch demo account" returnTo={returnTo} />
+            <SignOutButton label="Switch account" returnTo={returnTo} />
           </div>
         ) : (
           <Link className="button" href={demoLoginHref(returnTo)}>
-            Go to demo sign-in
+            Go to sign-in
           </Link>
         )}
         <p className="field-help">
-          Refresh clears identity and demo records. Public browsing and
-          applications remain available without sign-in.
+          Browse professionals or prepare an application without signing in.
         </p>
         <Link className="text-link" href="/directory">
           Browse professionals

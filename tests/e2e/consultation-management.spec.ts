@@ -26,7 +26,7 @@ async function request(page: Page, category = "healthy-designers") {
   await page.getByLabel("Question or topic", { exact: true }).fill(topic);
   await page.getByRole("button", { name: "Record request" }).press("Enter");
   await expect(
-    page.getByRole("heading", { name: "Request recorded in this tab" }),
+    page.getByRole("heading", { name: "Request prepared" }),
   ).toBeVisible();
 }
 async function dashboard(page: Page, area: "Admin" | "Member") {
@@ -43,7 +43,7 @@ async function dashboard(page: Page, area: "Admin" | "Member") {
   );
   await section(page, area, "Consultations");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    area === "Admin" ? "Consultation requests" : "Your demo consultations",
+    area === "Admin" ? "Consultation requests" : "Your consultations",
   );
 }
 async function openAdmin(page: Page, id?: string) {
@@ -64,11 +64,11 @@ async function openAdmin(page: Page, id?: string) {
 }
 async function assign(page: Page, provider: string, reassign = false) {
   await page
-    .getByLabel("Eligible fictional professional")
+    .getByLabel("Eligible professional")
     .selectOption(provider);
   await page
     .getByRole("button", {
-      name: reassign ? "Reassign demo request" : "Assign demo request",
+      name: reassign ? "Reassign request" : "Assign request",
       exact: true,
     })
     .press("Enter");
@@ -130,7 +130,7 @@ test("same-session request, assignment, member acceptance, public status, accept
   await expect(
     page.getByLabel("Internal coordination note (optional)"),
   ).toHaveValue(note);
-  await page.getByRole("button", { name: "Save demo note" }).press("Enter");
+  await page.getByRole("button", { name: "Save note" }).press("Enter");
   await assign(page, "member-example-approved");
   await expect(
     page.getByText("Assigned · awaiting response", { exact: true }),
@@ -143,45 +143,45 @@ test("same-session request, assignment, member acceptance, public status, accept
     page.getByText(/This consultation is unavailable for the selected member/),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Accept demo coordination" }),
+    page.getByRole("button", { name: "Accept coordination" }),
   ).toHaveCount(0);
   await switchMember(page, "member-example-approved");
   await page
-    .getByRole("button", { name: "Accept demo coordination" })
+    .getByRole("button", { name: "Accept coordination" })
     .press("Enter");
   await expect(
-    page.getByText("Accepted for demo coordination", { exact: true }),
+    page.getByText("Accepted for coordination", { exact: true }),
   ).toBeVisible();
   await inspect(page, `member-accepted-${info.project.name}`);
   await publicPage(page);
   await privateFieldsAbsent(page);
   await expect(
-    page.getByText("Accepted for demo coordination", { exact: true }),
+    page.getByText("Accepted for coordination", { exact: true }),
   ).toBeVisible();
   await expect(page.getByText("Not booked", { exact: true })).toBeVisible();
   await inspect(page, `public-accepted-${info.project.name}`);
   await dashboard(page, "Admin");
   await openAdmin(page, id);
   page.once("dialog", (dialog) => dialog.dismiss());
-  await page.getByRole("button", { name: "Unassign demo request" }).click();
+  await page.getByRole("button", { name: "Unassign request" }).click();
   await expect(
-    page.getByText("Accepted for demo coordination", { exact: true }),
+    page.getByText("Accepted for coordination", { exact: true }),
   ).toBeVisible();
   page.once("dialog", (dialog) => dialog.accept());
-  await page.getByRole("button", { name: "Unassign demo request" }).click();
+  await page.getByRole("button", { name: "Unassign request" }).click();
   await expect(page.getByText("Requested", { exact: true })).toBeVisible();
   await assign(page, "member-example-coordinator");
   await memberDetail(page, id, "member-example-coordinator");
-  await page.getByRole("button", { name: "Accept demo coordination" }).click();
+  await page.getByRole("button", { name: "Accept coordination" }).click();
   await expect(
-    page.getByText("Accepted for demo coordination", { exact: true }),
+    page.getByText("Accepted for coordination", { exact: true }),
   ).toBeVisible();
   await dashboard(page, "Admin");
   await openAdmin(page, id);
   page.once("dialog", (dialog) => dialog.dismiss());
   await assign(page, "member-example-approved", true);
   await expect(
-    page.getByText("Assignment: Willow Sample Studio", { exact: true }),
+    page.getByText("Assignment: Willow Studio", { exact: true }),
   ).toBeVisible();
   page.once("dialog", (dialog) => dialog.accept());
   await assign(page, "member-example-approved", true);
@@ -189,42 +189,42 @@ test("same-session request, assignment, member acceptance, public status, accept
     page.getByText("Assigned · awaiting response", { exact: true }),
   ).toBeVisible();
   await memberDetail(page, id);
-  await page.getByRole("button", { name: "Accept demo coordination" }).click();
+  await page.getByRole("button", { name: "Accept coordination" }).click();
   await expect(
-    page.getByText("Accepted for demo coordination", { exact: true }),
+    page.getByText("Accepted for coordination", { exact: true }),
   ).toBeVisible();
   await dashboard(page, "Admin");
   await openAdmin(page, id);
   page.once("dialog", (dialog) => dialog.dismiss());
-  await page.getByRole("button", { name: "Cancel demo request" }).click();
+  await page.getByRole("button", { name: "Cancel request" }).click();
   await expect(
-    page.getByText("Accepted for demo coordination", { exact: true }),
+    page.getByText("Accepted for coordination", { exact: true }),
   ).toBeVisible();
   page.once("dialog", (dialog) => dialog.accept());
-  await page.getByRole("button", { name: "Cancel demo request" }).click();
+  await page.getByRole("button", { name: "Cancel request" }).click();
   await expect(
-    page.getByText("Cancelled in this demo", { exact: true }),
+    page.getByText("Cancelled", { exact: true }),
   ).toBeVisible();
   await publicPage(page);
   await privateFieldsAbsent(page);
   await expect(
-    page.getByText("Cancelled in this demo", { exact: true }),
+    page.getByText("Cancelled", { exact: true }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Make another request" }).click();
   await request(page);
   await dashboard(page, "Admin");
   await expect(
-    page.getByText("2 of 2 demo consultation requests shown", { exact: true }),
+    page.getByText("2 of 2 consultation requests shown", { exact: true }),
   ).toBeVisible();
   await resetSession(page, false);
   await expect(
-    page.getByText("2 of 2 demo consultation requests shown", { exact: true }),
+    page.getByText("2 of 2 consultation requests shown", { exact: true }),
   ).toBeVisible();
   await resetSession(page);
   await expect(page).toHaveURL("/demo/admin");
   await section(page, "Admin", "Consultations");
   await expect(
-    page.getByText("0 of 0 demo consultation requests shown", { exact: true }),
+    page.getByText("0 of 0 consultation requests shown", { exact: true }),
   ).toBeVisible();
   expect(
     await page.evaluate(() => [localStorage.length, sessionStorage.length]),
@@ -239,16 +239,16 @@ test("decline returns to queue; changed eligibility retains assignment, blocks a
   await request(page);
   await dashboard(page, "Member");
   await expect(
-    page.getByText("0 of 0 assigned demo requests shown", { exact: true }),
+    page.getByText("0 of 0 assigned requests shown", { exact: true }),
   ).toBeVisible();
   await dashboard(page, "Admin");
   const id = await openAdmin(page);
   await expect(
-    page.getByLabel("Eligible fictional professional").locator("option"),
+    page.getByLabel("Eligible professional").locator("option"),
   ).toHaveCount(3);
   await assign(page, "member-example-approved");
   await memberDetail(page, id);
-  await page.getByRole("button", { name: "Decline demo assignment" }).click();
+  await page.getByRole("button", { name: "Decline assignment" }).click();
   await expect(
     page.getByText(/This consultation is unavailable for the selected member/),
   ).toBeVisible();
@@ -257,12 +257,12 @@ test("decline returns to queue; changed eligibility retains assignment, blocks a
     .getByLabel("Assignment", { exact: true })
     .selectOption("unassigned");
   await expect(
-    page.getByText("1 of 1 demo consultation requests shown", { exact: true }),
+    page.getByText("1 of 1 consultation requests shown", { exact: true }),
   ).toBeVisible();
   await openAdmin(page, id);
   await assign(page, "member-example-approved");
   await section(page, "Admin", "Listings");
-  await review(page, "Meadow Sample Studio");
+  await review(page, "Meadow Studio");
   page.once("dialog", (dialog) => dialog.accept());
   await decision(
     page,
@@ -282,18 +282,18 @@ test("decline returns to queue; changed eligibility retains assignment, blocks a
   ).toBeVisible();
   await expect(
     page
-      .getByLabel("Eligible fictional professional")
+      .getByLabel("Eligible professional")
       .locator('option[value="member-example-approved"]'),
   ).toHaveCount(0);
   await memberDetail(page, id);
   await expect(
-    page.getByRole("button", { name: "Accept demo coordination" }),
+    page.getByRole("button", { name: "Accept coordination" }),
   ).toBeDisabled();
   await expect(
     page.getByText(/Needs admin attention: category or eligibility/),
   ).toBeVisible();
   await inspect(page, `member-attention-${info.project.name}`);
-  await page.getByRole("button", { name: "Decline demo assignment" }).click();
+  await page.getByRole("button", { name: "Decline assignment" }).click();
   await dashboard(page, "Admin");
   await openAdmin(page, id);
   await expect(page.getByText("Requested", { exact: true })).toBeVisible();
@@ -317,14 +317,14 @@ test("filters, note drafts by request, category empty state, history and refresh
   await dashboard(page, "Admin");
   await page.getByLabel("Consultation category").selectOption("healthy-trades");
   await expect(
-    page.getByText("1 of 2 demo consultation requests shown", { exact: true }),
+    page.getByText("1 of 2 consultation requests shown", { exact: true }),
   ).toBeVisible();
   const second = await openAdmin(page);
   await expect(
     page.getByText(/No eligible member matches this category/),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Assign demo request", exact: true }),
+    page.getByRole("button", { name: "Assign request", exact: true }),
   ).toBeDisabled();
   await expect(
     page.getByLabel("Internal coordination note (optional)"),
@@ -342,7 +342,7 @@ test("filters, note drafts by request, category empty state, history and refresh
     .getByRole("button", { name: "Clear consultation filters" })
     .click();
   await expect(
-    page.getByText("2 of 2 demo consultation requests shown", { exact: true }),
+    page.getByText("2 of 2 consultation requests shown", { exact: true }),
   ).toBeVisible();
   await inspect(page, `admin-list-${info.project.name}`);
   await openAdmin(page, first);
@@ -351,7 +351,7 @@ test("filters, note drafts by request, category empty state, history and refresh
   ).toHaveValue("FIRST_UNSAVED_NOTE");
   await page.goBack();
   await expect(
-    page.getByText("2 of 2 demo consultation requests shown", { exact: true }),
+    page.getByText("2 of 2 consultation requests shown", { exact: true }),
   ).toBeVisible();
   await page.goForward();
   await expect(
@@ -364,7 +364,7 @@ test("filters, note drafts by request, category empty state, history and refresh
     .getByLabel("Request status", { exact: true })
     .selectOption("accepted");
   await expect(
-    page.getByText("0 of 2 demo consultation requests shown", { exact: true }),
+    page.getByText("0 of 2 consultation requests shown", { exact: true }),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "Clear consultation filters" })
@@ -419,7 +419,7 @@ test("direct missing routes and no-script/prehydration dashboards fail safely wi
     ).toBeVisible();
     await expect(
       page.getByRole("button", {
-        name: /Assign demo request|Accept demo coordination/,
+        name: /Assign request|Accept coordination/,
       }),
     ).toHaveCount(0);
     for (const javaScriptEnabled of [false, true]) {
@@ -429,17 +429,17 @@ test("direct missing routes and no-script/prehydration dashboards fail safely wi
         await waiting.route("**/*.js*", (route) => route.abort());
       await waiting.goto(`/demo/${area}?section=consultations`);
       await expect(
-        waiting.getByRole("heading", { name: "Checking demo session" }),
+        waiting.getByRole("heading", { name: "Checking session" }),
       ).toBeVisible();
       await expect(
         waiting.getByLabel("Request status", { exact: true }),
       ).toHaveCount(0);
       await expect(
-        waiting.getByRole("button", { name: "Reset session" }),
+        waiting.getByRole("button", { name: "Reset workspace" }),
       ).toHaveCount(0);
       await expect(
         waiting.getByRole("button", {
-          name: /Assign demo request|Accept demo coordination|Save demo note/,
+          name: /Assign request|Accept coordination|Save note/,
         }),
       ).toHaveCount(0);
       await context.close();

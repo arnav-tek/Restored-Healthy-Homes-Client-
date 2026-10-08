@@ -33,7 +33,7 @@ export async function mainNav(page: Page, name: string) {
       .press("Enter");
     return;
   }
-  if (name === "Member preview") {
+  if (name === "Member dashboard") {
     await page
       .getByRole("contentinfo")
       .getByRole("link", { name: "Member area", exact: true })

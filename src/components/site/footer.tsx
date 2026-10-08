@@ -29,7 +29,6 @@ export function Footer() {
           <Link href="/list-your-business">List Your Business</Link>
           <Link href="/login">Sign in</Link>
           <Link href="/demo/member">Member area</Link>
-          <Link href="/demo/admin">Admin area</Link>
         </div>
 
         <div className="footer-connect-col">

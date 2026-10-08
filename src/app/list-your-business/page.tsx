@@ -17,8 +17,7 @@ export default async function ApplicationPage() {
         <p>Introduce your business, services and professional specialties.</p>
       </header>
       <Notice>
-        Applications stay in this tab and are not sent or saved permanently.
-        Refreshing clears your entries.
+        Prepare your business details for review. Application delivery is not connected yet.
       </Notice>
       <ApplicationExperience catalog={catalog} />
     </div>

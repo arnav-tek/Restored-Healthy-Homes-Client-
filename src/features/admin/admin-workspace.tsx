@@ -50,7 +50,7 @@ export function AdminWorkspace({
           {reviewing
             ? record
               ? `Review ${record.profile.businessName}`
-              : "Session record unavailable"
+              : "Record unavailable"
             : titles[query.section]}
         </h1>
         <p>
@@ -63,11 +63,11 @@ export function AdminWorkspace({
                 : query.section === "credentials"
                   ? "Review each submitted claim on its own."
                   : query.section === "qa"
-                    ? "Review fictional questions and answers. Publication changes apply only to this tab."
+                    ? "Review questions and answers before publication."
                     : query.section === "reviews"
-                      ? "Review fictional feedback. Publish or reject it in this tab’s preview only."
+                      ? "Review feedback. Publish or reject it."
                       : query.section === "consultations"
-                        ? "Coordinate fictional requests in this tab. No bookings, payments or notifications."
+                        ? "Coordinate requests and manage professional assignments."
                         : "Manage display names without changing category identity or pricing."}
         </p>
       </header>
@@ -122,13 +122,13 @@ export function AdminWorkspace({
           <section className="workspace-next">
             <h2>
               {counts.pending
-                ? "Applications ready for a demo review"
+                ? "Applications ready for a review"
                 : "No pending applications"}
             </h2>
             <p>
               {counts.pending
                 ? "Open an application to check its details. Approval never activates a subscription."
-                : "All current sample applications have a decision. New applications submitted in this tab will appear here."}
+                : "All current applications have a decision. New applications will appear here."}
             </p>
             <Link
               className="button"
@@ -160,7 +160,7 @@ export function AdminWorkspace({
                 }{" "}
                 pending reviews
               </strong>
-              <span>Review fictional visitor feedback</span>
+              <span>Review visitor feedback</span>
             </Link>
             <Link
               href={href({
@@ -180,9 +180,7 @@ export function AdminWorkspace({
             </Link>
           </div>
           <p className="field-help">
-            Counts describe {counts.applications} fictional records in this tab,
-            not platform activity. Session changes never update the public
-            directory.
+            Counts describe {counts.applications} records available for review and directory management.
           </p>
         </>
       )}
@@ -208,11 +206,11 @@ export function AdminWorkspace({
               {(record.decisionReason || record.suspensionReason) && (
                 <div className="workspace-note">
                   {record.decisionReason && (
-                    <p>Demo decision reason: {record.decisionReason}</p>
+                    <p>Decision reason: {record.decisionReason}</p>
                   )}
                   {record.suspensionReason && (
                     <p>
-                      Demo suspension / reinstatement reason:{" "}
+                      Suspension / reinstatement reason:{" "}
                       {record.suspensionReason}
                     </p>
                   )}
@@ -268,7 +266,7 @@ export function AdminWorkspace({
       )}
       {query.section === "listings" && (
         <section className="panel session-directory-panel">
-          <h2>Session-only directory preview</h2>
+          <h2>Directory overview</h2>
           <p>
             Approved, active and not suspended. Only public fields appear here;
             the real public directory remains unchanged.
@@ -295,8 +293,7 @@ export function AdminWorkspace({
           </div>
           {!publicRecords.length && (
             <p className="workspace-empty">
-              No eligible listings. Approval alone is insufficient; sample
-              subscriptions are read-only.
+              No eligible listings. Approval alone is insufficient; subscriptions are read-only.
             </p>
           )}
         </section>

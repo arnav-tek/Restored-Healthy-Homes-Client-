@@ -48,7 +48,7 @@ export function ReviewModerationForm({
       status === "rejected" &&
       review.status === "published" &&
       !window.confirm(
-        "Remove this published fictional review from public and member display? Its rating contribution will also be removed in this tab.",
+        "Remove this published review from public and member display? Its rating contribution will also be removed in this tab.",
       )
     )
       return;
@@ -57,8 +57,8 @@ export function ReviewModerationForm({
     setError("");
     setFeedback(
       review.status === status && review.moderationNote === note
-        ? `Already ${status}. No change to this demo review.`
-        : `Demo review ${status}. This decision affects only this tab.`,
+        ? `Already ${status}. No change to this review.`
+        : `Review ${status}. This decision affects only this tab.`,
     );
     requestAnimationFrame(() => feedbackRef.current?.focus());
   }
@@ -66,7 +66,7 @@ export function ReviewModerationForm({
     <form className="panel review-moderation" onSubmit={submit} noValidate>
       <h3>Review decision</h3>
       <fieldset disabled={!ready} className="member-form-fields">
-        <legend className="sr-only">Moderate this fictional review</legend>
+        <legend className="sr-only">Moderate this review</legend>
         <div className="search-field">
           <label htmlFor="review-internal-note">
             Internal review note (optional)
@@ -82,8 +82,7 @@ export function ReviewModerationForm({
             aria-describedby="review-note-help review-note-error"
           />
           <p className="field-help" id="review-note-help">
-            Up to 500 characters. Fictional information only. Notes are excluded
-            from public, member and visitor confirmation views.
+            Up to 500 characters. Internal notes are excluded from public, member and visitor confirmation views.
           </p>
           <p className="field-error" id="review-note-error">
             {error}
@@ -99,14 +98,12 @@ export function ReviewModerationForm({
         </div>
       </fieldset>
       <p className="field-help">
-        Republishing moves the review to the front using fictional publication
-        metadata. Repeating the same decision keeps its order; a changed note is
-        saved without reordering.
+        Republishing moves the review to the front using publication metadata. Repeating the same decision keeps its order; a changed note is saved without reordering.
       </p>
       <p ref={feedbackRef} tabIndex={-1} role="status">
         {feedback}
       </p>
-      <noscript>JavaScript is required. Demo decisions are disabled.</noscript>
+      <noscript>Enable JavaScript to review submissions.</noscript>
     </form>
   );
 }

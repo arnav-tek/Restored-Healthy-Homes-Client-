@@ -26,8 +26,7 @@ export function MemberConsultations({ disabled }: { disabled: boolean }) {
     <div className="consultation-workspace">
       <p className="field-help">{consultationPolicy}</p>
       <p>
-        Accepted for demo coordination does not mean an appointment was booked,
-        payment was taken or a message was sent.
+        Accepted for coordination does not mean an appointment was booked, payment was taken or a message was sent.
       </p>
       {query.consultation ? (
         <>
@@ -41,7 +40,7 @@ export function MemberConsultations({ disabled }: { disabled: boolean }) {
                 request={selected}
                 category={state.categoryNames[selected.categoryId]}
               />
-              <h3>Fictional topic</h3>
+              <h3>Topic</h3>
               <p className="consultation-topic">{selected.topic}</p>
               {selected.needsAttention && (
                 <p className="field-error">
@@ -54,7 +53,7 @@ export function MemberConsultations({ disabled }: { disabled: boolean }) {
                   disabled={!ready || disabled}
                   className="member-form-fields"
                 >
-                  <legend>Respond to your demo assignment</legend>
+                  <legend>Respond to your assignment</legend>
                   <div className="filter-actions">
                     <button
                       type="button"
@@ -69,7 +68,7 @@ export function MemberConsultations({ disabled }: { disabled: boolean }) {
                         requestAnimationFrame(() => feedback.current?.focus());
                       }}
                     >
-                      Accept demo coordination
+                      Accept coordination
                     </button>
                     <button
                       type="button"
@@ -83,7 +82,7 @@ export function MemberConsultations({ disabled }: { disabled: boolean }) {
                         requestAnimationFrame(() => feedback.current?.focus());
                       }}
                     >
-                      Decline demo assignment
+                      Decline assignment
                     </button>
                   </div>
                 </fieldset>
@@ -100,7 +99,7 @@ export function MemberConsultations({ disabled }: { disabled: boolean }) {
         <>
           <ConsultationFilters area="member" />
           <p role="status">
-            {matching.length} of {requests.length} assigned demo requests shown
+            {matching.length} of {requests.length} assigned requests shown
           </p>
           <ol className="qa-list">
             {matching.map((request) => (
@@ -127,9 +126,7 @@ export function MemberConsultations({ disabled }: { disabled: boolean }) {
           </ol>
           {!matching.length && (
             <p className="workspace-empty">
-              No matching assignments for this demo member. Admin assigns
-              eligible members; submitting a public request does not assign it
-              automatically.
+              No matching assignments for this member. Admin assigns eligible members; submitting a public request does not assign it automatically.
             </p>
           )}
         </>

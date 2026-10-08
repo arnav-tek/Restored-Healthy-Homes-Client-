@@ -27,21 +27,17 @@ export function ApplicationExperience({
       {application ? (
         <section className="panel application-confirmation">
           <h2 ref={heading} tabIndex={-1}>
-            Application created in this tab
+            Application prepared
           </h2>
           <p>
             <strong>Application status: {application.approval}.</strong>{" "}
-            {application.profile.businessName} is available in this tab’s member
-            workspace. It has not been sent to the owner or published.
+            {application.profile.businessName} is ready to review in your member workspace. Delivery to the owner is not connected yet.
           </p>
           {application.decisionReason && (
             <p>Decision reason: {application.decisionReason}</p>
           )}
           <p>
-            Nothing is saved permanently. Refreshing or resetting clears this
-            application. This creates no real account. Use the
-            submitted-application preset on the sign-in page to explore its
-            member workspace.
+            Choose your prepared application on the sign-in page to open its member workspace.
           </p>
           <Link
             className="button"
