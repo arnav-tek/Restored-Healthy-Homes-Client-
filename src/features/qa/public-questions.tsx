@@ -8,16 +8,10 @@ import {
   LayoutGrid,
   ChevronRight,
   ChevronLeft,
-  HelpCircle,
   MessageSquare,
   ShieldCheck,
   RotateCcw,
-  PenLine,
-  Home,
-  Hammer,
-  Wrench,
-  Stethoscope,
-  PawPrint,
+  BookOpen,
 } from "lucide-react";
 import { categories } from "@/domain/categories";
 import { QA_PAGE_SIZE, searchPublicQuestions, type QaQuery } from "@/domain/qa";
@@ -28,51 +22,7 @@ import { qaHref, questionHref, type QaQueryErrors } from "@/validation/qa";
 import { SearchForm } from "@/features/directory/search-form";
 import { Button } from "@/components/ui/button";
 
-function HouseBuildIcon({ size = 20 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M19 10v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-9" />
-      <path d="M3 10.5 12 3l9 7.5" />
-      <path d="M18 4.5V8" />
-      <rect x="9" y="10" width="6" height="6" rx="1" />
-      <line x1="12" y1="10" x2="12" y2="16" />
-      <line x1="9" y1="13" x2="15" y2="13" />
-    </svg>
-  );
-}
-
-function getCategoryIcon(id?: string) {
-  switch (id) {
-    case "mold-inspection":
-      return Search;
-    case "mold-remediation":
-      return Home;
-    case "healthy-renovations":
-      return Hammer;
-    case "healthy-builders":
-      return HouseBuildIcon;
-    case "healthy-trades":
-      return Wrench;
-    case "healthy-designers":
-      return PenLine;
-    case "health-practitioners":
-      return Stethoscope;
-    case "mold-detection-dogs":
-      return PawPrint;
-    default:
-      return HelpCircle;
-  }
-}
+import { CategoryIcon } from "./category-icons";
 
 export function PublicQuestions({
   query,
@@ -133,7 +83,7 @@ export function PublicQuestions({
 
           <div className="qa-benefit-item">
             <div className="qa-benefit-icon" aria-hidden="true">
-              <PawPrint size={20} strokeWidth={1.8} />
+              <BookOpen size={20} strokeWidth={1.8} />
             </div>
             <div className="qa-benefit-content">
               <h2 className="qa-benefit-title">Learn from experience</h2>
@@ -286,7 +236,6 @@ export function PublicQuestions({
             {results.items.length ? (
               <ol className="qa-cards-list qa-list">
                 {results.items.map((question) => {
-                  const CategoryIcon = getCategoryIcon(question.categoryId);
                   const categoryName = categories.find(
                     (category) => category.id === question.categoryId,
                   )?.name;
@@ -302,7 +251,7 @@ export function PublicQuestions({
                             className="qa-card-icon-wrap"
                             aria-hidden="true"
                           >
-                            <CategoryIcon size={20} strokeWidth={1.8} />
+                            <CategoryIcon id={question.categoryId} size={20} />
                           </div>
                           <div className="qa-card-body">
                             {categoryName && (
