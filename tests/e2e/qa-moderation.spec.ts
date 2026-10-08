@@ -74,8 +74,9 @@ test("session publications can add a third public results page without server cl
       .click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
     await page
-      .getByRole("link", { name: "← Back to questions", exact: true })
+      .getByRole("link", { name: /Back to questions/ }).first()
       .click();
+    await expect(page).toHaveURL("/questions");
   }
   await expect(page.getByText("Showing 1–6 of 13 questions")).toBeVisible();
   await page.getByRole("link", { name: "Next page" }).click();
@@ -85,8 +86,7 @@ test("session publications can add a third public results page without server cl
   await expect(page.getByText("Showing 13–13 of 13 questions")).toBeVisible();
   await page
     .getByRole("link", {
-      name: "Zzz fictional pagination question 3",
-      exact: true,
+      name: /Zzz fictional pagination question 3/,
     })
     .click();
   await page

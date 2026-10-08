@@ -10,7 +10,7 @@ export async function section(
     await menu.locator("summary").click();
   const link = page
     .getByRole("navigation", { name: `${area} sections` })
-    .getByRole("link", { name, exact: true });
+    .getByRole("link", { name, exact: true }).filter({ visible: true });
   const destination = await link.getAttribute("href");
   await link.press("Enter");
   await expect(page).toHaveURL(destination!);

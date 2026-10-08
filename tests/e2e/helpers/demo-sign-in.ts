@@ -22,8 +22,12 @@ export async function signIn(page: Page, account = "approved") {
       await page
         .getByRole("link", { name: "Open your dashboard", exact: true })
         .click();
-    else if (new URL(page.url()).pathname !== `/demo/${account === "admin" ? "admin" : "member"}`)
+    else if (new URL(page.url()).pathname !== `/demo/${account === "admin" ? "admin" : "member"}`) {
+      const menu = page.getByRole("button", { name: "Open navigation", exact: true });
+      if (await menu.isVisible()) await menu.click();
       await accountLink.click();
+      await expect(page).toHaveURL(`/demo/${account === "admin" ? "admin" : "member"}`);
+    }
     return;
   }
   const gate = page.getByRole("link", {
