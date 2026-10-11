@@ -19,7 +19,14 @@ import {
 
 function session() {
   const seed = getDemoSessionSeed();
-  let state = createDemoSession(seed);
+  let state = reduceDemoSession(
+    createDemoSession(seed),
+    {
+      type: "demo-sign-in",
+      fields: { email: "admin@example.invalid", passcode: "home-access" },
+    },
+    seed,
+  );
   return {
     get state() {
       return state;

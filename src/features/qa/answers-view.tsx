@@ -52,7 +52,15 @@ export function AnswersView({
                       <Building2 size={22} />
                     </div>
                     <div>
-                      <h3 className="qa-answer-author">{answer.attribution}</h3>
+                      <h3 className="qa-answer-author">
+                        {answer.profileHref ? (
+                          <Link href={answer.profileHref}>
+                            {answer.attribution}
+                          </Link>
+                        ) : (
+                          answer.attribution
+                        )}
+                      </h3>
                       <p className="qa-answer-specialty">{specialtyTitle}</p>
                     </div>
                   </div>

@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { Users, FileText, Eye } from "lucide-react";
 import { SessionReset } from "@/features/dashboard/session-reset";
 import {
   ProfileFieldsForm,
@@ -53,11 +54,48 @@ export function ApplicationExperience({
         </section>
       ) : (
         <section className="panel application-form-panel">
-          <h2>Your business</h2>
+          <div className="application-intro-header">
+            <div className="application-intro-left">
+              <h2>Your business</h2>
+              <p className="application-intro-sub">
+                All fields are required unless marked optional.
+              </p>
+            </div>
+            <div className="application-info-panel">
+              <div className="application-info-item">
+                <div className="application-info-badge" aria-hidden="true">
+                  <Users size={15} />
+                </div>
+                <div className="application-info-text">
+                  <strong>Join our professional directory</strong>
+                  <p>Reach people looking for healthy-home professionals.</p>
+                </div>
+              </div>
+              <div className="application-info-item">
+                <div className="application-info-badge" aria-hidden="true">
+                  <FileText size={15} />
+                </div>
+                <div className="application-info-text">
+                  <strong>Reviewed by our team</strong>
+                  <p>Applications are reviewed before being published.</p>
+                </div>
+              </div>
+              <div className="application-info-item">
+                <div className="application-info-badge" aria-hidden="true">
+                  <Eye size={15} />
+                </div>
+                <div className="application-info-text">
+                  <strong>This is a demo application</strong>
+                  <p>Application delivery is not connected yet.</p>
+                </div>
+              </div>
+            </div>
+          </div>
           <ProfileFieldsForm
             key={state.revision}
             catalog={sessionCatalog}
             submitLabel="Create application"
+            variant="application"
             onValid={(profile) => dispatch({ type: "submit", profile })}
           />
         </section>

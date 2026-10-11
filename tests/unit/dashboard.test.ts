@@ -69,7 +69,14 @@ test("dashboard queries validate sections, filters, record IDs and category IDs 
 });
 test("overview counts derive from shared records and update after protected decisions", () => {
   const seed = getDemoSessionSeed();
-  const initial = createDemoSession(seed);
+  const initial = reduceDemoSession(
+    createDemoSession(seed),
+    {
+      type: "demo-sign-in",
+      fields: { email: "admin@example.invalid", passcode: "home-access" },
+    },
+    seed,
+  );
   assert.deepEqual(demoDashboardCounts(initial.records), {
     applications: 7,
     pending: 1,

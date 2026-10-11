@@ -35,9 +35,11 @@ export function PublicPreviewContent({
           {profile.credentials.map((claim) => (
             <li key={claim.id}>
               {claim.text} —{" "}
-              {claim.verification === "verified"
-                ? "reviewed"
-                : "unverified"}
+              {claim.verification === "verified" ? (
+                <span className="credential-badge">reviewed</span>
+              ) : (
+                "submitted claim, unverified"
+              )}
             </li>
           ))}
         </ul>
@@ -45,7 +47,8 @@ export function PublicPreviewContent({
         <p>No listed credentials provided.</p>
       )}
       <p>
-        Restored Healthy Homes does not issue certifications. Verification here is a review decision only.
+        Restored Healthy Homes does not issue certifications. Verification here
+        is a review decision only.
       </p>
       <h3>Optional public contact details</h3>
       {profile.phone || profile.website ? (

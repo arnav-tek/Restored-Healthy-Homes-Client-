@@ -36,8 +36,8 @@ export function DecisionForm({
       </p>
     );
   return (
-    <section className="panel decision-panel">
-      <h2>
+    <section className="panel decision-panel admin-decision-card">
+      <h2 className="admin-detail-heading">
         {purpose === "application"
           ? "Application decision"
           : "Listing decision"}
@@ -98,7 +98,7 @@ export function DecisionForm({
           requestAnimationFrame(() => status.current?.focus());
         }}
       >
-        <fieldset className="member-form-fields" disabled={!ready}>
+        <fieldset className="member-form-fields admin-decision-fields" disabled={!ready}>
           <legend className="sr-only">
             Local decision for {record.profile.businessName}
           </legend>
@@ -146,7 +146,7 @@ export function DecisionForm({
               {error}
             </p>
           </div>
-          <Button type="submit">Apply decision</Button>
+          <Button type="submit" className="button-primary">Apply decision</Button>
         </fieldset>
       </form>
       <p className="field-help">

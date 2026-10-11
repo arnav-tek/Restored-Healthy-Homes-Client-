@@ -39,14 +39,14 @@ export default function AboutPage() {
               <span className="about-hero-accent">right people.</span>
             </h2>
             <p className="about-hero-lead">
-              Restored Healthy Homes connects homeowners, businesses and property
-              professionals with trusted experts in healthy-home services,
+              Restored Healthy Homes connects homeowners, businesses and
+              property professionals with specialists in healthy-home services,
               education and solutions.
             </p>
             <div className="about-hero-actions">
               <ButtonLink
                 href="/directory"
-                aria-label="Browse verified professionals"
+                aria-label="Browse professionals"
                 className="about-hero-primary-btn"
               >
                 Browse professionals <ArrowRight size={18} aria-hidden="true" />
@@ -64,10 +64,9 @@ export default function AboutPage() {
                   <Users size={22} />
                 </div>
                 <div className="benefit-content">
-                  <h3 className="benefit-title">Trusted Professionals</h3>
+                  <h3 className="benefit-title">Explore Professionals</h3>
                   <p className="benefit-desc">
-                    Connect with qualified experts across a range of
-                    healthy-home specialties.
+                    Explore services across a range of healthy-home specialties.
                   </p>
                 </div>
               </div>
@@ -78,8 +77,7 @@ export default function AboutPage() {
                 <div className="benefit-content">
                   <h3 className="benefit-title">Helpful Information</h3>
                   <p className="benefit-desc">
-                    Explore education resources and real questions from
-                    homeowners.
+                    Explore education pathways and sample questions.
                   </p>
                 </div>
               </div>
@@ -118,17 +116,9 @@ export default function AboutPage() {
               {content.story.heading}
             </h2>
             <p className="content-placeholder-label">{content.story.label}</p>
+            <p className="about-story-paragraph">{content.story.body}</p>
             <p className="about-story-paragraph">
-              Restored Healthy Homes was created to make it easier for people to
-              find and connect with professionals who care about healthier
-              indoor environments.
-            </p>
-            <p className="about-story-paragraph">
-              We believe that everyone deserves a home or workspace that
-              supports their well-being. This directory brings together
-              knowledge, experience and trusted professionals to help people
-              take informed steps, whether they&apos;re investigating a concern,
-              planning a renovation or simply exploring options.
+              Final story copy is awaiting client approval.
             </p>
           </div>
 
@@ -206,10 +196,9 @@ export default function AboutPage() {
             <div className="value-icon-badge" aria-hidden="true">
               <Users size={24} />
             </div>
-            <h3 className="value-title">Trusted Professionals</h3>
+            <h3 className="value-title">Explore Professionals</h3>
             <p className="value-desc">
-              Connect with qualified experts across a range of healthy-home
-              specialties.
+              Explore services across a range of healthy-home specialties.
             </p>
           </div>
 
@@ -219,7 +208,7 @@ export default function AboutPage() {
             </div>
             <h3 className="value-title">Helpful Information</h3>
             <p className="value-desc">
-              Explore education resources and real questions from homeowners.
+              Explore education pathways and sample questions.
             </p>
           </div>
 

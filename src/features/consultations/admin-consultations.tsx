@@ -1,6 +1,14 @@
 "use client";
 import Link from "next/link";
 import { useRef, useState, type FormEvent } from "react";
+import {
+  Calendar,
+  Clock,
+  CheckCircle2,
+  AlertTriangle,
+  ArrowRight,
+  Info,
+} from "lucide-react";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
 import {
   consultationPolicy,
@@ -39,78 +47,156 @@ export function AdminConsultations() {
           ? request.providerId !== null
           : request.providerId === null)),
   );
+
   return (
     <div className="consultation-workspace">
-      <p className="field-help">{consultationPolicy}</p>
+      {/* Policy Notice Card */}
+      <div className="admin-notice-card">
+        <Info size={18} className="text-sage" aria-hidden="true" />
+        <p className="admin-notice-text">{consultationPolicy}</p>
+      </div>
+
       {query.consultation ? (
-        <>
-          <Link className="text-link" href={href({ consultation: "" })}>
+        <div className="review-detail-container">
+          <Link className="text-link workspace-back-link" href={href({ consultation: "" })}>
             ← Back to consultation requests
           </Link>
           {selected ? (
             <AdminConsultationDetail key={selected.id} request={selected} />
           ) : (
-            <p className="workspace-empty">
-              This consultation is unavailable in this tab. Return to requests or create a request.
-            </p>
+            <div className="workspace-empty">
+              <h2>This consultation is unavailable in this tab</h2>
+              <p>Return to requests or create a request.</p>
+            </div>
           )}
-        </>
+        </div>
       ) : (
         <>
-          <div className="workspace-metrics">
-            {consultationStatuses.map((status) => (
-              <Link
-                key={status}
-                href={href({
-                  consultationStatus: status,
-                  category: "",
-                  assignment: "all",
-                })}
-              >
-                <span>{consultationStatusLabels[status]}</span>
-                <strong>
-                  {
-                    state.consultations.filter((item) => item.status === status)
-                      .length
-                  }
-                </strong>
-                <small>View requests</small>
-              </Link>
-            ))}
+          {/* Summary Metric Cards */}
+          <div className="tab-summary-grid">
+            {consultationStatuses.map((status) => {
+              const count = state.consultations.filter(
+                (item) => item.status === status,
+              ).length;
+              return (
+                <Link
+                  key={status}
+                  className="tab-summary-card"
+                  href={href({
+                    consultationStatus: status,
+                    category: "",
+                    assignment: "all",
+                  })}
+                >
+                  <div
+                    className={`tab-summary-icon ${
+                      status === "requested"
+                        ? "icon-peach"
+                        : status === "accepted"
+                          ? "icon-sage"
+                          : "icon-neutral"
+                    }`}
+                  >
+                    {status === "requested" ? (
+                      <Clock size={18} aria-hidden="true" />
+                    ) : status === "accepted" ? (
+                      <CheckCircle2 size={18} aria-hidden="true" />
+                    ) : (
+                      <Calendar size={18} aria-hidden="true" />
+                    )}
+                  </div>
+                  <div className="tab-summary-details">
+                    <span className="tab-summary-num">{count}</span>
+                    <strong className="tab-summary-label">
+                      {consultationStatusLabels[status]}
+                    </strong>
+                    <span className="metric-link-text">
+                      View requests <ArrowRight size={13} aria-hidden="true" />
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
-          <ConsultationFilters area="admin" />
-          <p role="status">
+
+          {/* Filter Toolbar Card */}
+          <div className="admin-filter-card">
+            <ConsultationFilters area="admin" />
+          </div>
+
+          <p role="status" className="result-count">
             {matches.length} of {state.consultations.length} consultation requests shown
           </p>
-          <ol className="qa-list">
-            {matches.map((request) => (
-              <li key={request.id}>
-                <article>
-                  <h2>
-                    <Link href={href({ consultation: request.id })}>
-                      Review {request.id}
-                    </Link>
-                  </h2>
-                  <ConsultationSummary
-                    request={publicConsultationSummary(request)}
-                    category={state.categoryNames[request.categoryId]}
-                  />
-                  <p>
-                    Assignment:{" "}
-                    {state.records.find(
-                      (member) => member.id === request.providerId,
-                    )?.profile.businessName ?? "Unassigned"}
-                  </p>
-                  {consultationNeedsAttention(state, request) && (
-                    <p className="field-error">
-                      Needs admin attention: the assigned member no longer meets
-                      category or eligibility rules.
-                    </p>
-                  )}
-                </article>
-              </li>
-            ))}
+
+          <ol className="consultation-cards-list">
+            {matches.map((request) => {
+              const assignedBusiness = state.records.find(
+                (member) => member.id === request.providerId,
+              )?.profile.businessName;
+              const needsAttention = consultationNeedsAttention(state, request);
+
+              return (
+                <li key={request.id}>
+                  <article className="consultation-record-card">
+                    <div className="consultation-card-header">
+                      <div className="consultation-id-row">
+                        <h2 className="consultation-title">
+                          <Link href={href({ consultation: request.id })}>
+                            Review {request.id}
+                          </Link>
+                        </h2>
+                        <span
+                          className={`admin-status-badge badge-${
+                            request.status === "accepted"
+                              ? "approved"
+                              : request.status === "requested"
+                                ? "pending"
+                                : "neutral"
+                          }`}
+                        >
+                          {request.status}
+                        </span>
+                      </div>
+                      <span className="consultation-category-pill">
+                        {state.categoryNames[request.categoryId]}
+                      </span>
+                    </div>
+
+                    <div className="consultation-card-body">
+                      <ConsultationSummary
+                        request={publicConsultationSummary(request)}
+                        category={state.categoryNames[request.categoryId]}
+                      />
+                      <div className="consultation-assignment-row">
+                        <span className="assignment-label">Assigned:</span>{" "}
+                        <strong>{assignedBusiness ?? "Unassigned"}</strong>
+                      </div>
+                    </div>
+
+                    {needsAttention && (
+                      <div className="consultation-attention-alert">
+                        <AlertTriangle size={15} aria-hidden="true" />
+                        <p className="field-error">
+                          Needs admin attention: the assigned member no longer meets
+                          category or eligibility rules.
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="consultation-card-footer">
+                      <Link
+                        href={href({ consultation: request.id })}
+                        className="table-action-link"
+                      >
+                        Coordinate request <ArrowRight size={13} aria-hidden="true" />
+                      </Link>
+                    </div>
+                  </article>
+                </li>
+              );
+            })}
           </ol>
+
           {!matches.length && (
             <div className="workspace-empty">
               <h2>No matching consultation requests</h2>
@@ -145,11 +231,13 @@ function AdminConsultationDetail({
   const eligible = state.records.filter((member) =>
     canCoordinate(member, request.categoryId),
   );
+
   function act(action: ConsultationAction) {
     if (!ready) return;
     dispatch(action);
     requestAnimationFrame(() => feedback.current?.focus());
   }
+
   function confirmChange(result: string): boolean {
     return (
       request.status !== "accepted" ||
@@ -158,6 +246,7 @@ function AdminConsultationDetail({
       )
     );
   }
+
   function saveNote(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!ready) return;
@@ -171,44 +260,71 @@ function AdminConsultationDetail({
     clearDraft();
     setError("");
   }
+
   return (
     <>
-      <article className="panel consultation-detail">
-        <h2>Request {request.id}</h2>
+      <article className="panel admin-detail-card consultation-detail-card">
+        <div className="consultation-detail-header">
+          <h2 className="admin-detail-heading">Request {request.id}</h2>
+          <span
+            className={`admin-status-badge badge-${
+              request.status === "accepted"
+                ? "approved"
+                : request.status === "requested"
+                  ? "pending"
+                  : "neutral"
+            }`}
+          >
+            {request.status}
+          </span>
+        </div>
+
         <ConsultationSummary
           request={publicConsultationSummary(request)}
           category={state.categoryNames[request.categoryId]}
         />
-        <dl className="consultation-summary">
-          <div>
+
+        <dl className="consultation-summary-grid">
+          <div className="consultation-summary-item">
             <dt>Visitor name</dt>
             <dd>{request.name}</dd>
           </div>
-          <div>
+          <div className="consultation-summary-item">
             <dt>Visitor email</dt>
             <dd>{request.email}</dd>
           </div>
         </dl>
-        <h3>Topic</h3>
-        <p className="consultation-topic">{request.topic}</p>
-        <p>
-          Assignment:{" "}
-          {state.records.find((member) => member.id === request.providerId)
-            ?.profile.businessName ?? "Unassigned"}
-        </p>
+
+        <div className="consultation-topic-box">
+          <h3>Topic</h3>
+          <p className="consultation-topic">{request.topic}</p>
+        </div>
+
+        <div className="consultation-assigned-box">
+          <span>Assignment:</span>{" "}
+          <strong>
+            {state.records.find((member) => member.id === request.providerId)
+              ?.profile.businessName ?? "Unassigned"}
+          </strong>
+        </div>
+
         {consultationNeedsAttention(state, request) && (
-          <p className="field-error">
-            Needs admin attention: the assigned member no longer meets category
-            or eligibility rules. The record is retained; acceptance is blocked.
-          </p>
+          <div className="consultation-attention-alert">
+            <AlertTriangle size={16} aria-hidden="true" />
+            <p className="field-error">
+              Needs admin attention: the assigned member no longer meets category
+              or eligibility rules. The record is retained; acceptance is blocked.
+            </p>
+          </div>
         )}
+
         {request.status === "cancelled" ? (
-          <p>
+          <p className="workspace-empty">
             This request is closed. No further assignment actions are available.
           </p>
         ) : (
-          <fieldset disabled={!ready} className="member-form-fields">
-            <legend>Manage assignment</legend>
+          <fieldset disabled={!ready} className="member-form-fields admin-decision-fields">
+            <legend className="admin-subheading">Manage assignment</legend>
             <div className="search-field">
               <label htmlFor="consultation-provider">
                 Eligible professional
@@ -230,17 +346,17 @@ function AdminConsultationDetail({
                 ))}
               </select>
               {!eligible.length && (
-                <p>
+                <p className="field-help">
                   No eligible member matches this category. Eligibility requires
                   approval, an active subscription, no suspension and category
                   membership.
                 </p>
               )}
             </div>
-            <div className="filter-actions">
+            <div className="filter-actions-row">
               <button
                 type="button"
-                className="button"
+                className="button button-primary"
                 disabled={
                   !eligible.some((member) => member.id === provider) ||
                   provider === request.providerId
@@ -305,9 +421,10 @@ function AdminConsultationDetail({
           </fieldset>
         )}
       </article>
-      <form className="panel" noValidate onSubmit={saveNote}>
-        <fieldset disabled={!ready} className="member-form-fields">
-          <legend>Admin-only coordination note</legend>
+
+      <form className="panel admin-detail-card consultation-note-card" noValidate onSubmit={saveNote}>
+        <fieldset disabled={!ready} className="member-form-fields admin-decision-fields">
+          <legend className="admin-subheading">Admin-only coordination note</legend>
           <div className="search-field">
             <label htmlFor="consultation-admin-note">
               Internal coordination note (optional)
@@ -329,12 +446,12 @@ function AdminConsultationDetail({
               {error}
             </p>
           </div>
-          <button className="button" type="submit">
+          <button className="button button-primary" type="submit">
             Save note
           </button>
         </fieldset>
       </form>
-      <p role="status" tabIndex={-1} ref={feedback}>
+      <p role="status" tabIndex={-1} ref={feedback} className="session-status">
         {state.notice}
       </p>
     </>

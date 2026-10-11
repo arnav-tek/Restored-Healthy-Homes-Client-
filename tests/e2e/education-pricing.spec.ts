@@ -1,3 +1,4 @@
+import { previewUrl } from "./helpers/preview-url";
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { categories, formatMonthlyPrice } from "../../src/domain/categories";
@@ -5,6 +6,7 @@ import { mainNav } from "./helpers/application";
 import { signIn } from "./helpers/demo-sign-in";
 
 async function inspect(page: Page, name: string) {
+  await expect(page).toHaveTitle(/\S/);
   expect(
     (
       await new AxeBuilder({ page })
@@ -159,7 +161,7 @@ test("320px reflow, breakpoint menu and server content without JavaScript", asyn
     viewport: { width: 320, height: 844 },
   });
   const noJs = await context.newPage();
-  await noJs.goto("http://127.0.0.1:3100/education");
+  await noJs.goto(previewUrl("/education"));
   await noJs.locator("summary").first().press("Enter");
   await expect(noJs.locator("details").first()).toHaveAttribute("open", "");
   await noJs
@@ -167,7 +169,11 @@ test("320px reflow, breakpoint menu and server content without JavaScript", asyn
     .getByRole("link", { name: "Membership pricing" })
     .press("Enter");
   await expect(noJs.locator(".membership-table tbody tr")).toHaveCount(8);
-  await noJs.locator(".membership-table").getByRole("link").first().press("Enter");
+  await noJs
+    .locator(".membership-table")
+    .getByRole("link")
+    .first()
+    .press("Enter");
   await expect(noJs).toHaveURL(/\/list-your-business$/);
   await context.close();
   for (const route of ["/education", "/pricing"]) {

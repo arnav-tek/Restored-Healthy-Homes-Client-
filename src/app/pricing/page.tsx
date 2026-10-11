@@ -16,6 +16,7 @@ import {
 import { directoryRepository } from "@/data";
 import { formatMonthlyPrice } from "@/domain/categories";
 import { ButtonLink } from "@/components/ui/button";
+import { consultationOfferLabel } from "@/domain/consultation";
 
 export const metadata: Metadata = {
   title: "Membership Pricing",
@@ -91,7 +92,9 @@ export default async function PricingPage() {
       <header className="pricing-hero">
         <div className="pricing-hero-left">
           <p className="pricing-eyebrow">
-            <span className="pricing-eyebrow-line" aria-hidden="true">— </span>
+            <span className="pricing-eyebrow-line" aria-hidden="true">
+              —{" "}
+            </span>
             PROFESSIONAL DIRECTORY MEMBERSHIPS
           </p>
           <h1 className="pricing-hero-title">
@@ -112,7 +115,9 @@ export default async function PricingPage() {
               <Users size={20} strokeWidth={1.75} />
             </div>
             <div className="pricing-benefit-content">
-              <h2 className="pricing-benefit-title">Simple, transparent pricing</h2>
+              <h2 className="pricing-benefit-title">
+                Simple, transparent pricing
+              </h2>
               <p className="pricing-benefit-text">
                 All prices below are monthly, in USD. External training and
                 certification costs are separate.
@@ -125,7 +130,9 @@ export default async function PricingPage() {
               <FileText size={20} strokeWidth={1.75} />
             </div>
             <div className="pricing-benefit-content">
-              <h2 className="pricing-benefit-title">Build credibility and visibility</h2>
+              <h2 className="pricing-benefit-title">
+                Build credibility and visibility
+              </h2>
               <p className="pricing-benefit-text">
                 Reach homeowners and businesses looking for healthy-home
                 professionals.
@@ -237,6 +244,24 @@ export default async function PricingPage() {
         </div>
       </section>
 
+      <section
+        className="panel pricing-section"
+        aria-labelledby="pricing-consultation-heading"
+      >
+        <h2 id="pricing-consultation-heading">
+          A consultation for your project
+        </h2>
+        <p>
+          <strong>{consultationOfferLabel()}</strong>
+        </p>
+        <p>
+          A separate proposed offer for a focused conversation. No appointment
+          is booked or payment collected in this preview.
+        </p>
+        <Link className="text-link" href="/consultations">
+          Explore consultations
+        </Link>
+      </section>
       {/* Before you apply section */}
       <section
         className="membership-guidance pricing-guidance-section"
@@ -258,8 +283,8 @@ export default async function PricingPage() {
                 </div>
                 <p>
                   <strong>
-                    A public listing requires admin approval, active membership and
-                    no suspension.
+                    A public listing requires admin approval, active membership
+                    and no suspension.
                   </strong>{" "}
                   Approval alone does not publish a listing.
                 </p>
@@ -273,8 +298,8 @@ export default async function PricingPage() {
                     Selecting multiple categories is supported in the
                     application.
                   </strong>{" "}
-                  Multi-category pricing is pending confirmation; no combined total
-                  is quoted.
+                  Multi-category pricing is pending confirmation; no combined
+                  total is quoted.
                 </p>
               </li>
               <li className="pricing-checklist-item">
@@ -297,7 +322,8 @@ export default async function PricingPage() {
             <p className="pricing-cta-eyebrow">START WITH AN APPLICATION</p>
             <h3>List your business in the directory.</h3>
             <p className="pricing-cta-copy">
-              Explore the application process and choose the membership that suits your business. No payment is collected here.
+              Explore the application process and choose the membership that
+              suits your business. No payment is collected here.
             </p>
             <div className="pricing-cta-actions">
               <ButtonLink

@@ -321,6 +321,12 @@ export function reduceDemoSession(
       };
     }
     case "edit":
+      if (
+        !state.identity ||
+        (state.identity.kind === "member" &&
+          state.identity.memberId !== action.id)
+      )
+        return state;
       if (!state.records.some((record) => record.id === action.id))
         return state;
       return {
@@ -342,6 +348,7 @@ export function reduceDemoSession(
         notice: "Profile draft updated. The public directory has not changed.",
       };
     case "rename-category": {
+      if (state.identity?.kind !== "admin") return state;
       const catalog = categories.map((item) => ({
         ...item,
         name: state.categoryNames[item.id],
@@ -359,6 +366,7 @@ export function reduceDemoSession(
     case "decide":
     case "suspend":
     case "credential": {
+      if (state.identity?.kind !== "admin") return state;
       const record = state.records.find((item) => item.id === action.id);
       if (!record) return state;
       let updated: DemoMemberRecord;

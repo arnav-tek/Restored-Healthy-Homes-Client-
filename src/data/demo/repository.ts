@@ -4,6 +4,8 @@ import { categories } from "../../domain/categories";
 import {
   listPublicProfessionals,
   findPublicProfile,
+  isFeaturedEligible,
+  toPublicProfessional,
 } from "../../domain/listing";
 import { assertDemoConfiguration } from "../../domain/config";
 import { demoProfessionals } from "./fixtures";
@@ -13,6 +15,13 @@ import { demoReviews } from "./review-fixtures";
 import { publicReviewsFor } from "../../domain/review";
 const guard = () => assertDemoConfiguration(process.env);
 export const demoDirectory: DirectoryRepository = {
+  async listFeaturedPublic() {
+    guard();
+    if (process.env.RHH_DEMO_SCENARIO === "error") return [];
+    return demoProfessionals
+      .filter(isFeaturedEligible)
+      .map(toPublicProfessional);
+  },
   async getPublicProfile(id) {
     guard();
     if (process.env.RHH_DEMO_SCENARIO === "error")

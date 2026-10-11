@@ -157,7 +157,14 @@ test("applications enter pending/inactive state with unverified credentials and 
 });
 test("member edits copy only permitted fields and preserve protected decisions and identity", () => {
   const seed = getDemoSessionSeed();
-  const current = createDemoSession(seed);
+  const current = reduceDemoSession(
+    createDemoSession(seed),
+    {
+      type: "demo-sign-in",
+      fields: { email: "approved@example.invalid", passcode: "home-access" },
+    },
+    seed,
+  );
   const record = {
     ...current.records[0],
     decisionReason: "Protected decision reason",

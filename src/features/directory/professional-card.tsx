@@ -36,9 +36,12 @@ export function ProfessionalCard({
     <article className="professional-card" data-testid="professional-card">
       <div className="card-top">
         <span className="category-pill">{categoryName}</span>
-        <span className="avatar" aria-hidden="true">
-          {initials}
-        </span>
+        <div className="profile-photo-empty">
+          <span className="avatar" aria-hidden="true">
+            {initials}
+          </span>
+          <span>No photo yet</span>
+        </div>
       </div>
       <div className="card-body">
         <h3 className="business-name">{professional.businessName}</h3>
@@ -77,7 +80,7 @@ export function ProfessionalCard({
           {professional.verifiedCredentials.length > 0 ? (
             <>
               <FileCheck2 size={15} aria-hidden="true" />
-              <span>Credentials listed</span>
+              <span>Reviewed credentials</span>
             </>
           ) : (
             <>

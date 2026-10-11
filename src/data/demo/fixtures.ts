@@ -139,7 +139,7 @@ const active: ProfessionalRecord[] = samples.map((sample, index) => ({
   approval: "approved",
   subscription: "active",
   suspended: false,
-  featuredEntitlement: "none",
+  featuredEntitlement: index === 0 || index === 5 ? "active" : "none",
   account: {
     ownerId: `synthetic-owner-${index}`,
     email: `member-${index}@example.invalid`,

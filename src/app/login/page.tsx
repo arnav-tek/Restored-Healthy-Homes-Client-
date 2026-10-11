@@ -22,7 +22,7 @@ export default async function LoginPage({
             <h2>Good connections.<br />Healthier homes.</h2>
             <p>Your work has a place here. Keep your profile, conversations and next steps together.</p>
           </div>
-          <Link href="/directory">Explore the directory <ArrowUpRight size={18} aria-hidden="true" /></Link>
+          <Link href="/directory">Browse professionals <ArrowUpRight size={18} aria-hidden="true" /></Link>
         </aside>
         <section className="login-panel" aria-labelledby="login-heading">
           <header className="demo-login-intro">

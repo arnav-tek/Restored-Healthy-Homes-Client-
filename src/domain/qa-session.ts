@@ -7,6 +7,8 @@ import type {
 } from "./qa";
 import { projectQaContent } from "./qa";
 import { isPubliclyEligible } from "./listing";
+import { professionalForMember } from "./professional-association";
+import { profileHref } from "../validation/profile";
 import { parseAnswer, parseModerationNote } from "../validation/qa-moderation";
 
 export interface QaDecision {
@@ -96,7 +98,22 @@ export function qaReviewAnswers(state: DemoSession): ReviewAnswer[] {
   });
 }
 export function publicSessionQuestions(state: DemoSession): PublicQuestion[] {
-  const answers = qaReviewAnswers(state);
+  const answers = qaReviewAnswers(state).map((answer) => {
+    if (!answer.authorId) return answer;
+    const member = state.records.find((item) => item.id === answer.authorId);
+    const id = professionalForMember(answer.authorId);
+    const { profileHref: previousHref, ...content } = answer;
+    void previousHref;
+    return {
+      ...content,
+      ...(member &&
+      isPubliclyEligible(member) &&
+      id &&
+      state.publicProfessionalIds.includes(id)
+        ? { profileHref: profileHref(id) }
+        : {}),
+    };
+  });
   return qaReviewQuestions(state).flatMap((question) => {
     const projected = projectQaContent(question, answers);
     return projected ? [projected] : [];

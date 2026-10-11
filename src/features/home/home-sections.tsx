@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import type { Category } from "@/domain/categories";
+import { consultationOfferLabel } from "@/domain/consultation";
 
 // Presentation only; names and descriptions continue to come from the catalog.
 const categoryIcons: Readonly<Record<string, LucideIcon>> = {
@@ -51,8 +52,7 @@ export function CategoryBrowse({ catalog }: { catalog: readonly Category[] }) {
             <span className="category-pill-divider" aria-hidden="true" />
           </div>
           <h2 id="category-heading">
-            Find the specialty you{" "}
-            <br className="category-heading-break" />
+            Find the specialty you <br className="category-heading-break" />
             need.
           </h2>
         </div>
@@ -141,7 +141,9 @@ export function HomeJourney() {
           <div className="step-divider" aria-hidden="true" />
           <div className="step-content">
             <h3>Explore a profile</h3>
-            <p>Get to know the business, its services and listed credentials.</p>
+            <p>
+              Get to know the business, its services and listed credentials.
+            </p>
           </div>
           <div className="step-icon-badge" aria-hidden="true">
             <FileText size={18} strokeWidth={1.8} />
@@ -185,8 +187,8 @@ export function HomeFeatures() {
               Find professionals
             </Link>{" "}
             or{" "}
-            <Link className="underline underline-offset-4" href="/education">
-              explore education pathways
+            <Link className="underline underline-offset-4" href="/resources">
+              explore resources
             </Link>{" "}
             as you plan your next step.
           </p>
@@ -207,14 +209,17 @@ export function HomeFeatures() {
                 <div className="feature-card-body">
                   <h3>A useful question is a good beginning.</h3>
                   <p>
-                    Browse questions and specialist answers about homes, materials
-                    and indoor environments. Find a starting point for your own
-                    questions.
+                    Browse questions and specialist answers about homes,
+                    materials and indoor environments. Find a starting point for
+                    your own questions.
                   </p>
                 </div>
               </div>
               <div className="feature-card-action">
-                <Link className="feature-cta-btn specialist-btn text-link" href="/questions">
+                <Link
+                  className="feature-cta-btn specialist-btn text-link"
+                  href="/questions"
+                >
                   Ask a Specialist <ArrowRight size={16} aria-hidden="true" />
                 </Link>
               </div>
@@ -290,6 +295,9 @@ export function HomeFeatures() {
                 <div className="feature-card-body">
                   <h3>Have a specific project in mind?</h3>
                   <p>
+                    <strong>{consultationOfferLabel()}</strong>
+                  </p>
+                  <p>
                     Explore a focused conversation about your plans and try the
                     consultation request.
                   </p>
@@ -300,7 +308,8 @@ export function HomeFeatures() {
                   className="feature-cta-btn consultation-btn text-link"
                   href="/consultations"
                 >
-                  Explore consultations <ArrowRight size={16} aria-hidden="true" />
+                  Explore consultations{" "}
+                  <ArrowRight size={16} aria-hidden="true" />
                 </Link>
               </div>
             </div>
@@ -325,29 +334,72 @@ export function HomeFeatures() {
 export function HomeAbout() {
   return (
     <section
-      className="container home-section home-about"
+      className="container home-about-section home-about"
       aria-labelledby="home-about-heading"
     >
-      <div className="home-about-header">
-        <p className="home-about-eyebrow">
-          <span className="eyebrow-dash" aria-hidden="true" />
-          About Us
-        </p>
-        <h2 id="home-about-heading">
-          Different specialties.
-          <br />
-          One place to begin.
-        </h2>
-      </div>
-      <div className="home-about-body">
-        <p>
-          A healthier-home project can involve more than one kind of
-          professional. Bringing these specialties together makes it easier to
-          explore who does what, understand the options and plan a conversation.
-        </p>
-        <Link className="home-about-link text-link" href="/about">
-          About Us <ArrowRight size={16} aria-hidden="true" />
-        </Link>
+      <div className="home-about-grid">
+        <div className="home-about-intro">
+          <div className="home-eyebrow">
+            <span className="eyebrow-dash" aria-hidden="true" />
+            <span className="eyebrow-text">About Us</span>
+          </div>
+          <h2 id="home-about-heading" className="home-about-title">
+            Different specialties.
+            <br />
+            One place to begin.
+          </h2>
+          <p className="home-about-paragraph">
+            A healthier-home project can involve more than one kind of
+            professional. Bringing these specialties together makes it easier to
+            explore who does what, understand the options and plan a
+            conversation.
+          </p>
+          <Link className="home-about-cta-link text-link" href="/about">
+            About Us <ArrowRight size={15} aria-hidden="true" />
+          </Link>
+        </div>
+
+        <div className="home-about-features">
+          <div className="home-about-feature-col">
+            <div className="home-feature-icon-wrap" aria-hidden="true">
+              <Search size={20} />
+            </div>
+            <h3 className="home-feature-title">Explore</h3>
+            <p className="home-feature-desc">
+              Discover a range of healthy-home specialties.
+            </p>
+          </div>
+
+          <div className="home-about-feature-col">
+            <div className="home-feature-icon-wrap" aria-hidden="true">
+              <FileText size={20} />
+            </div>
+            <h3 className="home-feature-title">Learn</h3>
+            <p className="home-feature-desc">
+              Find helpful information and real homeowner questions.
+            </p>
+          </div>
+
+          <div className="home-about-feature-col">
+            <div className="home-feature-icon-wrap" aria-hidden="true">
+              <Users size={20} />
+            </div>
+            <h3 className="home-feature-title">Compare</h3>
+            <p className="home-feature-desc">
+              Understand your options and prepare for a conversation.
+            </p>
+          </div>
+
+          <div className="home-about-feature-col">
+            <div className="home-feature-icon-wrap" aria-hidden="true">
+              <House size={20} />
+            </div>
+            <h3 className="home-feature-title">Healthier homes</h3>
+            <p className="home-feature-desc">
+              Take informed steps toward healthier indoor environments.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -411,8 +463,14 @@ export function HomeBusiness() {
                 <div className="benefit-icon-badge" aria-hidden="true">
                   <Sprout size={20} strokeWidth={1.8} />
                 </div>
-                <h3>Be part of a trusted community</h3>
-                <p>Join a growing network focused on healthier homes.</p>
+                <h3>Explore a specialty</h3>
+                <p>
+                  Considering a new direction?{" "}
+                  <Link className="text-link" href="/education">
+                    Explore education pathways
+                  </Link>{" "}
+                  for professionals.
+                </p>
               </div>
             </div>
           </div>

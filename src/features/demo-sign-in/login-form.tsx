@@ -84,7 +84,7 @@ export function DemoLoginForm({
           </Link>
           <SignOutButton
             label="Switch account"
-            returnTo={returnTo || undefined}
+            returnTo={returnTo || (area === "admin" ? "/demo/admin" : "/demo/member")}
           />
         </div>
       </section>

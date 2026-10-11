@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRef } from "react";
+import { ArrowRight, Building2, MapPin } from "lucide-react";
 import { formatMonthlyPrice } from "@/domain/categories";
 import {
   memberEligibilityMessage,
@@ -19,6 +20,16 @@ import { MemberReviews } from "@/features/reviews/member-reviews";
 import { MemberConsultations } from "@/features/consultations/member-consultations";
 import { RecordStatus } from "@/features/dashboard/record-status";
 
+const breadcrumbLabels: Record<string, string> = {
+  overview: "Overview",
+  profile: "Profile",
+  inquiries: "Inquiries",
+  qa: "Q&A",
+  consultations: "Consultations",
+  reviews: "Reviews",
+  membership: "Membership",
+};
+
 export function MemberWorkspace({
   catalog,
 }: {
@@ -32,6 +43,7 @@ export function MemberWorkspace({
   const record = state.records.find(
     (item) => identity?.kind === "member" && item.id === identity.memberId,
   );
+
   if (!record || (query.record && query.record !== record.id))
     return (
       <section className="workspace-empty">
@@ -46,6 +58,7 @@ export function MemberWorkspace({
         </Link>
       </section>
     );
+
   const profile = record.profile;
   const selectedCategories = sessionCatalog.filter((category) =>
     profile.categoryIds.includes(category.id),
@@ -60,22 +73,45 @@ export function MemberWorkspace({
     inquiries: "Your inquiries",
     membership: "Your membership",
   };
+
   return (
     <>
-      <header className="dashboard-heading">
-        <p className="section-label">
-          Member · {query.section === "qa" ? "Q&A" : query.section}
-        </p>
-        <h1 id="workspace-title" tabIndex={-1}>
-          {titles[query.section]}
-        </h1>
+      <header className="workspace-header">
+        <div className="workspace-header-main">
+          <nav aria-label="Breadcrumb" className="workspace-breadcrumb">
+            <span>Member</span>
+            <span className="breadcrumb-separator" aria-hidden="true">›</span>
+            <span>{breadcrumbLabels[query.section] ?? "Overview"}</span>
+          </nav>
+          <h1 id="workspace-title" tabIndex={-1} className="workspace-title">
+            {titles[query.section]}
+          </h1>
+          <p className="workspace-description">
+            Manage your profile, preview your directory presence, and track visitor inquiries.
+          </p>
+        </div>
+        <div className="workspace-header-action">
+          <Link href="/directory" className="workspace-public-link">
+            Public directory ↗
+          </Link>
+        </div>
       </header>
-      <div className="workspace-business">
-        <h2 data-testid="selected-business">{profile.businessName}</h2>
-        <p>
-          {profile.city}, {profile.state}
-        </p>
+
+      <div className="workspace-business-card">
+        <div className="business-card-icon">
+          <Building2 size={20} aria-hidden="true" />
+        </div>
+        <div className="business-card-info">
+          <h2 data-testid="selected-business" className="business-card-name">
+            {profile.businessName}
+          </h2>
+          <p className="business-card-loc">
+            <MapPin size={14} aria-hidden="true" />
+            <span>{profile.city}, {profile.state}</span>
+          </p>
+        </div>
       </div>
+
       {query.section === "qa" && (
         <MemberQa
           key={resetVersion}
@@ -93,29 +129,33 @@ export function MemberWorkspace({
       {query.section === "overview" && (
         <>
           <RecordStatus record={record} />
-          <section className="workspace-next">
-            <h2>Next steps</h2>
-            <p>
-              {record.suspended
-                ? "Your listing is suspended. Profile edits cannot remove suspension; contact the administrator for review."
-                : record.approval === "pending"
-                  ? "Your application is awaiting a review. You can check your details while it is pending."
-                  : record.approval === "rejected"
-                    ? "Review the decision below and refine your profile. Editing does not change the decision."
-                    : record.subscription !== "active"
-                      ? "Your application is approved, but its subscription is inactive. Membership here is read-only."
-                      : "Your listing meets the publication requirements. Review your profile and explore the inquiry inbox."}
-            </p>
+          <section className="overview-banner-card">
+            <div className="banner-content">
+              <h2>Next steps</h2>
+              <p>
+                {record.suspended
+                  ? "Your listing is suspended. Profile edits cannot remove suspension; contact the administrator for review."
+                  : record.approval === "pending"
+                    ? "Your application is awaiting a review. You can check your details while it is pending."
+                    : record.approval === "rejected"
+                      ? "Review the decision below and refine your profile. Editing does not change the decision."
+                      : record.subscription !== "active"
+                        ? "Your application is approved, but its subscription is inactive. Membership here is read-only."
+                        : "Your listing meets the publication requirements. Review your profile and explore the inquiry inbox."}
+              </p>
+            </div>
             <Link
-              className="button"
+              className="button banner-action-btn"
               href={href({ section: "profile", record: record.id })}
             >
-              Review your profile
+              <span>Review your profile</span>
+              <ArrowRight size={14} aria-hidden="true" />
             </Link>
           </section>
+
           {(record.decisionReason || record.suspensionReason) && (
-            <section className="workspace-note">
-              <h2>Review details</h2>
+            <section className="workspace-note admin-detail-card">
+              <h2 className="admin-detail-heading">Review details</h2>
               {record.decisionReason && (
                 <p>Decision reason: {record.decisionReason}</p>
               )}
@@ -127,30 +167,56 @@ export function MemberWorkspace({
               )}
             </section>
           )}
-          <div className="workspace-shortcuts">
-            <Link href={href({ section: "inquiries", record: record.id })}>
-              <strong>{inbox.length} inquiries</strong>
-              <span>View your inquiries</span>
-            </Link>
-            <Link href={href({ section: "membership", record: record.id })}>
-              <strong>Membership details</strong>
-              <span>View status and individual category prices</span>
-            </Link>
+
+          <div className="overview-bottom-grid">
+            <section className="overview-actions-card">
+              <h2 className="overview-card-title">Quick shortcuts</h2>
+              <div className="quick-actions-grid">
+                <Link
+                  className="quick-action-item"
+                  href={href({ section: "inquiries", record: record.id })}
+                >
+                  <span className="action-item-label">
+                    <strong>{inbox.length} inquiries</strong>
+                    <span className="action-item-sub">View your inquiries</span>
+                  </span>
+                  <ArrowRight size={14} className="action-item-arrow" aria-hidden="true" />
+                </Link>
+
+                <Link
+                  className="quick-action-item"
+                  href={href({ section: "membership", record: record.id })}
+                >
+                  <span className="action-item-label">
+                    <strong>Membership details</strong>
+                    <span className="action-item-sub">View status and category prices</span>
+                  </span>
+                  <ArrowRight size={14} className="action-item-arrow" aria-hidden="true" />
+                </Link>
+              </div>
+            </section>
+
+            <section className="overview-activity-card">
+              <h2 className="overview-card-title">Membership status</h2>
+              <p className="field-help">{memberEligibilityMessage(record)}</p>
+              <div className="public-link-wrap">
+                <Link className="text-link" href="/list-your-business">
+                  Try the public application ↗
+                </Link>
+              </div>
+            </section>
           </div>
-          <p className="field-help">{memberEligibilityMessage(record)}</p>
-          <Link className="text-link" href="/list-your-business">
-            Try the public application
-          </Link>
         </>
       )}
+
       {query.section === "profile" && (
-        <>
-          <p>
+        <div className="member-profile-section">
+          <p className="field-help">
             Only profile fields can be edited here. Approval, subscription,
             suspension and verification decisions are protected.
           </p>
-          <section className="panel" aria-labelledby="edit-heading">
-            <h2 id="edit-heading">Edit profile</h2>
+          <section className="panel admin-detail-card" aria-labelledby="edit-heading">
+            <h2 id="edit-heading" className="admin-detail-heading">Edit profile</h2>
             <ProfileFieldsForm
               disabled={pending}
               key={`${record.id}-${state.revision}-${resetVersion}`}
@@ -172,7 +238,7 @@ export function MemberWorkspace({
               {state.notice}
             </p>
           </section>
-          <details className="panel member-editor member-public-preview">
+          <details className="panel member-editor member-public-preview admin-detail-card">
             <summary>Public profile</summary>
             <p>
               This previews saved local content, including ineligible
@@ -186,22 +252,27 @@ export function MemberWorkspace({
               Application contact name and email are excluded.
             </p>
           </details>
-        </>
+        </div>
       )}
+
       {query.section === "inquiries" && (
-        <section className="panel member-inbox">
-          <h2>Inquiry inbox</h2>
-          <p>
+        <section className="panel admin-detail-card member-inbox">
+          <h2 className="admin-detail-heading">Inquiry inbox</h2>
+          <p className="field-help">
             Email delivery is not connected yet.
           </p>
           {inbox.length ? (
-            inbox.map((item) => (
-              <details key={item.id}>
-                <summary>{item.subject}</summary>
-                <p>Sender: {item.sender}</p>
-                <p>{item.message}</p>
-              </details>
-            ))
+            <div className="inbox-list">
+              {inbox.map((item) => (
+                <details key={item.id} className="inbox-item-card">
+                  <summary>{item.subject}</summary>
+                  <div className="inbox-item-body">
+                    <p className="inbox-sender"><strong>Sender:</strong> {item.sender}</p>
+                    <p className="inbox-message">{item.message}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
           ) : (
             <div className="workspace-empty">
               <h3>No messages yet.</h3>
@@ -212,16 +283,17 @@ export function MemberWorkspace({
           )}
         </section>
       )}
+
       {query.section === "membership" && (
-        <section className="panel">
-          <h2>Subscription</h2>
+        <section className="panel admin-detail-card">
+          <h2 className="admin-detail-heading">Subscription</h2>
           <p>
             Read-only status: <strong>{record.subscription}</strong>. Approval
             alone does not make a listing public.
           </p>
           <div className="rate-list">
             {selectedCategories.map((category) => (
-              <div key={category.id}>
+              <div key={category.id} className="rate-item">
                 <span>{category.name}</span>
                 <strong>
                   {formatMonthlyPrice(category.monthlyUsd)}

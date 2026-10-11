@@ -195,4 +195,30 @@ Harmonized vertical spacing across all sections on the homepage to create a cohe
   - Zero horizontal overflow across all tested viewports.
   - All unit (81/81) and end-to-end tests passing.
 
+### List Your Business Application Page Redesign — 2026-10-10
+
+Redesigned the public application page at `/list-your-business` to deliver a clean, editorial, and trustworthy experience matching the brand aesthetic:
+- **Header & Notice**:
+  - Small uppercase section label (`FOR HEALTHY-HOME PROFESSIONALS`), large Georgia serif title (`List Your Business`), and quiet supporting text.
+  - Full-width soft-sage notice pill with Info icon (`Prepare your business details for review. Application delivery is not connected yet.`).
+- **Application Card**:
+  - Centered white rounded container (`max-width: 960px`, `border-radius: 16px`, `padding: 32px 32px 36px`, subtle border & shadow).
+  - 2-column introduction header inside the card:
+    - Left: Georgia serif heading (`Your business`) and required-field helper text.
+    - Right: Soft-sage highlight panel (`#f3f6f0`) with circular outline badges for directory reach (`Users`), team review (`FileText`), and demo notice (`Eye`).
+- **Business Fields**:
+  - Two-column form layout (`Your name` | `Business name`, `Contact email` with trailing envelope icon | `Phone (optional)`, `Website (optional)` spanning full width, `City` | `State`).
+- **Professional Categories**:
+  - Subtle divider line, Georgia serif section legend (`Professional categories`), and explanatory text above the grid.
+  - 2-column grid of selectable cards with native checkbox, category title, and individual monthly price (`$79 / month`, `$129 / month`, `$200 / month`).
+  - Active selection state with soft sage background (`#f3f7f1`) and green border (`#2b5431`).
+  - No combined price calculations per multi-category billing invariants.
+- **Business Details & Submission**:
+  - Subtle divider line, full-width textareas for `Services`, `Business description`, `Healthy-home practices`, and `Listed credentials (optional)` with clear placeholders and helper text between labels and inputs.
+  - Full-width dark forest-green submit button (`Create application`, `#284e30`).
+  - Below card: Compact `Reset workspace` button with rotate icon and disclaimer text.
+- **Verification**:
+  - Full WCAG 2.1 AA accessibility checks pass with 0 violations across desktop, tablet, and mobile.
+  - All 86 unit tests, demo builds, and end-to-end tests passing without regressions.
+
 

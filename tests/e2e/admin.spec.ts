@@ -1,3 +1,4 @@
+import { previewUrl } from "./helpers/preview-url";
 import { signIn, visitWorkspace } from "./helpers/demo-sign-in";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
@@ -30,9 +31,7 @@ test("application admin decision member confirmation and protected edits stay co
   await section(page, "Admin", "Applications");
   await expect(page.getByText(/8 of 8 applications shown/)).toBeVisible();
   await review(page, "Session Sample Business");
-  await page
-    .getByRole("button", { name: "Apply decision" })
-    .press("Enter");
+  await page.getByRole("button", { name: "Apply decision" }).press("Enter");
   await expect(page.getByLabel("Applicant-facing reason")).toBeFocused();
   await decision(page, "approved", "Fictional application accepted");
   await expect(page.getByTestId("admin-approval")).toHaveText("approved");
@@ -42,9 +41,7 @@ test("application admin decision member confirmation and protected edits stay co
   );
   await workspace(page, "Member overview", "application");
   await expect(page.getByTestId("member-approval")).toHaveText("approved");
-  await expect(
-    page.getByText("inactive ", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("inactive ", { exact: true })).toBeVisible();
   await expect(
     page.getByText("Decision reason: Fictional application accepted"),
   ).toBeVisible();
@@ -145,18 +142,14 @@ test("admin suspension credentials category labels public projection and reset",
   await page
     .getByRole("button", { name: "Mark as reviewed", exact: true })
     .click();
-  await expect(
-    page.getByText("Reviewed", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("Reviewed", { exact: true })).toBeVisible();
   page.once("dialog", async (dialog) => {
     expect(dialog.message()).toContain("Meadow Studio");
     expect(dialog.message()).toContain("Course attendance");
     await dialog.dismiss();
   });
   await page.getByRole("button", { name: "Remove review status" }).click();
-  await expect(
-    page.getByText("Reviewed", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("Reviewed", { exact: true })).toBeVisible();
   page.once("dialog", async (dialog) => {
     await dialog.accept();
   });
@@ -178,9 +171,7 @@ test("admin suspension credentials category labels public projection and reset",
   await page
     .getByLabel("Display name", { exact: true })
     .fill("Thoughtful Sample Designers");
-  await page
-    .getByRole("button", { name: "Rename category" })
-    .press("Enter");
+  await page.getByRole("button", { name: "Rename category" }).press("Enter");
   await section(page, "Admin", "Listings");
   await expect(directory).toContainText("Thoughtful Sample Designers");
   expect(
@@ -201,9 +192,7 @@ test("admin suspension credentials category labels public projection and reset",
   await workspace(page, "Member overview");
   await section(page, "Member", "Profile");
   await page.getByText("Public profile", { exact: true }).click();
-  await expect(
-    page.getByText(/Course attendance.*reviewed/),
-  ).toBeVisible();
+  await expect(page.getByText(/Course attendance.*reviewed/)).toBeVisible();
   await expect(
     page.getByRole("checkbox", { name: /Thoughtful Sample Designers/ }),
   ).toBeChecked();
@@ -212,9 +201,12 @@ test("admin suspension credentials category labels public projection and reset",
     .fill("Changed fictional credential");
   await page.getByRole("button", { name: "Update local preview" }).click();
   await expect(
-    page.getByText("Changed fictional credential — unverified", {
-      exact: true,
-    }),
+    page.getByText(
+      "Changed fictional credential — submitted claim, unverified",
+      {
+        exact: true,
+      },
+    ),
   ).toBeVisible();
   await mainNav(page, "List Your Business");
   await expect(
@@ -224,13 +216,13 @@ test("admin suspension credentials category labels public projection and reset",
   await workspace(page, "Admin overview");
   await section(page, "Admin", "Listings");
   await expect(directory).toContainText(
-    "Changed fictional credential — unverified",
+    "Changed fictional credential — submitted claim, unverified",
   );
   await resetSession(page);
   await section(page, "Admin", "Listings");
   await expect(directory).toContainText("Healthy Home Designers");
   await expect(directory).toContainText(
-    "Course attendance — unverified",
+    "Course attendance — submitted claim, unverified",
   );
   await expect(directory).not.toContainText("Thoughtful Sample Designers");
   await expect(directory.getByRole("article")).toHaveCount(4);
@@ -246,7 +238,9 @@ test("admin controls cannot submit without JavaScript", async ({ browser }) => {
   try {
     const page = await context.newPage();
     await page.goto(
-      "http://127.0.0.1:3100/demo/admin?section=applications&record=member-example-approved",
+      previewUrl(
+        "/demo/admin?section=applications&record=member-example-approved",
+      ),
     );
     await expect(
       page.getByRole("heading", { name: "Checking session" }),
@@ -255,14 +249,16 @@ test("admin controls cannot submit without JavaScript", async ({ browser }) => {
       page.getByRole("button", { name: "Apply decision" }),
     ).toHaveCount(0);
     await page.goto(
-      "http://127.0.0.1:3100/demo/admin?section=credentials&record=member-example-approved",
+      previewUrl(
+        "/demo/admin?section=credentials&record=member-example-approved",
+      ),
     );
     await expect(
       page.getByRole("button", { name: "Mark as reviewed", exact: true }),
     ).toHaveCount(0);
-    await page.goto("http://127.0.0.1:3100/demo/admin?section=applications");
+    await page.goto(previewUrl("/demo/admin?section=applications"));
     await expect(page.getByLabel("Search applications")).toHaveCount(0);
-    await page.goto("http://127.0.0.1:3100/demo/admin?section=categories");
+    await page.goto(previewUrl("/demo/admin?section=categories"));
     await expect(page.getByLabel("Display name", { exact: true })).toHaveCount(
       0,
     );

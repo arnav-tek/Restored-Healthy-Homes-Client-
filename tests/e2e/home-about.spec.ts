@@ -1,3 +1,4 @@
+import { previewUrl } from "./helpers/preview-url";
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { categories } from "../../src/domain/categories";
@@ -6,6 +7,7 @@ import { signIn } from "./helpers/demo-sign-in";
 import { section } from "./helpers/dashboard";
 
 async function inspect(page: Page, name: string) {
+  await expect(page).toHaveTitle(/\S/);
   expect(
     (
       await new AxeBuilder({ page })
@@ -21,6 +23,8 @@ async function inspect(page: Page, name: string) {
     path: `output/playwright/phase-2h1-${name}.png`,
     fullPage: true,
   });
+  const hero = page.locator(".home-hero");
+  if (await hero.count()) await hero.screenshot({ path: `output/playwright/client-preview-hero-${name}.png` });
 }
 
 test("homepage categories, truthful statistics and About Us navigation work with keyboard and responsive layouts", async ({
@@ -129,9 +133,12 @@ test("homepage categories, truthful statistics and About Us navigation work with
   ).toHaveAttribute("href", "/about");
   await page
     .getByRole("link", { name: "Browse professionals", exact: true })
+    .first()
     .focus();
   await expect(
-    page.getByRole("link", { name: "Browse professionals", exact: true }),
+    page
+      .getByRole("link", { name: "Browse professionals", exact: true })
+      .first(),
   ).toBeFocused();
   await inspect(page, `about-${info.project.name}`);
   if (info.project.name === "desktop") {
@@ -331,7 +338,7 @@ test("static homepage and About Us remain useful without JavaScript; statistics 
     viewport: page.viewportSize()!,
   });
   const noJs = await context.newPage();
-  await noJs.goto("http://127.0.0.1:3100/");
+  await noJs.goto(previewUrl("/"));
   await expect(
     noJs.getByRole("list", { name: "Browse specialties" }).getByRole("link"),
   ).toHaveCount(8);
@@ -340,7 +347,7 @@ test("static homepage and About Us remain useful without JavaScript; statistics 
     .getByRole("main")
     .getByRole("link", { name: "About Us", exact: true })
     .click();
-  await expect(noJs).toHaveURL("http://127.0.0.1:3100/about");
+  await expect(noJs).toHaveURL(previewUrl("/about"));
   await expect(noJs.getByTestId("about-video-placeholder")).toBeVisible();
   await expect(noJs.locator("video, iframe")).toHaveCount(0);
   await context.close();
@@ -356,7 +363,7 @@ test("static homepage and About Us remain useful without JavaScript; statistics 
     ])
       expect(html).not.toContain(hidden);
   }
-  await page.goto("http://127.0.0.1:3101/");
+  await page.goto(previewUrl("/", true));
   await expect(
     page.getByText(/Directory statistics are unavailable/),
   ).toBeVisible();

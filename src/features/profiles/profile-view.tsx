@@ -28,6 +28,10 @@ export function ProfileView({
         {returnTo === "/directory" ? "Back to directory" : "Back to results"}
       </Link>
       <header className="profile-heading">
+        <div className="profile-photo-placeholder">
+          <p>Business photo not provided</p>
+          <span>Profile images will appear here when available.</span>
+        </div>
         <p className="section-label">Professional profile</p>
         <h1>{profile.businessName || "Professional"}</h1>
         <p className="category-label">
@@ -80,7 +84,12 @@ export function ProfileView({
                 <h3>Credentials on file</h3>
                 <ul>
                   {profile.verifiedCredentials.map((name) => (
-                    <li key={name}>{name}</li>
+                    <li key={name}>
+                      <span className="credential-badge">
+                        Reviewed credential
+                      </span>{" "}
+                      {name}
+                    </li>
                   ))}
                 </ul>
               </div>

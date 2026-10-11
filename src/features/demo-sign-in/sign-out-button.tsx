@@ -33,7 +33,15 @@ export function SignOutButton({
           return;
         dispatch({ type: "demo-sign-out" });
         onSignedOut?.();
-        router.replace(returnTo ? demoLoginHref(returnTo) : state.identity?.kind === "admin" ? "/admin/login" : "/login");
+        const fallback =
+          typeof window !== "undefined" && window.location.pathname === "/login"
+            ? "/login"
+            : typeof window !== "undefined" && window.location.pathname === "/admin/login"
+              ? "/admin/login"
+              : state.identity?.kind === "admin"
+                ? "/admin/login"
+                : "/login";
+        router.replace(returnTo ? demoLoginHref(returnTo) : fallback);
       }}
     >
       {label}

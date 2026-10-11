@@ -11,6 +11,8 @@ import {
   HomeBusiness,
 } from "@/features/home/home-sections";
 import { HomeStatistics } from "@/features/home/home-statistics";
+import { ReviewProcess } from "@/features/home/review-process";
+import { FeaturedExamples } from "@/features/home/featured-examples";
 
 export const metadata: Metadata = {
   title: "Find healthy-home professionals",
@@ -18,13 +20,14 @@ export const metadata: Metadata = {
     "Explore eight healthy-home specialties, search by city or ZIP, and find a starting point for your next project.",
 };
 export default async function Home() {
-  const [catalog, locations, listings] = await Promise.all([
+  const [catalog, locations, listings, featured] = await Promise.all([
     directoryRepository.getCategories(),
     locationAdapter.listSupported(),
     directoryRepository
       .listPublic()
       .then((records) => records.map(({ id, state }) => ({ id, state })))
       .catch(() => null),
+    directoryRepository.listFeaturedPublic().catch(() => []),
   ]);
   return (
     <>
@@ -50,6 +53,8 @@ export default async function Home() {
       <CategoryBrowse catalog={catalog} />
       <HomeJourney />
       <HomeFeatures />
+      <FeaturedExamples professionals={featured} catalog={catalog} />
+      <ReviewProcess />
       <HomeAbout />
       <HomeBusiness />
     </>

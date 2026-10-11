@@ -1,3 +1,4 @@
+import { previewUrl, previewBaseUrl } from "./helpers/preview-url";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
@@ -103,7 +104,7 @@ test("filtered search to profile and local inquiry, validation, reset and return
   for (const label of ["Name", "Email", "Message"])
     await expect(page.getByLabel(label, { exact: true })).toHaveValue("");
   await page.getByRole("link", { name: "Back to results" }).click();
-  await expect(page).toHaveURL(`http://127.0.0.1:3100${results}`);
+  await expect(page).toHaveURL(`${previewBaseUrl}${results}`);
   await expect(page.getByLabel("City or ZIP code")).toHaveValue("27601");
 });
 
@@ -199,7 +200,7 @@ test("unsafe or absent return destinations use directory fallback; adapter failu
   }
   await page.goto("/professionals/demo-healthy-builders");
   await expect(page.getByText(/Service area not provided/)).toBeVisible();
-  await page.goto("http://127.0.0.1:3101/professionals/demo-healthy-builders");
+  await page.goto(previewUrl("/professionals/demo-healthy-builders", true));
   await expect(
     page.getByRole("heading", { name: "The profile couldn’t load" }),
   ).toBeVisible();
@@ -217,7 +218,7 @@ test("without JavaScript profiles work and inquiry cannot send native form data"
   const context = await browser.newContext({ javaScriptEnabled: false });
   try {
     const page = await context.newPage();
-    await page.goto("http://127.0.0.1:3100/professionals/demo-mold-inspection");
+    await page.goto(previewUrl("/professionals/demo-mold-inspection"));
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
       "Fern & Field Inspections",
     );

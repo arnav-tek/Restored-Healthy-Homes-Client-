@@ -20,6 +20,7 @@ export function Footer() {
           <Link href="/questions">Ask a Specialist</Link>
           <Link href="/consultations">Consultations</Link>
           <Link href="/education">Education</Link>
+          <Link href="/resources">Resources</Link>
           <Link href="/about">About Us</Link>
         </div>
 
@@ -56,6 +57,10 @@ export function Footer() {
           <Link href="/contact">Contact</Link>
         </div>
       </div>
+      <p className="container preview-notice">
+        Client preview · fictional listings and local demo workflows. Changes
+        clear when this tab is reloaded.
+      </p>
     </footer>
   );
 }

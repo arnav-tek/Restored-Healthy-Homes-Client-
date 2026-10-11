@@ -36,7 +36,10 @@ export function HomeStatistics({
         <dl className="home-statistic-values">
           <div className="home-stat-item">
             <dt className="home-stat-label">Professionals</dt>
-            <dd data-testid="home-professional-count" className="home-stat-number">
+            <dd
+              data-testid="home-professional-count"
+              className="home-stat-number"
+            >
               {stats.professionals}
             </dd>
           </div>
@@ -58,15 +61,17 @@ export function HomeStatistics({
                     <span className="sr-only">out of 5</span>
                   </>
                 )}
-                {stats.average !== null && <ReviewStars value={stats.average} />}
+                {stats.average !== null && (
+                  <ReviewStars value={stats.average} />
+                )}
               </div>
-              <span className="sr-only">
-                {stats.reviewCount} published{" "}
-                {stats.reviewCount === 1 ? "review" : "reviews"}
-              </span>
             </dd>
           </div>
         </dl>
+        <p className="home-stat-review-count">
+          Rating based on {stats.reviewCount} published{" "}
+          {stats.reviewCount === 1 ? "review" : "reviews"}
+        </p>
       </div>
       <div className="home-statistics-note">
         <details>

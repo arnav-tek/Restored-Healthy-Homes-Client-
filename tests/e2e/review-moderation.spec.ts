@@ -34,11 +34,6 @@ async function workspace(
   area: "Admin" | "Member",
   account = area === "Admin" ? "admin" : "fern",
 ) {
-  await page
-    .getByRole("contentinfo")
-    .getByRole("link", { name: `${area} area`, exact: true })
-    .press("Enter");
-  await expect(page).toHaveURL(`/demo/${area.toLowerCase()}`);
   await signIn(page, account);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     area === "Admin"

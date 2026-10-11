@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 import { signIn } from "./demo-sign-in";
 export async function fillApplication(page: Page) {
   await page.getByLabel("Your name", { exact: true }).fill("Fictional Owner");
@@ -31,6 +31,7 @@ export async function mainNav(page: Page, name: string) {
       .getByRole("banner")
       .getByRole("link", { name: "Restored Healthy Homes — home", exact: true })
       .press("Enter");
+    await expect(page).toHaveURL("/");
     return;
   }
   if (name === "Member dashboard") {
@@ -48,8 +49,10 @@ export async function mainNav(page: Page, name: string) {
   }
   const toggle = page.getByRole("button", { name: "Open navigation" });
   if (await toggle.isVisible()) await toggle.click();
-  await page
+  const link = page
     .getByRole("navigation", { name: "Main navigation" })
-    .getByRole("link", { name, exact: true })
-    .press("Enter");
+    .getByRole("link", { name, exact: true });
+  const destination = await link.getAttribute("href");
+  await link.press("Enter");
+  await expect(page).toHaveURL(destination!);
 }

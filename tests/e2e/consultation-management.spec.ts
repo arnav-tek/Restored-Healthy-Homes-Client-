@@ -30,11 +30,6 @@ async function request(page: Page, category = "healthy-designers") {
   ).toBeVisible();
 }
 async function dashboard(page: Page, area: "Admin" | "Member") {
-  await page
-    .getByRole("contentinfo")
-    .getByRole("link", { name: `${area} area`, exact: true })
-    .click();
-  await expect(page).toHaveURL(`/demo/${area.toLowerCase()}`);
   await signIn(page, area === "Admin" ? "admin" : "approved");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     area === "Admin"
@@ -63,9 +58,7 @@ async function openAdmin(page: Page, id?: string) {
   return selectedId;
 }
 async function assign(page: Page, provider: string, reassign = false) {
-  await page
-    .getByLabel("Eligible professional")
-    .selectOption(provider);
+  await page.getByLabel("Eligible professional").selectOption(provider);
   await page
     .getByRole("button", {
       name: reassign ? "Reassign request" : "Assign request",
@@ -136,6 +129,11 @@ test("same-session request, assignment, member acceptance, public status, accept
     page.getByText("Assigned · awaiting response", { exact: true }),
   ).toBeVisible();
   await inspect(page, `admin-detail-${info.project.name}`);
+  if (info.project.name === "mobile") {
+    await page.setViewportSize({ width: 320, height: 844 });
+    await inspect(page, "admin-detail-320");
+    await page.setViewportSize({ width: 390, height: 844 });
+  }
   await memberDetail(page, id);
   await privateFieldsAbsent(page);
   await switchMember(page, "member-example-coordinator");
@@ -202,14 +200,10 @@ test("same-session request, assignment, member acceptance, public status, accept
   ).toBeVisible();
   page.once("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: "Cancel request" }).click();
-  await expect(
-    page.getByText("Cancelled", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("Cancelled", { exact: true })).toBeVisible();
   await publicPage(page);
   await privateFieldsAbsent(page);
-  await expect(
-    page.getByText("Cancelled", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("Cancelled", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Make another request" }).click();
   await request(page);
   await dashboard(page, "Admin");

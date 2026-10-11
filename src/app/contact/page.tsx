@@ -11,7 +11,10 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="container public-content-page" style={{ paddingBlock: "64px 80px" }}>
+    <div
+      className="container public-content-page"
+      style={{ paddingBlock: "64px 80px" }}
+    >
       <header className="public-page-intro">
         <div>
           <p className="public-eyebrow">Get in touch</p>
@@ -25,26 +28,42 @@ export default function ContactPage() {
         </div>
       </header>
 
-      <section style={{ maxWidth: "720px", display: "flex", flexDirection: "column", gap: "28px" }}>
+      <section
+        style={{
+          maxWidth: "720px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "28px",
+        }}
+      >
         <div>
-          <h2 style={{ fontSize: "22px", marginBottom: "8px" }}>General inquiries</h2>
+          <h2 style={{ fontSize: "22px", marginBottom: "8px" }}>
+            General inquiries
+          </h2>
           <p style={{ color: "#575c4c", lineHeight: 1.65 }}>
-            For general questions about Restored Healthy Homes, email our team at{" "}
-            <a href="mailto:hello@restoredhealthyhomes.com" className="text-link">
-              hello@restoredhealthyhomes.com
-            </a>
-            .
+            Public contact details are awaiting confirmation. An approved email
+            address and support information will appear here before launch.
           </p>
         </div>
         <div>
-          <h2 style={{ fontSize: "22px", marginBottom: "8px" }}>For professionals</h2>
+          <h2 style={{ fontSize: "22px", marginBottom: "8px" }}>
+            For professionals
+          </h2>
           <p style={{ color: "#575c4c", lineHeight: 1.65 }}>
             Interested in listing your business or learning more about
             membership options? Explore our membership pricing or submit an
             application directly.
           </p>
         </div>
-        <div style={{ marginTop: "16px", display: "flex", gap: "16px", alignItems: "center" }}>
+        <div
+          style={{
+            marginTop: "16px",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "16px",
+            alignItems: "center",
+          }}
+        >
           <ButtonLink href="/list-your-business">
             List Your Business <ArrowRight size={16} aria-hidden="true" />
           </ButtonLink>

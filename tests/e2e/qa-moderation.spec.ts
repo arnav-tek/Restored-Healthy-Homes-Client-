@@ -216,7 +216,7 @@ test("same-session question and answer publication, rejection, parent hiding and
     .getByRole("button", { name: "Reject answer", exact: true })
     .click();
   await expect(
-    page.getByText("professional · Answer status: published"),
+    page.getByText("Answer: published", { exact: true }),
   ).toBeVisible();
   page.once("dialog", (dialog) => dialog.accept());
   await page

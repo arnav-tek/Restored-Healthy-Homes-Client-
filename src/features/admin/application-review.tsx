@@ -12,18 +12,18 @@ export function ApplicationReview({
   const profile = record.profile;
   return (
     <>
-      <section className="panel">
-        <h2>Application details</h2>
-        <dl className="admin-details">
-          <div>
+      <section className="panel admin-detail-card">
+        <h2 className="admin-detail-heading">Application details</h2>
+        <dl className="admin-details-grid">
+          <div className="admin-detail-item">
             <dt>Applicant</dt>
             <dd>{profile.name}</dd>
           </div>
-          <div>
+          <div className="admin-detail-item">
             <dt>Contact email</dt>
             <dd>{profile.email}</dd>
           </div>
-          <div>
+          <div className="admin-detail-item">
             <dt>Phone / website</dt>
             <dd>
               {profile.phone || "No phone supplied"}
@@ -31,34 +31,34 @@ export function ApplicationReview({
               {profile.website || "No website supplied"}
             </dd>
           </div>
-          <div>
+          <div className="admin-detail-item">
             <dt>Location</dt>
             <dd>
               {profile.city}, {profile.state}
             </dd>
           </div>
-          <div>
+          <div className="admin-detail-item admin-detail-wide">
             <dt>Categories</dt>
             <dd>
               {catalog
                 .filter((item) => profile.categoryIds.includes(item.id))
                 .map((item) => item.name)
-                .join(" · ")}
+                .join(" · ") || "None selected"}
             </dd>
           </div>
-          <div>
+          <div className="admin-detail-item admin-detail-wide">
             <dt>Services</dt>
-            <dd>{profile.services.join(" · ")}</dd>
+            <dd>{profile.services.join(" · ") || "None supplied"}</dd>
           </div>
-          <div>
+          <div className="admin-detail-item admin-detail-wide">
             <dt>Description</dt>
             <dd>{profile.description}</dd>
           </div>
-          <div>
+          <div className="admin-detail-item admin-detail-wide">
             <dt>Healthy-home practices</dt>
             <dd>{profile.practices}</dd>
           </div>
-          <div>
+          <div className="admin-detail-item admin-detail-wide">
             <dt>Listed credentials</dt>
             <dd>
               {record.credentials.map((claim) => claim.text).join(" · ") ||

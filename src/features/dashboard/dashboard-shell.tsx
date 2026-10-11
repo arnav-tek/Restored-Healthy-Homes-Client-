@@ -2,6 +2,20 @@
 import Link from "next/link";
 import { useEffect, useRef, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import {
+  LayoutGrid,
+  FileText,
+  List,
+  Shield,
+  Tag,
+  MessageSquare,
+  Calendar,
+  Star,
+  User,
+  Inbox,
+  CreditCard,
+  Users,
+} from "lucide-react";
 import { dashboardSections, type DashboardArea } from "@/validation/dashboard";
 import { useDashboardNavigation } from "./use-dashboard-navigation";
 import { SessionReset } from "./session-reset";
@@ -10,6 +24,20 @@ import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { WorkspaceGate } from "@/features/demo-sign-in/workspace-gate";
 import { SignOutButton } from "@/features/demo-sign-in/sign-out-button";
 import { demoAccounts } from "@/domain/demo-identity";
+
+const sectionIcons: Record<string, ReactNode> = {
+  overview: <LayoutGrid size={16} aria-hidden="true" />,
+  applications: <FileText size={16} aria-hidden="true" />,
+  listings: <List size={16} aria-hidden="true" />,
+  credentials: <Shield size={16} aria-hidden="true" />,
+  categories: <Tag size={16} aria-hidden="true" />,
+  qa: <MessageSquare size={16} aria-hidden="true" />,
+  consultations: <Calendar size={16} aria-hidden="true" />,
+  reviews: <Star size={16} aria-hidden="true" />,
+  profile: <User size={16} aria-hidden="true" />,
+  inquiries: <Inbox size={16} aria-hidden="true" />,
+  membership: <CreditCard size={16} aria-hidden="true" />,
+};
 
 export function DashboardShell({
   area,
@@ -45,7 +73,10 @@ export function DashboardShell({
   if (!ready || !state.identity || state.identity.kind !== area)
     return <WorkspaceGate area={area} ready={ready} returnTo={href({})} />;
   const links = (
-    <nav aria-label={`${area === "member" ? "Member" : "Admin"} sections`}>
+    <nav
+      aria-label={`${area === "member" ? "Member" : "Admin"} sections`}
+      className="workspace-nav-list"
+    >
       {dashboardSections[area].map((section) => (
         <Link
           key={section}
@@ -56,50 +87,52 @@ export function DashboardShell({
             review: "",
           })}
           aria-current={query.section === section ? "page" : undefined}
+          className={`workspace-nav-item ${query.section === section ? "is-active" : ""}`}
           onClick={() => {
             if (mobile.current) mobile.current.open = false;
             if (section === query.section)
               document.getElementById("workspace-title")?.focus();
           }}
         >
-          {section === "qa"
-            ? "Q&A"
-            : section[0].toUpperCase() + section.slice(1)}
+          <span className="workspace-nav-icon" aria-hidden="true">
+            {sectionIcons[section]}
+          </span>
+          <span className="workspace-nav-label">
+            {section === "qa"
+              ? "Q&A"
+              : section[0].toUpperCase() + section.slice(1)}
+          </span>
         </Link>
       ))}
     </nav>
   );
   return (
     <div className="container dashboard-page workspace-page">
-      <div className="dashboard-top">
-        <span className="demo-pill">
-          {area === "member" ? "Member" : "Admin"} Workspace
-        </span>
-        <Link href="/directory" className="text-link">
-          Public directory ↗
-        </Link>
-      </div>
-      <div className="workspace-notice">
-        <strong>Your workspace.</strong> Manage your profile, review activity and keep track of your next steps.
-      </div>
-      <div className="demo-account-bar">
-        <span
-          data-testid="demo-identity"
-          data-account={state.identity.accountId}
-        >
-          Account:{" "}
-          {
-            demoAccounts(state.applicationId).find(
-              (account) => account.id === state.identity?.accountId,
-            )?.label
-          }
-        </span>
-        <SignOutButton label="Switch account" returnTo={href({})} />
-      </div>
       <div className="dashboard-layout">
-        <aside className="dashboard-sidebar workspace-sidebar">
+        <aside className="workspace-sidebar-card">
+          <div className="workspace-sidebar-header">
+            <h2 className="workspace-sidebar-title">
+              {area === "member" ? "Member Workspace" : "Admin Workspace"}
+            </h2>
+            <div className="workspace-sidebar-account">
+              <span
+                data-testid="demo-identity"
+                data-account={state.identity.accountId}
+                className="workspace-account-label"
+              >
+                Account:{" "}
+                {
+                  demoAccounts(state.applicationId).find(
+                    (account) => account.id === state.identity?.accountId,
+                  )?.label
+                }
+              </span>
+              <SignOutButton label="Switch account" returnTo={href({})} />
+            </div>
+          </div>
+          <hr className="workspace-sidebar-divider" />
           <div className="workspace-desktop-nav">
-            <p>
+            <p className="workspace-section-label">
               {area === "member" ? "Your business" : "Directory management"}
             </p>
             {links}
@@ -111,15 +144,27 @@ export function DashboardShell({
             </summary>
             {links}
           </details>
+          <hr className="workspace-sidebar-divider" />
           <div className="workspace-other">
-            <p>Other workspace</p>
-            <nav aria-label="Workspaces">
-              <Link href={area === "member" ? "/demo/admin" : "/demo/member"}>
-                {area === "member" ? "Admin overview" : "Member overview"}
+            <p className="workspace-section-label">Other workspace</p>
+            <nav aria-label="Workspaces" className="workspace-nav-list">
+              <Link
+                href={area === "member" ? "/demo/admin" : "/demo/member"}
+                className="workspace-nav-item"
+              >
+                <span className="workspace-nav-icon" aria-hidden="true">
+                  <Users size={16} />
+                </span>
+                <span className="workspace-nav-label">
+                  {area === "member" ? "Admin overview" : "Member overview"}
+                </span>
               </Link>
             </nav>
           </div>
-          <SessionReset onReset={() => router.replace(`/demo/${area}`)} />
+          <hr className="workspace-sidebar-divider" />
+          <div className="workspace-sidebar-footer">
+            <SessionReset onReset={() => router.replace(`/demo/${area}`)} />
+          </div>
         </aside>
         <div className="dashboard-content">
           {Object.keys(drafts).length > 0 && (

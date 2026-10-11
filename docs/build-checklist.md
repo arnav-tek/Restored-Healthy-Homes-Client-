@@ -4,6 +4,42 @@ The [overview](../Project%20overview/restored-healthy-homes-project-overview.md)
 
 The [source-to-delivery coverage table](scope-coverage.md) maps all overview sections and original-brief requirements to this plan, including superseded instructions and unresolved decisions. Use it to distinguish missing scope from unfinished implementation; do not expand scope from generic recommendations.
 
+## Current client-preview status — 2026-10-11
+
+This snapshot supersedes older instructions to defer frontend resources/newsletter/featured presentation. Historical phase notes below remain a record of their original scope, not the current delivery status. See [client-preview handoff](client-preview-handoff.md) for the review walkthrough and actual verification results.
+
+### Implemented frontend
+
+- [x] Refined homepage: two-column desktop hero, calculated compact statistics with definitions disclosure, search before statistics on mobile, logo home link and spaced navigation without a redundant Home item.
+- [x] Category search, directory filters/sorting/rating summaries, eligible public profiles, reviewed/submitted credential presentation and purposeful missing-photo states.
+- [x] Homepage and pricing consultation cards use the shared proposed offer; concise application/credential review explanation and professional education introduction.
+- [x] Education pathways, membership pricing, About story/video layout and pending asset states.
+- [x] Resources listing/article layouts, category filters and empty/invalid states; clearly labelled sample editorial content behind a typed repository contract.
+- [x] Accessible newsletter preview validates input, clears the address and confirms that no subscription occurred. No external delivery or address storage.
+- [x] Clearly labelled eligible featured examples; featured status remains independent from credentials and public eligibility. No upgrade price or billing activation.
+- [x] Public application, member profile/inbox/status, admin application/listing/credential/category, Q&A, review moderation and consultation coordination demos operate in the current tab.
+- [x] Profile edits require the owning demo member or admin; listing decisions, suspension, credential review and category changes require the demo admin identity. Public applications remain available. These guards are not server authorization.
+- [x] Published member Q&A links use the existing explicit member-to-professional association and current public eligibility; unrelated sample members remain unlinked.
+- [x] Contact/Terms/Privacy routes have clear pending-content states instead of unconfirmed contact details or invented final policies.
+- [x] Final verification recorded in the handoff: typecheck, lint, 89 unit tests, demo build, 104 distinct affected Chromium cases and screenshot review including 320px. Four duplicate viewport checks intentionally skipped; production build rejects missing opt-in.
+
+### Pending client content and decisions
+
+- [ ] Approve page copy and visual presentation; supply About company story, film, poster, captions and transcript.
+- [ ] Supply approved editorial articles and any real author/date attribution; approve newsletter content and select the provider.
+- [ ] Confirm public contact/support details; supply legal text, asterisks and disclaimer placement.
+- [ ] Confirm education providers/programs, entry requirements, timelines and external costs.
+- [ ] Confirm credential review policy, public names/contact fields, review verification, featured terms/priority, multi-category billing and consultation delivery/refund responsibilities.
+- [ ] Confirm launch browser/performance conditions and domain/owner handoff requirements.
+
+### Pending real integrations
+
+- [ ] Server authentication/ownership checks, RLS, durable shared records, production location/service-area data and cross-session continuity.
+- [ ] Secure image uploads and storage; CMS editing for resources and certification content.
+- [ ] Payments/subscription lifecycle, featured purchases, booking/scheduling, transactional email, inquiry delivery and newsletter subscription delivery.
+- [ ] Production administration, analytics and category creation; demos currently provide local decisions and label editing only.
+- [ ] Client approval, production security/operational checks and deployment. No deployment, commit or push is authorized by this preview task.
+
 ## Phase 1 — foundation and preview
 
 - [x] Read three source documents, inspect live visual reference, preserve confidential files.
@@ -33,7 +69,7 @@ The [source-to-delivery coverage table](scope-coverage.md) maps all overview sec
 
 - [x] Add individual demo profiles and working profile navigation with public eligibility and field allowlists.
 - [x] Add demo inquiry submission, validation and confirmation states using synthetic data; no real email or delivery.
-- [ ] Refine homepage following review and agreed category views; retain shared contracts and honest loading/empty/error states.
+- [x] Refine homepage following review and agreed category views; retain shared contracts and honest loading/empty/error states (completed in later homepage phases).
 - [x] Responsive/accessibility/browser verification; results recorded below.
 - [x] User authorized Phase 2C-1 public application/member demo; admin actions remain deferred.
 - [x] Concise [Phase 2B handoff](phase-2b-handoff.md); stop before Phase 2C.
@@ -187,11 +223,11 @@ Real location services, durable reviews and featured priority remain future work
 Reconciled 2026-10-04 against the original Word brief, supplied overview/paste and later client conversation. These unchecked items clarify remaining acceptance, not newly completed work. Later client confirmations override old exclusions, category labels, Netlify hosting and exact-design mandates. Demo completion is not production completion.
 
 - [x] Phase 2H-1 homepage layout: fuller introduction, eight category browse links and statistics derived from eligible public professionals, listing-location states and individual published ratings. Values explicitly describe demo data, not service coverage or live traction.
-- [ ] Remaining public-page delivery: final About Us story/Why/text/client video, approved education content, blog/resources, newsletter form and relevant navigation/footer links. About Us layout is built in 2H-1; education/pricing layout and navigation in 2H-2. Final assets and client approval remain outstanding.
+- [ ] Remaining public content: final About Us story/Why/text/client video, approved education/editorial content, contact details and legal wording. About/education/pricing layouts are built; resource/article layouts, newsletter preview and relevant links are implemented in the 2026-10-11 client preview. Final assets, delivery integrations and client approval remain outstanding.
 - [x] Education layout acceptance in 2H-2: all eight current categories, external certification/training options, explicit pending typical timelines/costs, official provider links and an application CTA. Final program details/content approval remain separately pending. The platform does not certify.
 - [x] Demo search completion in 2I-1: state and minimum-rating filters alongside existing city/ZIP/category/radius search, with published review averages/counts on directory cards.
 - [ ] Production search and placement: real location/service-area data and agreed featured priority. Radius/service-area/geolocation behavior remains a client decision; an interactive map is not automatically required.
-- [ ] Profile/media completion (Phase 3): photo/logo management and secure uploads, intended public professional/owner display name, contact options and badge presentation. Keep public display fields separate from private application contact identity; confirm which names/contact details may be public.
+- [ ] Profile/media integration (Phase 3): photo/logo management and secure uploads, intended public professional/owner display name and contact options. Missing-photo states and reviewed/submitted badge presentation are implemented; public identity fields and real media management remain pending. Keep public fields separate from private application contact identity.
 - [ ] Admin completion (Phase 3/5): permitted listing/profile edits, not only status decisions; basic analytics including active members, members by category, new applications this month and membership status. Current demo queue counts alone do not satisfy these analytics.
 - [ ] Category architecture (Phase 3): support adding categories without rebuilding and preserve stable IDs on rename. Existing label editing is not evidence of category creation or a billing-configuration editor; define any added admin controls before implementing them.
 - [ ] Email acceptance (Phase 4/5): new-application owner alert, approval/rejection notices, relevant-category Q&A alerts, consultation assignment/request alerts, inquiry delivery and agreed account/subscription notifications.
@@ -203,8 +239,8 @@ Second-pass clarifications from the same sources (not additional product scope):
 
 - [x] Review presentation: Phase 2G-2 shares numeric labels and decorative stars across public/member reviews and admin detail/queue views; stars do not duplicate screen-reader announcements.
 - [x] Phase 2I-1 rating filters and directory-card summaries reuse the profile published-review summary, including same-tab moderation; homepage statistics retain the existing published calculation.
-- [ ] Q&A attribution: published member answers link to the correct eligible public professional profile through an explicit stable member-to-professional association. Current session-member attribution has no public profile link. Confirm what "verified member" means and category-based notification eligibility; paid membership is not automatically credential verification.
-- [ ] Certification badges: derive displayed badges from stored credential data under agreed verification rules, update/remove them when underlying credentials change, and distinguish submitted claims from verified credentials. Existing text/verification previews do not complete automatic badge behavior.
+- [x] Frontend Q&A attribution: published member answers link through the explicit association only while the member and public profile are eligible. Production member verification and category-based notification rules remain pending.
+- [x] Frontend credential badges: reviewed badges derive from stored review decisions; changed claims lose review status and submitted claims remain distinct. Final review policy and durable production credentials remain pending.
 - [ ] Production data continuity: member edits, admin decisions, inquiries, Q&A, reviews and subscriptions operate on shared durable records. Verify changes across independent member/admin/visitor sessions and reloads; the current separate server directory/member demo fixtures and same-tab overlays are temporary.
 - [ ] Billing acceptance: customer payment-method updates, cancellation and failed/inactive-payment visibility follow agreed lifecycle rules. Restored payment cannot override rejection/suspension, and admin approval alone cannot bypass the subscription requirement. Featured purchases likewise cannot make an otherwise ineligible listing public.
 

@@ -1,3 +1,4 @@
+import { previewUrl } from "./helpers/preview-url";
 import { signIn, switchMember, visitWorkspace } from "./helpers/demo-sign-in";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
@@ -90,7 +91,9 @@ test("public application, keyboard validation, shared member edits and reset", a
     "Locally Edited Sample",
   );
   await expect(
-    page.getByText("New fictional training — unverified", { exact: true }),
+    page.getByText("New fictional training — submitted claim, unverified", {
+      exact: true,
+    }),
   ).toBeVisible();
   await section(page, "Member", "Overview");
   await expect(page.getByTestId("member-approval")).toHaveText("pending");
@@ -152,10 +155,10 @@ test("example states, seeded inbox, client navigation and refresh lifetime", asy
   await switchMember(page, "member-example-approved");
   await expect(page.getByTestId("member-approval")).toHaveText("approved");
   await section(page, "Member", "Inquiries");
-  await page
-    .getByText("Material consultation", { exact: true })
-    .click();
-  await expect(page.getByText(/explore material choices for a renovation/)).toBeVisible();
+  await page.getByText("Material consultation", { exact: true }).click();
+  await expect(
+    page.getByText(/explore material choices for a renovation/),
+  ).toBeVisible();
   await section(page, "Member", "Profile");
   await page
     .getByLabel("Business name", { exact: true })
@@ -205,7 +208,7 @@ test("application and editing cannot natively submit without JavaScript", async 
   const context = await browser.newContext({ javaScriptEnabled: false });
   try {
     const page = await context.newPage();
-    await page.goto("http://127.0.0.1:3100/list-your-business");
+    await page.goto(previewUrl("/list-your-business"));
     await expect(
       page.getByText(/JavaScript is required for this form/),
     ).toBeVisible();
@@ -213,7 +216,7 @@ test("application and editing cannot natively submit without JavaScript", async 
     await expect(
       page.getByRole("button", { name: "Create application" }),
     ).toBeDisabled();
-    await page.goto("http://127.0.0.1:3100/demo/member?section=profile");
+    await page.goto(previewUrl("/demo/member?section=profile"));
     await expect(
       page.getByRole("heading", { name: "Checking session" }),
     ).toBeVisible();
