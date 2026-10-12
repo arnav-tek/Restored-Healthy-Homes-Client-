@@ -12,7 +12,7 @@ export default async function ApplicationPage() {
   return (
     <div className="container application-page">
       <header className="page-heading application-page-heading">
-        <p className="section-label">For healthy-home professionals</p>
+        <p className="section-label section-tag">For healthy-home professionals</p>
         <h1>List Your Business</h1>
         <p>Introduce your business, services and professional specialties.</p>
       </header>

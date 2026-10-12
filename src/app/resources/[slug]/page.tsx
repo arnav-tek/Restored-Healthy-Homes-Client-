@@ -25,7 +25,7 @@ export default async function ResourcePage({ params }: Props) {
       </Link>
       <article>
         <header>
-          <p className="section-label">
+          <p className="section-label section-tag">
             Sample editorial content · awaiting approval
           </p>
           <h1>{article.title}</h1>

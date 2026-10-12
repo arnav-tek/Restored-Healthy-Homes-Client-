@@ -48,8 +48,8 @@ export function CategoryBrowse({ catalog }: { catalog: readonly Category[] }) {
       <div className="home-section-heading category-browse-header">
         <div className="category-header-main">
           <div className="category-pill-row">
-            <span className="category-pill">SPECIALTY</span>
-            <span className="category-pill-divider" aria-hidden="true" />
+            <span className="category-pill section-tag">SPECIALTY</span>
+
           </div>
           <h2 id="category-heading">
             Find the specialty you <br className="category-heading-break" />
@@ -99,9 +99,9 @@ export function HomeJourney() {
       aria-labelledby="journey-heading"
     >
       <div className="home-journey-intro">
-        <div className="home-journey-eyebrow">
+        <div className="home-journey-eyebrow section-tag">
           <span>How it works</span>
-          <span className="journey-eyebrow-line" aria-hidden="true" />
+
         </div>
         <h2 id="journey-heading">
           A clearer path
@@ -177,8 +177,8 @@ export function HomeFeatures() {
       <div className="container home-section">
         <div className="home-features-header">
           <div className="section-kicker">
-            <span className="section-kicker-line" aria-hidden="true" />
-            <p className="section-label">Ways to get started</p>
+
+            <p className="section-label section-tag">Ways to get started</p>
           </div>
           <h2 id="features-heading">Explore Restored Healthy Homes</h2>
           <p className="features-intro">
@@ -204,7 +204,7 @@ export function HomeFeatures() {
                   >
                     <MessageSquare size={17} />
                   </span>
-                  <p className="feature-category-label">Ask a Specialist</p>
+                  <p className="feature-category-label section-tag">Ask a Specialist</p>
                 </div>
                 <div className="feature-card-body">
                   <h3>A useful question is a good beginning.</h3>
@@ -290,7 +290,7 @@ export function HomeFeatures() {
                   >
                     <Calendar size={17} />
                   </span>
-                  <p className="feature-category-label">Consultations</p>
+                  <p className="feature-category-label section-tag">Consultations</p>
                 </div>
                 <div className="feature-card-body">
                   <h3>Have a specific project in mind?</h3>
@@ -340,8 +340,8 @@ export function HomeAbout() {
       <div className="home-about-grid">
         <div className="home-about-intro">
           <div className="home-eyebrow">
-            <span className="eyebrow-dash" aria-hidden="true" />
-            <span className="eyebrow-text">About Us</span>
+
+            <span className="eyebrow-text section-tag">About Us</span>
           </div>
           <h2 id="home-about-heading" className="home-about-title">
             Different specialties.
@@ -414,8 +414,8 @@ export function HomeBusiness() {
       <div className="container">
         <div className="home-business-card">
           <div className="home-business-cta">
-            <p className="home-business-eyebrow">
-              <span className="eyebrow-dash" aria-hidden="true" />
+            <p className="home-business-eyebrow section-tag section-tag-inverse">
+
               For professionals
             </p>
             <h2 id="business-heading">

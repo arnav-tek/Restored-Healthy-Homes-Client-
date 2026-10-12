@@ -34,7 +34,7 @@ export default async function Home() {
       <section className="home-hero">
         <div className="container home-hero-inner">
           <div className="hero-copy">
-            <p className="hero-kicker">Restored Healthy Homes</p>
+            <p className="hero-kicker section-tag section-tag-inverse">Restored Healthy Homes</p>
             <h1>Find a professional for your healthier home.</h1>
             <p>
               From a moisture concern to a new build, find the specialty and

@@ -1,5 +1,13 @@
 # Design direction — Phase 1
 
+## Rounded section labels — 2026-10-12
+
+Use the client's existing Specialty pill as the shared section-label treatment: Arial 11 px, a fine clay outline, 9999 px radius and 3 px / 12 px padding. Retain the sage/cream/clay palette, existing Georgia headings and section spacing. Use cream text and a quiet cream outline on sage backgrounds. Labels size to their text, wrap within narrow columns and remain non-interactive.
+
+Pre-edit review: replace only section eyebrows and their decorative lines; retain category/status badges, content dividers and working controls. A shared CSS class avoids separate page treatments. No new fonts, cards, copy or motion.
+
+Implemented 39 shared section labels and removed 16 decorative label lines. Verification: typecheck, lint, 89 unit tests and demo build passed; 67 affected browser cases passed with five intentional viewport skips across home/About, education/pricing, resources/public pages, consultations, sign-in and directory/workspace shells. Playwright inspection covered 44 route/viewport combinations across 18 routes at 1440/768/390/320 px with rounded borders, no label lines and no horizontal overflow. Desktop/tablet/mobile screenshots were reviewed in `output/playwright/section-tags-*.png`. Default build still fails closed without demo opt-in.
+
 The visual reference was inspected in-browser on 2026-09-30. Retain its sage gradients, Georgia headings, cream surfaces and terracotta actions. Do not reuse its unsupported statistics, testimonials, categories or verification claims.
 
 ## Direction before implementation

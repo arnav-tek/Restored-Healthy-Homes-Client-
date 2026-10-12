@@ -14,6 +14,8 @@
   --border: #dcded2;
   --muted: #656658;
   --dark-clay: #984b22;
+  --section-tag-color: var(--dark-clay);
+  --section-tag-border: #984b2273;
 }
 * {
   box-sizing: border-box;
@@ -259,8 +261,6 @@ main:focus {
   padding-block: 48px 28px;
 }
 .hero-kicker {
-  font-size: 14px;
-  color: #e5eadf;
   margin-bottom: 12px;
 }
 .hero-copy {
@@ -302,14 +302,27 @@ main:focus {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
-.section-label {
-  display: flex;
-  gap: 8px;
+/* Non-interactive section labels share the client-approved Specialty pill. */
+.section-tag {
+  display: inline-flex;
   align-items: center;
-  font:
-    14px/1.5 Arial,
-    sans-serif;
-  color: var(--color-sage);
+  align-self: flex-start;
+  width: fit-content;
+  max-width: 100%;
+  padding: 3px 12px;
+  border: 1px solid var(--section-tag-border);
+  border-radius: 9999px;
+  color: var(--section-tag-color);
+  font: 700 11px/1.4 var(--font-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.section-tag-inverse {
+  --section-tag-color: var(--color-cream);
+  --section-tag-border: #f5f0e866;
+}
+.section-label {
   margin-bottom: 12px;
 }
 .site-footer {
@@ -507,19 +520,7 @@ main:focus {
   margin-bottom: 32px;
 }
 .directory-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--dark-clay);
   margin-bottom: 12px;
-}
-.eyebrow-line {
-  color: var(--dark-clay);
-  font-weight: 700;
 }
 .directory-title {
   overflow-wrap: anywhere;
@@ -1947,11 +1948,6 @@ tbody tr:last-child > * {
   margin-bottom: 0;
 }
 .application-page-heading .section-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #445942;
   margin-bottom: 8px;
 }
 .application-page-heading h1 {
@@ -2548,11 +2544,6 @@ tbody tr:last-child > * {
   margin: 16px 0;
 }
 .workspace-section-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
   margin: 0 0 8px 8px;
 }
 .workspace-nav-list {
@@ -3868,24 +3859,9 @@ tbody tr:last-child > * {
 }
 
 .qa-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--dark-clay);
-  font-size: 11.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 700;
   margin-bottom: 16px;
 }
 
-.qa-eyebrow-bar {
-  display: inline-block;
-  width: 36px;
-  height: 2px;
-  background-color: var(--dark-clay);
-  border-radius: 1px;
-}
 
 .qa-hero-title {
   font-family: Georgia, serif;
@@ -5007,14 +4983,6 @@ tbody tr:last-child > * {
   align-items: flex-start;
 }
 .consultation-hero-left .section-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--dark-clay);
   margin-bottom: 14px;
 }
 .consultation-hero-title {
@@ -5083,12 +5051,6 @@ tbody tr:last-child > * {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 .offer-card-eyebrow {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #1f382b;
-  opacity: 0.8;
   margin-bottom: 4px;
 }
 .consultation-price {
@@ -5129,14 +5091,6 @@ tbody tr:last-child > * {
   margin-bottom: 36px;
 }
 .process-header .section-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--dark-clay);
   margin-bottom: 10px;
 }
 .process-title {
@@ -5269,11 +5223,6 @@ tbody tr:last-child > * {
   gap: 32px;
 }
 .info-panel-eyebrow {
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--dark-clay);
   margin-bottom: 12px;
 }
 .info-panel-title {
@@ -5456,11 +5405,6 @@ tbody tr:last-child > * {
   padding: 36px 40px;
 }
 .consultation-confirmation .section-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--dark-clay);
   margin-bottom: 8px;
 }
 .consultation-confirmation h2 {
@@ -5470,7 +5414,7 @@ tbody tr:last-child > * {
   color: #1f382b;
   margin-bottom: 12px;
 }
-.consultation-confirmation p {
+.consultation-confirmation p:not(.section-tag) {
   font-size: 14.5px;
   color: #4b5563;
 }
@@ -5705,9 +5649,7 @@ tbody tr:last-child > * {
   border-radius: 50%;
 }
 .login-eyebrow {
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  margin: 0;
 }
 .login-story h2 {
   font-size: clamp(32px, 3.5vw, 44px);
@@ -6119,12 +6061,6 @@ tbody tr:last-child > * {
   padding: 3px 12px;
   line-height: 1.4;
 }
-.category-pill-divider {
-  display: inline-block;
-  width: 44px;
-  height: 1px;
-  background: rgba(152, 75, 34, 0.4);
-}
 .category-browse-header h2 {
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(34px, 3.6vw, 48px);
@@ -6384,21 +6320,7 @@ tbody tr:last-child > * {
   flex-direction: column;
 }
 .home-journey-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  color: #4a5444;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
   margin-bottom: 20px;
-}
-.journey-eyebrow-line {
-  display: inline-block;
-  width: 48px;
-  height: 1px;
-  background-color: #c4cdc0;
 }
 .home-journey-intro h2 {
   font-family: var(--font-serif);
@@ -6566,20 +6488,8 @@ tbody tr:last-child > * {
   gap: 10px;
   margin-bottom: 12px;
 }
-.section-kicker-line {
-  width: 24px;
-  height: 2px;
-  background: var(--dark-clay);
-  display: inline-block;
-  flex-shrink: 0;
-}
 .home-features-header .section-label {
   margin: 0;
-  text-transform: uppercase;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  font-weight: 700;
-  color: var(--muted);
 }
 .home-features-header h2 {
   font: 400 clamp(32px, 3.4vw, 42px)/1.2 Georgia, "Times New Roman", serif;
@@ -6653,11 +6563,6 @@ tbody tr:last-child > * {
   color: #984b22;
 }
 .feature-category-label {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #244528;
   margin: 0;
 }
 .feature-card-body h3 {
@@ -6762,24 +6667,8 @@ tbody tr:last-child > * {
   margin-bottom: 8px;
   max-width: 100%;
 }
-.home-eyebrow .eyebrow-dash {
-  display: inline-block;
-  width: 20px;
-  height: 2px;
-  background-color: var(--dark-clay);
-  border-radius: 1px;
-  flex-shrink: 0;
-}
 .home-eyebrow .eyebrow-text {
-  color: var(--dark-clay);
-  font-size: 11.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
   margin: 0;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  max-width: 100%;
 }
 
 /* 1. Featured Listing Examples Section */
@@ -7258,22 +7147,7 @@ tbody tr:last-child > * {
   flex-direction: column;
 }
 .home-business-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: #9cb59a;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
   margin-bottom: 20px;
-}
-.home-business-eyebrow .eyebrow-dash {
-  display: inline-block;
-  width: 20px;
-  height: 2px;
-  background-color: #9cb59a;
-  border-radius: 1px;
 }
 .home-business-cta h2 {
   font-family: var(--font-serif);
@@ -7367,18 +7241,7 @@ tbody tr:last-child > * {
   margin-bottom: 12px;
 }
 .about-eyebrow-text {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--dark-clay);
-  text-transform: uppercase;
-}
-.about-eyebrow-dash {
-  width: 24px;
-  height: 2px;
-  background-color: var(--dark-clay);
-  display: inline-block;
-  flex-shrink: 0;
+  margin: 0;
 }
 
 /* Hero Section */
@@ -7604,7 +7467,7 @@ tbody tr:last-child > * {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 .about-purpose-header .about-eyebrow-text {
-  margin-bottom: 6px;
+  margin: 0;
 }
 .about-purpose-title {
   font-family: Georgia, "Times New Roman", serif;
@@ -7688,7 +7551,7 @@ tbody tr:last-child > * {
   gap: 32px;
 }
 .about-cta-content .about-eyebrow-text {
-  margin-bottom: 6px;
+  margin: 0;
 }
 .about-cta-title {
   font-family: Georgia, "Times New Roman", serif;
@@ -7979,9 +7842,8 @@ tbody tr:last-child > * {
     padding-block: 24px 20px;
   }
   .hero-kicker {
-    font-size: 13px;
-    margin-bottom: 10px;
-  }
+  margin-bottom: 12px;
+}
   .hero-copy h1 {
     font-size: 34px;
     max-width: 20ch;
@@ -8221,11 +8083,6 @@ tbody tr:last-child > * {
   margin-bottom: 48px;
 }
 .public-eyebrow {
-  color: var(--dark-clay);
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 700;
   margin-bottom: 16px;
 }
 .public-intro-copy {
@@ -8251,14 +8108,6 @@ tbody tr:last-child > * {
   margin-bottom: 36px;
 }
 .education-hero-left .public-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--dark-clay);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 700;
   margin-bottom: 14px;
 }
 .education-hero-left h1 {
@@ -8684,14 +8533,6 @@ tbody tr:last-child > * {
   gap: 32px;
 }
 .closing-cta-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--dark-clay);
   margin-bottom: 8px;
 }
 .closing-cta-content h2 {
@@ -8800,21 +8641,9 @@ tbody tr:last-child > * {
 }
 
 .pricing-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--dark-clay);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 700;
   margin-bottom: 14px;
 }
 
-.pricing-eyebrow-line {
-  color: var(--dark-clay);
-  font-weight: 700;
-}
 
 .pricing-hero-title {
   font-family: Georgia, serif;
@@ -9226,11 +9055,6 @@ tbody tr:last-child > * {
 }
 
 .pricing-cta-eyebrow {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--dark-clay);
   margin: 0;
 }
 

@@ -10,8 +10,8 @@ export function ReviewProcess() {
       <div className="review-process-card">
         <div className="review-process-left">
           <div className="home-eyebrow">
-            <span className="eyebrow-dash" aria-hidden="true" />
-            <h2 id="review-process-heading" className="eyebrow-text">
+
+            <h2 id="review-process-heading" className="eyebrow-text section-tag">
               Our Review Process
             </h2>
           </div>

@@ -17,7 +17,7 @@ export default function ContactPage() {
     >
       <header className="public-page-intro">
         <div>
-          <p className="public-eyebrow">Get in touch</p>
+          <p className="public-eyebrow section-tag">Get in touch</p>
           <h1>Contact Us</h1>
         </div>
         <div className="public-intro-copy">

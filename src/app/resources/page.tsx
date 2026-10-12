@@ -24,7 +24,7 @@ export default async function ResourcesPage({
     <div className="container public-content-page resources-page">
       <header className="public-page-intro">
         <div>
-          <p className="public-eyebrow">Ideas for your next step</p>
+          <p className="public-eyebrow section-tag">Ideas for your next step</p>
           <h1>Resources</h1>
         </div>
         <div className="public-intro-copy">
@@ -57,7 +57,7 @@ export default async function ResourcesPage({
         <div className="resource-grid">
           {articles.map((article) => (
             <article key={article.slug} className="resource-card">
-              <p className="section-label">Sample editorial content</p>
+              <p className="section-label section-tag">Sample editorial content</p>
               <h2>
                 <Link href={`/resources/${article.slug}`}>{article.title}</Link>
               </h2>

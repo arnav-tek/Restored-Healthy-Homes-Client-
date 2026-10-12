@@ -132,7 +132,7 @@ export function DashboardShell({
           </div>
           <hr className="workspace-sidebar-divider" />
           <div className="workspace-desktop-nav">
-            <p className="workspace-section-label">
+            <p className="workspace-section-label section-tag">
               {area === "member" ? "Your business" : "Directory management"}
             </p>
             {links}
@@ -146,7 +146,7 @@ export function DashboardShell({
           </details>
           <hr className="workspace-sidebar-divider" />
           <div className="workspace-other">
-            <p className="workspace-section-label">Other workspace</p>
+            <p className="workspace-section-label section-tag">Other workspace</p>
             <nav aria-label="Workspaces" className="workspace-nav-list">
               <Link
                 href={area === "member" ? "/demo/admin" : "/demo/member"}

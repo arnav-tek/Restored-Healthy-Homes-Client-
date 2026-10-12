@@ -24,8 +24,8 @@ export default function ConsultationsPage() {
       {/* Hero: 2-column desktop layout */}
       <header id="consultation-intro" className="consultation-intro">
         <div className="consultation-hero-left">
-          <p className="section-eyebrow">
-            <span className="eyebrow-line" aria-hidden="true">— </span>CONSULTATIONS
+          <p className="section-eyebrow section-tag">
+            CONSULTATIONS
           </p>
           <h1 className="consultation-hero-title">
             A little guidance for your next home project.
@@ -47,7 +47,7 @@ export default function ConsultationsPage() {
               <MessageSquare size={22} />
             </div>
             <div>
-              <p className="offer-card-eyebrow">CURRENT PROPOSED OFFER</p>
+              <p className="offer-card-eyebrow section-tag">CURRENT PROPOSED OFFER</p>
               <p className="consultation-price">{consultationOfferLabel()}</p>
             </div>
           </div>
@@ -74,8 +74,8 @@ export default function ConsultationsPage() {
         aria-labelledby="consultation-process-heading"
       >
         <div className="process-header">
-          <h2 id="consultation-process-heading" className="section-eyebrow">
-            <span className="eyebrow-line" aria-hidden="true">— </span>HOW CONSULTATIONS WORK
+          <h2 id="consultation-process-heading" className="section-eyebrow section-tag">
+            HOW CONSULTATIONS WORK
           </h2>
           <p className="process-title">Start with a simple process.</p>
           <p className="process-subtitle">

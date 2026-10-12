@@ -32,7 +32,7 @@ export function ProfileView({
           <p>Business photo not provided</p>
           <span>Profile images will appear here when available.</span>
         </div>
-        <p className="section-label">Professional profile</p>
+        <p className="section-label section-tag">Professional profile</p>
         <h1>{profile.businessName || "Professional"}</h1>
         <p className="category-label">
           {categoryNames.join(" · ") || "Category not provided"}

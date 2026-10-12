@@ -18,7 +18,7 @@ export function WorkspaceGate({
   return (
     <section className="container demo-gate">
       <div className="panel">
-        <p className="section-label">Workspace</p>
+        <p className="section-label section-tag">Workspace</p>
         <h1>
           {!ready
             ? "Checking session"

@@ -60,10 +60,8 @@ export default async function Directory({
   return (
     <div className="container directory-page">
       <header className="page-heading directory-hero">
-        <p className="directory-eyebrow">
-          <span className="eyebrow-line" aria-hidden="true">
-            —
-          </span>{" "}
+        <p className="directory-eyebrow section-tag">
+          {" "}
           THE PROFESSIONAL DIRECTORY
         </p>
         <h1 className="directory-title">A healthier home. The right help.</h1>

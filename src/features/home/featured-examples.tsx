@@ -19,8 +19,8 @@ export function FeaturedExamples({
       <div className="featured-header">
         <div className="featured-header-left">
           <div className="home-eyebrow">
-            <span className="eyebrow-dash" aria-hidden="true" />
-            <h2 id="featured-heading" className="eyebrow-text">
+
+            <h2 id="featured-heading" className="eyebrow-text section-tag">
               Featured listing examples
             </h2>
           </div>

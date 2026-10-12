@@ -91,10 +91,8 @@ export default async function PricingPage() {
       {/* Hero Section */}
       <header className="pricing-hero">
         <div className="pricing-hero-left">
-          <p className="pricing-eyebrow">
-            <span className="pricing-eyebrow-line" aria-hidden="true">
-              —{" "}
-            </span>
+          <p className="pricing-eyebrow section-tag">
+
             PROFESSIONAL DIRECTORY MEMBERSHIPS
           </p>
           <h1 className="pricing-hero-title">
@@ -319,7 +317,7 @@ export default async function PricingPage() {
             <div className="pricing-cta-icon-box" aria-hidden="true">
               <Home size={20} strokeWidth={1.75} />
             </div>
-            <p className="pricing-cta-eyebrow">START WITH AN APPLICATION</p>
+            <p className="pricing-cta-eyebrow section-tag">START WITH AN APPLICATION</p>
             <h3>List your business in the directory.</h3>
             <p className="pricing-cta-copy">
               Explore the application process and choose the membership that

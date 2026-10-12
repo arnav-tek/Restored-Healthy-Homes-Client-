@@ -29,10 +29,10 @@ export default function AboutPage() {
         <div className="about-hero-grid">
           <div className="about-hero-content">
             <div className="about-eyebrow">
-              <span className="about-eyebrow-text">
+              <span className="about-eyebrow-text section-tag">
                 ABOUT RESTORED HEALTHY HOMES
               </span>
-              <span className="about-eyebrow-dash" aria-hidden="true" />
+
             </div>
             <h2 id="about-hero-title" className="about-hero-title">
               A healthier home starts with the{" "}
@@ -107,10 +107,10 @@ export default function AboutPage() {
         <div className="about-story-grid">
           <div className="about-story-copy">
             <div className="about-eyebrow">
-              <span className="about-eyebrow-text">
+              <span className="about-eyebrow-text section-tag">
                 THE STORY BEHIND THE NAME
               </span>
-              <span className="about-eyebrow-dash" aria-hidden="true" />
+
             </div>
             <h2 id="about-story-heading" className="about-story-title">
               {content.story.heading}
@@ -174,7 +174,7 @@ export default function AboutPage() {
       >
         <div className="about-purpose-card">
           <div className="about-purpose-header">
-            <p className="about-eyebrow-text">OUR PURPOSE</p>
+            <p className="about-eyebrow-text section-tag">OUR PURPOSE</p>
             <h2 id="about-purpose-heading" className="about-purpose-title">
               {content.purpose.heading}
             </h2>
@@ -242,7 +242,7 @@ export default function AboutPage() {
       >
         <div className="about-cta-banner">
           <div className="about-cta-content">
-            <p className="about-eyebrow-text">START EXPLORING</p>
+            <p className="about-eyebrow-text section-tag">START EXPLORING</p>
             <h2 id="about-closing-heading" className="about-cta-title">
               Find your starting point.
             </h2>

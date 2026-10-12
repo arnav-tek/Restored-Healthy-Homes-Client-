@@ -4,7 +4,7 @@ export function LegalPlaceholder({ title }: { title: string }) {
     <div className="container public-content-page resources-page">
       <header className="public-page-intro">
         <div>
-          <p className="public-eyebrow">Awaiting client approval</p>
+          <p className="public-eyebrow section-tag">Awaiting client approval</p>
           <h1>{title}</h1>
         </div>
         <div className="public-intro-copy">

@@ -59,8 +59,8 @@ export default async function EducationPage() {
       {/* Hero: 2-column layout */}
       <header className="public-page-intro education-hero">
         <div className="education-hero-left">
-          <p className="public-eyebrow">
-            <span className="eyebrow-line" aria-hidden="true">— </span>FOR PROFESSIONALS
+          <p className="public-eyebrow section-tag">
+            FOR PROFESSIONALS
           </p>
           <h1>
             Grow your knowledge.
@@ -222,8 +222,8 @@ export default async function EducationPage() {
       {/* Join our directory CTA banner */}
       <aside className="public-closing-band education-closing-cta">
         <div className="closing-cta-content">
-          <p className="closing-cta-eyebrow">
-            <span className="eyebrow-line" aria-hidden="true">— </span>JOIN OUR DIRECTORY
+          <p className="closing-cta-eyebrow section-tag">
+            JOIN OUR DIRECTORY
           </p>
           <h2>Bring your experience to the directory.</h2>
           <p>

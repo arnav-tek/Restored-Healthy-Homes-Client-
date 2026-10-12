@@ -18,7 +18,7 @@ export default async function AdminLoginPage({
         <aside className="login-story">
           <span className="login-story-mark"><House size={28} aria-hidden="true" /></span>
           <div>
-            <p className="login-eyebrow">Restored Healthy Homes</p>
+            <p className="login-eyebrow section-tag section-tag-inverse">Restored Healthy Homes</p>
             <h2>A well-managed directory.<br />A stronger community.</h2>
             <p>Review applications, manage listings and support your professional community.</p>
           </div>
@@ -26,7 +26,7 @@ export default async function AdminLoginPage({
         </aside>
         <section className="login-panel" aria-labelledby="login-heading">
           <header className="demo-login-intro">
-            <p className="section-label">Administration</p>
+            <p className="section-label section-tag">Administration</p>
             <h1 id="login-heading">Sign in</h1>
           </header>
           <DemoLoginForm

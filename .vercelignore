@@ -1,5 +1,22 @@
-Project overview/
+.git/
+.codex/
 .agents/
-docs/
+.vercel/
+node_modules/
+.next/
+.env*
+Project overview/
+attachments/
 output/
+playwright-report/
+test-results/
+docs/
 tests/
+*.docx
+*.pdf
+*.pem
+*.key
+*.pfx
+*.p12
+*.log
+*.tsbuildinfo

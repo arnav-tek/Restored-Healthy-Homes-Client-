@@ -107,7 +107,7 @@ function RequestForm() {
       {submitted ? (
         <div className="consultation-form-card consultation-confirmation-card">
           <div className="panel consultation-confirmation">
-            <p className="section-label">{submitted.status}</p>
+            <p className="section-label section-tag">{submitted.status}</p>
             <h2 id="consultation-form-heading" ref={confirmation} tabIndex={-1}>
               Request prepared
             </h2>
@@ -185,7 +185,7 @@ function RequestForm() {
           {/* Narrower Left Information Panel */}
           <aside className="consultation-info-panel">
             <div className="info-panel-top">
-              <p className="info-panel-eyebrow">SEND A CONSULTATION REQUEST</p>
+              <p className="info-panel-eyebrow section-tag">SEND A CONSULTATION REQUEST</p>
               <h2 className="info-panel-title">Tell us what you need help with.</h2>
               <p id="consultation-demo-note" className="info-panel-note">
                 Requests stay in this tab and are not sent or saved permanently. No
