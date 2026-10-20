@@ -185,10 +185,10 @@ function RequestForm() {
           {/* Narrower Left Information Panel */}
           <aside className="consultation-info-panel">
             <div className="info-panel-top">
-              <p className="info-panel-eyebrow section-tag">SEND A CONSULTATION REQUEST</p>
+              <p className="info-panel-eyebrow section-tag">REQUEST A FREE PHONE CONSULTATION</p>
               <h2 className="info-panel-title">Tell us what you need help with.</h2>
               <p id="consultation-demo-note" className="info-panel-note">
-                Requests stay in this tab and are not sent or saved permanently. No
+                Demo only: use sample details. Requests stay in this tab and are not sent or saved permanently. No
                 appointment is booked or payment collected. Please leave out
                 sensitive personal information.
               </p>
@@ -325,8 +325,7 @@ function RequestForm() {
                     </select>
                   </div>
                   <p id="consultation-format-help" className="field-help">
-                    Phone, video or no preference. Delivery arrangements remain to
-                    be confirmed.
+                    Phone or no preference. Only participating specialists can be assigned; call timing and duration are agreed directly.
                   </p>
                   {error("format")}
                 </div>
@@ -352,7 +351,7 @@ function RequestForm() {
                   {error("topic")}
                 </div>
                 <Button type="submit" className="button submit-request-button">
-                  <span>Record request</span>
+                  <span>Submit request</span>
                   <ArrowRight size={16} aria-hidden="true" />
                 </Button>
               </fieldset>

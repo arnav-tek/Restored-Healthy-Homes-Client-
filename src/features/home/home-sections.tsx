@@ -20,7 +20,6 @@ import {
 } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import type { Category } from "@/domain/categories";
-import { consultationOfferLabel } from "@/domain/consultation";
 
 // Presentation only; names and descriptions continue to come from the catalog.
 const categoryIcons: Readonly<Record<string, LucideIcon>> = {
@@ -56,10 +55,7 @@ export function CategoryBrowse({ catalog }: { catalog: readonly Category[] }) {
             need.
           </h2>
         </div>
-        <p className="category-header-sub">
-          From a moisture concern to a new build, start with the work you have
-          in mind.
-        </p>
+
       </div>
       <ul className="home-categories" aria-label="Browse specialties">
         {catalog.map((category) => {
@@ -112,7 +108,7 @@ export function HomeJourney() {
           Find, explore, then start a conversation.
         </p>
         <ButtonLink className="home-journey-link button" href="/directory">
-          Find professionals <ArrowRight size={16} aria-hidden="true" />
+          Find Specialists <ArrowRight size={16} aria-hidden="true" />
         </ButtonLink>
       </div>
 
@@ -184,7 +180,7 @@ export function HomeFeatures() {
           <p className="features-intro">
             Our professional directory brings healthy-home specialties together.{" "}
             <Link className="underline underline-offset-4" href="/directory">
-              Find professionals
+              Find Specialists
             </Link>{" "}
             or{" "}
             <Link className="underline underline-offset-4" href="/resources">
@@ -209,9 +205,7 @@ export function HomeFeatures() {
                 <div className="feature-card-body">
                   <h3>A useful question is a good beginning.</h3>
                   <p>
-                    Browse questions and specialist answers about homes,
-                    materials and indoor environments. Find a starting point for
-                    your own questions.
+                    Browse questions and specialist answers about homes, materials, indoor environments, and mold-related health issues. Find a starting point for your own questions.
                   </p>
                 </div>
               </div>
@@ -295,11 +289,10 @@ export function HomeFeatures() {
                 <div className="feature-card-body">
                   <h3>Have a specific project in mind?</h3>
                   <p>
-                    <strong>{consultationOfferLabel()}</strong>
+                    <strong>Book a free consult</strong>
                   </p>
                   <p>
-                    Explore a focused conversation about your plans and try the
-                    consultation request.
+                    Explore a focused conversation about your plans and book a free consultation with one of our participating specialists.
                   </p>
                 </div>
               </div>
@@ -349,7 +342,7 @@ export function HomeAbout() {
             One place to begin.
           </h2>
           <p className="home-about-paragraph">
-            A healthier-home project can involve more than one kind of
+            A healthier home and a healthy body can involve more than one kind of
             professional. Bringing these specialties together makes it easier to
             explore who does what, understand the options and plan a
             conversation.
@@ -416,7 +409,7 @@ export function HomeBusiness() {
           <div className="home-business-cta">
             <p className="home-business-eyebrow section-tag section-tag-inverse">
 
-              For professionals
+              For Specialists
             </p>
             <h2 id="business-heading">
               Bring your

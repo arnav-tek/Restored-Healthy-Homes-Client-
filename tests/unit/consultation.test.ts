@@ -62,7 +62,7 @@ test("consultation fields trim and enforce text types, lengths, email, category 
       true,
     );
   for (const category of [...categories].reverse())
-    for (const format of ["phone", "video", "no-preference"])
+    for (const format of ["phone", "no-preference"])
       assert.equal(
         parseConsultation({ ...valid, categoryId: category.id, format }).ok,
         true,
@@ -112,7 +112,7 @@ test("consultation allowlist ignores forged offer, payment, appointment and iden
   assert.notEqual(request.offer, consultationOffer);
   assert.match(request.id, /^demo-consultation-\d+$/);
   assert.equal(state.consultationId, request.id);
-  assert.equal(consultationOfferLabel(), "$50 USD / 15 minutes");
+  assert.equal(consultationOfferLabel(), "Free phone consultation");
 });
 test("duplicate consultation actions are idempotent until deliberate restart; reset clears requests and preserves ID uniqueness", () => {
   let state = createDemoSession(seed);

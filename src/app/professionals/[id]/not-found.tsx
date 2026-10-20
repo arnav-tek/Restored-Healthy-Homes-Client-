@@ -5,7 +5,7 @@ export default function ProfileNotFound() {
     <div className="container result-state">
       <h1>Profile not found</h1>
       <p>This profile is not available in the public directory.</p>
-      <ButtonLink href="/directory">Find professionals</ButtonLink>
+      <ButtonLink href="/directory">Find Specialists</ButtonLink>
     </div>
   );
 }

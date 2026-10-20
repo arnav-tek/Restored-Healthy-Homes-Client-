@@ -338,7 +338,7 @@ function AdminConsultationDetail({
                 }
                 onChange={(event) => setProvider(event.target.value)}
               >
-                <option value="">Choose a professional</option>
+                <option value="">Choose a participating specialist</option>
                 {eligible.map((member) => (
                   <option key={member.id} value={member.id}>
                     {member.profile.businessName}

@@ -92,7 +92,7 @@ test("demo sign-in presets, validation and keyboard journey keep credentials loc
   ).toHaveAttribute("aria-invalid", "true");
   await inspect(page, `validation-${info.project.name}`);
   await page.locator(".login-shortcuts summary").press("Enter");
-  await expect(page.getByRole("button", { name: /^Use / })).toHaveCount(7);
+  await expect(page.getByRole("button", { name: /^Use / })).toHaveCount(8);
   await page
     .getByRole("button", { name: "Use Meadow Studio", exact: true })
     .press("Enter");

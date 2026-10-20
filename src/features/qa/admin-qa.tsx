@@ -147,7 +147,7 @@ export function AdminQa() {
                     <p className="qa-plain-text">{answer.body}</p>
                   </div>
                   <p className="field-help">
-                    An answer appears publicly only when both it and its parent
+                    The first eligible session response is reviewed before later responses. An answer appears publicly only when both it and its parent
                     question are published.
                   </p>
                 </article>

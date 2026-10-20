@@ -51,8 +51,7 @@ export function ReviewProcess() {
             <div className="review-item-content">
               <h4 className="review-item-title">Listing approval</h4>
               <p className="review-item-desc">
-                Public listings require approval, an active membership and no
-                suspension.
+                Public listings require approval, an active membership.
               </p>
             </div>
           </div>

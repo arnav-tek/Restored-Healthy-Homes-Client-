@@ -164,7 +164,7 @@ test("example states, seeded inbox, client navigation and refresh lifetime", asy
     .getByLabel("Business name", { exact: true })
     .fill("Temporary Local Edit");
   await page.getByRole("button", { name: "Update local preview" }).click();
-  await mainNav(page, "Find professionals");
+  await mainNav(page, "Find Specialists");
   await expect(
     page.getByText("Temporary Local Edit", { exact: true }),
   ).toHaveCount(0);

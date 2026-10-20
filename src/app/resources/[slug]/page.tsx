@@ -51,7 +51,7 @@ export default async function ResourcePage({ params }: Props) {
           >
             {article.category === "professionals"
               ? "Explore education pathways"
-              : "Find professionals"}
+              : "Find Specialists"}
           </Link>
         </p>
       </aside>

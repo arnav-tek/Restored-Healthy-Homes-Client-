@@ -54,6 +54,7 @@ export interface MemberProfileFields {
 export interface DemoMemberRecord {
   readonly id: string;
   readonly exampleLabel: string;
+  readonly freeConsultation?: boolean;
   readonly approval: ApprovalStatus;
   readonly subscription: SubscriptionStatus;
   readonly suspended: boolean;
@@ -95,6 +96,7 @@ export interface DemoSession extends DemoSessionSeed {
   notice: string;
 }
 export type DemoMemberAction =
+  | { type: "set-free-consultation"; id: string; enabled: boolean }
   | ReviewAction
   | { type: "demo-sign-in"; fields: DemoSignInFields }
   | { type: "demo-sign-out" }
@@ -318,6 +320,28 @@ export function reduceDemoSession(
         revision,
         notice:
           "Application prepared. Delivery to the owner is not connected yet.",
+      };
+    }
+    case "set-free-consultation": {
+      if (
+        typeof action.enabled !== "boolean" ||
+        !state.identity ||
+        (state.identity.kind === "member" &&
+          state.identity.memberId !== action.id)
+      )
+        return state;
+      if (!state.records.some((record) => record.id === action.id))
+        return state;
+      return {
+        ...state,
+        revision,
+        records: state.records.map((record) =>
+          record.id === action.id
+            ? { ...record, freeConsultation: action.enabled }
+            : record,
+        ),
+        notice:
+          "Free phone consultation preference updated for this demo session. Public directory fixtures are unchanged.",
       };
     }
     case "edit":

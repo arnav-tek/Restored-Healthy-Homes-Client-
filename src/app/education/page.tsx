@@ -22,7 +22,7 @@ import { getEducationPathways } from "@/data/content/education";
 import { ButtonLink } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "Education & Certifications",
+  title: "Certifications",
   description:
     "Explore external education and certification pathways for healthy-home professionals, with provider references and guidance on choosing a specialty.",
 };
@@ -56,34 +56,35 @@ export default async function EducationPage() {
   );
   return (
     <div className="learning-page container">
-      {/* Hero: 2-column layout */}
+      {/* Introduction above the category pathways. */}
       <header className="public-page-intro education-hero">
         <div className="education-hero-left">
-          <p className="public-eyebrow section-tag">
-            FOR PROFESSIONALS
-          </p>
+          <p className="public-eyebrow section-tag">FOR SPECIALISTS</p>
           <h1>
-            Grow your knowledge.
+            Grow your professional knowledge.
             <br />
             Choose your path.
           </h1>
-        </div>
-        <div className="public-intro-copy education-hero-right">
-          <p>
-            Explore education and certification options for your specialty.
-            Restored Healthy Homes connects professionals to external providers;
-            we do not train or certify professionals.
-          </p>
-          <p>
-            A course completion certificate, a professional certification and a
-            license serve different purposes. Check requirements for your work
-            and location.
-          </p>
+          <div className="public-intro-copy education-intro-below">
+            <p>
+              Explore education and certification options for your specialty.
+              Restored Healthy Homes connects professionals to external
+              providers; we do not train or certify professionals.
+            </p>
+            <p>
+              A course completion certificate, a professional certification and
+              a license serve different purposes. Check requirements for your
+              work and location.
+            </p>
+          </div>
         </div>
       </header>
 
       {/* Specialty Navigation: 4-column compact cards in a soft-sage panel */}
-      <nav className="pathway-index specialty-nav-panel" aria-label="Education categories">
+      <nav
+        className="pathway-index specialty-nav-panel"
+        aria-label="Education categories"
+      >
         <div className="specialty-nav-grid">
           {pathways.map(({ category }) => {
             const CategoryIcon = getCategoryIcon(category.id);
@@ -97,7 +98,11 @@ export default async function EducationPage() {
                   <CategoryIcon size={18} />
                 </div>
                 <span className="specialty-nav-name">{category.name}</span>
-                <ChevronRight size={14} className="specialty-nav-arrow" aria-hidden="true" />
+                <ChevronRight
+                  size={14}
+                  className="specialty-nav-arrow"
+                  aria-hidden="true"
+                />
               </a>
             );
           })}
@@ -148,7 +153,9 @@ export default async function EducationPage() {
                       {/* Left: Training & certification options */}
                       <div className="pathway-card pathway-options-card">
                         <div className="options-card-top">
-                          <h4 className="pathway-card-title">Training & certification options</h4>
+                          <h4 className="pathway-card-title">
+                            Training & certification options
+                          </h4>
                           {pathway.options.map((option) => (
                             <div className="education-option" key={option.href}>
                               <span className="option-kind">{option.kind}</span>
@@ -160,9 +167,15 @@ export default async function EducationPage() {
                                   className="option-link"
                                 >
                                   <span>{option.name}</span>
-                                  <ExternalLink size={14} className="external-icon" aria-hidden="true" />
+                                  <ExternalLink
+                                    size={14}
+                                    className="external-icon"
+                                    aria-hidden="true"
+                                  />
                                 </a>
-                                <p className="option-desc">{option.description}</p>
+                                <p className="option-desc">
+                                  {option.description}
+                                </p>
                               </div>
                             </div>
                           ))}
@@ -179,27 +192,41 @@ export default async function EducationPage() {
 
                       {/* Right: Next steps and considerations */}
                       <div className="pathway-card pathway-steps-card">
-                        <h4 className="pathway-card-title">Next steps and considerations</h4>
+                        <h4 className="pathway-card-title">
+                          Next steps and considerations
+                        </h4>
                         <ol className="pathway-steps-list">
                           {pathway.steps.map((step, idx) => (
                             <li key={step} className="pathway-step-item">
-                              <span className="step-num" aria-hidden="true">{idx + 1}</span>
+                              <span className="step-num" aria-hidden="true">
+                                {idx + 1}
+                              </span>
                               <span className="step-text">{step}</span>
                             </li>
                           ))}
                         </ol>
                         <div className="pathway-meta-group">
                           <div className="pathway-meta-item">
-                            <Clock size={16} className="meta-icon" aria-hidden="true" />
+                            <Clock
+                              size={16}
+                              className="meta-icon"
+                              aria-hidden="true"
+                            />
                             <div className="meta-content">
                               <p className="meta-label">Typical timeline</p>
                               <p className="meta-value">{pathway.timeline}</p>
                             </div>
                           </div>
                           <div className="pathway-meta-item">
-                            <Coins size={16} className="meta-icon" aria-hidden="true" />
+                            <Coins
+                              size={16}
+                              className="meta-icon"
+                              aria-hidden="true"
+                            />
                             <div className="meta-content">
-                              <p className="meta-label">External education costs</p>
+                              <p className="meta-label">
+                                External education costs
+                              </p>
                               <p className="meta-value">{pathway.costs}</p>
                             </div>
                           </div>
@@ -222,9 +249,7 @@ export default async function EducationPage() {
       {/* Join our directory CTA banner */}
       <aside className="public-closing-band education-closing-cta">
         <div className="closing-cta-content">
-          <p className="closing-cta-eyebrow section-tag">
-            JOIN OUR DIRECTORY
-          </p>
+          <p className="closing-cta-eyebrow section-tag">JOIN OUR DIRECTORY</p>
           <h2>Bring your experience to the directory.</h2>
           <p>
             Describe your services and actual qualifications when you apply.

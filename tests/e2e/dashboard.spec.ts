@@ -18,7 +18,7 @@ test("dashboard sections, direct URLs, history and filters retain selected recor
     page.getByLabel("Application status", { exact: true }),
   ).toHaveValue("pending");
   await expect(
-    page.getByText("1 of 7 applications shown", { exact: true }),
+    page.getByText("1 of 8 applications shown", { exact: true }),
   ).toBeVisible();
   await review(page, "Pending Studio");
   await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
@@ -38,7 +38,7 @@ test("dashboard sections, direct URLs, history and filters retain selected recor
   await page.reload();
   await signIn(page, "admin");
   await expect(
-    page.getByText("1 of 7 applications shown", { exact: true }),
+    page.getByText("1 of 8 applications shown", { exact: true }),
   ).toBeVisible();
   await section(page, "Admin", "Overview");
   await page
@@ -51,7 +51,7 @@ test("dashboard sections, direct URLs, history and filters retain selected recor
     page.getByRole("link", { name: /Pending applications.*0/ }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: /Eligible listings.*4/ }),
+    page.getByRole("link", { name: /Eligible listings.*5/ }),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "No pending applications", exact: true }),
@@ -68,7 +68,7 @@ test("dashboard sections, direct URLs, history and filters retain selected recor
   ).toBeVisible();
   await page.getByRole("link", { name: "Back to applications" }).click();
   await expect(
-    page.getByText("7 of 7 applications shown", { exact: true }),
+    page.getByText("8 of 8 applications shown", { exact: true }),
   ).toBeVisible();
   await visitWorkspace(
     page,
@@ -135,7 +135,7 @@ test("unsaved profile decision and category drafts survive navigation and reset 
     page.getByLabel("Search applications", { exact: true }),
   ).toHaveValue("Pending");
   await expect(
-    page.getByText("7 of 7 applications shown", { exact: true }),
+    page.getByText("8 of 8 applications shown", { exact: true }),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "Clear filters", exact: true })

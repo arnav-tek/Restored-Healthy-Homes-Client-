@@ -116,7 +116,7 @@ export function QuestionForm({
           aria-describedby="question-demo-note"
         >
           <p id="question-demo-note">
-            Questions stay in this tab and are not sent to professionals or
+            Your question is intended for public display: do not include names, email addresses, phone numbers or other personal details in the question. In this demo, approved questions appear in matching specialists’ category inboxes. The first eligible response is reviewed by admin before publication. No emails are sent. Questions stay in this tab and are not sent to specialists or
             saved permanently. Please leave out sensitive personal information.
           </p>
           <noscript>

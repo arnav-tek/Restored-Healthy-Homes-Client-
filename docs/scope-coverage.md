@@ -1,5 +1,7 @@
 # Source-to-delivery coverage
 
+Current revision: see [2026-10-20 remaining-scope report](remaining-scope-report.md) and [showcase handoff](client-update-showcase-handoff.md). These record the later free-phone, category-inbox and profile-map requests; the table below remains a historical coverage index.
+
 Reconciled for frontend review 2026-10-11. This is a coverage index, not additional scope or implementation authorization. The updated overview and later client confirmations govern; the original Word brief and earlier pasted overview supply detail where not superseded. Read the build checklist and client-preview handoff for implementation acceptance and evidence. A completed demo is not a completed production service.
 
 ## Requirement coverage
@@ -41,7 +43,7 @@ Overview section numbers below refer to `Project overview/restored-healthy-homes
 - Original Word section 9 is proposal/commercial guidance, not extra website functionality. Confidential commercial details remain in the authoritative private documents.
 - Original Netlify hosting and obsolete category/price-tier counts are superseded by explicit client decisions. Do not restore them as missing requirements.
 - Approval and payment are separate requirements: approval alone does not publish an unpaid listing; payment cannot clear suspension.
-- Maps, automatic specialist payouts, an in-app calling system, homeowner accounts, social integrations, review replies and a custom newsletter campaign editor are not established commitments. Add only if separately agreed. Review verification may affect a future account decision.
+- Automatic specialist payouts, an in-app calling system, homeowner accounts, social integrations, review replies and a custom newsletter campaign editor are not established commitments. Add only if separately agreed. Review verification may affect a future account decision.
 - Phone/video delivery and written consultation summaries are recorded prototype details needing confirmation; do not silently omit them or treat them as a confirmed custom calling system.
 - The old exact-design instructions do not make registration modals, profile modals, circular abbreviations, a particular card gradient or a four-column footer mandatory. Maintain the agreed feel and client review instead.
 - Numeric 1–5 ratings and decorative stars share the 2G-2 presentation; 2H-1 homepage statistics reuse the published-only session calculation. Future search/card ratings must do the same. Production verification/moderation policy remains separate from this demo.

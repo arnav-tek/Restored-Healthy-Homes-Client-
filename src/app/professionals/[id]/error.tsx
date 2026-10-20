@@ -8,7 +8,7 @@ export default function ProfileError({ reset }: { reset: () => void }) {
       <p>Try again or return to the directory.</p>
       <div className="filter-actions">
         <Button onClick={reset}>Try again</Button>
-        <ButtonLink href="/directory">Find professionals</ButtonLink>
+        <ButtonLink href="/directory">Find Specialists</ButtonLink>
       </div>
     </div>
   );

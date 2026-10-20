@@ -52,6 +52,7 @@ test("all eligibility combinations enforce selected author ownership, forced pen
       for (const suspended of [true, false]) {
         const member = {
           ...seed.records[0],
+          profile: { ...seed.records[0].profile, categoryIds: [snapshot[0].categoryId] },
           approval,
           subscription,
           suspended,

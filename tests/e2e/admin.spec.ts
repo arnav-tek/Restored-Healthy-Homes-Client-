@@ -29,7 +29,7 @@ test("application admin decision member confirmation and protected edits stay co
   await signIn(page, "application");
   await workspace(page, "Admin overview");
   await section(page, "Admin", "Applications");
-  await expect(page.getByText(/8 of 8 applications shown/)).toBeVisible();
+  await expect(page.getByText(/9 of 9 applications shown/)).toBeVisible();
   await review(page, "Session Sample Business");
   await page.getByRole("button", { name: "Apply decision" }).press("Enter");
   await expect(page.getByLabel("Applicant-facing reason")).toBeFocused();
@@ -94,7 +94,7 @@ test("admin suspension credentials category labels public projection and reset",
   page.on("pageerror", (error) => errors.push(error.message));
   await visitWorkspace(page, "/demo/admin?section=listings");
   const directory = page.getByTestId("session-directory");
-  await expect(directory.getByRole("article")).toHaveCount(4);
+  await expect(directory.getByRole("article")).toHaveCount(5);
   for (const text of [
     "member@example.invalid",
     "Member",
@@ -109,7 +109,7 @@ test("admin suspension credentials category labels public projection and reset",
     .getByLabel("Application status", { exact: true })
     .selectOption("pending");
   await page.getByRole("button", { name: "Apply filters" }).click();
-  await expect(page.getByText(/1 of 7 applications shown/)).toBeVisible();
+  await expect(page.getByText(/1 of 8 applications shown/)).toBeVisible();
   await page.getByRole("button", { name: "Clear filters" }).click();
   await review(page, "Meadow Studio");
   page.once("dialog", async (dialog) => {
@@ -117,14 +117,14 @@ test("admin suspension credentials category labels public projection and reset",
     await dialog.accept();
   });
   await decision(page, "suspend", "Fictional suspension check");
-  await expect(directory.getByRole("article")).toHaveCount(3);
+  await expect(directory.getByRole("article")).toHaveCount(4);
   await page.getByRole("link", { name: "Back to listings" }).click();
   await page.getByLabel("Suspension filter").selectOption("suspended");
   await page.getByRole("button", { name: "Apply filters" }).click();
-  await expect(page.getByText(/1 of 7 applications shown/)).toBeVisible();
+  await expect(page.getByText(/1 of 8 applications shown/)).toBeVisible();
   await review(page, "Meadow Studio");
   await decision(page, "reinstate", "Fictional reinstatement check");
-  await expect(directory.getByRole("article")).toHaveCount(4);
+  await expect(directory.getByRole("article")).toHaveCount(5);
   await page.getByRole("link", { name: "Back to listings" }).click();
   await page.getByRole("button", { name: "Clear filters" }).click();
   await review(page, "Inactive Studio");
@@ -225,7 +225,7 @@ test("admin suspension credentials category labels public projection and reset",
     "Course attendance — submitted claim, unverified",
   );
   await expect(directory).not.toContainText("Thoughtful Sample Designers");
-  await expect(directory.getByRole("article")).toHaveCount(4);
+  await expect(directory.getByRole("article")).toHaveCount(5);
   expect(
     await page.evaluate(() => [localStorage.length, sessionStorage.length]),
   ).toEqual([0, 0]);

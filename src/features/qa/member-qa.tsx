@@ -1,7 +1,12 @@
 "use client";
 import Link from "next/link";
 import { categories } from "@/domain/categories";
-import { ownQaAnswers, publicSessionQuestions } from "@/domain/qa-session";
+import {
+  canMemberAnswer,
+  ownQaAnswers,
+  memberQuestionInbox,
+  publicSessionQuestions,
+} from "@/domain/qa-session";
 import { searchPublicQuestions } from "@/domain/qa";
 import { useDemoSession } from "@/features/member/demo-session";
 import { useDashboardNavigation } from "@/features/dashboard/use-dashboard-navigation";
@@ -17,9 +22,13 @@ export function MemberQa({
 }) {
   const { state } = useDemoSession();
   const { query, href } = useDashboardNavigation("member");
-  const questions = publicSessionQuestions(state);
+  const questions = memberQuestionInbox(state, memberId);
+  const published = publicSessionQuestions(state);
   const selected = questions.find((question) => question.id === query.question);
   const own = ownQaAnswers(state, memberId);
+  const eligible = canMemberAnswer(
+    state.records.find((member) => member.id === memberId),
+  );
   // Search uses the same published-only selector as public Q&A; all matching pages are listed here.
   const matching = questions.filter(
     (question) =>
@@ -31,9 +40,18 @@ export function MemberQa({
   );
   return (
     <div className="qa-workspace">
+      <h2>Category question inbox</h2>
       <p className="field-help">
-        Approved professionals with an active membership may answer questions. One answer is allowed per professional for each question.
+        Category inbox · approved specialists with active membership receive
+        matching public questions here. Notifications are simulated; no email is
+        sent. The first eligible response goes through admin review before
+        publication.
       </p>
+      {!eligible && (
+        <p className="workspace-empty">
+          Answering requires approval, an active subscription and no suspension.
+        </p>
+      )}
       {query.question ? (
         <>
           <Link className="text-link" href={href({ question: "" })}>
@@ -62,15 +80,15 @@ export function MemberQa({
             </>
           ) : (
             <p className="workspace-empty">
-              This question is not currently published. Return to the question
-              list.
+              This question is unavailable in your category inbox. Return to the
+              question list.
             </p>
           )}
         </>
       ) : (
         <>
           <QaWorkspaceFilters area="member" />
-          <p role="status">{matching.length} published questions</p>
+          <p role="status">{matching.length} matching published questions</p>
           <ol className="qa-list">
             {matching.map((question) => (
               <li key={question.id}>
@@ -92,10 +110,10 @@ export function MemberQa({
               </li>
             ))}
           </ol>
-          {!matching.length && (
+          {eligible && !matching.length && (
             <p className="workspace-empty">
-              No published questions match. Clear the filters to explore other
-              samples.
+              No published questions match your categories and filters. Clear
+              the filters or review your profile categories.
             </p>
           )}
         </>
@@ -112,7 +130,7 @@ export function MemberQa({
             <article className="qa-own-answer" key={answer.id}>
               <p>
                 <strong>
-                  {questions.find(
+                  {published.find(
                     (question) => question.id === answer.questionId,
                   )?.title ?? "Question currently unavailable"}
                 </strong>
@@ -121,7 +139,7 @@ export function MemberQa({
                 Answer status: <strong>{answer.status}</strong>
               </p>
               <p className="qa-plain-text">{answer.body}</p>
-              {!questions.some(
+              {!published.some(
                 (question) => question.id === answer.questionId,
               ) && (
                 <p className="field-help">

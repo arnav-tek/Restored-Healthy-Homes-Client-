@@ -130,6 +130,43 @@ export function ownQaAnswers(state: DemoSession, memberId: string) {
       status,
     }));
 }
+/** Public, category-matched inbox; no visitor identity or email transport. */
+export function memberQuestionInbox(
+  state: DemoSession,
+  memberId: string,
+): PublicQuestion[] {
+  const member = state.records.find((item) => item.id === memberId);
+  return canMemberAnswer(member)
+    ? publicSessionQuestions(state).filter((question) =>
+        member!.profile.categoryIds.includes(question.categoryId),
+      )
+    : [];
+}
+export function canPublishSessionAnswer(
+  state: DemoSession,
+  answerId: string,
+): boolean {
+  const target = state.qa.answers.find((answer) => answer.id === answerId);
+  if (!target) return false;
+  const status = (answer: SessionAnswer) =>
+    state.qa.answerDecisions[answer.id]?.status ?? answer.status;
+  if (
+    state.qa.answers.some(
+      (answer) =>
+        answer.questionId === target.questionId &&
+        answer.id !== answerId &&
+        status(answer) === "published",
+    )
+  )
+    return false;
+  return (
+    state.qa.answers.find(
+      (answer) =>
+        answer.questionId === target.questionId &&
+        (answer.id === answerId || status(answer) !== "rejected"),
+    )?.id === answerId
+  );
+}
 export function answerSubmissionError(
   state: DemoSession,
   questionId: string,
@@ -147,6 +184,12 @@ export function answerSubmissionError(
     )
   )
     return "This question is not currently available for answers.";
+  if (
+    !memberQuestionInbox(state, state.selectedId).some(
+      (question) => question.id === questionId,
+    )
+  )
+    return "This question is outside your listed categories.";
   if (
     state.qa.answers.some(
       (answer) =>
@@ -191,6 +234,17 @@ export function reduceQaAction(
     (record.status === action.status && record.moderationNote === note)
   )
     return state;
+  if (
+    !isQuestion &&
+    action.status === "published" &&
+    state.qa.answers.some((answer) => answer.id === record.id) &&
+    !canPublishSessionAnswer(state, record.id)
+  )
+    return {
+      ...state,
+      notice:
+        "Review the first eligible response before publishing a later response.",
+    };
   const key = isQuestion ? "questionDecisions" : "answerDecisions";
   return {
     ...state,

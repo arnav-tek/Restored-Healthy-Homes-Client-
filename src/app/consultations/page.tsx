@@ -14,7 +14,7 @@ import { ConsultationRequestForm } from "@/features/consultations/request-form";
 export const metadata: Metadata = {
   title: "Consultations",
   description:
-    "Explore a proposed short consultation and try a request. No appointment or payment is made.",
+    "Request a free phone consultation with a participating specialist. This demo does not book an appointment.",
   robots: { index: false, follow: false },
 };
 
@@ -35,7 +35,7 @@ export default function ConsultationsPage() {
             the question you would like to discuss.
           </p>
           <a className="button consultation-hero-cta" href="#request">
-            Prepare a request <ArrowRight size={16} aria-hidden="true" />
+            Request a free consult <ArrowRight size={16} aria-hidden="true" />
           </a>
         </div>
         <aside
@@ -47,14 +47,14 @@ export default function ConsultationsPage() {
               <MessageSquare size={22} />
             </div>
             <div>
-              <p className="offer-card-eyebrow section-tag">CURRENT PROPOSED OFFER</p>
+              <p className="offer-card-eyebrow section-tag">FREE PHONE CONSULTATIONS</p>
               <p className="consultation-price">{consultationOfferLabel()}</p>
             </div>
           </div>
           <ul className="offer-notes-list">
             <li>
               <CheckCircle2 size={18} className="offer-check-icon" aria-hidden="true" />
-              <span>Format, availability and delivery arrangements will need to be confirmed.</span>
+              <span>Available only with participating specialists. Timing and duration are agreed directly.</span>
             </li>
             <li>
               <CheckCircle2 size={18} className="offer-check-icon" aria-hidden="true" />
@@ -79,7 +79,7 @@ export default function ConsultationsPage() {
           </h2>
           <p className="process-title">Start with a simple process.</p>
           <p className="process-subtitle">
-            Begin by preparing a request. Scheduling and payment are not available
+            Begin by preparing a request. Appointment scheduling is not connected
             yet.
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function ConsultationsPage() {
             </div>
             <div className="step-content">
               <h3>Request</h3>
-              <p>Share a topic, a relevant category and a format preference.</p>
+              <p>Select a relevant category and a consultation format preference.</p>
             </div>
           </li>
           <li className="process-step">
@@ -108,7 +108,7 @@ export default function ConsultationsPage() {
             <div className="step-content">
               <h3>Coordination</h3>
               <p>
-                Specialist selection, availability and delivery arrangements
+                Specialist selection and availability
                 would need to be agreed.
               </p>
             </div>
@@ -131,7 +131,7 @@ export default function ConsultationsPage() {
         </ol>
         <div className="process-footer">
           <Link className="browse-professionals-link" href="/directory">
-            Browse professionals <ArrowRight size={15} aria-hidden="true" />
+            Browse specialists <ArrowRight size={15} aria-hidden="true" />
           </Link>
         </div>
       </section>

@@ -21,6 +21,7 @@ export function toPublicProfessional(
   return {
     id: record.id,
     businessName: record.businessName,
+    freeConsultation: record.freeConsultation === true,
     categoryIds: [...record.categoryIds],
     city: record.city,
     state: record.state,

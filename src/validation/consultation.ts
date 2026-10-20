@@ -48,7 +48,7 @@ export function parseConsultation(
   const format = consultationFormats.find(
     (item) => typeof raw.format === "string" && item.id === raw.format.trim(),
   )?.id;
-  if (!format) errors.format = "Choose phone, video or no preference.";
+  if (!format) errors.format = "Choose phone or no preference.";
   if (Object.keys(errors).length || !format) return { ok: false, errors };
   return { ok: true, fields: { name, email, categoryId, format, topic } };
 }

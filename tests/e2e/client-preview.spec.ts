@@ -207,3 +207,177 @@ test("preview pages preserve honest badges, pending content, working links and 3
     }
   }
 });
+
+test("client revision preserves section order, specialist labels and free consultation copy", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const selectors = [
+    ".home-hero",
+    "#journey-heading",
+    "#category-heading",
+    "#home-about-heading",
+    "#features-heading",
+    "#featured-heading",
+    "#review-process-heading",
+    "#business-heading",
+  ];
+  const positions: number[] = [];
+  for (const selector of selectors)
+    positions.push((await page.locator(selector).boundingBox())!.y);
+  expect(positions).toEqual([...positions].sort((a, b) => a - b));
+  if (page.viewportSize()!.width <= 1050) {
+    const featuredHeader = (await page
+      .locator(".featured-header")
+      .boundingBox())!;
+    expect(featuredHeader.height).toBeLessThan(420);
+  }
+  await expect(page.locator(".hero-copy")).toContainText(
+    "health practitioners who help families heal",
+  );
+  await expect(page.locator(".hero-copy")).not.toContainText(
+    "certified specialist",
+  );
+  await expect(page.locator(".category-header-sub")).toHaveCount(0);
+  await expect(page.locator(".home-features-band")).toContainText(
+    "mold-related health issues",
+  );
+  await expect(page.locator(".home-features-band")).toContainText(
+    "Book a free consult",
+  );
+  await page.goto("/pricing");
+  await expect(page.locator("#pricing-consultation-heading")).toHaveCount(0);
+  await page.goto("/education");
+  await expect(page).toHaveTitle(/Certifications/);
+  await expect(page.locator(".education-hero-left")).toContainText(
+    "Grow your professional knowledge",
+  );
+  const heading = (await page.locator(".education-hero h1").boundingBox())!;
+  const intro = (await page.locator(".education-intro-below").boundingBox())!;
+  expect(intro.y).toBeGreaterThanOrEqual(heading.y + heading.height);
+  await page.goto("/professionals/demo-mold-inspection");
+  await expect(
+    page.getByRole("link", { name: /View city on Google Maps/ }),
+  ).toHaveAttribute("href", /api=1&query=Asheville/);
+  await expect(
+    page.getByRole("heading", { name: "Free phone consultation", exact: true }),
+  ).toBeVisible();
+});
+
+test("member sample photo and consultation preferences remain local and clear on sign-out", async ({
+  page,
+}) => {
+  const submissions: string[] = [];
+  page.on("request", (request) => {
+    if (request.method() !== "GET") submissions.push(request.method());
+  });
+  await page.goto("/login");
+  await signIn(page, "approved");
+  await section(page, "Member", "Profile");
+  const participation = page.getByRole("checkbox", {
+    name: "I offer a free phone consultation",
+  });
+  await expect(participation).toBeChecked();
+  await participation.uncheck();
+  await expect(participation).not.toBeChecked();
+  await page.getByLabel("Choose a sample business photo").setInputFiles({
+    name: "sample.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+      "base64",
+    ),
+  });
+  await expect(
+    page.getByRole("img", { name: "Local business photo preview" }),
+  ).toBeVisible();
+  await signIn(page, "coordinator");
+  await section(page, "Member", "Profile");
+  await expect(
+    page.getByRole("img", { name: "Local business photo preview" }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("checkbox", { name: "I offer a free phone consultation" }),
+  ).toBeChecked();
+  expect(submissions).toEqual([]);
+});
+
+test("builder category inbox receives an approved question and publishes its reviewed first answer", async ({
+  page,
+}) => {
+  test.setTimeout(120000);
+  const title = "Fictional builder ventilation planning";
+  await page.goto("/questions/ask");
+  await page.getByLabel("Question title", { exact: true }).fill(title);
+  await page.getByLabel("Relevant category").selectOption("healthy-builders");
+  await page
+    .getByLabel("Question text", { exact: true })
+    .fill(
+      "Which fictional ventilation considerations should I discuss when planning a new home?",
+    );
+  await page
+    .getByRole("button", { name: "Submit question", exact: true })
+    .click();
+  await signIn(page, "admin");
+  await section(page, "Admin", "Q&A");
+  await page
+    .getByRole("link", { name: `Review ${title}`, exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Publish question", exact: true })
+    .click();
+  await signIn(page, "approved");
+  await section(page, "Member", "Q&A");
+  await expect(
+    page.getByRole("link", { name: title, exact: true }),
+  ).toHaveCount(0);
+  await signIn(page, "builder");
+  await section(page, "Member", "Q&A");
+  await page.getByRole("link", { name: title, exact: true }).click();
+  await page
+    .getByLabel("Answer text", { exact: true })
+    .fill(
+      "A fictional builder response explaining useful ventilation planning questions for a new home.",
+    );
+  await page
+    .getByRole("button", { name: "Submit answer", exact: true })
+    .click();
+  await signIn(page, "admin");
+  await section(page, "Admin", "Q&A");
+  await page
+    .getByRole("navigation", { name: "Q&A queues" })
+    .getByRole("link", { name: /Answers/ })
+    .click();
+  await page
+    .getByRole("link", {
+      name: "Review answer by Hearthside Building Co.",
+      exact: true,
+    })
+    .click();
+  await page
+    .getByRole("button", { name: "Publish answer", exact: true })
+    .click();
+  await page
+    .getByRole("link", { name: /View public session question/ })
+    .click();
+  await expect(page.getByRole("main")).toContainText(
+    "A fictional builder response",
+  );
+  await expect(page.getByRole("main")).not.toContainText(
+    "builder@example.invalid",
+  );
+  await signIn(page, "builder");
+  await section(page, "Member", "Profile");
+  await page.getByRole("checkbox", { name: /Healthy Home Designers/ }).check();
+  await page.getByRole("checkbox", { name: /Healthy Home Builders/ }).uncheck();
+  await page.getByRole("button", { name: "Update local preview" }).click();
+  await section(page, "Member", "Q&A");
+  const ownAnswers = page.getByRole("region", {
+    name: "Your submitted answers",
+  });
+  await expect(ownAnswers).toContainText(title);
+  await expect(ownAnswers).toContainText("Answer status: published");
+  await expect(ownAnswers).not.toContainText(
+    "The parent question is not public",
+  );
+});

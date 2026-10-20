@@ -102,6 +102,7 @@ test("public projection is an exact allowlist and includes only verified credent
       "summary",
       "services",
       "verifiedCredentials",
+      "freeConsultation",
     ].sort(),
   );
   assert.ok(!JSON.stringify(publicRecord).includes("synthetic-owner"));

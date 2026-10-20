@@ -47,6 +47,7 @@ test("profile projection allowlists nested contact and separates listed/verified
       "summary",
       "services",
       "verifiedCredentials",
+      "freeConsultation",
       "serviceArea",
       "listedCredentials",
       "contact",

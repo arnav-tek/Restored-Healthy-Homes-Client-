@@ -10,7 +10,7 @@ export function EmptyDirectory() {
         specialty, another state, a lower minimum rating or a larger radius
         around a supported location.
       </p>
-      <ButtonLink href="/directory">Browse professionals</ButtonLink>
+      <ButtonLink href="/directory">Browse specialists</ButtonLink>
     </div>
   );
 }

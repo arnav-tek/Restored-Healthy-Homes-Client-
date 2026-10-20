@@ -3,6 +3,7 @@ import { useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { useDemoDraft, useDemoSession } from "@/features/member/demo-session";
+import { canPublishSessionAnswer } from "@/domain/qa-session";
 import type { ModerationStatus } from "@/domain/qa";
 import {
   moderationNoteLimit,
@@ -21,7 +22,7 @@ export function QaModerationForm({
   status: ModerationStatus;
   note: string;
 }) {
-  const { dispatch } = useDemoSession();
+  const { state, dispatch } = useDemoSession();
   const { draft, saveDraft, clearDraft } = useDemoDraft(
     `qa-review:${kind}:${id}`,
   );
@@ -46,6 +47,18 @@ export function QaModerationForm({
     )
       return;
     const next = button.value === "published" ? "published" : "rejected";
+    const sessionAnswer = state.qa.answers.find((answer) => answer.id === id);
+    if (
+      kind === "answer" &&
+      next === "published" &&
+      sessionAnswer &&
+      !canPublishSessionAnswer(state, id)
+    ) {
+      setError(
+        "The first eligible response must be reviewed first. Reject it if unsuitable before publishing a later response.",
+      );
+      return;
+    }
     if (
       next === "rejected" &&
       status === "published" &&
@@ -62,7 +75,9 @@ export function QaModerationForm({
     });
     clearDraft();
     setError("");
-    setFeedback(`${kind === "question" ? "Question" : "Answer"} ${next}. This decision affects only this tab.`);
+    setFeedback(
+      `${kind === "question" ? "Question" : "Answer"} ${next}. This decision affects only this tab.`,
+    );
     requestAnimationFrame(() => feedbackRef.current?.focus());
   }
   return (
@@ -85,7 +100,8 @@ export function QaModerationForm({
             aria-describedby="qa-note-help qa-note-error"
           />
           <p id="qa-note-help" className="field-help">
-            Up to 500 characters. Internal notes are excluded from public views and member answer history.
+            Up to 500 characters. Internal notes are excluded from public views
+            and member answer history.
           </p>
           <p id="qa-note-error" className="field-error">
             {error}

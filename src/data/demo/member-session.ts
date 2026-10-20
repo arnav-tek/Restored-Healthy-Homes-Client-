@@ -39,8 +39,7 @@ const examples: readonly DemoMemberRecord[] = [
       sampleProfile.listedCredentials,
       "approved",
     ),
-    decisionReason:
-      "Application meets the review requirements.",
+    decisionReason: "Application meets the review requirements.",
     suspensionReason: "",
     profile: copyMemberFields(sampleProfile),
   },
@@ -109,8 +108,7 @@ const examples: readonly DemoMemberRecord[] = [
     suspended: false,
     featuredEntitlement: "none",
     credentials: [],
-    decisionReason:
-      "Eligible alternative for consultation reassignment.",
+    decisionReason: "Eligible alternative for consultation reassignment.",
     suspensionReason: "",
     profile: copyMemberFields({
       ...sampleProfile,
@@ -172,23 +170,45 @@ const examples: readonly DemoMemberRecord[] = [
 export function getDemoSessionSeed(): DemoSessionSeed {
   // Purpose-built synthetic client DTOs, never account/billing/moderation records.
   return structuredClone({
-    records: examples,
+    records: [
+      ...examples,
+      {
+        ...examples[0],
+        id: "member-example-builder",
+        credentials: [],
+        exampleLabel: "Participating builder",
+        profile: {
+          ...examples[0].profile,
+          businessName: "Hearthside Building Co.",
+          email: "builder@example.invalid",
+          city: "Boulder",
+          state: "CO",
+          categoryIds: ["healthy-builders"],
+        },
+      },
+    ].map((record) => ({
+      ...record,
+      freeConsultation: [
+        "member-example-approved",
+        "member-example-coordinator",
+        "member-example-fern",
+        "member-example-builder",
+      ].includes(record.id),
+    })),
     inquiries: [
       {
         id: "inbox-example-1",
         memberId: "member-example-approved",
         sender: "neighbor@example.invalid",
         subject: "Material consultation",
-        message:
-          "I would like to explore material choices for a renovation.",
+        message: "I would like to explore material choices for a renovation.",
       },
       {
         id: "inbox-example-2",
         memberId: "member-example-approved",
         sender: "homeowner@example.invalid",
         subject: "Planning question",
-        message:
-          "What is included in your interior planning service?",
+        message: "What is included in your interior planning service?",
       },
     ],
   });

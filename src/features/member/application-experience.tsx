@@ -38,7 +38,7 @@ export function ApplicationExperience({
             <p>Decision reason: {application.decisionReason}</p>
           )}
           <p>
-            Choose your prepared application on the sign-in page to open its member workspace.
+            Choose Your submitted application in Quick access on the sign-in page. This opens a simulated member account; no real account is created.
           </p>
           <Link
             className="button"
@@ -100,6 +100,7 @@ export function ApplicationExperience({
           />
         </section>
       )}
+      <p><Link className="text-link" href="/demo/walkthrough">Follow the client walkthrough →</Link></p>
       <div className="session-reset">
         <SessionReset />
         <p>

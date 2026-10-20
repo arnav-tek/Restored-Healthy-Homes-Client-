@@ -5,6 +5,7 @@ export interface ProfessionalAssociation {
 }
 export const demoProfessionalAssociations: readonly ProfessionalAssociation[] =
   [
+    { memberId: "member-example-builder", professionalId: "demo-healthy-builders" },
     { memberId: "member-example-fern", professionalId: "demo-mold-inspection" },
     {
       memberId: "member-example-cedar",

@@ -67,11 +67,11 @@ test("mobile menu supports touch, keyboard, Escape, and route dismissal", async 
   await expect(
     page
       .getByRole("navigation", { name: "Main navigation" })
-      .getByRole("link", { name: "Find professionals", exact: true }),
+      .getByRole("link", { name: "Find Specialists", exact: true }),
   ).toBeFocused();
   await page
     .getByRole("navigation", { name: "Main navigation" })
-    .getByRole("link", { name: "Find professionals" })
+    .getByRole("link", { name: "Find Specialists" })
     .tap();
   await expect(page).toHaveURL(/directory/);
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
@@ -99,6 +99,16 @@ test("shells, screenshots, overflow, accessibility and no browser errors", async
       await signIn(page, route.includes("admin") ? "admin" : "approved");
     await expect(page.getByRole("main")).toBeVisible();
     await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+    // Wait for streamed metadata after client sign-in navigation before auditing.
+    await expect(page).toHaveTitle(
+      name === "home"
+        ? /Find healthy-home specialists/
+        : name === "directory"
+          ? /Find Specialists/
+          : name === "member"
+            ? /Member dashboard/
+            : /Admin dashboard/,
+    );
     // Mobile Chromium can expand innerWidth to fit overflowing content.
     // Compare to the requested viewport, not the expanded layout viewport.
     expect(
@@ -117,7 +127,7 @@ test("shells, screenshots, overflow, accessibility and no browser errors", async
   await section(page, "Admin", "Listings");
   await expect(
     page.getByTestId("session-directory").getByRole("article"),
-  ).toHaveCount(4);
+  ).toHaveCount(5);
   await page
     .getByRole("navigation", { name: "Workspaces" })
     .getByRole("link", { name: "Member overview" })
@@ -147,7 +157,7 @@ test("public output excludes private fixtures and unpublished businesses", async
   expect(response.headers()["x-robots-tag"]).toContain("noindex");
   await page.goto("/");
   await page
-    .getByRole("link", { name: "Browse professionals", exact: true })
+    .getByRole("link", { name: "Browse specialists", exact: true })
     .click();
   await expect(page.getByTestId("professional-card")).toHaveCount(6);
   await page.goto("/does-not-exist");

@@ -73,7 +73,7 @@ test("demo sign-in validates only known fictional presets and bounded fields, ne
     ).ok,
     true,
   );
-  assert.equal(demoAccounts(null).length, 8);
+  assert.equal(demoAccounts(null).length, 9);
 });
 test("identity is an explicit session selection; switching requires sign-out and does not change eligibility", () => {
   let state = createDemoSession(seed);

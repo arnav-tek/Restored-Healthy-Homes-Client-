@@ -47,7 +47,7 @@ export default function ContactPage() {
         </div>
         <div>
           <h2 style={{ fontSize: "22px", marginBottom: "8px" }}>
-            For professionals
+            For Specialists
           </h2>
           <p style={{ color: "#575c4c", lineHeight: 1.65 }}>
             Interested in listing your business or learning more about

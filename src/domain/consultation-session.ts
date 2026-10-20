@@ -27,6 +27,7 @@ export function canCoordinate(
   return (
     !!member &&
     isPubliclyEligible(member) &&
+    member.freeConsultation === true &&
     member.profile.categoryIds.includes(categoryId)
   );
 }

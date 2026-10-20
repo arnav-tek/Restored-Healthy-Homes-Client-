@@ -1,5 +1,20 @@
 # Build milestones and acceptance
 
+## Client revision showcase — 2026-10-20
+
+See [showcase handoff](client-update-showcase-handoff.md) and [remaining-scope report](remaining-scope-report.md). The user explicitly deferred Supabase/email until client review; parts 1–2 below remain production work even though their demo journeys are available.
+
+Plain-language client progress: [completed work](../updates/completed-work.md) and [remaining work/requirements](../updates/remaining-work.md), reconciled with the original brief and later client updates. The user subsequently authorized committing and pushing this showcase/report revision to GitHub; no new Vercel deployment or real integration was requested.
+
+- [x] Client homepage copy/removals and eight-section order; specialist/Certifications labels; Certifications intro placement; pricing consultation block removed.
+- [x] Compact profile heading/photo placement, city-level Google Maps link and explicit free-phone participant badges.
+- [x] Demo free-phone preference, participant/category/eligibility assignment checks and truthful request confirmation.
+- [x] Category question inbox and first-response priority with provisional admin moderation; no actual email delivery.
+- [x] Local validated sample-photo preview and guided account → application → admin/member walkthrough; sign-out/reset/reload isolation.
+- [x] Typecheck, lint, 92 unit tests, demo build, fail-closed default build, browser regressions and actual responsive screenshot review; detailed results in the showcase handoff.
+- [ ] Client approval of certification wording, first-answer policy and consultation duration/matching; new font/color choices, logo/media/location assets.
+- [ ] Real accounts/database/permissions, secure uploads, email and all remaining production features in the linked report. No working live integration is claimed by this showcase.
+
 The [overview](../Project%20overview/restored-healthy-homes-project-overview.md) and [alignment](../Project%20overview/client-conversation-alignment.md) define final scope. These milestones sequence implementation, not exclusions.
 
 The [source-to-delivery coverage table](scope-coverage.md) maps all overview sections and original-brief requirements to this plan, including superseded instructions and unresolved decisions. Use it to distinguish missing scope from unfinished implementation; do not expand scope from generic recommendations.
@@ -12,7 +27,7 @@ This snapshot supersedes older instructions to defer frontend resources/newslett
 
 - [x] Refined homepage: two-column desktop hero, calculated compact statistics with definitions disclosure, search before statistics on mobile, logo home link and spaced navigation without a redundant Home item.
 - [x] Category search, directory filters/sorting/rating summaries, eligible public profiles, reviewed/submitted credential presentation and purposeful missing-photo states.
-- [x] Homepage and pricing consultation cards use the shared proposed offer; concise application/credential review explanation and professional education introduction.
+- [x] Homepage uses the shared free-phone consultation offer; pricing consultation block removed in the client revision. Concise application/credential review explanation and professional education introduction retained.
 - [x] Education pathways, membership pricing, About story/video layout and pending asset states.
 - [x] Resources listing/article layouts, category filters and empty/invalid states; clearly labelled sample editorial content behind a typed repository contract.
 - [x] Accessible newsletter preview validates input, clears the address and confirms that no subscription occurred. No external delivery or address storage.
@@ -266,7 +281,7 @@ After Phase 2H-2, await scoped prompts for the remaining demo milestones above; 
 
 - [ ] Real inquiry persistence/delivery, questions/answers, category matching, alerts and moderation (demo inquiries: 2B; public demo Q&A: 2E-1; demo answers/moderation: 2E-2).
 - [ ] Reviews/ratings with agreed verification/moderation.
-- [ ] Real paid consultations after routing/matching/scheduling/refund/delivery decisions (public request demo: 2F-1; member/admin demo coordination: 2F-2); commercial terms remain in the private authoritative scope.
+- [ ] Real free phone consultations for participating specialists after matching/scheduling/responsibility decisions (public request demo: 2F-1; member/admin demo coordination: 2F-2); the later client request supersedes the old paid-call baseline; membership billing remains separate.
 - [ ] External certification/education resources, blog/resources CMS, newsletter consent/signup.
 - [ ] Remaining public pages: dedicated About Us page with the client's company story, the "Why" behind Restored Healthy Homes, supporting client-supplied text, and their professionally produced video. Match the approved site design across desktop/tablet/mobile and provide accessible video controls and captions/transcript support. Clearly labeled placeholders may be used until final copy/video arrives; do not invent the company story or mark final content complete before client review. Video production is supplied by the client.
 - [ ] Agreed client legal-copy placement.

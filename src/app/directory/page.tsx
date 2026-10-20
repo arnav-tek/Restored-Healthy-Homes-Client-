@@ -8,7 +8,7 @@ import { DirectoryFilters } from "@/features/directory/directory-filters";
 import { DirectoryResults } from "@/features/directory/directory-results";
 import type { PublicProfessional } from "@/domain/professional";
 import { DirectoryUnavailable } from "@/features/directory/directory-state";
-export const metadata: Metadata = { title: "Find professionals" };
+export const metadata: Metadata = { title: "Find Specialists" };
 export default async function Directory({
   searchParams,
 }: {

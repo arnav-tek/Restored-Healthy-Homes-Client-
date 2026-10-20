@@ -34,7 +34,7 @@ test("homepage categories, truthful statistics and About Us navigation work with
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
-  await expect(page).toHaveTitle(/Find healthy-home professionals/);
+  await expect(page).toHaveTitle(/Find healthy-home specialists/);
   await expect(page.getByRole("main")).not.toContainText(
     /demo preview|fictional demo figures|published fictional/i,
   );
@@ -132,12 +132,12 @@ test("homepage categories, truthful statistics and About Us navigation work with
       .getByRole("link", { name: "About Us", exact: true }),
   ).toHaveAttribute("href", "/about");
   await page
-    .getByRole("link", { name: "Browse professionals", exact: true })
+    .getByRole("link", { name: "Browse specialists", exact: true })
     .first()
     .focus();
   await expect(
     page
-      .getByRole("link", { name: "Browse professionals", exact: true })
+      .getByRole("link", { name: "Browse specialists", exact: true })
       .first(),
   ).toBeFocused();
   await inspect(page, `about-${info.project.name}`);
@@ -265,7 +265,7 @@ test("refined pages reflow at 320px and with enlarged text; short-screen navigat
     await page.goto(route);
     if (route === "/") {
       await expect(
-        page.getByRole("form", { name: "Find professionals", exact: true }),
+        page.getByRole("form", { name: "Find Specialists", exact: true }),
       ).toHaveAttribute("data-ready", "true");
     } else {
       // Wait for the shared header to hydrate before applying text-size overrides.

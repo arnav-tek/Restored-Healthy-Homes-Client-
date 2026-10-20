@@ -46,10 +46,10 @@ export default function AboutPage() {
             <div className="about-hero-actions">
               <ButtonLink
                 href="/directory"
-                aria-label="Browse professionals"
+                aria-label="Browse specialists"
                 className="about-hero-primary-btn"
               >
-                Browse professionals <ArrowRight size={18} aria-hidden="true" />
+                Browse specialists <ArrowRight size={18} aria-hidden="true" />
               </ButtonLink>
               <a href="#story" className="about-hero-secondary-btn">
                 Our story <ArrowDown size={18} aria-hidden="true" />
@@ -252,7 +252,7 @@ export default function AboutPage() {
           </div>
           <div className="about-cta-actions">
             <ButtonLink href="/directory" className="about-cta-btn">
-              Browse professionals <ArrowRight size={18} aria-hidden="true" />
+              Browse specialists <ArrowRight size={18} aria-hidden="true" />
             </ButtonLink>
             <Link className="about-cta-link" href="/list-your-business">
               List Your Business

@@ -227,7 +227,7 @@ test("session selection, edits and reset are coherent, isolated and leave inbox 
     seed,
   );
   assert.equal(selected.applicationId, submitted.applicationId);
-  assert.equal(selected.records.length, 8);
+  assert.equal(selected.records.length, 9);
   assert.equal(
     reduceDemoSession(
       selected,
@@ -254,5 +254,5 @@ test("session selection, edits and reset are coherent, isolated and leave inbox 
   assert.equal(reset.selectedId, initial.selectedId);
   assert.ok(reset.revision > selected.revision);
   assert.equal(createDemoSession(seed).applicationId, null);
-  assert.equal(seed.records.length, 7);
+  assert.equal(seed.records.length, 8);
 });

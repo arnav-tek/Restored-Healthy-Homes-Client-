@@ -16,16 +16,16 @@ export function Footer() {
 
         <div className="footer-links-col">
           <h2>Explore</h2>
-          <Link href="/directory">Find professionals</Link>
+          <Link href="/directory">Find Specialists</Link>
           <Link href="/questions">Ask a Specialist</Link>
           <Link href="/consultations">Consultations</Link>
-          <Link href="/education">Education</Link>
+          <Link href="/education">Certifications</Link>
           <Link href="/resources">Resources</Link>
           <Link href="/about">About Us</Link>
         </div>
 
         <div className="footer-links-col">
-          <h2>For professionals</h2>
+          <h2>For Specialists</h2>
           <Link href="/pricing">Membership pricing</Link>
           <Link href="/list-your-business">List Your Business</Link>
           <Link href="/login">Sign in</Link>

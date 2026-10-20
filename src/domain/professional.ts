@@ -15,6 +15,7 @@ export interface ProfessionalRecord {
   summary: string;
   services: string[];
   credentials: Credential[];
+  freeConsultation?: boolean;
   serviceArea?: string;
   publicContact?: { email?: string; phone?: string; website?: string };
   approval: ApprovalStatus;
@@ -27,6 +28,7 @@ export interface ProfessionalRecord {
 }
 // Public data is an explicit allowlist, not Omit<ProfessionalRecord, ...>.
 export interface PublicProfessional {
+  freeConsultation?: boolean;
   id: string;
   businessName: string;
   categoryIds: string[];

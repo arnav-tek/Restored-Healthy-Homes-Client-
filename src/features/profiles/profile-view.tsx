@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LocationPreview } from "./location-preview";
 import type { PublicProfile } from "@/domain/professional";
 import type { Category } from "@/domain/categories";
 import { InquiryForm } from "./inquiry-form";
@@ -28,19 +29,21 @@ export function ProfileView({
         {returnTo === "/directory" ? "Back to directory" : "Back to results"}
       </Link>
       <header className="profile-heading">
+        <div className="profile-heading-copy">
+          <p className="section-label section-tag">Specialist profile</p>
+          <h1>{profile.businessName || "Professional"}</h1>
+          <p className="category-label">
+            {categoryNames.join(" · ") || "Category not provided"}
+          </p>
+          <p>
+            {[profile.city, profile.state].filter(Boolean).join(", ") ||
+              "Location not provided"}
+          </p>
+        </div>
         <div className="profile-photo-placeholder">
           <p>Business photo not provided</p>
           <span>Profile images will appear here when available.</span>
         </div>
-        <p className="section-label section-tag">Professional profile</p>
-        <h1>{profile.businessName || "Professional"}</h1>
-        <p className="category-label">
-          {categoryNames.join(" · ") || "Category not provided"}
-        </p>
-        <p>
-          {[profile.city, profile.state].filter(Boolean).join(", ") ||
-            "Location not provided"}
-        </p>
       </header>
       <div className="profile-layout">
         <div className="profile-details">
@@ -56,6 +59,7 @@ export function ProfileView({
           </section>
           <section aria-labelledby="service-area-heading">
             <h2 id="service-area-heading">Location &amp; service area</h2>
+            <LocationPreview city={profile.city} state={profile.state} />
             <p>
               {profile.serviceArea ||
                 "Service area not provided. A listed city does not establish service coverage."}
@@ -140,7 +144,21 @@ export function ProfileView({
             )}
           </section>
         </div>
-        <InquiryForm />
+        <aside>
+          {profile.freeConsultation && (
+            <section className="panel profile-free-consult">
+              <h2>Free phone consultation</h2>
+              <p>
+                This specialist participates in free phone consultations. In
+                this demo, a request does not book an appointment.
+              </p>
+              <Link href="/consultations" className="text-link">
+                Request a free consult →
+              </Link>
+            </section>
+          )}
+          <InquiryForm />
+        </aside>
       </div>
       <ReviewsSection
         professionalId={profile.id}

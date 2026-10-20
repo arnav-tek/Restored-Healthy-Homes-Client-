@@ -126,7 +126,7 @@ test("moderation updates directory card averages and threshold results in the sa
   );
   await page
     .getByRole("contentinfo")
-    .getByRole("link", { name: "Find professionals", exact: true })
+    .getByRole("link", { name: "Find Specialists", exact: true })
     .press("Enter");
   await page.getByLabel("State", { exact: true }).selectOption("NC");
   await page.getByLabel("Minimum review rating").selectOption("4.5");

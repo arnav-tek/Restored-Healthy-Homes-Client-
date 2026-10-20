@@ -74,7 +74,8 @@ test("session publications can add a third public results page without server cl
       .click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
     await page
-      .getByRole("link", { name: /Back to questions/ }).first()
+      .getByRole("link", { name: /Back to questions/ })
+      .first()
       .click();
     await expect(page).toHaveURL("/questions");
   }
@@ -145,9 +146,7 @@ test("same-session question and answer publication, rejection, parent hiding and
     .getByRole("button", { name: "Publish question", exact: true })
     .press("Enter");
   await expect(
-    page.getByText(
-      "Question published. This decision affects only this tab.",
-    ),
+    page.getByText("Question published. This decision affects only this tab."),
   ).toBeFocused();
   await page
     .getByRole("link", { name: "View public session question" })
@@ -298,10 +297,26 @@ test("same-session question and answer publication, rejection, parent hiding and
 test("member drafts remain isolated across questions, member selection and navigation; refresh and reset clear them", async ({
   page,
 }) => {
-  await visitWorkspace(
-    page,
-    "/demo/member?section=qa&question=planning-inspection",
-  );
+  test.setTimeout(90000);
+  async function openQuestionInbox() {
+    await section(page, "Member", "Profile");
+    await page
+      .getByRole("checkbox", { name: /Mold Testing \/ Inspectors/ })
+      .check();
+    await page.getByRole("checkbox", { name: /Healthy Home Trades/ }).check();
+    await page.getByRole("button", { name: "Update local preview" }).click();
+    await section(page, "Member", "Q&A");
+    const back = page.getByRole("link", { name: /Back to member questions/ });
+    if (await back.isVisible()) await back.click();
+    await page
+      .getByRole("button", { name: "Clear Q&A filters", exact: true })
+      .click();
+  }
+  await visitWorkspace(page, "/demo/member?section=profile");
+  await openQuestionInbox();
+  await page
+    .locator('.qa-list a[href*="question=planning-inspection"]')
+    .click();
   await page
     .getByLabel("Answer text", { exact: true })
     .fill("Draft for the first fictional question.");
@@ -312,7 +327,7 @@ test("member drafts remain isolated across questions, member selection and navig
     .getByRole("button", { name: "Filter Q&A", exact: true })
     .press("Enter");
   await expect(
-    page.getByText("1 published questions", { exact: true }),
+    page.getByText("1 matching published questions", { exact: true }),
   ).toBeVisible();
   await page.locator('.qa-list a[href*="question=trade-visit"]').click();
   await expect(page.getByLabel("Answer text", { exact: true })).toHaveValue("");
@@ -327,8 +342,13 @@ test("member drafts remain isolated across questions, member selection and navig
   ).toBeVisible();
   await expect(page.getByLabel("Answer text", { exact: true })).toHaveCount(0);
   await switchMember(page, "member-example-approved");
+  await section(page, "Member", "Q&A");
+  await page.getByRole("link", { name: /Back to member questions/ }).click();
+  await page.locator('.qa-list a[href*="question=trade-visit"]').click();
   await expect(page.getByLabel("Answer text", { exact: true })).toHaveValue("");
   await page.getByRole("link", { name: /Back to member questions/ }).click();
+  await page.getByLabel("Q&A keyword").fill("trade");
+  await page.getByRole("button", { name: "Filter Q&A", exact: true }).click();
   await page
     .getByRole("button", { name: "Clear Q&A filters", exact: true })
     .click();
@@ -346,7 +366,7 @@ test("member drafts remain isolated across questions, member selection and navig
   );
   await resetSession(page);
   await expect(page).toHaveURL(/\/demo\/member$/);
-  await section(page, "Member", "Q&A");
+  await openQuestionInbox();
   await page
     .locator('.qa-list a[href*="question=planning-inspection"]')
     .click();
@@ -356,6 +376,10 @@ test("member drafts remain isolated across questions, member selection and navig
     .fill("Refresh clears this fictional draft.");
   await page.reload();
   await signIn(page);
+  await openQuestionInbox();
+  await page
+    .locator('.qa-list a[href*="question=planning-inspection"]')
+    .click();
   await expect(page.getByLabel("Answer text", { exact: true })).toHaveValue("");
 });
 
@@ -380,9 +404,9 @@ test("session routes have neutral HTML and no-script state; seed moderation rese
     noJs.getByText(/JavaScript is required for session-created questions/),
   ).toBeVisible();
   await noJs.goto("/demo/member?section=qa&question=planning-inspection");
-  await expect(
-    noJs.getByRole("button", { name: "Submit answer" }),
-  ).toHaveCount(0);
+  await expect(noJs.getByRole("button", { name: "Submit answer" })).toHaveCount(
+    0,
+  );
   await expect(
     noJs.getByRole("heading", { name: "Checking session" }),
   ).toBeVisible();

@@ -130,6 +130,7 @@ const samples = [
 ];
 const active: ProfessionalRecord[] = samples.map((sample, index) => ({
   ...sample,
+  freeConsultation: ["demo-mold-inspection", "demo-healthy-builders", "demo-healthy-trades"].includes(sample.id),
   credentials: [
     {
       name: "Training record",

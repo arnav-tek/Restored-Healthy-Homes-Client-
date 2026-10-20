@@ -31,7 +31,7 @@ async function inspect(page: Page, name: string) {
 async function browseProfile(page: Page, business: string) {
   await page
     .getByRole("contentinfo")
-    .getByRole("link", { name: "Find professionals", exact: true })
+    .getByRole("link", { name: "Find Specialists", exact: true })
     .click();
   await expect(page).toHaveURL("/directory");
   await page
@@ -260,7 +260,7 @@ test("professional-scoped drafts survive navigation; sign-out discards drafts bu
     page.getByRole("heading", { name: "Review pending", exact: true }),
   ).toBeVisible();
   await signOut(page);
-  await expect(page).toHaveURL("/login");
+  await expect(page).toHaveURL("/admin/login");
   await signIn(page);
   await browseProfile(page, "Cedar Path Remediation");
   await expect(

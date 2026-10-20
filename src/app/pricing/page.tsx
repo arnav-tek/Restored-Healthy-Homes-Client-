@@ -16,7 +16,6 @@ import {
 import { directoryRepository } from "@/data";
 import { formatMonthlyPrice } from "@/domain/categories";
 import { ButtonLink } from "@/components/ui/button";
-import { consultationOfferLabel } from "@/domain/consultation";
 
 export const metadata: Metadata = {
   title: "Membership Pricing",
@@ -242,25 +241,7 @@ export default async function PricingPage() {
         </div>
       </section>
 
-      <section
-        className="panel pricing-section"
-        aria-labelledby="pricing-consultation-heading"
-      >
-        <h2 id="pricing-consultation-heading">
-          A consultation for your project
-        </h2>
-        <p>
-          <strong>{consultationOfferLabel()}</strong>
-        </p>
-        <p>
-          A separate proposed offer for a focused conversation. No appointment
-          is booked or payment collected in this preview.
-        </p>
-        <Link className="text-link" href="/consultations">
-          Explore consultations
-        </Link>
-      </section>
-      {/* Before you apply section */}
+{/* Before you apply section */}
       <section
         className="membership-guidance pricing-guidance-section"
         aria-labelledby="before-applying"
@@ -281,8 +262,7 @@ export default async function PricingPage() {
                 </div>
                 <p>
                   <strong>
-                    A public listing requires admin approval, active membership
-                    and no suspension.
+                    A public listing requires admin approval, active membership.
                   </strong>{" "}
                   Approval alone does not publish a listing.
                 </p>

@@ -33,13 +33,13 @@ test("consultation navigation and responsive page keep the proposed offer and de
     .press("Enter");
   await expect(page).toHaveURL("/consultations");
   await expect(
-    page.getByText("$50 USD / 15 minutes", { exact: true }),
+    page.getByText("Free phone consultation", { exact: true }),
   ).toBeVisible();
   await expect(
     page.getByText(/No appointment is booked or payment collected/),
   ).toBeVisible();
   await page
-    .getByRole("link", { name: "Prepare a request", exact: true })
+    .getByRole("link", { name: "Request a free consult", exact: true })
     .click();
   await expect(page).toHaveURL("/consultations#request");
   await inspect(page, `page-${testInfo.project.name}`);
@@ -63,7 +63,7 @@ test("consultation validation, drafts, requested confirmation, another request a
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/consultations");
   await expect(page.getByLabel("Name", { exact: true })).toBeEnabled();
-  await page.getByRole("button", { name: "Record request" }).press("Enter");
+  await page.getByRole("button", { name: "Submit request" }).press("Enter");
   await expect(page.getByLabel("Name", { exact: true })).toBeFocused();
   await expect(
     page.getByText(
@@ -73,7 +73,7 @@ test("consultation validation, drafts, requested confirmation, another request a
   await inspect(page, `validation-${testInfo.project.name}`);
   await page.getByLabel("Name", { exact: true }).fill("Sample Requester");
   await page.getByLabel("Email", { exact: true }).fill("bad-address");
-  await page.getByRole("button", { name: "Record request" }).click();
+  await page.getByRole("button", { name: "Submit request" }).click();
   await expect(page.getByLabel("Email", { exact: true })).toBeFocused();
   await page
     .getByLabel("Email", { exact: true })
@@ -83,7 +83,7 @@ test("consultation validation, drafts, requested confirmation, another request a
     .selectOption("healthy-designers");
   await page
     .getByLabel("Preferred format", { exact: true })
-    .selectOption("video");
+    .selectOption("phone");
   await page
     .getByLabel("Question or topic", { exact: true })
     .fill(
@@ -112,7 +112,7 @@ test("consultation validation, drafts, requested confirmation, another request a
   await expect(page.getByLabel("Email", { exact: true })).toHaveValue(
     "requester@example.invalid",
   );
-  await page.getByRole("button", { name: "Record request" }).click();
+  await page.getByRole("button", { name: "Submit request" }).click();
   await expect(
     page.getByRole("heading", { name: "Request prepared" }),
   ).toBeFocused();
@@ -124,12 +124,12 @@ test("consultation validation, drafts, requested confirmation, another request a
   await expect(page.locator(".consultation-summary")).toContainText(
     "Healthy Home Designers",
   );
-  await expect(page.locator(".consultation-summary")).toContainText("Video");
+  await expect(page.locator(".consultation-summary")).toContainText("Phone");
   await expect(page.locator(".consultation-summary")).toContainText(
-    "$50 USD / 15 minutes",
+    "Free phone consultation",
   );
   await expect(
-    page.getByRole("button", { name: "Record request" }),
+    page.getByRole("button", { name: "Submit request" }),
   ).toHaveCount(0);
   await expect(page.locator("main")).not.toContainText(
     "requester@example.invalid",
@@ -168,7 +168,7 @@ test("consultation validation, drafts, requested confirmation, another request a
   await page
     .getByLabel("Question or topic", { exact: true })
     .fill("A second fictional request about a sample project plan.");
-  await page.getByRole("button", { name: "Record request" }).click();
+  await page.getByRole("button", { name: "Submit request" }).click();
   await expect(
     page.getByRole("heading", { name: "Request prepared" }),
   ).toBeVisible();
@@ -199,7 +199,7 @@ test("consultation validation, drafts, requested confirmation, another request a
   await page
     .getByLabel("Question or topic", { exact: true })
     .fill("A temporary fictional request to check the refresh boundary.");
-  await page.getByRole("button", { name: "Record request" }).click();
+  await page.getByRole("button", { name: "Submit request" }).click();
   await expect(
     page.getByRole("heading", { name: "Request prepared" }),
   ).toBeVisible();
@@ -230,7 +230,7 @@ test("consultations remain public-data-free and cannot submit before hydration o
   await page.goto("/consultations");
   await expect(page.getByLabel("Name", { exact: true })).toBeDisabled();
   await expect(
-    page.getByRole("button", { name: "Record request" }),
+    page.getByRole("button", { name: "Submit request" }),
   ).toBeDisabled();
   await expect(
     page.getByText(/Submission is disabled; no submission endpoint exists/),
@@ -245,7 +245,7 @@ test("consultations remain public-data-free and cannot submit before hydration o
   const waiting = await delayed.newPage();
   await waiting.goto("/consultations");
   await expect(
-    waiting.getByRole("button", { name: "Record request" }),
+    waiting.getByRole("button", { name: "Submit request" }),
   ).toBeDisabled();
   await expect(
     waiting.getByLabel("Question or topic", { exact: true }),

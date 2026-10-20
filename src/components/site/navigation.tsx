@@ -7,10 +7,10 @@ import { useDemoSession } from "@/features/member/demo-session";
 import { demoDashboard } from "@/domain/demo-identity";
 import { SignOutButton } from "@/features/demo-sign-in/sign-out-button";
 const links = [
-  { href: "/directory", label: "Find professionals" },
+  { href: "/directory", label: "Find Specialists" },
   { href: "/questions", label: "Ask a Specialist" },
   { href: "/consultations", label: "Consultations" },
-  { href: "/education", label: "Education" },
+  { href: "/education", label: "Certifications" },
   { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About Us" },
 ];

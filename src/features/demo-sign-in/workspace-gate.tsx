@@ -46,10 +46,10 @@ export function WorkspaceGate({
           </Link>
         )}
         <p className="field-help">
-          Browse professionals or prepare an application without signing in.
+          Browse specialists or prepare an application without signing in.
         </p>
         <Link className="text-link" href="/directory">
-          Browse professionals
+          Browse specialists
         </Link>
       </div>
     </section>

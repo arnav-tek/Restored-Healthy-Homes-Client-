@@ -126,7 +126,7 @@ test("all category profiles are public-only; hidden and missing direct routes re
     const response = await request.get(`/professionals/demo-${category}`);
     expect(response.headers()["x-robots-tag"]).toContain("noindex");
     const html = await response.text();
-    expect(html).toContain("Professional profile");
+    expect(html).toContain("Specialist profile");
     for (const marker of [
       "synthetic-owner",
       "synthetic-customer",
@@ -208,7 +208,7 @@ test("unsafe or absent return destinations use directory fallback; adapter failu
   await expect(
     page
       .getByRole("main")
-      .getByRole("link", { name: "Find professionals", exact: true }),
+      .getByRole("link", { name: "Find Specialists", exact: true }),
   ).toHaveAttribute("href", "/directory");
 });
 

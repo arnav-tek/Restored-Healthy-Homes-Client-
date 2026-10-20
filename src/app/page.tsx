@@ -15,7 +15,7 @@ import { ReviewProcess } from "@/features/home/review-process";
 import { FeaturedExamples } from "@/features/home/featured-examples";
 
 export const metadata: Metadata = {
-  title: "Find healthy-home professionals",
+  title: "Find healthy-home specialists",
   description:
     "Explore eight healthy-home specialties, search by city or ZIP, and find a starting point for your next project.",
 };
@@ -35,27 +35,26 @@ export default async function Home() {
         <div className="container home-hero-inner">
           <div className="hero-copy">
             <p className="hero-kicker section-tag section-tag-inverse">Restored Healthy Homes</p>
-            <h1>Find a professional for your healthier home.</h1>
+            <h1>Find a specialist for your healthier home.</h1>
             <p>
-              From a moisture concern to a new build, find the specialty and
-              services for your next step.
+              From a moisture concern to a new build and the health practitioners who help families heal, find the specialists you need in one place.
             </p>
           </div>
           <HomeSearch catalog={catalog} locations={locations} />
           <HomeStatistics listings={listings} />
           <div className="hero-followup">
             <Link href="/directory">
-              Browse professionals <ArrowRight size={16} aria-hidden="true" />
+              Browse specialists <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
         </div>
       </section>
-      <CategoryBrowse catalog={catalog} />
       <HomeJourney />
+      <CategoryBrowse catalog={catalog} />
+      <HomeAbout />
       <HomeFeatures />
       <FeaturedExamples professionals={featured} catalog={catalog} />
       <ReviewProcess />
-      <HomeAbout />
       <HomeBusiness />
     </>
   );

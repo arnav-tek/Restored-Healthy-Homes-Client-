@@ -50,7 +50,7 @@ test("enhanced top sorting resets pagination, preserves filters/history and reta
   await signIn(page, "admin");
   await page
     .getByRole("contentinfo")
-    .getByRole("link", { name: "Find professionals", exact: true })
+    .getByRole("link", { name: "Find Specialists", exact: true })
     .press("Enter");
   await page
     .getByRole("link", { name: "Next page", exact: true })

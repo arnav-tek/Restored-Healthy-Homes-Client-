@@ -28,9 +28,9 @@ test("education has eight keyboard pathways, official references and working app
   page,
 }, info) => {
   await page.goto("/");
-  await mainNav(page, "Education");
+  await mainNav(page, "Certifications");
   await expect(page).toHaveURL(/\/education$/);
-  await expect(page).toHaveTitle(/Education & Certifications/);
+  await expect(page).toHaveTitle(/Certifications \| Restored Healthy Homes/);
   await expect(page.getByRole("main")).toContainText(
     "we do not train or certify",
   );
@@ -94,7 +94,7 @@ test("pricing renders exact catalog prices, full names and truthful membership/a
     );
   }
   await expect(page.getByRole("main")).toContainText(
-    "admin approval, active membership and no suspension",
+    "admin approval, active membership",
   );
   await expect(page.getByRole("main")).toContainText(
     "Multi-category pricing is pending confirmation",
@@ -115,7 +115,7 @@ test("new navigation works signed in as professional and admin without changing 
   for (const account of ["approved", "admin"]) {
     await page.goto("/login");
     await signIn(page, account);
-    for (const link of ["Education", "Pricing"]) {
+    for (const link of ["Certifications", "Pricing"]) {
       await mainNav(page, link);
       await expect(page.locator("[data-demo-account]")).toHaveAttribute(
         "data-demo-account",
@@ -129,7 +129,7 @@ test("new navigation works signed in as professional and admin without changing 
     await expect(
       page
         .getByRole("contentinfo")
-        .getByRole("link", { name: "Education", exact: true }),
+        .getByRole("link", { name: "Certifications", exact: true }),
     ).toHaveAttribute("href", "/education");
     await expect(
       page
@@ -153,7 +153,7 @@ test("320px reflow, breakpoint menu and server content without JavaScript", asyn
         await page.locator("summary").first().press("Enter");
       await inspect(page, `${route}-${width}`);
     }
-    await mainNav(page, "Education");
+    await mainNav(page, "Certifications");
     await mainNav(page, "Pricing");
   }
   const context = await browser.newContext({

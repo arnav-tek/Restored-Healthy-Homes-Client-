@@ -32,7 +32,7 @@ function start() {
         name: "VISITOR_NAME",
         email: "visitor@example.invalid",
         categoryId: "healthy-designers",
-        format: "video",
+        format: "phone",
         topic: "A fictional coordination topic with plain text <b>only</b>.",
       },
     },

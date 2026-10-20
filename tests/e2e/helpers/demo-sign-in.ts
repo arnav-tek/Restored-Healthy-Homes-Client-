@@ -1,6 +1,7 @@
 import { expect, type Page } from "@playwright/test";
 const labels: Record<string, string> = {
   admin: "Administrator",
+  builder: "Hearthside Building Co.",
   approved: "Meadow Studio",
   pending: "Pending Studio",
   rejected: "Rejected Studio",

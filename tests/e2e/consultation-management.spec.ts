@@ -22,9 +22,9 @@ async function request(page: Page, category = "healthy-designers") {
     .selectOption(category);
   await page
     .getByLabel("Preferred format", { exact: true })
-    .selectOption("video");
+    .selectOption("phone");
   await page.getByLabel("Question or topic", { exact: true }).fill(topic);
-  await page.getByRole("button", { name: "Record request" }).press("Enter");
+  await page.getByRole("button", { name: "Submit request" }).press("Enter");
   await expect(
     page.getByRole("heading", { name: "Request prepared" }),
   ).toBeVisible();

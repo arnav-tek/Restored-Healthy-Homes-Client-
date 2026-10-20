@@ -17,8 +17,8 @@ export function HomeSearch({
 }) {
   return (
     <div className="hero-search">
-      <h2 className="sr-only">Find professionals</h2>
-      <SearchForm label="Find professionals">
+      <h2 className="sr-only">Find Specialists</h2>
+      <SearchForm label="Find Specialists">
         <LocationField value="" locations={locations} />
         <CategoryField catalog={catalog} selected="" />
         <Button type="submit">

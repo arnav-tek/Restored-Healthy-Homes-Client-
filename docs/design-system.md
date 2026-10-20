@@ -230,3 +230,10 @@ Redesigned the public application page at `/list-your-business` to deliver a cle
   - All 86 unit tests, demo builds, and end-to-end tests passing without regressions.
 
 
+## Client showcase revision — 2026-10-20
+
+Retain the approved sage/cream/clay palette, Georgia/Arial typography and rounded section labels. The client supplied copy, ordering and compact profile changes, but no replacement fonts, color values, logo or video. Keep the existing logo position and do not invent media or motion.
+
+Homepage order: hero → how it works → specialty → About Us → ways to get started → featured examples → review process → specialist application. Tighten profile spacing and place the photo slot beside the name at desktop widths, stacking on mobile. Certifications copy follows its heading instead of sitting in a separate right column. Location panels use city-level data and an official Google Maps search link; exact business pins need confirmed addresses. Keep honest demo notices beside working forms.
+
+Interpretation before build: retain moderation before publication for the first submitted eligible response, allow a later response after rejection, and keep suspension checks in business rules. Free consultations are phone-only with participant opt-in; no appointment is booked. The shared consultation amount is zero; timing/duration need client confirmation. No blanket certification claim is added without verified qualifications. Client approval is still needed for those policy choices.

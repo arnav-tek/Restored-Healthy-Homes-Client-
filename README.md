@@ -7,12 +7,16 @@ A demo platform that helps people find professionals who support healthier homes
 - Explore public business profiles and try a demo inquiry form.
 - Read fictional reviews and star ratings, submit a session-only review, then try admin moderation and linked professional review views.
 - Browse fictional Q&A, submit demo questions and member answers, and try admin moderation.
-- Explore the proposed consultation offer, record a session-only request and try admin assignment/member coordination; no booking, payment or notifications.
+- Explore free phone consultations, submit a session-only request and try admin assignment/member coordination; no booking, payment or notifications.
 - Submit a sample business application and edit it in the member workspace.
 - Review applications, credentials and listing eligibility in the admin workspace.
-- Try fictional professional/admin accounts at `/login` using the displayed presets and public passcode `home-demo`. This simulates sign-in; it is not authentication.
+- Try fictional professional/admin accounts at `/login` using the displayed presets and public passcode `home-access`. This simulates sign-in; it is not authentication.
 
 Built with Next.js App Router, React, TypeScript and Tailwind CSS.
+
+The latest client showcase includes free-phone participation, category question inboxes, first-response moderation and local sample-photo previews. Start at `/demo/walkthrough`; all workflow changes remain in the current tab and reset on refresh. See [current showcase handoff](docs/client-update-showcase-handoff.md) and [remaining scope](docs/remaining-scope-report.md).
+
+For a plain-language progress summary based on the original requirements and later client changes, read [completed work](updates/completed-work.md) and [remaining work and requirements](updates/remaining-work.md).
 
 ## Run locally
 

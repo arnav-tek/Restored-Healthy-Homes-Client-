@@ -89,6 +89,7 @@ export function ProfessionalCard({
             </>
           )}
         </div>
+        {professional.freeConsultation && <p className="free-consultation-note">Free phone consultation available</p>}
       </div>
       <div className="card-footer">
         <details className="services">

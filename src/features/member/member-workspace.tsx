@@ -1,4 +1,5 @@
 "use client";
+import { ShowcasePreferences } from "./showcase-preferences";
 import Link from "next/link";
 import { useRef } from "react";
 import { ArrowRight, Building2, MapPin } from "lucide-react";
@@ -211,6 +212,7 @@ export function MemberWorkspace({
 
       {query.section === "profile" && (
         <div className="member-profile-section">
+          <ShowcasePreferences key={resetVersion} memberId={record.id} />
           <p className="field-help">
             Only profile fields can be edited here. Approval, subscription,
             suspension and verification decisions are protected.
@@ -258,6 +260,7 @@ export function MemberWorkspace({
       {query.section === "inquiries" && (
         <section className="panel admin-detail-card member-inbox">
           <h2 className="admin-detail-heading">Inquiry inbox</h2>
+          <p><Link className="text-link" href={href({ section: "qa" })}>Open category question inbox →</Link></p>
           <p className="field-help">
             Email delivery is not connected yet.
           </p>

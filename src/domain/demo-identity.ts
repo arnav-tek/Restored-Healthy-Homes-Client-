@@ -64,6 +64,18 @@ const accounts: readonly DemoAccount[] = [
       memberId: "member-example-cedar",
     },
   },
+  {
+    id: "builder",
+    label: "Hearthside Building Co.",
+    email: "builder@example.invalid",
+    description:
+      "Healthy Home Builder · free phone consultations · category Q&A",
+    identity: {
+      kind: "member",
+      accountId: "builder",
+      memberId: "member-example-builder",
+    },
+  },
 ];
 export function demoAccounts(
   applicationId: string | null,
@@ -75,8 +87,7 @@ export function demoAccounts(
           id: "application",
           label: "Your submitted application",
           email: "application@example.invalid",
-          description:
-            "Open your prepared application.",
+          description: "Open your prepared application.",
           identity: {
             kind: "member",
             accountId: "application",

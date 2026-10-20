@@ -1,0 +1,94 @@
+# What has been completed
+
+Updated: 20 October 2026
+
+**Current stage: a working prototype for client review. The real, connected platform is not finished.**
+
+This report compares the original client Word brief, the later project overview/client confirmations, the latest website change list, and the implemented project. Later client decisions take precedence over the older brief. It describes the current source code; the hosted website may show an earlier version until its deployment is checked separately.
+
+“Working demo” below means the client can try the flow using fictional information in one browser tab. Refresh clears submitted demo records and account identity. Signing out clears drafts but keeps submitted records for the same-tab walkthrough. Nothing is emailed, charged or saved permanently.
+
+See [what remains and what is needed](remaining-work.md) for the work required before launch.
+
+## 1. Website pages and public browsing
+
+| Area                    | What is available now                                                                                                                                                                   | Completion limit                                                                                                     |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Homepage                | Two-column desktop hero, city/ZIP/category search, eight specialty links, About introduction, ways to get started, featured examples, review process and specialist application section | Uses fictional businesses and calculated demo statistics                                                             |
+| Site design/navigation  | Existing sage, cream and clay palette, Georgia/Arial typography, rounded section labels without right-hand lines, working navigation/footer and responsive menus                        | Replacement brand assets and final client visual approval remain pending                                             |
+| Find Specialists        | Keyword, category, city/ZIP, state, rating and optional radius filters; alphabetical/nearest sorting, counts, pagination and clear filters                                              | Location matching uses a small documented demo dataset; distances are approximate                                    |
+| Search navigation       | Filters stay in the URL, survive reload/back/forward and are preserved when returning from profiles                                                                                     | Reload resets fictional workflow records, not the URL search filters                                                 |
+| Specialist profiles     | Stable profile routes, business/category/location, description, services, service area, listed/reviewed credentials, available sample contacts and reviews                              | Separate public professional/owner name, real images and real contacts still need completion                         |
+| Profile layout/location | Tighter spacing, business photo slot on the right on desktop, mobile stacking, city-level location panel and a working Google Maps city-search link                                     | This is not an embedded map or an exact business-location pin                                                        |
+| About Us                | Dedicated responsive page with company-story/purpose and video areas                                                                                                                    | Final story, approved copy and client-supplied video are not complete                                                |
+| Certifications          | All eight category pathways, training/license distinctions, external-provider references and application links                                                                          | Final selected programs, requirements, timelines and costs still need approval; the platform does not certify people |
+| Membership pricing      | All eight confirmed monthly USD category prices, application links and approval/membership explanations                                                                                 | Display only; there is no checkout or payment collection                                                             |
+| Resources/blog          | Sample article listing, category filtering, article pages and useful empty/error states                                                                                                 | Sample content; owner publishing/editing tools and approved articles remain unfinished                               |
+| Newsletter              | Email validation and an honest preview confirmation                                                                                                                                     | Does not subscribe, save an email or send a campaign                                                                 |
+| Contact/legal pages     | Navigation, page layouts and pending-content explanations                                                                                                                               | Final public details, Privacy/Terms and supplied disclaimers remain unfinished                                       |
+
+### Confirmed membership prices displayed
+
+| Category                                                      | USD per month |
+| ------------------------------------------------------------- | ------------: |
+| Mold Testing / Inspectors                                     |           $79 |
+| Mold Remediation                                              |          $129 |
+| Healthy Home Renovations                                      |          $129 |
+| Healthy Home Builders                                         |          $200 |
+| Healthy Home Trades                                           |          $129 |
+| Healthy Home Designers                                        |          $129 |
+| Health Practitioners (Physicians, Nutritionists, Naturopaths) |          $129 |
+| Mold Detection Dogs                                           |           $79 |
+
+The site uses one shared category catalog with stable IDs. Selecting multiple categories is supported; a combined price is not invented.
+
+## 2. Account, application and dashboard demonstrations
+
+| Area                         | What the client can try now                                                                                                                                                     | Completion limit                                                                                               |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Demo sign-in                 | Fictional professional presets, a separate admin sign-in page, visible sample access details, validation and correct-dashboard navigation                                       | Simulated identity only; no real registration, authentication or password recovery                             |
+| Account switching            | Explicit switching, sign-out, unsaved-work confirmation, isolated drafts and reset                                                                                              | No permanent sessions or real account security                                                                 |
+| List Your Business           | Public application with contact/business details, multiple categories, services, description/practices and optional credentials                                                 | Submission creates a pending demo application; no owner email or real account is created                       |
+| Member workspace             | Pending/approved/rejected/inactive examples, permitted profile editing, public-profile preview, sample subscription information and a separately seeded fictional inquiry inbox | Edits are local previews; they do not update the server-rendered public directory                              |
+| Photo preview                | Local JPEG/PNG/WebP preview with size/type/dimension checks                                                                                                                     | Nothing is uploaded or published; sign-out/reset/refresh clears it                                             |
+| Free-consultation preference | Member opt-in/out for free phone calls; participant badges on selected fictional public listings                                                                                | Local member changes affect demo coordination, not the static public listing fixtures                          |
+| Admin workspace              | Application review, approval/rejection, suspension controls, credential review, category-name editing and Q&A/review/consultation queues                                        | Full listing editing, category creation, content/featured management and complete analytics are still to build |
+| Listing rules                | Only approved listings with active membership and no suspension qualify for public display; private fields are excluded from public profiles                                    | Real database/payment changes are not connected                                                                |
+| Credentials                  | Submitted claims stay unverified; reviewed sample credentials are distinguished; changed claims lose their review status                                                        | Actual verification procedures and permanent evidence storage remain pending                                   |
+
+Approval, membership, suspension, credentials and featured placement remain separate. Members cannot change protected status fields or their record ID.
+
+## 3. Inquiries, Q&A, consultations and reviews
+
+| Feature                  | Working prototype behavior                                                                                                                                         | What it does not do yet                                                               |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| Profile inquiry          | Validates name, email and message; shows a truthful demo confirmation                                                                                              | Does not save or deliver the inquiry. The fictional member inbox is seeded separately |
+| Ask a Specialist         | Public browsing/filtering, sample questions, question submission, admin moderation, matching category inboxes and professional answers linked to eligible profiles | No real category emails or permanent questions/answers                                |
+| First-answer handling    | First submitted eligible response has publication priority, with admin review retained; later responses can be considered after rejection                          | Not automatic unmoderated publication; final client policy is still needed            |
+| Public-question guidance | Explains public visibility, asks visitors to leave out identifying/sensitive information and explains simulated notifications                                      | Does not automatically detect or redact all personal information                      |
+| Free consultations       | Phone/no-preference request, admin assignment to an eligible participating specialist, member acceptance/decline, cancellation and same-tab public status          | No real notification, calendar booking, call delivery or payment                      |
+| Reviews/ratings          | Fictional written reviews/stars, calculated averages, rating filters, local review submission, admin moderation and member review visibility                       | No verified real-customer reviews or permanent review records                         |
+| Featured listings        | Clearly disclosed fictional featured examples and visible labels                                                                                                   | No paid upgrade, actual priority-ranking system or featured-management workflow       |
+
+## 4. Latest client revisions completed
+
+- Reordered the homepage: hero → How it works → Specialty → About Us → Ways to get started → Featured listings → Our review process → For Specialists.
+- Expanded the hero to include health practitioners. The exact “every certified specialist” promise was not added because approval alone does not establish certification; this wording still needs client agreement.
+- Removed the right-hand Specialty sentence and the requested featured-listing subheading.
+- Updated the About introduction to include a healthier home and healthy body; expanded the Q&A introduction to include mold-related health issues.
+- Replaced the paid-call promotion with free-consultation wording for participating specialists.
+- Updated public labels to Find Specialists, For Specialists and Certifications.
+- Moved the profile photo slot beside the business title and reduced section spacing.
+- Added the free-phone participation indication and the category-specific Q&A demo inbox.
+- Updated consultation steps/explanations and changed the button to Submit request.
+- Updated the Certifications heading and moved its introduction below the heading.
+- Removed the pricing consultation bubble and the requested suspension wording from pricing/review-process copy. The actual eligibility rule is unchanged.
+- Kept the logo position and existing fonts/colors. New logo/media, alternative font/color choices, an embedded map and exact certification wording are pending, not marked complete.
+
+## 5. Verification and client walkthrough
+
+Typecheck, lint, all 92 unit tests and the demo build passed. All 216 runnable desktop/tablet/mobile browser scenarios passed across completed runs and targeted corrections; 9 intentional viewport-specific skips remain. The final affected browser run passed 12/12 checks. Desktop/tablet/mobile renders and 320px overflow were reviewed. Production mode still rejects missing opt-in. These checks do not replace physical iPhone/Android, Safari/Firefox/Edge or production-service testing.
+
+Start at `/demo/walkthrough`: apply with fictional details → open the prepared member account → review as admin → try a category question/answer → request, assign and accept a free consultation. Use the displayed demo presets; no real credentials are needed.
+
+Developer evidence: [showcase handoff](../docs/client-update-showcase-handoff.md), [build checklist](../docs/build-checklist.md) and [scope comparison](../docs/remaining-scope-report.md). Confidential original client documents remain outside the published repository.

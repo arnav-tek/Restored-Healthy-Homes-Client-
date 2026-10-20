@@ -29,10 +29,7 @@ export function FeaturedExamples({
             <br />
             Real expertise.
           </p>
-          <p className="featured-heading-desc">
-            Here are a couple of examples of healthy-home professionals
-            you&apos;ll find in our directory.
-          </p>
+
         </div>
         <div className="featured-header-right">
           <p className="featured-disclaimer">
