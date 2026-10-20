@@ -19,7 +19,7 @@ See [what remains and what is needed](remaining-work.md) for the work required b
 | Find Specialists        | Keyword, category, city/ZIP, state, rating and optional radius filters; alphabetical/nearest sorting, counts, pagination and clear filters                                              | Location matching uses a small documented demo dataset; distances are approximate                                    |
 | Search navigation       | Filters stay in the URL, survive reload/back/forward and are preserved when returning from profiles                                                                                     | Reload resets fictional workflow records, not the URL search filters                                                 |
 | Specialist profiles     | Stable profile routes, business/category/location, description, services, service area, listed/reviewed credentials, available sample contacts and reviews                              | Separate public professional/owner name, real images and real contacts still need completion                         |
-| Profile layout/location | Tighter spacing, business photo slot on the right on desktop, mobile stacking, city-level location panel and a working Google Maps city-search link                                     | This is not an embedded map or an exact business-location pin                                                        |
+| Profile layout/location | Tighter spacing, photo slot on the right on desktop, mobile stacking and an on-demand Google Maps city preview with a direct-link fallback                                              | City-level demo only; exact business-location pins need confirmed addresses                                          |
 | About Us                | Dedicated responsive page with company-story/purpose and video areas                                                                                                                    | Final story, approved copy and client-supplied video are not complete                                                |
 | Certifications          | All eight category pathways, training/license distinctions, external-provider references and application links                                                                          | Final selected programs, requirements, timelines and costs still need approval; the platform does not certify people |
 | Membership pricing      | All eight confirmed monthly USD category prices, application links and approval/membership explanations                                                                                 | Display only; there is no checkout or payment collection                                                             |
@@ -83,12 +83,16 @@ Approval, membership, suspension, credentials and featured placement remain sepa
 - Updated consultation steps/explanations and changed the button to Submit request.
 - Updated the Certifications heading and moved its introduction below the heading.
 - Removed the pricing consultation bubble and the requested suspension wording from pricing/review-process copy. The actual eligibility rule is unchanged.
-- Kept the logo position and existing fonts/colors. New logo/media, alternative font/color choices, an embedded map and exact certification wording are pending, not marked complete.
+- Added licensed placeholder home-interior hero footage with pause/play controls, static fallbacks for reduced-motion/data-saving preferences, and three subtle scroll reveals. No scroll hijacking; content stays visible without JavaScript.
+- Added an on-demand embedded Google Maps city preview and corrected the remaining About page Specialist headings.
+- Kept the logo position and existing fonts/colors. New logo, final client film/banner media, alternative font/color choices, exact business pins and certification wording remain pending.
 
 ## 5. Verification and client walkthrough
 
 Typecheck, lint, all 92 unit tests and the demo build passed. All 216 runnable desktop/tablet/mobile browser scenarios passed across completed runs and targeted corrections; 9 intentional viewport-specific skips remain. The final affected browser run passed 12/12 checks. Desktop/tablet/mobile renders and 320px overflow were reviewed. Production mode still rejects missing opt-in. These checks do not replace physical iPhone/Android, Safari/Firefox/Edge or production-service testing.
 
 Start at `/demo/walkthrough`: apply with fictional details → open the prepared member account → review as admin → try a category question/answer → request, assign and accept a free consultation. Use the displayed demo presets; no real credentials are needed.
+
+Video/motion and city-map follow-up: see the [current follow-up handoff](../docs/homepage-motion-handoff.md) for its separate verification and licensed asset source. The verification numbers above describe the preceding showcase run.
 
 Developer evidence: [showcase handoff](../docs/client-update-showcase-handoff.md), [build checklist](../docs/build-checklist.md) and [scope comparison](../docs/remaining-scope-report.md). Confidential original client documents remain outside the published repository.

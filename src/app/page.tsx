@@ -13,6 +13,8 @@ import {
 import { HomeStatistics } from "@/features/home/home-statistics";
 import { ReviewProcess } from "@/features/home/review-process";
 import { FeaturedExamples } from "@/features/home/featured-examples";
+import { HeroVideo } from "@/features/home/hero-video";
+import { ScrollEffects } from "@/features/home/scroll-effects";
 
 export const metadata: Metadata = {
   title: "Find healthy-home specialists",
@@ -34,28 +36,35 @@ export default async function Home() {
       <section className="home-hero">
         <div className="container home-hero-inner">
           <div className="hero-copy">
-            <p className="hero-kicker section-tag section-tag-inverse">Restored Healthy Homes</p>
+            <p className="hero-kicker section-tag section-tag-inverse">
+              Restored Healthy Homes
+            </p>
             <h1>Find a specialist for your healthier home.</h1>
             <p>
-              From a moisture concern to a new build and the health practitioners who help families heal, find the specialists you need in one place.
+              From a moisture concern to a new build and the health
+              practitioners who help families heal, find the specialists you
+              need in one place.
             </p>
           </div>
           <HomeSearch catalog={catalog} locations={locations} />
           <HomeStatistics listings={listings} />
           <div className="hero-followup">
+            <HeroVideo />
             <Link href="/directory">
               Browse specialists <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
         </div>
       </section>
-      <HomeJourney />
-      <CategoryBrowse catalog={catalog} />
-      <HomeAbout />
-      <HomeFeatures />
-      <FeaturedExamples professionals={featured} catalog={catalog} />
-      <ReviewProcess />
-      <HomeBusiness />
+      <ScrollEffects>
+        <HomeJourney />
+        <CategoryBrowse catalog={catalog} />
+        <HomeAbout />
+        <HomeFeatures />
+        <FeaturedExamples professionals={featured} catalog={catalog} />
+        <ReviewProcess />
+        <HomeBusiness />
+      </ScrollEffects>
     </>
   );
 }

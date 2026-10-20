@@ -27,7 +27,7 @@ Checked against the authoritative overview/alignment and the client's latest rev
 | --- | --- |
 | Global text/font/colors | Specified copy and navigation labels updated. Current approved typography/palette preserved; replacements require client font/color choices |
 | New logo; keep position | Position retained. New logo is to be supplied by client |
-| Video banner / dynamic scrolling | Not added: these were possibilities, with no approved media/reference. Await a choice and assets; preserve reduced-motion/accessibility behavior |
+| Video banner / dynamic scrolling | Follow-up implemented licensed placeholder hero footage, pause/play controls, reduced-motion/data-saving fallbacks and three restrained scroll reveals. Final client footage and visual approval remain pending; see homepage-motion-handoff.md |
 | Homepage hero | Expanded healthy-home/health-practitioner wording applied. Blanket “every certified specialist” claim deliberately omitted: approval does not establish certification; client wording/policy decision remains |
 | Remove right-hand Specialty text | Done |
 | Eight-section homepage order | Done: hero, how it works, specialty, About Us, ways to get started, featured examples, review process, specialist application |
@@ -37,7 +37,7 @@ Checked against the authoritative overview/alignment and the client's latest rev
 | Free-consultation feature copy | Free call heading and participating-specialist copy replace the old paid offer |
 | Find Specialists / For Specialists / Certifications labels | Updated public navigation/footer/headings; stable catalog IDs and existing route URLs preserved |
 | Profile photo and spacing | Desktop photo slot moved beside name/details; stacked on small screens. Section spacing reduced. Member can preview a sample image locally; it is not uploaded or published |
-| Small business map | City-level location panel and functional official Google Maps search link. Embedded map and an exact business pin remain pending confirmed public address/place data and provider setup; no fictional address is invented |
+| Small business map | On-demand embedded Google Maps city preview plus a direct city-search link. Exact business pins await confirmed public addresses/place data and production map approval; no fictional address is invented |
 | Free-call flag in listing box | Shown for explicitly participating fictional listings below business/credential information; member preference controls local consultation assignment availability |
 | Q&A category delivery | Matching approved specialists see published questions in a category inbox. No actual email; publication follows provisional admin review |
 | First answer | First submitted eligible response gets publication priority. A later response can be published after rejection of the first. Automatic unmoderated publication is not enabled; client must confirm this policy. Existing sample historical answers remain visible |

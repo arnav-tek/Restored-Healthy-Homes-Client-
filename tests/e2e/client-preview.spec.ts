@@ -360,6 +360,8 @@ test("builder category inbox receives an approved question and publishes its rev
   await page
     .getByRole("link", { name: /View public session question/ })
     .click();
+  await expect(page).toHaveURL(/\/questions\/demo-session-question-\d+$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
   await expect(page.getByRole("main")).toContainText(
     "A fictional builder response",
   );

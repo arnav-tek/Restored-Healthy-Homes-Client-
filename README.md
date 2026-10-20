@@ -18,6 +18,8 @@ The latest client showcase includes free-phone participation, category question 
 
 For a plain-language progress summary based on the original requirements and later client changes, read [completed work](updates/completed-work.md) and [remaining work and requirements](updates/remaining-work.md).
 
+The homepage also demonstrates licensed home-interior footage with pause/play and reduced-motion fallbacks, restrained scroll reveals, and on-demand city maps on profiles. See [media, behavior and verification](docs/homepage-motion-handoff.md); placeholder footage is not the client's company film.
+
 ## Run locally
 
 Requires Node.js 22+ and npm.

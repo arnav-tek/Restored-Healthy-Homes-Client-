@@ -12,6 +12,7 @@ Plain-language client progress: [completed work](../updates/completed-work.md) a
 - [x] Category question inbox and first-response priority with provisional admin moderation; no actual email delivery.
 - [x] Local validated sample-photo preview and guided account → application → admin/member walkthrough; sign-out/reset/reload isolation.
 - [x] Typecheck, lint, 92 unit tests, demo build, fail-closed default build, browser regressions and actual responsive screenshot review; detailed results in the showcase handoff.
+- [x] Follow-up demo hero video, pause/play/static fallbacks, restrained scroll reveals and on-demand Google Maps city preview; final verification in [motion handoff](homepage-motion-handoff.md). Final client media/exact business pins still await supplied assets/addresses.
 - [ ] Client approval of certification wording, first-answer policy and consultation duration/matching; new font/color choices, logo/media/location assets.
 - [ ] Real accounts/database/permissions, secure uploads, email and all remaining production features in the linked report. No working live integration is claimed by this showcase.
 

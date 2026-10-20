@@ -1,4 +1,5 @@
 import { MapPin, ExternalLink } from "lucide-react";
+import { CityMap } from "./city-map";
 export function LocationPreview({
   city,
   state,
@@ -26,6 +27,7 @@ export function LocationPreview({
         View city on Google Maps <ExternalLink size={14} aria-hidden="true" />
         <span className="sr-only"> (opens a new tab)</span>
       </a>
+      <CityMap location={location} />
     </aside>
   );
 }

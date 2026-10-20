@@ -249,6 +249,8 @@ main:focus {
 }
 /* Home search is the primary action; these rules are homepage-only. */
 .home-hero {
+  position: relative;
+  isolation: isolate;
   color: var(--paper);
   background: var(--color-sage);
 }
@@ -280,7 +282,8 @@ main:focus {
 .hero-followup {
   grid-area: followup;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 16px 32px;
   align-items: center;
   margin-top: 12px;
@@ -290,6 +293,18 @@ main:focus {
   font-size: 13px;
   max-width: 70ch;
 }
+.hero-video-backdrop { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+.hero-video-backdrop img, .hero-video-backdrop video { position: absolute; width: 100%; height: 100%; object-fit: cover; }
+.hero-video-backdrop video { opacity: 0; }
+.hero-video-backdrop video.is-playing { opacity: 1; }
+.hero-video-backdrop::after { content: ""; position: absolute; inset: 0; background: rgba(24, 51, 32, 0.8); }
+.hero-video-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: 12px; color: #f5f0e8; }
+.hero-video-toggle { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 6px 10px; border: 1px solid #bcc9b8; border-radius: 6px; font: inherit; background: #294c31; color: #fffefb; cursor: pointer; }
+.hero-video-toggle:focus-visible { outline: 2px solid #fffefb; outline-offset: 4px; }
+.hero-video-toggle:disabled { cursor: default; opacity: .8; }
+.business-location-preview .city-map { flex: 1 0 100%; min-width: 0; }
+.city-map-toggle { min-height: 44px; cursor: pointer; }
+.city-map iframe { display: block; width: 100%; height: 220px; border: 0; border-radius: 8px; margin-top: 10px; }
 .hero-followup a {
   display: inline-flex;
   align-items: center;

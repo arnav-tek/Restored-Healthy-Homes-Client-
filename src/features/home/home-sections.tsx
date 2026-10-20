@@ -44,7 +44,7 @@ export function CategoryBrowse({ catalog }: { catalog: readonly Category[] }) {
       className="container home-section category-browse-section"
       aria-labelledby="category-heading"
     >
-      <div className="home-section-heading category-browse-header">
+      <div className="home-section-heading category-browse-header" data-scroll-reveal>
         <div className="category-header-main">
           <div className="category-pill-row">
             <span className="category-pill section-tag">SPECIALTY</span>
@@ -92,6 +92,7 @@ export function HomeJourney() {
   return (
     <section
       className="container home-section home-journey"
+      data-scroll-reveal
       aria-labelledby="journey-heading"
     >
       <div className="home-journey-intro">
@@ -330,7 +331,7 @@ export function HomeAbout() {
       className="container home-about-section home-about"
       aria-labelledby="home-about-heading"
     >
-      <div className="home-about-grid">
+      <div className="home-about-grid" data-scroll-reveal>
         <div className="home-about-intro">
           <div className="home-eyebrow">
 

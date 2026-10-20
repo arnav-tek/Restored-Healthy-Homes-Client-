@@ -64,7 +64,7 @@ export default function AboutPage() {
                   <Users size={22} />
                 </div>
                 <div className="benefit-content">
-                  <h3 className="benefit-title">Explore Professionals</h3>
+                  <h3 className="benefit-title">Explore Specialists</h3>
                   <p className="benefit-desc">
                     Explore services across a range of healthy-home specialties.
                   </p>
@@ -196,7 +196,7 @@ export default function AboutPage() {
             <div className="value-icon-badge" aria-hidden="true">
               <Users size={24} />
             </div>
-            <h3 className="value-title">Explore Professionals</h3>
+            <h3 className="value-title">Explore Specialists</h3>
             <p className="value-desc">
               Explore services across a range of healthy-home specialties.
             </p>
