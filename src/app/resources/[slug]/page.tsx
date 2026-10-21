@@ -3,16 +3,22 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { resourceRepository } from "@/data/content/resources";
 import { resourceCategories } from "@/domain/resource";
+import { isSessionArticleId } from "@/domain/admin-showcase";
+import { SessionResource } from "@/features/resources/session-resource";
 type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const article = await resourceRepository.get((await params).slug);
+  const slug = (await params).slug;
+  if (isSessionArticleId(slug)) return { title: "Resource", robots: { index: false, follow: false } };
+  const article = await resourceRepository.get(slug);
   return {
     title: article?.title ?? "Resource unavailable",
     description: article?.summary,
   };
 }
 export default async function ResourcePage({ params }: Props) {
-  const article = await resourceRepository.get((await params).slug);
+  const slug = (await params).slug;
+  if (isSessionArticleId(slug)) return <SessionResource id={slug} />;
+  const article = await resourceRepository.get(slug);
   if (!article) notFound();
   return (
     <div className="container public-content-page resource-article">

@@ -1,0 +1,35 @@
+# Admin workflow showcase — 21 October 2026
+
+**Latest follow-up:** [admin frontend completion](admin-completion-handoff.md) adds category creation, certification editing, opt-in public identity and session publication to Resources/Certifications. The verification record below describes the initial round; use the follow-up for current behavior and checks.
+
+The admin workspace can demonstrate more of the owner workflow without Supabase, Stripe or email. Use `/admin/login`, open Quick access and select Administrator. The displayed access code selects a fictional session identity; it does not authenticate anyone. Accepted records survive account switching in the current tab. Drafts clear on sign-out; refresh and confirmed workspace reset clear everything.
+
+## Walkthrough
+
+1. Submit an application using fictional information. Sign in as Administrator and approve it in Applications. It remains inactive and ineligible.
+2. In Membership, select the submitted business, choose active, enter a scenario note and confirm. It now appears in the Listings directory overview if approved and not suspended. Other statuses demonstrate loss of eligibility. No customer, subscription or payment is created.
+3. In Listings, open a record and expand Edit business profile. Save details, categories, services or credential claims. The member workspace and admin public-field preview use the same accepted record. New/changed credential claims lose review status; protected decisions remain separate. Unsaved drafts are isolated by record and retained during client navigation.
+4. In Featured, enable a sample entitlement. The featured preview includes only approved, active, unsuspended records. Suspend a record and its entitlement remains while its placement disappears. This is a stable-order showcase, not a final ranking algorithm or upgrade checkout.
+5. In Content, create a plain-text resource, save it as draft, review it and publish it to the admin showcase preview. Editing a published resource returns it to draft. The public Resources routes keep their existing server fixtures. Final CMS content, certification editing, public publication and approval policies remain later work.
+6. In Analytics, inspect total applications, active memberships, eligible listings, applications in a selected UTC month, membership states and category counts. Multi-category records count in each associated category; no combined billing or revenue is inferred. Fictional baseline submission dates are in October 2026. New applications receive their actual UTC submission date.
+7. Overview shows the last 30 accepted admin changes as a session activity list. It is a demonstration, not a durable audit trail. The public client walkthrough includes these new steps.
+
+## Future Supabase integration
+
+The UI continues to dispatch typed commands into one React session reducer. Domain eligibility, public projection, runtime validation and immutable category identity remain separate from rendering. Fictional articles live in `src/data/demo/admin-articles.ts`, supplied through the typed session seed. No Supabase SDK, credentials, browser storage, server mutation or real side effect was added.
+
+Real integration must replace the demo state boundary with authenticated server reads/mutations and explicit DTOs. Use Supabase Auth and server session verification, account ownership/admin permissions, migrations, RLS/grants, secure storage and adversarial access tests. Account roles in React are only a showcase selector. Do not promote `simulate-membership` into a production billing endpoint: actual subscription/featured state must come from verified billing events and approved policies. Resource publication needs server permissions and public-only projections; activity needs protected durable audit records. Persist submission timestamps on the server. The existing production guard remains closed.
+
+The canonical eight categories can still be renamed without changing IDs/prices/billing mappings. Category creation and its setup policy, live featured priority, production content management, complete operational analytics and all earlier approved final features remain in scope. No integration or public deployment is authorized by this change.
+
+## Verification
+
+- Final `npm run check`: passed (`npm run typecheck`, zero-warning lint, all 98 unit tests and `npm run build:demo`). No new dependencies were added.
+- Default `npm run build`: correctly rejected missing production opt-in with exit 1 and “Production is blocked.” The guard remains unchanged.
+- Full `npm run test:e2e -- --workers=2`: all 249 configured cases exercised; 236 passed, 9 intentional viewport-specific skips and 4 failures. Three failures were the new overview notice reintroducing previously removed “fictional” wording; the fourth was a mobile analytics scroll region missing keyboard focus. Normal product copy was restored without weakening assertions. The table is now a named, focusable region with an explicit ArrowRight scrolling check.
+- Final affected run: all 12 cases passed across desktop/tablet/mobile, covering all 9 new admin workflow scenarios and the 3 previously failing sign-in scenarios. All 240 unique applicable browser cases were verified across the completed runs; this was not one uninterrupted passing full-suite run. The final run also verifies the demo-adapter relocation of the editorial fixture. No known test failure remains.
+- The earlier focused run identified page overflow from an implicit grid minimum on mobile; explicit `minmax(0, 1fr)` and zero minimum widths fixed it. Additional 390px and 320px analytics checks passed. Actual desktop/tablet/mobile screenshots of overview, profile editor, analytics and resource publishing were reviewed under `output/playwright/admin-*`. The analytics table remains horizontally scrollable on narrow screens and supports keyboard access. Final tested views have no detected axe violations or page overflow.
+- Browser coverage includes confirmation cancellation, inactive → active eligibility, suspension overriding featured status, admin edits appearing for the correct member, per-record drafts, saved-resource editing returning to draft, sign-out/reset/refresh behavior, and no membership/profile network mutations or browser storage. Unit coverage includes role/target/input rejection, protected-field injection, credential review invalidation, all membership states, category/month analytics and resource allowlists/reset.
+- Logs: ignored `output/admin-showcase-e2e.log`, `output/admin-showcase-final-e2e.log`, `output/admin-showcase-final-check.log`. Expected injected adapter failures contain no inquiry values. `git diff --check` passes. No commit, push, real integration or public deployment was performed.
+
+Limitations: Chromium emulation and automated accessibility checks only; physical devices, Safari/Firefox and production performance/security remain unverified. Resource publication and featured placement are separate admin previews. Real accounts, persistence, billing, email, secure uploads and public publishing still require the later integration phase and client approval.

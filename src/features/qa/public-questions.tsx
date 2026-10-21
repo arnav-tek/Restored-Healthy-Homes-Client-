@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Search,
   LayoutGrid,
@@ -13,20 +13,23 @@ import {
   RotateCcw,
   BookOpen,
 } from "lucide-react";
-import { categories } from "@/domain/categories";
+import { useSessionCategories } from "@/features/member/demo-session";
 import { QA_PAGE_SIZE, searchPublicQuestions, type QaQuery } from "@/domain/qa";
 import { publicSessionQuestions } from "@/domain/qa-session";
 import { useDemoSession } from "@/features/member/demo-session";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
-import { qaHref, questionHref, type QaQueryErrors } from "@/validation/qa";
+import {
+  qaHref,
+  questionHref,
+  parseQaQuery,
+  type QaQueryErrors,
+} from "@/validation/qa";
 import { SearchForm } from "@/features/directory/search-form";
 import { Button } from "@/components/ui/button";
 
 import { CategoryIcon } from "./category-icons";
 
 export function PublicQuestions({
-  query,
-  errors,
   unavailable,
 }: {
   query: QaQuery;
@@ -34,11 +37,19 @@ export function PublicQuestions({
   unavailable: boolean;
 }) {
   const { state } = useDemoSession();
+  const categories = useSessionCategories();
+  const params = useSearchParams();
+  const raw: Record<string, string | string[] | undefined> = {};
+  for (const key of ["q", "category", "page"]) {
+    const values = params.getAll(key);
+    if (values.length) raw[key] = values.length === 1 ? values[0] : values;
+  }
+  const { query, errors } = parseQaQuery(raw, categories);
   const ready = useDemoReady();
   const router = useRouter();
   const results =
     !unavailable && !Object.keys(errors).length
-      ? searchPublicQuestions(publicSessionQuestions(state), query)
+      ? searchPublicQuestions(publicSessionQuestions(state), query, categories)
       : undefined;
   const returnTo = qaHref({ ...query, page: results?.page ?? 1 });
 
@@ -53,8 +64,9 @@ export function PublicQuestions({
       <header className="qa-hero">
         <div className="qa-hero-left">
           <div className="qa-eyebrow section-tag">
-            <span role="heading" aria-level={2}>Ask a Specialist</span>
-
+            <span role="heading" aria-level={2}>
+              Ask a Specialist
+            </span>
           </div>
           <h1 className="qa-hero-title">
             Get expert advice
@@ -88,7 +100,8 @@ export function PublicQuestions({
             <div className="qa-benefit-content">
               <h2 className="qa-benefit-title">Learn from experience</h2>
               <p className="qa-benefit-text">
-                See real questions and answers about services, planning and costs.
+                See real questions and answers about services, planning and
+                costs.
               </p>
             </div>
           </div>
@@ -128,7 +141,11 @@ export function PublicQuestions({
                 Keyword
               </label>
               <div className="qa-input-wrap">
-                <Search size={18} className="qa-input-icon" aria-hidden="true" />
+                <Search
+                  size={18}
+                  className="qa-input-icon"
+                  aria-hidden="true"
+                />
                 <input
                   id="qa-q"
                   name="q"
@@ -152,7 +169,11 @@ export function PublicQuestions({
                 Category
               </label>
               <div className="qa-input-wrap">
-                <LayoutGrid size={18} className="qa-input-icon" aria-hidden="true" />
+                <LayoutGrid
+                  size={18}
+                  className="qa-input-icon"
+                  aria-hidden="true"
+                />
                 <select
                   id="qa-category"
                   name="category"
@@ -244,13 +265,10 @@ export function PublicQuestions({
                     <li key={question.id} className="qa-card-item">
                       <article className="qa-question-card">
                         <Link
-                          href={questionHref(question.id, returnTo)}
+                          href={questionHref(question.id, returnTo, categories)}
                           className="qa-card-link"
                         >
-                          <div
-                            className="qa-card-icon-wrap"
-                            aria-hidden="true"
-                          >
+                          <div className="qa-card-icon-wrap" aria-hidden="true">
                             <CategoryIcon id={question.categoryId} size={20} />
                           </div>
                           <div className="qa-card-body">
@@ -260,7 +278,9 @@ export function PublicQuestions({
                               </span>
                             )}
                             <h3 className="qa-card-title">{question.title}</h3>
-                            <p className="qa-card-excerpt">{question.excerpt}</p>
+                            <p className="qa-card-excerpt">
+                              {question.excerpt}
+                            </p>
                           </div>
                           <div className="qa-card-meta">
                             <span
@@ -285,10 +305,7 @@ export function PublicQuestions({
                                   : "No published answers yet"}
                               </span>
                             </span>
-                            <div
-                              className="qa-card-arrow"
-                              aria-hidden="true"
-                            >
+                            <div className="qa-card-arrow" aria-hidden="true">
                               <ChevronRight size={18} strokeWidth={2} />
                             </div>
                           </div>

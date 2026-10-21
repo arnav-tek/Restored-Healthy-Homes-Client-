@@ -14,6 +14,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CategoryCreate } from "./category-create";
 
 const categoryIcons: Readonly<Record<string, LucideIcon>> = {
   "mold-inspection": Search,
@@ -76,7 +77,10 @@ function CategoryForm({
         requestAnimationFrame(() => status.current?.focus());
       }}
     >
-      <fieldset className="member-form-fields admin-category-fields" disabled={!ready || pending}>
+      <fieldset
+        className="member-form-fields admin-category-fields"
+        disabled={!ready || pending}
+      >
         <legend className="sr-only">Rename a category</legend>
         <div className="search-field">
           <label htmlFor="category-label">Display name</label>
@@ -99,7 +103,7 @@ function CategoryForm({
           <strong>{formatMonthlyPrice(category.monthlyUsd)} / month</strong>{" "}
           <span className="price-unchanged">(unchanged)</span>
         </div>
-        <Button type="submit" className="button-primary">Rename category</Button>
+        <Button type="submit">Rename category</Button>
       </fieldset>
       <p ref={status} role="status" tabIndex={-1} className="session-status">
         {feedback}
@@ -115,16 +119,19 @@ export function CategoryLabels({
 }) {
   const ready = useDemoReady();
   const { query, navigate, pending } = useDashboardNavigation("admin");
-  const id = query.category || catalog[0].id;
-  const category = catalog.find((item) => item.id === id)!;
+  const category =
+    catalog.find((item) => item.id === query.category) ?? catalog[0];
+  const id = category.id;
 
   return (
     <div className="admin-categories-workspace">
+      <CategoryCreate />
       {/* Category Overview Grid */}
       <section className="categories-grid-section">
         <h2 className="admin-section-heading">Directory Categories</h2>
         <p className="admin-section-sub">
-          Current categories and their monthly pricing. Select a category below to rename its label.
+          Current categories and their monthly pricing. Select a category below
+          to rename its label.
         </p>
 
         <div className="categories-cards-grid">
@@ -132,18 +139,13 @@ export function CategoryLabels({
             const isSelected = item.id === id;
             const CategoryIcon = categoryIcons[item.id] ?? Tag;
             return (
-              <div
+              <button
                 key={item.id}
+                type="button"
                 className={`category-summary-card ${isSelected ? "is-selected" : ""}`}
                 onClick={() => navigate({ category: item.id })}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    navigate({ category: item.id });
-                  }
-                }}
+                disabled={!ready || pending}
+                aria-pressed={isSelected}
               >
                 <div className="category-card-top">
                   <div className="category-icon-wrap">
@@ -155,22 +157,23 @@ export function CategoryLabels({
                 </div>
                 <div className="category-card-content">
                   <h3 className="category-card-title">{item.name}</h3>
-                  <code className="category-card-id">{item.id}</code>
                 </div>
                 <div className="category-card-footer">
                   <span className="category-edit-action">
                     <Edit3 size={13} aria-hidden="true" />
-                    <span>{isSelected ? "Currently editing" : "Edit label"}</span>
+                    <span>
+                      {isSelected ? "Currently editing" : "Edit label"}
+                    </span>
                   </span>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
       </section>
 
       {/* Edit Form Panel */}
-      <section className="panel admin-detail-card category-edit-panel">
+      <section className="panel admin-detail-card category-edit-panel admin-editor-panel">
         <h2 className="admin-detail-heading">Category display names</h2>
         <p className="admin-card-desc">
           Rename a label without changing category associations, IDs, individual

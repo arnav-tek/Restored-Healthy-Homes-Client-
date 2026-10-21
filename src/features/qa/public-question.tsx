@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { safeQaReturn } from "@/validation/qa";
 import { MessageSquare, HelpCircle, Search } from "lucide-react";
-import { categories } from "@/domain/categories";
+import { useSessionCategories } from "@/features/member/demo-session";
 import { isSessionQuestionId } from "@/domain/qa";
 import { publicSessionQuestions } from "@/domain/qa-session";
 import { useDemoSession } from "@/features/member/demo-session";
@@ -18,6 +20,9 @@ export function PublicQuestionPage({
   returnTo: string;
 }) {
   const { state } = useDemoSession();
+  const categories = useSessionCategories();
+  const params = useSearchParams();
+  const backTo = safeQaReturn(params.get("returnTo") ?? returnTo, categories);
   const ready = useDemoReady();
 
   if (!ready && isSessionQuestionId(id))
@@ -31,7 +36,7 @@ export function PublicQuestionPage({
             content remains available.
           </p>
         </noscript>
-        <Link className="text-link" href={returnTo}>
+        <Link className="text-link" href={backTo}>
           Back to questions
         </Link>
       </div>
@@ -47,7 +52,7 @@ export function PublicQuestionPage({
           Only published questions can be viewed. Refresh or reset restores
           published content and clears session-created questions and decisions.
         </p>
-        <Link className="button" href={returnTo}>
+        <Link className="button" href={backTo}>
           Back to questions
         </Link>
       </div>
@@ -60,7 +65,7 @@ export function PublicQuestionPage({
       <div className="qa-detail-container">
         {/* Top Navigation */}
         <div className="qa-detail-top-nav">
-          <Link className="qa-back-link" href={returnTo}>
+          <Link className="qa-back-link" href={backTo}>
             <span aria-hidden="true">← </span>Back to questions
           </Link>
         </div>

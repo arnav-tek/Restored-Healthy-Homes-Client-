@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
-import { categories } from "@/domain/categories";
+import { useSessionCategories } from "@/features/member/demo-session";
 import {
   consultationFormats,
   consultationOfferLabel,
@@ -36,6 +36,7 @@ export function ConsultationRequestForm() {
   return <RequestForm key={resetVersion} />;
 }
 function RequestForm() {
+  const categories = useSessionCategories();
   const { state, dispatch } = useDemoSession();
   const { draft, saveDraft, clearDraft } = useDemoDraft("consultation");
   const ready = useDemoReady();
@@ -61,7 +62,7 @@ function RequestForm() {
     const result = parseConsultation(
       Object.fromEntries(
         consultationFieldOrder.map((field) => [field, data.get(field)]),
-      ),
+      ), categories,
     );
     if (!result.ok) {
       setErrors(result.errors);

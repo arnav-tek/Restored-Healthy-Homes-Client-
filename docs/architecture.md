@@ -52,9 +52,13 @@ Phase 2B adds `DirectoryRepository.getPublicProfile`: eligibility precedes the e
 
 Category ID, display name, base price and billing key are separate. Billing keys are internal mappings, not Stripe price IDs. Renaming must never change identity or billing. ID arrays allow multi-category membership; a later relational junction preserves this. No combined-price calculation exists.
 
-Approval, subscription, suspension, credential verification and featured entitlement are independent. Public eligibility requires approved + active + no suspension. Featured eligibility also requires active entitlement; no upgrade or featured placement is implemented. Only verified credential names are projected, and all checks remain visibly fictional.
+Approval, subscription, suspension, credential verification and featured entitlement are independent. Public eligibility requires approved + active + no suspension. Featured eligibility also requires active entitlement. The October 21 admin showcase adds simulated membership/entitlement commands and a separate eligible featured preview, with no payment or public search ranking change. Only verified credential names are projected in production-shaped public DTOs; the explicit demo preview separately labels submitted credential claims.
 
 ## Future integration/security
+
+The [admin completion follow-up](admin-completion-handoff.md) extends the session catalog with generated IDs/separate billing mappings and adds category-scoped education drafts/publication. Optional public name/email fields never default from application contacts. Published-only resource/certification selectors feed small public islands; static page shells and original public reference adapters remain server-rendered. Session-created resource IDs use neutral no-index HTML, with availability resolved from tab state; other missing resource slugs still return 404. No production authentication or persistence is introduced.
+
+The [admin workflow showcase](admin-showcase-handoff.md) adds shared listing edits, simulated memberships/featured entitlements, draft/review/publish resource previews, session activity and derived analytics. `src/domain/admin-showcase.ts` holds typed commands and calculations; `src/validation/admin-showcase.ts` validates editorial input. The existing reducer remains the sole accepted-state writer. Its activity wrapper records accepted admin changes only. No production auth/data service is implied; the handoff maps the future server boundary and preserves the deferred integration requirements.
 
 Replace adapters at `src/data/index.ts`. Build authenticated owner/admin services rather than turning demo interfaces into production access.
 

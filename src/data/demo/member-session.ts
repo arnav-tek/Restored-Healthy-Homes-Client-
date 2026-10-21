@@ -1,5 +1,7 @@
 // Safe to bundle: only purpose-built fictional workspace DTOs.
 // Never import server account, billing or moderation fixtures here.
+import { demoAdminArticles } from "./admin-articles";
+import { demoCertificationEntries } from "./certifications";
 import type {
   DemoMemberRecord,
   DemoSessionSeed,
@@ -170,6 +172,8 @@ const examples: readonly DemoMemberRecord[] = [
 export function getDemoSessionSeed(): DemoSessionSeed {
   // Purpose-built synthetic client DTOs, never account/billing/moderation records.
   return structuredClone({
+    articles: demoAdminArticles,
+    certifications: demoCertificationEntries,
     records: [
       ...examples,
       {
@@ -186,8 +190,9 @@ export function getDemoSessionSeed(): DemoSessionSeed {
           categoryIds: ["healthy-builders"],
         },
       },
-    ].map((record) => ({
+    ].map((record, index) => ({
       ...record,
+      submittedOn: `2026-10-${String(index + 1).padStart(2, "0")}`,
       freeConsultation: [
         "member-example-approved",
         "member-example-coordinator",

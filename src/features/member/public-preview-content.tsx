@@ -11,6 +11,9 @@ export function PublicPreviewContent({
   return (
     <>
       <h3 data-testid="member-preview-name">{profile.businessName}</h3>
+      {profile.publicDisplayName && (
+        <p>Professional / owner: {profile.publicDisplayName}</p>
+      )}
       <p className="category-label">
         {catalog
           .filter((category) => profile.categoryIds.includes(category.id))
@@ -51,8 +54,14 @@ export function PublicPreviewContent({
         is a review decision only.
       </p>
       <h3>Optional public contact details</h3>
-      {profile.phone || profile.website ? (
+      {profile.phone || profile.website || profile.publicEmail ? (
         <p>
+          {profile.publicEmail && (
+            <>
+              {profile.publicEmail}
+              <br />
+            </>
+          )}
           {profile.phone}
           <br />
           {profile.website}

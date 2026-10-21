@@ -18,6 +18,7 @@ import type { ApplicationCategory } from "./profile-fields-form";
 import type { PublicQuestion } from "@/domain/qa";
 import type { PublicReviewSnapshot } from "@/domain/review";
 import { parseDemoSignIn } from "@/validation/demo-sign-in";
+import { sessionCategories } from "@/domain/session-catalog";
 
 const seed = getDemoSessionSeed();
 export type DemoDraft = Record<string, string | string[]>;
@@ -65,7 +66,11 @@ export function DemoSessionProvider({
       setDrafts({});
       setResetVersion((value) => value + 1);
     }
-    reduce(action);
+    reduce(
+      action.type === "submit"
+        ? { ...action, submittedOn: new Date().toISOString().slice(0, 10) }
+        : action,
+    );
   }
   const setDraft = useCallback((key: string, draft: DemoDraft | null) => {
     setDrafts((current) => {
@@ -96,10 +101,29 @@ export function useDemoSession() {
   if (!session) throw new Error("Session provider is required");
   return session;
 }
-export function useDemoCatalog(catalog: readonly ApplicationCategory[]) {
+export function useDemoCatalog<T extends { id: string; name: string }>(
+  catalog: readonly T[],
+): readonly (T | ApplicationCategory)[];
+export function useDemoCatalog(
+  catalog: readonly { id: string; name: string }[],
+) {
   const { state } = useDemoSession();
-  return catalog.map((item) => ({
-    ...item,
-    name: state.categoryNames[item.id] ?? item.name,
-  }));
+  const suppliedIds = new Set(catalog.map((item) => item.id));
+  return [
+    ...catalog.map((item) => ({
+      ...item,
+      name: state.categoryNames[item.id] ?? item.name,
+    })),
+    ...state.addedCategories
+      .filter((item) => !suppliedIds.has(item.id))
+      .map(({ id, name, monthlyUsd }) => ({
+        id,
+        name: state.categoryNames[id] ?? name,
+        monthlyUsd,
+        previewPrice: true,
+      })),
+  ];
+}
+export function useSessionCategories() {
+  return sessionCategories(useDemoSession().state);
 }

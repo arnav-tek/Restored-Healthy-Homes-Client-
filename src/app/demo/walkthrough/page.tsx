@@ -20,6 +20,31 @@ const steps = [
     "/admin/login",
   ],
   [
+    "Activate a membership scenario",
+    "After approving the application, open Membership in the admin menu. Select the business and simulate active membership. Its listing becomes eligible in the admin directory overview unless suspended. No payment is taken. Use Listings to edit its profile and Featured to preview an upgrade.",
+    "/demo/admin?section=membership",
+  ],
+  [
+    "Create a category",
+    "In Categories, add a name, description and explicit preview price. Rename it to confirm existing associations and prices stay intact. Added categories become available to profile, question and consultation forms in this tab.",
+    "/demo/admin?section=categories",
+  ],
+  [
+    "Edit a certification pathway",
+    "Select a category in Certifications, edit its external program reference, requirements, steps, timeline and costs, then save a draft. Publish to see the pathway on Certifications in this tab. This does not verify any member credentials.",
+    "/demo/admin?section=certifications",
+  ],
+  [
+    "Choose a public identity",
+    "In the member Profile, choose an optional public professional/owner name and public email. Private application contacts are never used as defaults. The local public profile preview shows the result; linked examples such as Fern & Field also show this identity on their public profile.",
+    "/demo/member?section=profile",
+  ],
+  [
+    "Explore owner tools",
+    "Analytics shows member/category counts and applications by month. Content lets you draft, review and publish a resource, then browse it on Resources in this tab. Refresh clears these changes; the server directory and approved pricing catalog keep their original fixtures.",
+    "/demo/admin?section=content",
+  ],
+  [
     "Try the category question inbox",
     "Submit a question and choose Healthy Home Builders. Publish it as admin, then use Hearthside Building Co. to see the matching question and submit an answer. Admin reviews the first response before it appears publicly.",
     "/questions/ask",

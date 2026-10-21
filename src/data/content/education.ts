@@ -10,6 +10,7 @@ export interface EducationOption {
   readonly href: `https://${string}`;
 }
 export interface EducationPathway {
+  readonly requirements?: string;
   readonly introduction: string;
   readonly options: readonly EducationOption[];
   readonly steps: readonly string[];

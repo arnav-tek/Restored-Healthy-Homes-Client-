@@ -112,6 +112,7 @@ export function projectPublicQuestion(
 export function searchPublicQuestions(
   questions: readonly PublicQuestion[],
   query: QaQuery,
+  catalog: readonly { id: string; name: string }[] = categories,
 ): QaResults {
   const needle = query.q.toLocaleLowerCase("en-US");
   const matches = questions
@@ -119,7 +120,7 @@ export function searchPublicQuestions(
       if (query.category && question.categoryId !== query.category)
         return false;
       const categoryName =
-        categories.find((category) => category.id === question.categoryId)
+        catalog.find((category) => category.id === question.categoryId)
           ?.name ?? "";
       return `${question.title} ${question.body} ${categoryName}`
         .toLocaleLowerCase("en-US")

@@ -14,7 +14,10 @@ import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { useDemoDraft } from "./demo-session";
 
-export type ApplicationCategory = Pick<Category, "id" | "name" | "monthlyUsd">;
+export type ApplicationCategory = Pick<
+  Category,
+  "id" | "name" | "monthlyUsd"
+> & { readonly previewPrice?: boolean };
 const basicFields = [
   { name: "name", label: "Your name", type: "text" },
   { name: "businessName", label: "Business name", type: "text" },
@@ -23,31 +26,41 @@ const basicFields = [
   { name: "website", label: "Website (optional)", type: "url" },
   { name: "city", label: "City", type: "text" },
   { name: "state", label: "State (2-letter abbreviation)", type: "text" },
+  {
+    name: "publicDisplayName",
+    label: "Public professional / owner name (optional)",
+    type: "text",
+  },
+  { name: "publicEmail", label: "Public email (optional)", type: "email" },
 ] as const;
 const detailFields = [
   {
     name: "services",
     label: "Services",
     help: "One per line, up to 12 services, 120 characters each.",
-    placeholder: "e.g. Mold inspections\nAir quality testing\nHealthy home consultations",
+    placeholder:
+      "e.g. Mold inspections\nAir quality testing\nHealthy home consultations",
   },
   {
     name: "description",
     label: "Business description",
     help: "20–2,000 characters. Describe a business.",
-    placeholder: "Share an overview of your business, what you do and who you serve.",
+    placeholder:
+      "Share an overview of your business, what you do and who you serve.",
   },
   {
     name: "practices",
     label: "Healthy-home practices",
     help: "20–1,500 characters. Describe practices, without personal or medical information.",
-    placeholder: "Tell us about the healthy-home practices you use in your work.",
+    placeholder:
+      "Tell us about the healthy-home practices you use in your work.",
   },
   {
     name: "listedCredentials",
     label: "Listed credentials (optional)",
     help: "One per line, up to 10, 120 characters each. New or edited claims need review, unchanged claims keep their decision. The platform does not issue certifications.",
-    placeholder: "e.g. Licensed Contractor (CA)\nBuilding Biology Institute (BBI)\nIndoor Air Quality Association (IAQA)",
+    placeholder:
+      "e.g. Licensed Contractor (CA)\nBuilding Biology Institute (BBI)\nIndoor Air Quality Association (IAQA)",
   },
 ] as const;
 
@@ -165,7 +178,9 @@ export function ProfileFieldsForm({
                     maxLength={applicationLimits[name]}
                     defaultValue={draft?.[name] ?? initial?.[name] ?? ""}
                     aria-invalid={!!errors[name]}
-                    aria-describedby={errors[name] ? `${name}-error` : undefined}
+                    aria-describedby={
+                      errors[name] ? `${name}-error` : undefined
+                    }
                   />
                   <Mail
                     className="input-trailing-icon"
@@ -178,7 +193,14 @@ export function ProfileFieldsForm({
                   id={`member-form-${name}`}
                   name={name}
                   type={type}
-                  required={name !== "phone" && name !== "website"}
+                  required={
+                    ![
+                      "phone",
+                      "website",
+                      "publicDisplayName",
+                      "publicEmail",
+                    ].includes(name)
+                  }
                   maxLength={applicationLimits[name]}
                   defaultValue={draft?.[name] ?? initial?.[name] ?? ""}
                   aria-invalid={!!errors[name]}
@@ -193,6 +215,11 @@ export function ProfileFieldsForm({
             </div>
           ))}
         </div>
+        <p className="field-help">
+          Public name and public email are optional and separate from your
+          private application contact name and email. Phone and website, when
+          provided, appear publicly.
+        </p>
         <div className="form-section-divider" aria-hidden="true" />
         <fieldset
           className="application-categories"
@@ -209,6 +236,8 @@ export function ProfileFieldsForm({
             Confirmed monthly prices are in USD for individual categories. You
             may select multiple categories; combined pricing is pending
             confirmation. No payment is taken.
+            {catalog.some((category) => category.previewPrice) &&
+              " Added-category prices are preview values for this tab only."}
           </p>
           <div className="application-category-grid">
             {catalog.map((category) => {
@@ -242,6 +271,7 @@ export function ProfileFieldsForm({
                     </span>
                     <small className="category-choice-price">
                       {formatMonthlyPrice(category.monthlyUsd)} / month
+                      {category.previewPrice && " · preview"}
                     </small>
                   </span>
                 </label>
@@ -258,10 +288,7 @@ export function ProfileFieldsForm({
         {detailFields.map(({ name, label, help, placeholder }) => {
           const value = draft?.[name] ?? initial?.[name];
           return (
-            <div
-              className="search-field application-textarea-field"
-              key={name}
-            >
+            <div className="search-field application-textarea-field" key={name}>
               <label htmlFor={`member-form-${name}`}>{label}</label>
               <p className="field-help" id={`${name}-help`}>
                 {help}

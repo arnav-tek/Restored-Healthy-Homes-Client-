@@ -10,13 +10,17 @@ A demo platform that helps people find professionals who support healthier homes
 - Explore free phone consultations, submit a session-only request and try admin assignment/member coordination; no booking, payment or notifications.
 - Submit a sample business application and edit it in the member workspace.
 - Review applications, credentials and listing eligibility in the admin workspace.
-- Try fictional professional/admin accounts at `/login` using the displayed presets and public passcode `home-access`. This simulates sign-in; it is not authentication.
+- Try fictional professional accounts at `/login` and Administrator at `/admin/login` using Quick access and the displayed public passcode `home-access`. This simulates sign-in; it is not authentication.
 
 Built with Next.js App Router, React, TypeScript and Tailwind CSS.
 
 The latest client showcase includes free-phone participation, category question inboxes, first-response moderation and local sample-photo previews. Start at `/demo/walkthrough`; all workflow changes remain in the current tab and reset on refresh. See [current showcase handoff](docs/client-update-showcase-handoff.md) and [remaining scope](docs/remaining-scope-report.md).
 
 For a plain-language progress summary based on the original requirements and later client changes, read [completed work](updates/completed-work.md) and [remaining work and requirements](updates/remaining-work.md).
+
+The [admin workflow showcase](docs/admin-showcase-handoff.md) adds listing edits, simulated membership/featured states, resource publishing previews, session activity and analytics. Start at `/admin/login`. Supabase accounts and shared saved records remain a later integration; the demo needs no credentials or external service.
+
+The [admin completion follow-up](docs/admin-completion-handoff.md) adds category creation, certification editing, separate public identity fields and publication to the Resources/Certifications views in this tab. Refresh/reset clears these changes; the approved server directory/pricing catalog remains unchanged.
 
 The homepage also demonstrates licensed home-interior footage with pause/play and reduced-motion fallbacks, restrained scroll reveals, and on-demand city maps on profiles. See [media, behavior and verification](docs/homepage-motion-handoff.md); placeholder footage is not the client's company film.
 

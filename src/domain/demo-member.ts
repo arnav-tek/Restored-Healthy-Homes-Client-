@@ -1,7 +1,21 @@
 import type { ApprovalStatus, SubscriptionStatus } from "./professional";
+import {
+  membershipStatuses,
+  type AdminArticle,
+  type AdminShowcaseAction,
+} from "./admin-showcase";
+import { parseAdminArticle } from "../validation/admin-showcase";
+import { parseApplication } from "../validation/application";
 import { isPubliclyEligible } from "./listing";
 import type { PublicReviewSnapshot } from "./review";
 import { categories } from "./categories";
+import type { Category } from "./categories";
+import { sessionCategories } from "./session-catalog";
+import {
+  parseNewCategory,
+  parseCertification,
+} from "../validation/admin-editors";
+import { type CertificationEntry, type CertificationFields } from "./editorial";
 import { parseCategoryName, parseReviewReason } from "../validation/admin";
 import type {
   DemoQuestionSubmission,
@@ -38,6 +52,8 @@ import {
 } from "./consultation-session";
 
 export interface MemberProfileFields {
+  publicDisplayName?: string;
+  publicEmail?: string;
   name: string;
   businessName: string;
   email: string;
@@ -52,6 +68,7 @@ export interface MemberProfileFields {
   listedCredentials: string[];
 }
 export interface DemoMemberRecord {
+  readonly submittedOn?: string;
   readonly id: string;
   readonly exampleLabel: string;
   readonly freeConsultation?: boolean;
@@ -77,10 +94,16 @@ export interface DemoInboxItem {
   readonly message: string;
 }
 export interface DemoSessionSeed {
+  certifications?: readonly CertificationEntry[];
+  articles?: readonly AdminArticle[];
   records: readonly DemoMemberRecord[];
   inquiries: readonly DemoInboxItem[];
 }
 export interface DemoSession extends DemoSessionSeed {
+  certifications: readonly CertificationEntry[];
+  addedCategories: readonly Category[];
+  articles: readonly AdminArticle[];
+  adminActivity: readonly { id: number; summary: string }[];
   publicProfessionalIds: readonly string[];
   reviews: ReviewSession;
   identity: DemoIdentity | null;
@@ -96,6 +119,17 @@ export interface DemoSession extends DemoSessionSeed {
   notice: string;
 }
 export type DemoMemberAction =
+  | {
+      type: "create-category";
+      fields: { name: string; description: string; monthlyUsd: number };
+    }
+  | {
+      type: "save-certification";
+      categoryId: string;
+      fields: CertificationFields;
+    }
+  | { type: "publish-certification"; categoryId: string; published: boolean }
+  | AdminShowcaseAction
   | { type: "set-free-consultation"; id: string; enabled: boolean }
   | ReviewAction
   | { type: "demo-sign-in"; fields: DemoSignInFields }
@@ -106,7 +140,7 @@ export type DemoMemberAction =
   | QaAction
   | { type: "submit-question"; question: QuestionFields }
   | { type: "new-question" }
-  | { type: "submit"; profile: MemberProfileFields }
+  | { type: "submit"; profile: MemberProfileFields; submittedOn?: string }
   | { type: "edit"; id: string; profile: MemberProfileFields }
   | {
       type: "decide";
@@ -129,6 +163,10 @@ export function copyMemberFields(
   input: MemberProfileFields,
 ): Omit<MemberProfileFields, "listedCredentials"> {
   return {
+    ...(input.publicDisplayName
+      ? { publicDisplayName: input.publicDisplayName }
+      : {}),
+    ...(input.publicEmail ? { publicEmail: input.publicEmail } : {}),
     name: input.name,
     businessName: input.businessName,
     email: input.email,
@@ -150,6 +188,10 @@ export function createDemoSession(
 ): DemoSession {
   return {
     ...structuredClone(seed),
+    articles: structuredClone(seed.articles ?? []),
+    certifications: structuredClone(seed.certifications ?? []),
+    addedCategories: [],
+    adminActivity: [],
     identity: null,
     publicProfessionalIds: [...publicProfessionalIds],
     reviews: createReviewSession(publicReviewSeed),
@@ -172,8 +214,184 @@ export function reduceDemoSession(
   action: DemoMemberAction,
   seed: DemoSessionSeed,
 ): DemoSession {
+  const next = reduceDemoSessionCore(state, action, seed);
+  const labels: Partial<Record<DemoMemberAction["type"], string>> = {
+    edit: "Profile updated",
+    decide: "Application decision updated",
+    suspend: "Listing visibility updated",
+    credential: "Credential decision updated",
+    "rename-category": "Category label updated",
+    "simulate-membership": "Membership scenario updated",
+    "set-featured": "Featured entitlement updated",
+    "save-article": "Resource draft saved",
+    "publish-article": "Resource publication updated",
+    "create-category": "Category created",
+    "save-certification": "Certification draft saved",
+    "publish-certification": "Certification publication updated",
+  };
+  const label = labels[action.type];
+  if (next === state || state.identity?.kind !== "admin" || !label) return next;
+  const recordId = "id" in action ? action.id : "";
+  const record = next.records.find((item) => item.id === recordId);
+  return {
+    ...next,
+    adminActivity: [
+      {
+        id: next.revision,
+        summary: `${label}${record ? ` · ${record.profile.businessName}` : ""}`,
+      },
+      ...next.adminActivity,
+    ].slice(0, 30),
+  };
+}
+
+function reduceDemoSessionCore(
+  state: DemoSession,
+  action: DemoMemberAction,
+  seed: DemoSessionSeed,
+): DemoSession {
   const revision = state.revision + 1;
   switch (action.type) {
+    case "create-category": {
+      if (state.identity?.kind !== "admin") return state;
+      const fields = parseNewCategory(action.fields, sessionCategories(state));
+      if (!fields) return state;
+      const category: Category = {
+        id: `demo-category-${revision}`,
+        billingKey: `demo-membership-${revision}`,
+        ...fields,
+      };
+      return {
+        ...state,
+        revision,
+        addedCategories: [...state.addedCategories, category],
+        categoryNames: { ...state.categoryNames, [category.id]: category.name },
+        notice:
+          "Category created for this tab. Existing prices and associations are unchanged.",
+      };
+    }
+    case "save-certification": {
+      if (
+        state.identity?.kind !== "admin" ||
+        !sessionCategories(state).some((item) => item.id === action.categoryId)
+      )
+        return state;
+      const fields = parseCertification({
+        ...action.fields,
+        steps: action.fields.steps.join("\n"),
+      });
+      if (!fields) return state;
+      return {
+        ...state,
+        revision,
+        certifications: [
+          ...state.certifications.filter(
+            (item) => item.categoryId !== action.categoryId,
+          ),
+          { categoryId: action.categoryId, ...fields, status: "draft" },
+        ],
+        notice:
+          "Certification pathway saved as a draft. Publishing is a separate step.",
+      };
+    }
+    case "publish-certification": {
+      if (
+        state.identity?.kind !== "admin" ||
+        typeof action.published !== "boolean"
+      )
+        return state;
+      const entry = state.certifications.find(
+        (item) => item.categoryId === action.categoryId,
+      );
+      if (
+        !entry ||
+        !parseCertification({ ...entry, steps: entry.steps.join("\n") })
+      )
+        return state;
+      return {
+        ...state,
+        revision,
+        certifications: state.certifications.map((item) =>
+          item.categoryId === action.categoryId
+            ? { ...item, status: action.published ? "published" : "draft" }
+            : item,
+        ),
+        notice: action.published
+          ? "Pathway published to Certifications in this tab. This does not verify any member credentials."
+          : "Pathway returned to draft; the original reference copy is restored.",
+      };
+    }
+    case "simulate-membership":
+    case "set-featured": {
+      if (state.identity?.kind !== "admin" || !parseReviewReason(action.reason))
+        return state;
+      const record = state.records.find((item) => item.id === action.id);
+      if (!record) return state;
+      if (
+        action.type === "simulate-membership" &&
+        !membershipStatuses.includes(action.status)
+      )
+        return state;
+      if (action.type === "set-featured" && typeof action.enabled !== "boolean")
+        return state;
+      const updated =
+        action.type === "simulate-membership"
+          ? { ...record, subscription: action.status }
+          : {
+              ...record,
+              featuredEntitlement: action.enabled
+                ? ("active" as const)
+                : ("none" as const),
+            };
+      return {
+        ...state,
+        records: state.records.map((item) =>
+          item.id === record.id ? updated : item,
+        ),
+        revision,
+        notice:
+          "Showcase scenario updated in this tab. No payment or live listing was changed.",
+      };
+    }
+    case "save-article": {
+      if (state.identity?.kind !== "admin") return state;
+      const fields = parseAdminArticle(action.fields);
+      if (
+        !fields ||
+        (action.id && !state.articles.some((item) => item.id === action.id))
+      )
+        return state;
+      const id = action.id || `demo-article-${revision}`;
+      // Editing a published item returns it to draft for deliberate re-publication.
+      const article: AdminArticle = { id, ...fields, status: "draft" };
+      return {
+        ...state,
+        revision,
+        articles: [...state.articles.filter((item) => item.id !== id), article],
+        notice: "Resource saved as a draft in this tab.",
+      };
+    }
+    case "publish-article": {
+      if (
+        state.identity?.kind !== "admin" ||
+        typeof action.published !== "boolean"
+      )
+        return state;
+      const article = state.articles.find((item) => item.id === action.id);
+      if (!article || !parseAdminArticle({ ...article })) return state;
+      return {
+        ...state,
+        revision,
+        articles: state.articles.map((item) =>
+          item.id === article.id
+            ? { ...item, status: action.published ? "published" : "draft" }
+            : item,
+        ),
+        notice: action.published
+          ? "Resource published to Resources in this tab. Refresh or reset clears it."
+          : "Resource returned to draft.",
+      };
+    }
     case "submit-review":
     case "moderate-review":
     case "new-review": {
@@ -223,7 +441,10 @@ export function reduceDemoSession(
     case "request-consultation": {
       // Lock this form attempt after success until the explicit "another" action.
       if (state.consultationId !== null) return state;
-      const parsed = parseConsultation({ ...action.fields });
+      const parsed = parseConsultation(
+        { ...action.fields },
+        sessionCategories(state),
+      );
       if (!parsed.ok) return state;
       const { name, email, categoryId, format, topic } = parsed.fields;
       const request: DemoConsultationRequest = {
@@ -263,7 +484,7 @@ export function reduceDemoSession(
     case "moderate-answer":
       return reduceQaAction(state, action);
     case "submit-question": {
-      const parsed = parseQuestion(action.question);
+      const parsed = parseQuestion(action.question, sessionCategories(state));
       if (!parsed.ok) return state;
       const question: DemoQuestionSubmission = {
         id: `demo-session-question-${revision}`,
@@ -295,6 +516,10 @@ export function reduceDemoSession(
     case "submit": {
       const record: DemoMemberRecord = {
         id: "demo-local-application",
+        submittedOn:
+          action.submittedOn && /^\d{4}-\d{2}-\d{2}$/.test(action.submittedOn)
+            ? action.submittedOn
+            : undefined,
         exampleLabel: "Your application",
         approval: "pending",
         subscription: "inactive",
@@ -344,7 +569,7 @@ export function reduceDemoSession(
           "Free phone consultation preference updated for this demo session. Public directory fixtures are unchanged.",
       };
     }
-    case "edit":
+    case "edit": {
       if (
         !state.identity ||
         (state.identity.kind === "member" &&
@@ -353,16 +578,29 @@ export function reduceDemoSession(
         return state;
       if (!state.records.some((record) => record.id === action.id))
         return state;
+      let profile = action.profile;
+      if (state.identity.kind === "admin") {
+        const parsed = parseApplication(
+          {
+            ...action.profile,
+            services: action.profile.services.join("\n"),
+            listedCredentials: action.profile.listedCredentials.join("\n"),
+          },
+          sessionCategories(state),
+        );
+        if (!parsed.ok) return state;
+        profile = parsed.profile;
+      }
       return {
         ...state,
         records: state.records.map((record) =>
           record.id === action.id
             ? {
                 ...record,
-                profile: copyMemberFields(action.profile),
+                profile: copyMemberFields(profile),
                 credentials: reconcileCredentials(
                   record.credentials,
-                  action.profile.listedCredentials,
+                  profile.listedCredentials,
                   `${record.id}-${revision}`,
                 ),
               }
@@ -371,12 +609,10 @@ export function reduceDemoSession(
         revision,
         notice: "Profile draft updated. The public directory has not changed.",
       };
+    }
     case "rename-category": {
       if (state.identity?.kind !== "admin") return state;
-      const catalog = categories.map((item) => ({
-        ...item,
-        name: state.categoryNames[item.id],
-      }));
+      const catalog = sessionCategories(state);
       const name = parseCategoryName(action.name, action.id, catalog);
       return name
         ? {
@@ -461,6 +697,8 @@ export function memberFormFields(
 }
 
 export interface DemoPublicPreview {
+  publicDisplayName?: string;
+  publicEmail?: string;
   id: string;
   businessName: string;
   categoryIds: string[];
@@ -477,6 +715,10 @@ export interface DemoPublicPreview {
 export function projectDemoPublic(record: DemoMemberRecord): DemoPublicPreview {
   const profile = record.profile;
   return {
+    ...(profile.publicDisplayName
+      ? { publicDisplayName: profile.publicDisplayName }
+      : {}),
+    ...(profile.publicEmail ? { publicEmail: profile.publicEmail } : {}),
     id: record.id,
     businessName: profile.businessName,
     categoryIds: [...profile.categoryIds],

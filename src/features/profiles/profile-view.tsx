@@ -4,6 +4,7 @@ import type { PublicProfile } from "@/domain/professional";
 import type { Category } from "@/domain/categories";
 import { InquiryForm } from "./inquiry-form";
 import { ReviewsSection } from "@/features/reviews/reviews-section";
+import { PublicIdentity } from "./public-identity";
 
 export function ProfileView({
   profile,
@@ -32,6 +33,7 @@ export function ProfileView({
         <div className="profile-heading-copy">
           <p className="section-label section-tag">Specialist profile</p>
           <h1>{profile.businessName || "Professional"}</h1>
+          <PublicIdentity professionalId={profile.id} />
           <p className="category-label">
             {categoryNames.join(" · ") || "Category not provided"}
           </p>

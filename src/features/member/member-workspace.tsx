@@ -301,6 +301,7 @@ export function MemberWorkspace({
                 <strong>
                   {formatMonthlyPrice(category.monthlyUsd)}
                   <span> / month</span>
+                  {category.previewPrice && <small> · preview</small>}
                 </strong>
               </div>
             ))}

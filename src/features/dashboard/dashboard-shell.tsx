@@ -15,6 +15,8 @@ import {
   Inbox,
   CreditCard,
   Users,
+  BarChart3,
+  BookOpen,
 } from "lucide-react";
 import { dashboardSections, type DashboardArea } from "@/validation/dashboard";
 import { useDashboardNavigation } from "./use-dashboard-navigation";
@@ -26,6 +28,10 @@ import { SignOutButton } from "@/features/demo-sign-in/sign-out-button";
 import { demoAccounts } from "@/domain/demo-identity";
 
 const sectionIcons: Record<string, ReactNode> = {
+  analytics: <BarChart3 size={16} aria-hidden="true" />,
+  featured: <Star size={16} aria-hidden="true" />,
+  content: <BookOpen size={16} aria-hidden="true" />,
+  certifications: <BookOpen size={16} aria-hidden="true" />,
   overview: <LayoutGrid size={16} aria-hidden="true" />,
   applications: <FileText size={16} aria-hidden="true" />,
   listings: <List size={16} aria-hidden="true" />,

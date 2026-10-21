@@ -1,5 +1,5 @@
 "use client";
-import { categories } from "@/domain/categories";
+import { useSessionCategories } from "@/features/member/demo-session";
 import {
   consultationStatuses,
   consultationStatusLabels,
@@ -11,6 +11,7 @@ import type { DashboardArea } from "@/validation/dashboard";
 export function ConsultationFilters({ area }: { area: DashboardArea }) {
   const { query, navigate, pending } = useDashboardNavigation(area);
   const { state } = useDemoSession();
+  const categories = useSessionCategories();
   const ready = useDemoReady();
   return (
     <fieldset disabled={!ready || pending} className="consultation-filters">

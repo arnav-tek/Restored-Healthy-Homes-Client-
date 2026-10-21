@@ -1,12 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
-import { categories } from "@/domain/categories";
+import { useSessionCategories } from "@/features/member/demo-session";
 import type { DashboardArea } from "@/validation/dashboard";
 import { useDashboardNavigation } from "@/features/dashboard/use-dashboard-navigation";
 export function QaWorkspaceFilters({ area }: { area: DashboardArea }) {
   const { query, navigate, pending } = useDashboardNavigation(area);
   const ready = useDemoReady();
+  const categories = useSessionCategories();
   return (
     <form
       key={`${query.q}-${query.category}-${query.qaStatus}`}

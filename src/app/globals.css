@@ -1,5 +1,64 @@
 @import "tailwindcss";
 @source "../**/*.{ts,tsx}";
+
+/* Admin showcase extends the existing workspace tokens and native form patterns. */
+.admin-management-stack, .admin-showcase-guide { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.admin-management-stack > * { min-width: 0; }
+.admin-management-stack h2, .admin-editor-panel h2, .admin-activity h2 { color: var(--color-sage); }
+.admin-editor-heading { display: grid; gap: 10px; }
+.admin-editor-heading p { color: var(--muted); font-size: 14px; line-height: 1.7; }
+.admin-editor-heading .section-tag { margin-bottom: 2px; }
+.admin-management-stack > .workspace-note { margin-block: 0; background: var(--paper); border-left-color: var(--dark-clay); font-size: 14px; }
+.admin-management-stack > .admin-inline-actions { margin-block: 0; }
+.admin-management-stack .member-form-fields > .button, .admin-category-fields > .button { justify-self: start; max-width: 100%; }
+.admin-management-stack .search-field textarea { resize: vertical; line-height: 1.6; }
+.admin-management-card .admin-inline-actions { margin-block: 0; }
+.admin-editor-panel > .admin-inline-actions { padding-top: 20px; border-top: 1px solid var(--border); }
+.admin-categories-workspace > .panel:first-child { margin-bottom: 32px; }
+.category-summary-card { text-align: left; color: inherit; font: inherit; width: 100%; }
+.category-summary-card, .category-choice-name, .category-choice-text { min-width: 0; overflow-wrap: anywhere; }
+.admin-management-stack h2, .admin-management-stack h3, .admin-management-stack p { overflow-wrap: anywhere; }
+.education-pathway, .specialty-nav-name, .summary-text-group, .meta-content, .option-link > span { min-width: 0; overflow-wrap: anywhere; }
+.option-link { max-width: 100%; }
+.category-summary-card:disabled { cursor: wait; }
+.profile-public-identity { overflow-wrap: anywhere; }
+.session-resource-paragraph { margin-block: 24px; white-space: pre-line; overflow-wrap: anywhere; }
+.resource-article h1, .resource-card h2, .pathway-entry-requirements { overflow-wrap: anywhere; }
+.pathway-entry-requirements { margin-bottom: 22px; }
+.pathway-entry-requirements h5 { font-size: 16px; margin: 0 0 8px; }
+.admin-management-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.admin-management-card { display: flex; flex-direction: column; align-items: start; gap: 14px; min-width: 0; overflow-wrap: anywhere; }
+.admin-management-card h2 { font-size: 25px; }
+.admin-management-card > .text-link { margin-top: auto; }
+.admin-inline-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-block: 16px; }
+.admin-showcase-guide h2 { margin-block: 12px; font-size: 28px; }
+.admin-listing-editor { margin-block: 24px; }
+.admin-listing-editor > summary { font-family: Georgia, serif; font-size: 24px; color: var(--color-sage); }
+.admin-listing-editor > p { margin-block: 20px; }
+.admin-scenario-panel { display: grid; gap: 18px; margin-block: 20px; }
+.admin-stat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0; }
+.admin-stat-grid dt { color: var(--muted); }
+.admin-stat-grid dd { margin: 8px 0 0; font: 42px/1.2 Georgia, serif; color: var(--color-sage); }
+.admin-month-filter { max-width: 280px; }
+.admin-breakdown { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.admin-breakdown dd { margin: 4px 0 0; font-size: 24px; }
+.admin-table-scroll { overflow-x: auto; }
+.admin-analytics-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.admin-analytics-table th, .admin-analytics-table td { padding: 14px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+.admin-analytics-table th[scope="row"] { font-weight: 400; overflow-wrap: anywhere; }
+.admin-article-preview { margin-block: 20px; overflow-wrap: anywhere; white-space: pre-line; }
+.admin-article-preview p { margin-block: 14px; }
+.admin-article-preview ol { padding-left: 24px; list-style: decimal; }
+.admin-article-preview li { padding-block: 4px; }
+.admin-activity { margin-top: 24px; }
+.admin-activity ol { padding-left: 22px; }
+.admin-activity li { padding-block: 8px; border-bottom: 1px solid var(--border); }
+@media (max-width: 650px) {
+  .admin-management-grid, .admin-stat-grid { grid-template-columns: minmax(0, 1fr); }
+  .admin-breakdown { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .admin-analytics-table th, .admin-analytics-table td { padding-inline: 4px; }
+  .admin-management-stack .member-form-fields > .button, .admin-category-fields > .button { justify-self: stretch; width: 100%; }
+}
 @theme inline {
   --color-sage: #3d5c3b;
   --color-sage-soft: #5c7a5a;
@@ -3276,20 +3335,20 @@ tbody tr:last-child > * {
   margin: 16px 0 28px;
 }
 .category-summary-card {
-  background: #FFFFFF;
+  background: var(--paper);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 10px;
   padding: 18px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   cursor: pointer;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .category-summary-card:hover {
-  border-color: #B2BCAD;
+  border-color: var(--color-sage-soft);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 .category-summary-card.is-selected {
-  border-color: #234D32;
+  border-color: var(--color-sage);
   box-shadow: 0 0 0 2px rgba(35, 77, 50, 0.18);
 }
 .category-card-top {
@@ -3302,8 +3361,8 @@ tbody tr:last-child > * {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: #234D32;
-  color: #FFFFFF;
+  background: var(--color-sage);
+  color: var(--paper);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3314,19 +3373,19 @@ tbody tr:last-child > * {
   color: #FFFFFF !important;
 }
 .category-price-pill {
-  background: #FAF8F5;
-  border: 1px solid #ECE7DF;
+  background: var(--color-cream);
+  border: 1px solid var(--border);
   padding: 3px 8px;
   border-radius: 9999px;
   font-size: 12px;
   font-weight: 600;
-  color: #234D32;
+  color: var(--color-sage);
 }
 .category-card-title {
-  font-family: Georgia, serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: #234D32;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-sage);
   margin: 0 0 4px 0;
 }
 .category-card-id {
@@ -3339,12 +3398,12 @@ tbody tr:last-child > * {
 .category-card-footer {
   margin-top: 14px;
   padding-top: 10px;
-  border-top: 1px solid #F0ECE4;
+  border-top: 1px solid var(--border);
 }
 .category-edit-action {
   font-size: 12px;
   font-weight: 500;
-  color: #315E3B;
+  color: var(--color-sage);
   display: inline-flex;
   align-items: center;
   gap: 4px;

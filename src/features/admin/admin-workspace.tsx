@@ -25,8 +25,18 @@ import { AdminReviews } from "@/features/reviews/admin-reviews";
 import { moderationReviews } from "@/domain/review-session";
 import { AdminConsultations } from "@/features/consultations/admin-consultations";
 import { RecordRegister } from "./record-register";
+import { ListingEditor } from "./listing-editor";
+import { AdminMemberships } from "./membership-controls";
+import { AdminAnalytics } from "./admin-analytics";
+import { AdminContent } from "./admin-content";
+import { CertificationEditor } from "./certification-editor";
 
 const tabTitles: Record<string, string> = {
+  certifications: "Certification pathways",
+  analytics: "Directory analytics",
+  membership: "Membership management",
+  featured: "Featured listings",
+  content: "Resources & publishing",
   reviews: "Review Management",
   consultations: "Consultation requests",
   qa: "Questions & Answers",
@@ -38,6 +48,11 @@ const tabTitles: Record<string, string> = {
 };
 
 const breadcrumbLabels: Record<string, string> = {
+  certifications: "Certifications",
+  analytics: "Analytics",
+  membership: "Membership",
+  featured: "Featured",
+  content: "Content",
   overview: "Overview",
   applications: "Applications",
   listings: "Listings",
@@ -49,6 +64,11 @@ const breadcrumbLabels: Record<string, string> = {
 };
 
 const tabDescriptions: Record<string, string> = {
+  certifications: "Edit external program references, entry requirements, steps and planning information.",
+  analytics: "Explore membership, category and application trends from the current session.",
+  membership: "Demonstrate membership changes and their effect on listing eligibility.",
+  featured: "Manage sample entitlements and preview eligible featured placements.",
+  content: "Create, review and publish sample resources in the showcase preview.",
   overview: "Manage your directory, review activity and keep track of your next steps.",
   applications: "Review applications from professionals requesting directory listings.",
   listings: "Manage professional profiles, visibility, and listing eligibility.",
@@ -116,6 +136,11 @@ export function AdminWorkspace({
       </header>
 
       {query.section === "qa" && <AdminQa key={resetVersion} />}
+      {query.section === "analytics" && <AdminAnalytics key={resetVersion} catalog={sessionCatalog} />}
+      {query.section === "membership" && <AdminMemberships key={resetVersion} />}
+      {query.section === "featured" && <AdminMemberships key={resetVersion} featured />}
+      {query.section === "content" && <AdminContent key={resetVersion} />}
+      {query.section === "certifications" && <CertificationEditor key={resetVersion} />}
       {query.section === "reviews" && <AdminReviews key={resetVersion} />}
       {query.section === "consultations" && (
         <AdminConsultations key={resetVersion} />
@@ -123,6 +148,11 @@ export function AdminWorkspace({
 
       {query.section === "overview" && (
         <div className="overview-container">
+          <section className="panel admin-showcase-guide">
+            <div><p className="section-tag">Workflow showcase</p><h2>From application to an eligible listing</h2><p>Review an application, simulate active membership, then open its listing to edit the profile. Featured placement still requires eligibility.</p></div>
+            <div className="admin-inline-actions"><Link className="button" href={href({ section: "membership", record: "" })}>Try membership workflow</Link><Link className="text-link" href={href({ section: "analytics", record: "" })}>View analytics →</Link></div>
+            <p className="field-help">Changes stay in this tab and clear on refresh. No payments or notifications are sent.</p>
+          </section>
           {/* 6 Metric Cards in 3x2 Grid */}
           <div className="overview-metrics-grid">
             {/* Card 1: Pending applications */}
@@ -462,6 +492,7 @@ export function AdminWorkspace({
               </p>
             </section>
           </div>
+          <section className="panel admin-activity"><h2>Session activity</h2><p>Recent admin changes in this tab. This preview is not a permanent audit log.</p>{state.adminActivity.length ? <ol>{state.adminActivity.map((item) => <li key={item.id}>{item.summary}</li>)}</ol> : <p>No admin changes yet. Try reviewing an application or updating a membership scenario.</p>}</section>
         </div>
       )}
 
@@ -503,6 +534,8 @@ export function AdminWorkspace({
               {query.section === "listings" && (
                 <>
                   <DecisionForm record={record} purpose="listing" />
+                  <ListingEditor record={record} catalog={sessionCatalog} />
+                  <div className="admin-inline-actions"><Link className="text-link" href={href({ section: "membership", record: record.id })}>Manage membership scenario</Link><Link className="text-link" href={href({ section: "featured", record: record.id })}>Manage featured placement</Link></div>
                   <Link
                     className="text-link"
                     href={href({ section: "applications", record: record.id })}
@@ -577,7 +610,7 @@ export function AdminWorkspace({
           </div>
           {!publicRecords.length && (
             <p className="workspace-empty">
-              No eligible listings. Approval alone is insufficient; subscriptions are read-only.
+              No eligible listings. Approval alone is insufficient; use Membership to simulate an active subscription.
             </p>
           )}
         </section>

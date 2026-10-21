@@ -12,6 +12,11 @@ export const dashboardSections = {
   ],
   admin: [
     "overview",
+    "analytics",
+    "membership",
+    "featured",
+    "content",
+    "certifications",
     "applications",
     "listings",
     "credentials",
@@ -91,7 +96,7 @@ export function parseDashboardQuery(
     qaStatus: ["pending", "published", "rejected"].includes(qaStatus)
       ? qaStatus
       : "all",
-    category: categories.some((item) => item.id === category) ? category : "",
+    category: categories.some((item) => item.id === category) || /^demo-category-[1-9]\d*$/.test(category) ? category : "",
     section: (dashboardSections[area] as readonly string[]).includes(section)
       ? section
       : "overview",

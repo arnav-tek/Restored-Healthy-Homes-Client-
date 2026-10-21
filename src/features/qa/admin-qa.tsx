@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { categories } from "@/domain/categories";
+import { useSessionCategories } from "@/features/member/demo-session";
 import {
   qaReviewQuestions,
   qaReviewAnswers,
@@ -14,6 +14,7 @@ import { QaModerationForm } from "./moderation-form";
 
 export function AdminQa() {
   const { state } = useDemoSession();
+  const categories = useSessionCategories();
   const { query, href } = useDashboardNavigation("admin");
   const questions = qaReviewQuestions(state);
   const answers = qaReviewAnswers(state);

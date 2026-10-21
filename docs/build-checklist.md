@@ -1,5 +1,25 @@
 # Build milestones and acceptance
 
+## Admin frontend completion follow-up — 2026-10-21
+
+- [x] Category creation with validated explicit preview price, generated stable ID, independent billing mapping, rename preservation and session workflow propagation.
+- [x] Category-scoped certification editor for provider/program references, requirements, steps, timeline/costs, draft/review/publication and public session view.
+- [x] Separate optional public professional/owner name and public email, validation, clearing, explicit projection and linked eligible profile display.
+- [x] Published-only session resources browse/detail, draft exclusion, escaped text and reset/unavailable behavior.
+- [x] Final expanded verification and responsive review: typecheck, lint, 105 unit tests, demo build, production guard, 253 full-regression browser passes and 13 final affected passes; see [completion handoff](admin-completion-handoff.md) for skips, evidence and limitations.
+- [x] Website-theme follow-up: shared sage/cream/clay tokens, Georgia/Arial typography, consistent editor spacing/cards and responsive actions. Fresh check/build and 22 affected browser cases pass; desktop/tablet/mobile screenshots reviewed in the completion handoff.
+- [ ] Client final content/assets/policies, production accounts/database, live billing/email/uploads/publication and launch acceptance remain separate.
+
+## Admin workflow showcase — 2026-10-21
+
+- [x] Admin listing/profile editing reuses the validated profile form and shared records; credential decisions and protected lifecycle fields remain separate.
+- [x] Membership status and featured entitlement simulation, explicit confirmation, independent eligibility and eligible featured preview.
+- [x] Resource creation/editing, saved preview, draft/publication controls and a separate admin publication preview; public server articles remain unchanged.
+- [x] Derived active-member/category/membership-state counts and UTC monthly application counts; session activity and extended client walkthrough.
+- [ ] Production category setup/persistence, CMS/publication permissions, real featured ranking, integrations and durable operational reporting remain outstanding. Demo creation/editing/publication controls are covered by the follow-up above.
+
+See [admin showcase handoff](admin-showcase-handoff.md) for workflow, future Supabase boundaries and actual verification.
+
 ## Client revision showcase — 2026-10-20
 
 See [showcase handoff](client-update-showcase-handoff.md) and [remaining-scope report](remaining-scope-report.md). The user explicitly deferred Supabase/email until client review; parts 1–2 below remain production work even though their demo journeys are available.
@@ -53,7 +73,7 @@ This snapshot supersedes older instructions to defer frontend resources/newslett
 - [ ] Server authentication/ownership checks, RLS, durable shared records, production location/service-area data and cross-session continuity.
 - [ ] Secure image uploads and storage; CMS editing for resources and certification content.
 - [ ] Payments/subscription lifecycle, featured purchases, booking/scheduling, transactional email, inquiry delivery and newsletter subscription delivery.
-- [ ] Production administration, analytics and category creation; demos currently provide local decisions and label editing only.
+- [ ] Production administration, analytics and category creation. The current demo provides local profile/category/certification editing, publishing workflows and derived analytics; shared saved records and server permissions remain unimplemented.
 - [ ] Client approval, production security/operational checks and deployment. No deployment, commit or push is authorized by this preview task.
 
 ## Phase 1 — foundation and preview
@@ -244,8 +264,8 @@ Reconciled 2026-10-04 against the original Word brief, supplied overview/paste a
 - [x] Demo search completion in 2I-1: state and minimum-rating filters alongside existing city/ZIP/category/radius search, with published review averages/counts on directory cards.
 - [ ] Production search and placement: real location/service-area data and agreed featured priority. Radius/service-area/geolocation behavior remains a client decision; an interactive map is not automatically required.
 - [ ] Profile/media integration (Phase 3): photo/logo management and secure uploads, intended public professional/owner display name and contact options. Missing-photo states and reviewed/submitted badge presentation are implemented; public identity fields and real media management remain pending. Keep public fields separate from private application contact identity.
-- [ ] Admin completion (Phase 3/5): permitted listing/profile edits, not only status decisions; basic analytics including active members, members by category, new applications this month and membership status. Current demo queue counts alone do not satisfy these analytics.
-- [ ] Category architecture (Phase 3): support adding categories without rebuilding and preserve stable IDs on rename. Existing label editing is not evidence of category creation or a billing-configuration editor; define any added admin controls before implementing them.
+- [ ] Production admin completion (Phase 3/5): connect demonstrated listing/profile edits and basic active-member/category/monthly-application/membership-state analytics to authenticated, durable shared records and agreed reporting conditions.
+- [ ] Production category architecture (Phase 3): persist the demonstrated create/rename workflow, preserve stable IDs/associations and approve new-category billing setup. The session preview assigns IDs independently of labels and never alters canonical billing keys or existing prices; it is not a live billing-configuration editor.
 - [ ] Email acceptance (Phase 4/5): new-application owner alert, approval/rejection notices, relevant-category Q&A alerts, consultation assignment/request alerts, inquiry delivery and agreed account/subscription notifications.
 - [ ] Content management (Phase 5): owner can manage blog/resources and certification content without code. Place supplied legal asterisks/disclaimers and Privacy/Terms content as agreed; legal-copy self-service editing remains undecided.
 - [ ] Consultation acceptance (Phase 5): connect requests to the agreed payment, scheduling, specialist notification and delivery flow; resolve phone/video, written summary, refund/no-show and money-routing responsibilities. Current assignment/acceptance demo is not a completed booking service.

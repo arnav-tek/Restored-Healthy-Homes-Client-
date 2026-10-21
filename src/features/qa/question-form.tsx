@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { SessionReset } from "@/features/dashboard/session-reset";
-import { useDemoDraft, useDemoSession } from "@/features/member/demo-session";
+import { useDemoDraft, useDemoSession, useDemoCatalog } from "@/features/member/demo-session";
 import {
   parseQuestion,
   questionFieldOrder,
@@ -21,6 +21,7 @@ export function QuestionForm({
   returnTo: string;
 }) {
   const { state, dispatch } = useDemoSession();
+  const sessionCatalog = useDemoCatalog(catalog);
   const { draft, saveDraft, clearDraft } = useDemoDraft("question");
   const ready = useDemoReady();
   const [errors, setErrors] = useState<QuestionErrors>({});
@@ -43,7 +44,7 @@ export function QuestionForm({
       title: data.get("title"),
       categoryId: data.get("categoryId"),
       body: data.get("body"),
-    });
+    }, sessionCatalog);
     if (!result.ok) {
       setErrors(result.errors);
       const first = questionFieldOrder.find((field) => result.errors[field]);
@@ -165,7 +166,7 @@ export function QuestionForm({
                 }
               >
                 <option value="">Choose a category</option>
-                {catalog.map((category) => (
+                {sessionCatalog.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.name}
                   </option>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { ResourceListing } from "@/features/resources/resource-listing";
 import { resourceRepository } from "@/data/content/resources";
 import { resourceCategories } from "@/domain/resource";
 import { NewsletterForm } from "@/features/resources/newsletter-form";
@@ -35,55 +35,7 @@ export default async function ResourcesPage({
           </p>
         </div>
       </header>
-      <nav className="resource-filters" aria-label="Resource categories">
-        <Link href="/resources" aria-current={!category ? "page" : undefined}>
-          All resources
-        </Link>
-        {resourceCategories.map((item) => (
-          <Link
-            key={item.id}
-            href={`/resources?category=${item.id}`}
-            aria-current={item.id === category ? "page" : undefined}
-          >
-            {item.label}
-          </Link>
-        ))}
-      </nav>
-      <p role="status">
-        {articles.length} sample{" "}
-        {articles.length === 1 ? "article" : "articles"}
-      </p>
-      {articles.length ? (
-        <div className="resource-grid">
-          {articles.map((article) => (
-            <article key={article.slug} className="resource-card">
-              <p className="section-label section-tag">Sample editorial content</p>
-              <h2>
-                <Link href={`/resources/${article.slug}`}>{article.title}</Link>
-              </h2>
-              <p>{article.summary}</p>
-              <Link className="text-link" href={`/resources/${article.slug}`}>
-                Read sample article
-                <span className="sr-only">: {article.title}</span>
-              </Link>
-            </article>
-          ))}
-        </div>
-      ) : (
-        <section className="panel">
-          <h2>
-            {valid ? "Stories are still to come" : "Category unavailable"}
-          </h2>
-          <p>
-            {valid
-              ? "There are no sample articles in this category yet."
-              : "Choose one of the resource categories above."}
-          </p>
-          <Link className="text-link" href="/resources">
-            View all resources
-          </Link>
-        </section>
-      )}
+      <ResourceListing seed={articles} category={category} valid={valid} />
       <NewsletterForm />
     </div>
   );

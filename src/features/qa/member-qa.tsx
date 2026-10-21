@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { categories } from "@/domain/categories";
+import { useSessionCategories } from "@/features/member/demo-session";
 import {
   canMemberAnswer,
   ownQaAnswers,
@@ -21,6 +21,7 @@ export function MemberQa({
   disabled: boolean;
 }) {
   const { state } = useDemoSession();
+  const categories = useSessionCategories();
   const { query, href } = useDashboardNavigation("member");
   const questions = memberQuestionInbox(state, memberId);
   const published = publicSessionQuestions(state);
@@ -36,7 +37,7 @@ export function MemberQa({
         q: query.q,
         category: query.category,
         page: 1,
-      }).total > 0,
+      }, categories).total > 0,
   );
   return (
     <div className="qa-workspace">

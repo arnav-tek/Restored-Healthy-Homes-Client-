@@ -22,6 +22,7 @@ export type ConsultationResult =
   | { ok: false; errors: ConsultationErrors };
 export function parseConsultation(
   raw: Record<string, unknown>,
+  catalog: readonly { id: string }[] = categories,
 ): ConsultationResult {
   const errors: ConsultationErrors = {};
   function text(field: keyof typeof consultationLimits, min: number): string {
@@ -43,7 +44,7 @@ export function parseConsultation(
     errors.email = "Enter a valid email address.";
   const categoryId =
     typeof raw.categoryId === "string" ? raw.categoryId.trim() : "";
-  if (!categories.some((category) => category.id === categoryId))
+  if (!catalog.some((category) => category.id === categoryId))
     errors.categoryId = "Choose one available professional category.";
   const format = consultationFormats.find(
     (item) => typeof raw.format === "string" && item.id === raw.format.trim(),

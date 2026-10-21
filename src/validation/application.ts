@@ -2,6 +2,8 @@ import type { Category } from "../domain/categories";
 import type { MemberProfileFields } from "../domain/demo-member";
 
 export const applicationLimits = {
+  publicDisplayName: 80,
+  publicEmail: 254,
   name: 80,
   businessName: 120,
   email: 254,
@@ -17,6 +19,8 @@ export const applicationLimits = {
 export type ApplicationField = keyof MemberProfileFields;
 export type ApplicationErrors = Partial<Record<ApplicationField, string>>;
 export const applicationFieldOrder: readonly ApplicationField[] = [
+  "publicDisplayName",
+  "publicEmail",
   "name",
   "businessName",
   "email",
@@ -61,6 +65,13 @@ export function parseApplication(
   const name = text("name"),
     businessName = text("businessName"),
     email = text("email");
+  const publicDisplayName =
+    raw.publicDisplayName === undefined ? "" : text("publicDisplayName", true);
+  const publicEmail =
+    raw.publicEmail === undefined ? "" : text("publicEmail", true);
+  if (publicEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(publicEmail))
+    errors.publicEmail =
+      "Enter a valid public email address, or leave it blank.";
   const phone = text("phone", true),
     website = text("website", true);
   const city = text("city"),
@@ -132,6 +143,8 @@ export function parseApplication(
   return {
     ok: true,
     profile: {
+      ...(publicDisplayName ? { publicDisplayName } : {}),
+      ...(publicEmail ? { publicEmail } : {}),
       name,
       businessName,
       email,
