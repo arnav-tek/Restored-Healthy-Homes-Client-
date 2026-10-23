@@ -10,10 +10,12 @@ export async function section(
     await menu.locator("summary").click();
   const link = page
     .getByRole("navigation", { name: `${area} sections` })
-    .getByRole("link", { name, exact: true }).filter({ visible: true });
+    .getByRole("link", { name, exact: true })
+    .filter({ visible: true });
   const destination = await link.getAttribute("href");
   await link.press("Enter");
   await expect(page).toHaveURL(destination!);
+  await expect(page.locator("#workspace-title")).toBeFocused();
 }
 export async function workspace(
   page: Page,
@@ -51,7 +53,7 @@ export async function resetSession(page: Page, accept = true) {
     if (accept) await dialog.accept();
     else await dialog.dismiss();
   });
-  await page.getByRole("button", { name: "Reset workspace" }).click();
+  await page.getByRole("button", { name: "Reset workspace" }).press("Enter");
   if (accept && area && account) {
     await expect(page).toHaveURL(`/demo/${area}`);
     await expect(
@@ -63,7 +65,5 @@ export async function resetSession(page: Page, accept = true) {
 export async function decision(page: Page, action: string, reason: string) {
   await page.getByLabel("Action", { exact: true }).selectOption(action);
   await page.getByLabel("Applicant-facing reason").fill(reason);
-  await page
-    .getByRole("button", { name: "Apply decision" })
-    .press("Enter");
+  await page.getByRole("button", { name: "Apply decision" }).press("Enter");
 }

@@ -34,12 +34,17 @@ test("published member answer attribution opens its associated eligible profile"
     .press("Enter");
   await signIn(page, "admin");
   await section(page, "Admin", "Q&A");
-  await page
+  const answersQueue = page
     .getByRole("navigation", { name: "Q&A queues" })
-    .getByRole("link", { name: /^Answers/ })
-    .click();
+    .getByRole("link", { name: /^Answers/ });
+  const answersDestination = await answersQueue.getAttribute("href");
+  await answersQueue.press("Enter");
+  await expect(page).toHaveURL(answersDestination!);
+  await expect(answersQueue).toHaveAttribute("aria-current", "page");
   await page.getByLabel("Publication status").selectOption("pending");
-  await page.getByRole("button", { name: "Filter Q&A", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Filter Q&A", exact: true })
+    .press("Enter");
   await expect(
     page.getByText("1 matching answers", { exact: true }),
   ).toBeVisible();

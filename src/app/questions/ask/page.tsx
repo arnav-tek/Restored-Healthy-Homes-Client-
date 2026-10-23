@@ -14,7 +14,7 @@ export default async function AskPage({
   const params = await searchParams;
   return (
     <div className="container qa-page qa-reading">
-      <header className="page-heading">
+      <header className="page-heading" data-scroll-reveal>
         <h1>Ask a question</h1>
         <p>
           Try a service or home-project question. No account or contact details

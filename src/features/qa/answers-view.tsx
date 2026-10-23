@@ -41,11 +41,11 @@ export function AnswersView({
       </div>
 
       {answers.length ? (
-        <div className="qa-answers-list">
+        <div className="qa-answers-list" data-scroll-stagger>
           {answers.map((answer) => {
             const paragraphs = answer.body.split(/\n\s*\n/).filter(Boolean);
             return (
-              <article key={answer.id} className="qa-answer-card">
+              <article key={answer.id} className="qa-answer-card" data-scroll-reveal>
                 <div className="qa-answer-card-header">
                   <div className="qa-answer-author-wrap">
                     <div className="qa-answer-avatar" aria-hidden="true">

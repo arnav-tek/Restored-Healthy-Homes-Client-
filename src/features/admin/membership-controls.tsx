@@ -13,6 +13,8 @@ import { useDashboardNavigation } from "@/features/dashboard/use-dashboard-navig
 import { RecordStatus } from "@/features/dashboard/record-status";
 import { parseReviewReason } from "@/validation/admin";
 import { Button } from "@/components/ui/button";
+import { ApplicationPublication } from "@/features/profiles/application-publication";
+import { hasPublicFeaturedLink } from "@/domain/public-featured";
 
 export function MembershipControls({
   record,
@@ -35,7 +37,7 @@ export function MembershipControls({
       <h2>{featured ? "Featured placement" : "Membership scenario"}</h2>
       <p>
         {featured
-          ? "Preview an entitlement and its eligibility. Final pricing, duration and search priority await client approval."
+          ? "Update this tab's featured examples. Approval, active membership and no suspension are required. Final pricing, duration and ranking await client approval."
           : "Simulate payment states to demonstrate listing eligibility. No subscription is created and no money is collected."}
       </p>
       <form
@@ -149,6 +151,19 @@ export function MembershipControls({
           ? "Its featured entitlement is retained but cannot display while ineligible."
           : ""}
       </p>
+      {featured && (
+        <div className="workspace-note">
+          <p>
+            {hasPublicFeaturedLink(record.id)
+              ? "This record has a public profile link. Eligible entitlements appear on the homepage in this tab."
+              : "This workspace example has no public profile link, so its entitlement appears only in the placement preview. Use Fern & Field, Cedar Path, Hearthside or a submitted application to demonstrate the homepage."}
+          </p>
+          <Link className="text-link" href="/#featured-heading">
+            View homepage featured examples
+          </Link>
+        </div>
+      )}
+      {!featured && <ApplicationPublication memberId={record.id} />}
     </section>
   );
 }
@@ -216,7 +231,8 @@ export function AdminMemberships({ featured = false }: { featured?: boolean }) {
           <h2>Featured placement preview</h2>
           <p>
             Eligible featured examples, in stable session order. This does not
-            change public search ranking.
+            change public search ranking. Only records with public profile links
+            also appear on the homepage; its order follows the public catalog.
           </p>
           {placements.length ? (
             <ol>

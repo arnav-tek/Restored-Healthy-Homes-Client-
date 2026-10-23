@@ -1,23 +1,25 @@
 "use client";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Pause, Play } from "lucide-react";
-import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { useReducedMotion } from "@/components/ui/use-reduced-motion";
 import { showcaseMedia } from "@/data/content/showcase-media";
 
 export function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const wantsPlayback = useRef(true);
-  const [playing, setPlaying] = useState(false);
+  const [hasFrame, setHasFrame] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   const reducedMotion = useReducedMotion();
-  const ready = useDemoReady();
   const play = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
+    // Set the native properties before attaching the source, including on Safari.
+    video.muted = true;
+    video.defaultMuted = true;
+    video.autoplay = true;
     if (!video.getAttribute("src")) video.src = showcaseMedia.video;
-    void video.play().catch(() => setPlaying(false));
+    // A blocked or interrupted attempt leaves the poster visible. Media events
+    // own frame visibility, so an older rejection cannot hide a newer frame.
+    void video.play().catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -28,7 +30,9 @@ export function HeroVideo() {
         connection?: { saveData?: boolean };
       }
     ).connection;
-    let inView = true;
+    const hero = video.closest(".home-hero") ?? video;
+    const bounds = hero.getBoundingClientRect();
+    let inView = bounds.bottom > 0 && bounds.top < window.innerHeight;
     function syncPlayback() {
       if (!video) return;
       if (
@@ -36,11 +40,11 @@ export function HeroVideo() {
         connection?.saveData ||
         document.hidden ||
         !inView ||
-        !wantsPlayback.current ||
         unavailable
-      )
+      ) {
+        video.autoplay = false;
         video.pause();
-      else play();
+      } else play();
     }
     const observer =
       typeof IntersectionObserver === "undefined"
@@ -49,12 +53,15 @@ export function HeroVideo() {
             inView = entry.isIntersecting;
             syncPlayback();
           });
-    observer?.observe(video.closest(".home-hero") ?? video);
+    observer?.observe(hero);
     document.addEventListener("visibilitychange", syncPlayback);
+    window.addEventListener("pageshow", syncPlayback);
     syncPlayback();
     return () => {
       observer?.disconnect();
       document.removeEventListener("visibilitychange", syncPlayback);
+      window.removeEventListener("pageshow", syncPlayback);
+      video.autoplay = false;
       video.pause();
     };
   }, [play, reducedMotion, unavailable]);
@@ -69,52 +76,19 @@ export function HeroVideo() {
           loop
           playsInline
           preload="none"
-          poster={showcaseMedia.poster}
           tabIndex={-1}
-          className={playing && !unavailable ? "is-playing" : ""}
-          onPlay={() => setPlaying(true)}
-          onPause={() => setPlaying(false)}
+          className={hasFrame && !unavailable ? "has-frame" : ""}
+          onPlaying={() => setHasFrame(true)}
           onError={() => {
             setUnavailable(true);
-            setPlaying(false);
           }}
         />
       </div>
-      <div className="hero-video-controls">
-        <span>{showcaseMedia.label}</span>
-        <button
-          type="button"
-          className="hero-video-toggle"
-          disabled={!ready || unavailable}
-          aria-label={
-            playing ? "Pause background video" : "Play background video"
-          }
-          onClick={() => {
-            const video = videoRef.current;
-            if (!video) return;
-            if (video.paused) {
-              wantsPlayback.current = true;
-              play();
-            } else {
-              wantsPlayback.current = false;
-              video.pause();
-            }
-          }}
-        >
-          {playing ? (
-            <Pause size={14} aria-hidden="true" />
-          ) : (
-            <Play size={14} aria-hidden="true" />
-          )}
-          {playing ? "Pause video" : "Play video"}
-        </button>
-        {unavailable && (
-          <span role="status">Video unavailable. Still image shown.</span>
-        )}
-        {!ready && (
-          <span>Still image shown. JavaScript enables video controls.</span>
-        )}
-      </div>
+      {unavailable && (
+        <span className="sr-only" role="status">
+          Video unavailable. Still image shown.
+        </span>
+      )}
     </>
   );
 }

@@ -57,12 +57,12 @@ export function CategoryBrowse({ catalog }: { catalog: readonly Category[] }) {
         </div>
 
       </div>
-      <ul className="home-categories" aria-label="Browse specialties">
+      <ul className="home-categories" aria-label="Browse specialties" data-scroll-stagger>
         {catalog.map((category) => {
           const Icon = categoryIcons[category.id] ?? House;
           const isHighlighted = highlightedCategories.has(category.id);
           return (
-            <li key={category.id}>
+            <li key={category.id} data-scroll-reveal>
               <Link
                 href={`/directory?category=${encodeURIComponent(category.id)}`}
                 className={`category-card ${isHighlighted ? "category-card-accent" : ""}`}
@@ -92,10 +92,9 @@ export function HomeJourney() {
   return (
     <section
       className="container home-section home-journey"
-      data-scroll-reveal
       aria-labelledby="journey-heading"
     >
-      <div className="home-journey-intro">
+      <div className="home-journey-intro" data-scroll-reveal>
         <div className="home-journey-eyebrow section-tag">
           <span>How it works</span>
 
@@ -113,8 +112,8 @@ export function HomeJourney() {
         </ButtonLink>
       </div>
 
-      <ol className="home-steps" aria-label="How it works steps">
-        <li className="home-step-card">
+      <ol className="home-steps" aria-label="How it works steps" data-scroll-stagger>
+        <li className="home-step-card" data-scroll-reveal>
           <div className="step-num-badge" aria-hidden="true">
             <span>01</span>
           </div>
@@ -131,7 +130,7 @@ export function HomeJourney() {
           <div className="step-connector-node" aria-hidden="true" />
         </li>
 
-        <li className="home-step-card">
+        <li className="home-step-card" data-scroll-reveal>
           <div className="step-num-badge" aria-hidden="true">
             <span>02</span>
           </div>
@@ -148,7 +147,7 @@ export function HomeJourney() {
           <div className="step-connector-node" aria-hidden="true" />
         </li>
 
-        <li className="home-step-card">
+        <li className="home-step-card" data-scroll-reveal>
           <div className="step-num-badge" aria-hidden="true">
             <span>03</span>
           </div>
@@ -172,7 +171,7 @@ export function HomeFeatures() {
   return (
     <section className="home-features-band" aria-labelledby="features-heading">
       <div className="container home-section">
-        <div className="home-features-header">
+        <div className="home-features-header" data-scroll-reveal>
           <div className="section-kicker">
 
             <p className="section-label section-tag">Ways to get started</p>
@@ -190,8 +189,8 @@ export function HomeFeatures() {
             as you plan your next step.
           </p>
         </div>
-        <div className="home-features-grid home-features">
-          <article className="home-feature-card home-specialist-card home-question-spotlight">
+        <div className="home-features-grid home-features" data-scroll-stagger>
+          <article className="home-feature-card home-specialist-card home-question-spotlight" data-scroll-reveal>
             <div className="feature-card-content">
               <div>
                 <div className="feature-card-header">
@@ -275,7 +274,7 @@ export function HomeFeatures() {
             </div>
           </article>
 
-          <article className="home-feature-card home-consultation-card home-consultation-spotlight">
+          <article className="home-feature-card home-consultation-card home-consultation-spotlight" data-scroll-reveal>
             <div className="feature-card-content">
               <div>
                 <div className="feature-card-header">
@@ -331,8 +330,8 @@ export function HomeAbout() {
       className="container home-about-section home-about"
       aria-labelledby="home-about-heading"
     >
-      <div className="home-about-grid" data-scroll-reveal>
-        <div className="home-about-intro">
+      <div className="home-about-grid">
+        <div className="home-about-intro" data-scroll-reveal>
           <div className="home-eyebrow">
 
             <span className="eyebrow-text section-tag">About Us</span>
@@ -353,46 +352,52 @@ export function HomeAbout() {
           </Link>
         </div>
 
-        <div className="home-about-features">
-          <div className="home-about-feature-col">
-            <div className="home-feature-icon-wrap" aria-hidden="true">
-              <Search size={20} />
-            </div>
-            <h3 className="home-feature-title">Explore</h3>
-            <p className="home-feature-desc">
-              Discover a range of healthy-home specialties.
-            </p>
-          </div>
-
-          <div className="home-about-feature-col">
-            <div className="home-feature-icon-wrap" aria-hidden="true">
-              <FileText size={20} />
-            </div>
-            <h3 className="home-feature-title">Learn</h3>
-            <p className="home-feature-desc">
-              Find helpful information and real homeowner questions.
-            </p>
-          </div>
-
-          <div className="home-about-feature-col">
-            <div className="home-feature-icon-wrap" aria-hidden="true">
-              <Users size={20} />
-            </div>
-            <h3 className="home-feature-title">Compare</h3>
-            <p className="home-feature-desc">
-              Understand your options and prepare for a conversation.
-            </p>
-          </div>
-
-          <div className="home-about-feature-col">
-            <div className="home-feature-icon-wrap" aria-hidden="true">
-              <House size={20} />
-            </div>
-            <h3 className="home-feature-title">Healthier homes</h3>
-            <p className="home-feature-desc">
-              Take informed steps toward healthier indoor environments.
-            </p>
-          </div>
+        <div className="home-about-features" data-scroll-stagger>
+          {[
+            {
+              title: "Explore",
+              description: "Discover a range of healthy-home specialties.",
+              icon: Search,
+              href: "/directory",
+            },
+            {
+              title: "Learn",
+              description: "Find helpful information and real homeowner questions.",
+              icon: FileText,
+              href: "/resources",
+            },
+            {
+              title: "Compare",
+              description: "Understand your options and prepare for a conversation.",
+              icon: Users,
+              href: "/directory",
+            },
+            {
+              title: "Healthier homes",
+              description: "Take informed steps toward healthier indoor environments.",
+              icon: House,
+              href: "/about",
+            },
+          ].map(({ title, description, icon: Icon, href }, index) => (
+            <Link
+              key={title}
+              href={href}
+              className="home-about-feature-col"
+              aria-labelledby={`home-about-card-${index}-title`}
+              aria-describedby={`home-about-card-${index}-description`}
+              data-scroll-reveal
+            >
+              <span className="home-feature-icon-wrap" aria-hidden="true">
+                <Icon size={20} strokeWidth={1.8} />
+              </span>
+              <h3 id={`home-about-card-${index}-title`} className="home-feature-title">
+                {title}
+              </h3>
+              <p id={`home-about-card-${index}-description`} className="home-feature-desc">
+                {description}
+              </p>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
@@ -403,6 +408,7 @@ export function HomeBusiness() {
   return (
     <section
       className="home-business home-business-section"
+      data-scroll-reveal
       aria-labelledby="business-heading"
     >
       <div className="container">

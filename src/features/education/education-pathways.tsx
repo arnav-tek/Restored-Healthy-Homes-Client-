@@ -88,7 +88,7 @@ export function EducationPathways({
         className="pathway-index specialty-nav-panel"
         aria-label="Education categories"
       >
-        <div className="specialty-nav-grid">
+        <div className="specialty-nav-grid" data-scroll-stagger>
           {pathways.map(({ category }) => {
             const CategoryIcon = getCategoryIcon(category.id);
             return (
@@ -96,6 +96,7 @@ export function EducationPathways({
                 key={category.id}
                 href={`#pathway-${category.id}`}
                 className="specialty-nav-card"
+                data-scroll-reveal
               >
                 <div className="specialty-nav-icon-wrap" aria-hidden="true">
                   <CategoryIcon size={18} />
@@ -113,7 +114,7 @@ export function EducationPathways({
       </nav>
       {/* Explore your specialty section */}
       <section aria-labelledby="pathways-heading" className="pathways-section">
-        <div className="public-section-heading">
+        <div className="public-section-heading" data-scroll-reveal>
           <h2 id="pathways-heading">Explore your specialty</h2>
           <p>
             Open a pathway for options and next steps. These references are
@@ -123,7 +124,7 @@ export function EducationPathways({
         </div>
 
         {/* Accordion list */}
-        <div className="pathway-list">
+        <div className="pathway-list" data-scroll-stagger>
           {pathways.map(({ category, pathway }) => {
             const CategoryIcon = getCategoryIcon(category.id);
             return (
@@ -131,6 +132,7 @@ export function EducationPathways({
                 key={category.id}
                 id={`pathway-${category.id}`}
                 className="education-pathway"
+                data-scroll-reveal
               >
                 <summary className="pathway-summary">
                   <div className="summary-left">

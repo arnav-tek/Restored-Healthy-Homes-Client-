@@ -30,6 +30,7 @@ import { AdminMemberships } from "./membership-controls";
 import { AdminAnalytics } from "./admin-analytics";
 import { AdminContent } from "./admin-content";
 import { CertificationEditor } from "./certification-editor";
+import { ApplicationPublication } from "@/features/profiles/application-publication";
 
 const tabTitles: Record<string, string> = {
   certifications: "Certification pathways",
@@ -515,6 +516,7 @@ export function AdminWorkspace({
           ) : (
             <div key={`${record.id}-${resetVersion}`}>
               <RecordStatus record={record} />
+              <ApplicationPublication memberId={record.id} />
               {(record.decisionReason || record.suspensionReason) && (
                 <div className="workspace-note">
                   {record.decisionReason && (

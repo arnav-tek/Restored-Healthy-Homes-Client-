@@ -20,9 +20,19 @@ const steps = [
     "/admin/login",
   ],
   [
-    "Activate a membership scenario",
-    "After approving the application, open Membership in the admin menu. Select the business and simulate active membership. Its listing becomes eligible in the admin directory overview unless suspended. No payment is taken. Use Listings to edit its profile and Featured to preview an upgrade.",
-    "/demo/admin?section=membership",
+    "Try simulated billing",
+    "After approval, sign in as Your submitted application and open Membership. Choose one example category, review checkout and simulate success. Try a failed renewal, recovery and cancellation. No card details or charges; multi-category billing remains undecided. Admin membership scenario controls remain available separately.",
+    "/demo/member?section=membership",
+  ],
+  [
+    "Update homepage featured examples",
+    "As Administrator, open Featured, select the submitted business and enable its entitlement with a note and confirmation. View homepage featured examples in this tab. Only approved, active, unsuspended records with public profile links appear. Fern & Field, Cedar Path and Hearthside are also linked examples. Final paid ranking is pending.",
+    "/demo/admin?section=featured",
+  ],
+  [
+    "Find the submitted business",
+    "Use the public directory filters to find the approved, active application, then open View profile. Its services, practices, public contacts and credential review states appear on a full profile. Refresh/reset clears session listings; private application contacts stay excluded.",
+    "/directory",
   ],
   [
     "Create a category",

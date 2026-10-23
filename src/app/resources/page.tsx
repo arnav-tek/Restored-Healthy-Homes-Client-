@@ -22,7 +22,7 @@ export default async function ResourcesPage({
   );
   return (
     <div className="container public-content-page resources-page">
-      <header className="public-page-intro">
+      <header className="public-page-intro" data-scroll-reveal>
         <div>
           <p className="public-eyebrow section-tag">Ideas for your next step</p>
           <h1>Resources</h1>

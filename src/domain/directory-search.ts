@@ -63,6 +63,9 @@ export function searchPublicDirectory(
   origin?: DemoLocation,
   reviews: readonly PublicReview[] = [],
 ): SearchResults {
+  const sameCity = (left: string, right: string) =>
+    left.trim().replace(/\s+/g, " ").toLocaleLowerCase("en-US") ===
+    right.trim().replace(/\s+/g, " ").toLocaleLowerCase("en-US");
   const terms = query.q.toLocaleLowerCase("en-US").split(/\s+/).filter(Boolean);
   let hits = professionals
     .filter((professional) => {
@@ -89,7 +92,8 @@ export function searchPublicDirectory(
     .map((professional): SearchHit => {
       const place = locations.find(
         (item) =>
-          item.city === professional.city && item.state === professional.state,
+          sameCity(item.city, professional.city) &&
+          item.state === professional.state,
       );
       const distanceMiles =
         origin && place
@@ -115,7 +119,7 @@ export function searchPublicDirectory(
   if (origin) {
     hits = hits.filter(({ professional, distanceMiles }) =>
       query.radius === undefined
-        ? professional.city === origin.city &&
+        ? sameCity(professional.city, origin.city) &&
           professional.state === origin.state
         : distanceMiles !== undefined && distanceMiles <= query.radius,
     );

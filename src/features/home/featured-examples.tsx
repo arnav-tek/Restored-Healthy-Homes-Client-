@@ -1,25 +1,37 @@
+"use client";
 import Link from "next/link";
 import { ArrowRight, ChevronDown, MapPin, Star } from "lucide-react";
 import type { PublicProfessional } from "@/domain/professional";
 import type { Category } from "@/domain/categories";
 import { profileHref } from "@/validation/profile";
+import { publicFeaturedExamples } from "@/domain/public-featured";
+import { publicDirectoryCatalog } from "@/domain/public-application";
+import { useDemoSession } from "@/features/member/demo-session";
 
 export function FeaturedExamples({
-  professionals,
-  catalog,
+  professionals: publicListings,
+  catalog: initialCatalog,
+  initialFeaturedIds,
 }: {
   professionals: readonly PublicProfessional[];
   catalog: readonly Category[];
+  initialFeaturedIds: readonly string[];
 }) {
+  const { state } = useDemoSession();
+  const professionals = publicFeaturedExamples(
+    publicListings,
+    initialFeaturedIds,
+    state,
+  );
+  const catalog = publicDirectoryCatalog(initialCatalog, state);
   return (
     <section
       className="container featured-examples-section"
       aria-labelledby="featured-heading"
     >
-      <div className="featured-header">
+      <div className="featured-header" data-scroll-reveal>
         <div className="featured-header-left">
           <div className="home-eyebrow">
-
             <h2 id="featured-heading" className="eyebrow-text section-tag">
               Featured listing examples
             </h2>
@@ -29,13 +41,13 @@ export function FeaturedExamples({
             <br />
             Real expertise.
           </p>
-
         </div>
         <div className="featured-header-right">
           <p className="featured-disclaimer">
             These are fictional examples showing how featured listings appear.
             Featured status is separate from credential review and requires an
-            eligible public listing. Upgrade terms and billing are pending.
+            eligible public listing. Admin changes appear in this tab; final
+            ranking and upgrade terms await approval.
           </p>
           <Link href="/directory" className="featured-directory-btn">
             Explore the directory <ArrowRight size={14} aria-hidden="true" />
@@ -44,7 +56,7 @@ export function FeaturedExamples({
       </div>
 
       {professionals.length > 0 ? (
-        <div className="featured-grid">
+        <div className="featured-grid" data-scroll-stagger>
           {professionals.map((professional) => {
             const initials = professional.businessName
               .split(" ")
@@ -55,7 +67,9 @@ export function FeaturedExamples({
 
             const categoryName =
               professional.categoryIds
-                .map((id) => catalog.find((category) => category.id === id)?.name)
+                .map(
+                  (id) => catalog.find((category) => category.id === id)?.name,
+                )
                 .filter(Boolean)
                 .join(" · ") || "Specialist";
 
@@ -63,12 +77,17 @@ export function FeaturedExamples({
               <article
                 key={professional.id}
                 className="featured-card"
+                data-scroll-reveal
                 data-testid="professional-card"
               >
                 <div className="featured-card-strip">
                   <span className="featured-category-pill">{categoryName}</span>
                   <span className="featured-badge">
-                    <Star size={11} className="fill-current" aria-hidden="true" />
+                    <Star
+                      size={11}
+                      className="fill-current"
+                      aria-hidden="true"
+                    />
                     <span>Featured</span>
                   </span>
                 </div>
@@ -105,13 +124,14 @@ export function FeaturedExamples({
                         className="featured-chevron"
                       />
                       <span className="sr-only">
-                        {" "}at {professional.businessName}
+                        {" "}
+                        at {professional.businessName}
                       </span>
                     </summary>
                     <div className="featured-services-dropdown">
                       <ul>
-                        {professional.services.map((service) => (
-                          <li key={service}>{service}</li>
+                        {professional.services.map((service, index) => (
+                          <li key={`${index}-${service}`}>{service}</li>
                         ))}
                       </ul>
                       <p className="featured-services-note">

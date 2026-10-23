@@ -61,7 +61,7 @@ export function PublicQuestions({
   return (
     <div className="container qa-page">
       {/* 1. Hero Section: 2-column layout */}
-      <header className="qa-hero">
+      <header className="qa-hero" data-scroll-reveal>
         <div className="qa-hero-left">
           <div className="qa-eyebrow section-tag">
             <span role="heading" aria-level={2}>
@@ -255,14 +255,14 @@ export function PublicQuestions({
             </div>
 
             {results.items.length ? (
-              <ol className="qa-cards-list qa-list">
+              <ol className="qa-cards-list qa-list" data-scroll-stagger>
                 {results.items.map((question) => {
                   const categoryName = categories.find(
                     (category) => category.id === question.categoryId,
                   )?.name;
 
                   return (
-                    <li key={question.id} className="qa-card-item">
+                    <li key={question.id} className="qa-card-item" data-scroll-reveal>
                       <article className="qa-question-card">
                         <Link
                           href={questionHref(question.id, returnTo, categories)}

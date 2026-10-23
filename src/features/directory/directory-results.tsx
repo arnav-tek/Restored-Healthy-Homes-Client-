@@ -86,7 +86,7 @@ export function DirectoryResults({
       {results.hits.length === 0 ? (
         <EmptyDirectory />
       ) : (
-        <div className="professional-grid">
+        <div className="professional-grid" data-scroll-stagger>
           {results.hits.map(
             ({ professional, distanceMiles, reviewSummary }) => (
               <ProfessionalCard

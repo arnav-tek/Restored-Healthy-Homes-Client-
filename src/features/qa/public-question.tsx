@@ -88,7 +88,7 @@ export function PublicQuestionPage({
             <h1 className="qa-detail-title">{question.title}</h1>
 
             {/* The Question Card */}
-            <article aria-label="Question" className="qa-detail-question-card">
+            <article aria-label="Question" className="qa-detail-question-card" data-scroll-reveal>
               <div className="qa-detail-question-header">
                 <div className="qa-detail-question-icon" aria-hidden="true">
                   <MessageSquare size={18} />

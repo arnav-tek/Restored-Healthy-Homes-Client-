@@ -6,6 +6,9 @@ test("homepage keyboard search to results, reload, radius and nearest-first", as
 }, testInfo) => {
   await page.goto("/");
   await expect(
+    page.getByRole("form", { name: "Find Specialists", exact: true }),
+  ).toHaveAttribute("data-ready", "true");
+  await expect(
     page.getByLabel("Professional category").locator("option"),
   ).toHaveCount(9);
   await page.getByLabel("City or ZIP code").fill("27601");
@@ -58,8 +61,13 @@ test("pagination preserves query, filter submit resets page, out-of-range page c
   page,
 }) => {
   await page.goto("/directory?sort=za");
+  await expect(
+    page.getByRole("form", { name: "Directory filters", exact: true }),
+  ).toHaveAttribute("data-ready", "true");
   await expect(page.getByTestId("professional-card")).toHaveCount(6);
-  await page.getByRole("link", { name: "Next page", exact: true }).click();
+  await page
+    .getByRole("link", { name: "Next page", exact: true })
+    .press("Enter");
   await expect(page).toHaveURL(/sort=za&page=2$/);
   await expect(page.getByTestId("professional-card")).toHaveCount(2);
   await page.reload();

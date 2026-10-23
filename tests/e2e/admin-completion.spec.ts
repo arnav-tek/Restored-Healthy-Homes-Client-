@@ -135,7 +135,11 @@ test("certification editor saves drafts and publishes only reviewed pathway fiel
     .fill("Sample external fees, pending provider confirmation.");
   await page.getByRole("button", { name: "Save certification draft" }).click();
   await mainNav(page, "Certifications");
-  await page.locator("#pathway-mold-inspection summary").click();
+  await page.locator("#pathway-mold-inspection summary").press("Enter");
+  await expect(page.locator("#pathway-mold-inspection")).toHaveAttribute(
+    "open",
+    "",
+  );
   await expect(page.locator("#pathway-mold-inspection")).not.toContainText(
     "Sample Learning Program",
   );
@@ -147,17 +151,19 @@ test("certification editor saves drafts and publishes only reviewed pathway fiel
   page.once("dialog", (dialog) => dialog.accept());
   await page
     .getByRole("button", { name: "Publish pathway", exact: true })
-    .click();
+    .press("Enter");
   await expect(page.getByTestId("certification-preview")).toContainText(
     "Sample Learning Program",
   );
   await inspect(page, `certification-editor-${info.project.name}`);
   await page
     .getByRole("link", { name: "View Certifications", exact: true })
-    .click();
+    .press("Enter");
+  await expect(page).toHaveURL("/education#pathway-mold-inspection");
   const pathway = page.locator("#pathway-mold-inspection");
   if ((await pathway.getAttribute("open")) === null)
-    await pathway.locator("summary").click();
+    await pathway.locator("summary").press("Enter");
+  await expect(pathway).toHaveAttribute("open", "");
   await expect(pathway).toContainText("Sample Learning Program");
   await expect(pathway).toContainText("Confirm enrollment requirements");
   await expect(
@@ -252,7 +258,8 @@ test("resource drafts stay private while published resources browse safely in th
   await page.getByRole("button", { name: "Save resource draft" }).click();
   await page
     .getByRole("link", { name: "View published resources →", exact: true })
-    .click();
+    .press("Enter");
+  await expect(page).toHaveURL("/resources");
   await expect(page.getByRole("main")).not.toContainText(
     "A showcase project planning resource",
   );
@@ -268,7 +275,8 @@ test("resource drafts stay private while published resources browse safely in th
   await card.getByRole("button", { name: "Publish to showcase" }).click();
   await page
     .getByRole("link", { name: "View published resources →", exact: true })
-    .click();
+    .press("Enter");
+  await expect(page).toHaveURL("/resources");
   await page
     .getByRole("heading", {
       name: "A showcase project planning resource",

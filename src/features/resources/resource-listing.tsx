@@ -50,9 +50,9 @@ export function ResourceListing({
         {published.length > 0 && ` · ${published.length} published in this tab`}
       </p>
       {articles.length ? (
-        <div className="resource-grid">
+        <div className="resource-grid" data-scroll-stagger>
           {articles.map((article) => (
-            <article key={article.slug} className="resource-card">
+            <article key={article.slug} className="resource-card" data-scroll-reveal>
               <p className="section-label section-tag">
                 {isSessionArticleId(article.slug)
                   ? "Published in this tab"

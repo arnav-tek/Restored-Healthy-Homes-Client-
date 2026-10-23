@@ -126,7 +126,7 @@ const examples: readonly DemoMemberRecord[] = [
     approval: "approved",
     subscription: "active",
     suspended: false,
-    featuredEntitlement: "none",
+    featuredEntitlement: "active",
     credentials: [],
     decisionReason: "",
     suspensionReason: "",

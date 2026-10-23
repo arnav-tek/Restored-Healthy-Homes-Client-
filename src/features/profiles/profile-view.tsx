@@ -5,17 +5,23 @@ import type { Category } from "@/domain/categories";
 import { InquiryForm } from "./inquiry-form";
 import { ReviewsSection } from "@/features/reviews/reviews-section";
 import { PublicIdentity } from "./public-identity";
+import type { PublicApplicationProfile } from "@/domain/public-application";
 
 export function ProfileView({
   profile,
   catalog,
   returnTo,
   reviewPage,
+  sessionDetails,
 }: {
   profile: PublicProfile;
   catalog: readonly Category[];
   returnTo: string;
   reviewPage: unknown;
+  sessionDetails?: Pick<
+    PublicApplicationProfile,
+    "publicDisplayName" | "practices"
+  >;
 }) {
   const categoryNames = profile.categoryIds.flatMap((id) => {
     const category = catalog.find((item) => item.id === id);
@@ -26,6 +32,12 @@ export function ProfileView({
   );
   return (
     <div className="container profile-page">
+      {sessionDetails && (
+        <p className="workspace-note">
+          Published in this tab. Refresh or reset clears this session-created
+          listing.
+        </p>
+      )}
       <Link className="text-link profile-return" href={returnTo}>
         {returnTo === "/directory" ? "Back to directory" : "Back to results"}
       </Link>
@@ -33,7 +45,15 @@ export function ProfileView({
         <div className="profile-heading-copy">
           <p className="section-label section-tag">Specialist profile</p>
           <h1>{profile.businessName || "Professional"}</h1>
-          <PublicIdentity professionalId={profile.id} />
+          {sessionDetails ? (
+            sessionDetails.publicDisplayName && (
+              <p className="profile-public-identity">
+                Professional / owner: {sessionDetails.publicDisplayName}
+              </p>
+            )
+          ) : (
+            <PublicIdentity professionalId={profile.id} />
+          )}
           <p className="category-label">
             {categoryNames.join(" · ") || "Category not provided"}
           </p>
@@ -49,7 +69,7 @@ export function ProfileView({
       </header>
       <div className="profile-layout">
         <div className="profile-details">
-          <section aria-labelledby="about-heading">
+          <section aria-labelledby="about-heading" data-scroll-reveal>
             <h2 id="about-heading">About this business</h2>
             {profile.specialty ? (
               <p className="specialty">{profile.specialty}</p>
@@ -59,7 +79,13 @@ export function ProfileView({
                 "A business description has not been provided for this profile."}
             </p>
           </section>
-          <section aria-labelledby="service-area-heading">
+          {sessionDetails && (
+            <section aria-labelledby="practices-heading" data-scroll-reveal>
+              <h2 id="practices-heading">Healthy-home practices</h2>
+              <p>{sessionDetails.practices}</p>
+            </section>
+          )}
+          <section aria-labelledby="service-area-heading" data-scroll-reveal>
             <h2 id="service-area-heading">Location &amp; service area</h2>
             <LocationPreview city={profile.city} state={profile.state} />
             <p>
@@ -67,19 +93,19 @@ export function ProfileView({
                 "Service area not provided. A listed city does not establish service coverage."}
             </p>
           </section>
-          <section aria-labelledby="services-heading">
+          <section aria-labelledby="services-heading" data-scroll-reveal>
             <h2 id="services-heading">Services</h2>
             {profile.services.length ? (
               <ul>
-                {profile.services.map((service) => (
-                  <li key={service}>{service}</li>
+                {profile.services.map((service, index) => (
+                  <li key={`${index}-${service}`}>{service}</li>
                 ))}
               </ul>
             ) : (
               <p>Service details have not been provided for this profile.</p>
             )}
           </section>
-          <section aria-labelledby="credentials-heading">
+          <section aria-labelledby="credentials-heading" data-scroll-reveal>
             <h2 id="credentials-heading">Credentials</h2>
             <p>
               Restored Healthy Homes does not issue certifications. Confirm
@@ -89,8 +115,8 @@ export function ProfileView({
               <div className="profile-credentials">
                 <h3>Credentials on file</h3>
                 <ul>
-                  {profile.verifiedCredentials.map((name) => (
-                    <li key={name}>
+                  {profile.verifiedCredentials.map((name, index) => (
+                    <li key={`${index}-${name}`}>
                       <span className="credential-badge">
                         Reviewed credential
                       </span>{" "}
@@ -106,8 +132,8 @@ export function ProfileView({
               <div className="profile-credentials">
                 <h3>Listed credentials (unverified)</h3>
                 <ul>
-                  {profile.listedCredentials.map((name) => (
-                    <li key={name}>{name} — not verified</li>
+                  {profile.listedCredentials.map((name, index) => (
+                    <li key={`${index}-${name}`}>{name} — not verified</li>
                   ))}
                 </ul>
               </div>
@@ -115,7 +141,7 @@ export function ProfileView({
               <p>No additional listed credentials provided.</p>
             )}
           </section>
-          <section aria-labelledby="contact-heading">
+          <section aria-labelledby="contact-heading" data-scroll-reveal>
             <h2 id="contact-heading">Public contact information</h2>
             {contact.length ? (
               <>
@@ -162,11 +188,21 @@ export function ProfileView({
           <InquiryForm />
         </aside>
       </div>
-      <ReviewsSection
-        professionalId={profile.id}
-        requestedPage={reviewPage}
-        returnTo={returnTo}
-      />
+      {sessionDetails ? (
+        <section className="profile-reviews" aria-labelledby="reviews-heading">
+          <h2 id="reviews-heading">Reviews</h2>
+          <p>
+            No published reviews yet. Review submission for session-created
+            listings is not connected in this walkthrough.
+          </p>
+        </section>
+      ) : (
+        <ReviewsSection
+          professionalId={profile.id}
+          requestedPage={reviewPage}
+          returnTo={returnTo}
+        />
+      )}
     </div>
   );
 }

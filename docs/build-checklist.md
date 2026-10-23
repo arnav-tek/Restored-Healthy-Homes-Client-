@@ -1,5 +1,44 @@
 # Build milestones and acceptance
 
+## Homepage spacing — 2026-10-24
+
+- [x] Normalize section padding and heading-to-card gaps with responsive homepage spacing variables; add outer breathing room below the hero, around the feature band and before the footer.
+- [x] Typecheck/lint, 120 unit tests, demo build, production guard and all 18 selected desktop/tablet/mobile homepage browser cases pass. Responsive screenshots including 320px were reviewed; details and limits are in the [homepage handoff](homepage-motion-handoff.md#responsive-homepage-spacing--24-october-2026).
+
+## Public-page scroll motion — 2026-10-24
+
+- [x] Expand homepage entrances into section/card motion and short staggered groups, with a shared controller across public pages.
+- [x] Preserve server rendering, full text contrast, stable forms/workspaces, reduced-motion behavior and no-script/no-observer fallbacks; handle route changes and inserted cards.
+- [x] Typecheck/lint, 120 unit tests, demo build and production guard pass; all 63 affected Chromium cases verified across the main run and fixture correction, plus 30 fresh Firefox/WebKit/Edge cases pass. Homepage/About desktop/tablet/mobile screenshots reviewed; exact sequence and limitations are in the [scroll-motion handoff](scroll-motion-handoff.md).
+
+## Hero playback and cleanup — 2026-10-23
+
+- [x] Remove the footage label and all playback controls, including the remaining circular icon at the user's follow-up request.
+- [x] Keep the poster until decoded playback, retain frames during offscreen pauses and set native muted/autoplay properties before loading. Reduced-motion/data-saving preferences retain a static hero.
+- [x] Re-encode the existing licensed placeholder as a 962,805-byte H.264 Baseline fast-start MP4 (68% smaller); approved final client footage remains pending.
+- [x] Final icon-removal follow-up: typecheck, lint, 120 unit tests, demo build and all 18 affected Chromium desktop/tablet/mobile cases pass; screenshots reviewed. Earlier production-guard and engine checks, the isolated-preview sequence and final limits are recorded in the [motion handoff](homepage-motion-handoff.md).
+
+## Featured homepage and billing demonstrations — 2026-10-23
+
+- [x] Phase 1: linked admin entitlement changes reach homepage public cards in this tab, with eligibility gating, public allowlists and stable catalog order; final ranking remains pending.
+- [x] Phase 2: member checkout/renewal, failed-payment/recovery and reviewed immediate cancellation scenarios, one-category reference prices, no card collection/charges and guarded reducer transitions.
+- [x] Typecheck/lint, 120 unit tests, demo build and default production guard pass. All 293 applicable full-regression browser cases verified across the full run and two transport-error reruns (13 intentional skips). The rebuilt latest shared homepage/admin/billing checks verify all 37 applicable cases across a 34-pass run and 3 isolated trace-collision reruns (2 intentional skips). Desktop/tablet/mobile/320px screens reviewed; exact sequence and evidence in the [handoff](featured-billing-demo-handoff.md).
+- [ ] Final billing/ranking policy approval and real services remain deferred.
+
+## Public listing journey — 2026-10-22
+
+- [x] Stage 1: eligible-application selector and separate explicit public profile/card allowlists; private contacts/notes excluded and credential states preserved.
+- [x] Stage 2: application joins public search/filter/sort/pagination and a full themed profile, with admin/member status links, actual tab-category validation and neutral session-route fallback.
+- [x] Stage 3: typecheck/lint, 111 unit tests, demo build and production guard pass. Full regression: 280 pass/11 intentional skips; after final repeated-entry rendering cleanup, all 24 affected cases pass. Lifecycle/privacy/no-script and desktop/tablet/mobile/320px renders reviewed; exact sequence/evidence in the [journey handoff](public-listing-journey-handoff.md).
+- [ ] Real authentication, durable/public server records and integrations remain deferred. Featured ranking, secure photo uploads and reviews for newly created listings are outside this phase.
+
+## Quality follow-up — 2026-10-22
+
+- [x] Correct duplicate hero poster transfer, sample-photo removal/reselection/focus, Firefox month typing and WebKit skip-link focus.
+- [x] Add focused Firefox/WebKit/installed Edge compatibility checks and a repeatable cold-cache mobile performance script.
+- [x] Prepare owner prototype guide and client acceptance checklist; retain final content/policies, integrations and launch acceptance as pending.
+- [x] Final evidence: typecheck/lint, 106 unit tests, demo build, fail-closed default build, 268 applicable Chromium cases and 66 applicable engine-matrix cases verified across completed runs/corrections; responsive screenshots reviewed. Isolated performance confirms an 88,265-byte duplicate poster request removed. Full run details, intentional skips, timing variability and remaining device/production limits are in the [quality handoff](quality-audit-handoff.md).
+
 ## Admin frontend completion follow-up — 2026-10-21
 
 - [x] Category creation with validated explicit preview price, generated stable ID, independent billing mapping, rename preservation and session workflow propagation.

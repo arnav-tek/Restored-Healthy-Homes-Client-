@@ -23,7 +23,7 @@ export default function ConsultationsPage() {
     <div className="container consultation-page">
       {/* Hero: 2-column desktop layout */}
       <header id="consultation-intro" className="consultation-intro">
-        <div className="consultation-hero-left">
+        <div className="consultation-hero-left" data-scroll-reveal>
           <p className="section-eyebrow section-tag">
             CONSULTATIONS
           </p>
@@ -40,6 +40,7 @@ export default function ConsultationsPage() {
         </div>
         <aside
           className="consultation-offer-card"
+          data-scroll-reveal
           aria-label="Proposed consultation offer"
         >
           <div className="offer-card-top">
@@ -73,7 +74,7 @@ export default function ConsultationsPage() {
         className="consultation-process"
         aria-labelledby="consultation-process-heading"
       >
-        <div className="process-header">
+        <div className="process-header" data-scroll-reveal>
           <h2 id="consultation-process-heading" className="section-eyebrow section-tag">
             HOW CONSULTATIONS WORK
           </h2>
@@ -83,8 +84,8 @@ export default function ConsultationsPage() {
             yet.
           </p>
         </div>
-        <ol className="process-steps">
-          <li className="process-step">
+        <ol className="process-steps" data-scroll-stagger>
+          <li className="process-step" data-scroll-reveal>
             <div className="step-circle-wrapper">
               <div className="step-circle">
                 <FileText size={24} className="step-icon" aria-hidden="true" />
@@ -97,7 +98,7 @@ export default function ConsultationsPage() {
               <p>Select a relevant category and a consultation format preference.</p>
             </div>
           </li>
-          <li className="process-step">
+          <li className="process-step" data-scroll-reveal>
             <div className="step-circle-wrapper">
               <div className="step-circle">
                 <Users size={24} className="step-icon" aria-hidden="true" />
@@ -113,7 +114,7 @@ export default function ConsultationsPage() {
               </p>
             </div>
           </li>
-          <li className="process-step">
+          <li className="process-step" data-scroll-reveal>
             <div className="step-circle-wrapper">
               <div className="step-circle">
                 <Calendar size={24} className="step-icon" aria-hidden="true" />

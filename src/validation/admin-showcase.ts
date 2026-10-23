@@ -1,6 +1,13 @@
 import { resourceCategories } from "../domain/resource";
 import type { AdminArticle } from "../domain/admin-showcase";
 
+export function parseAnalyticsMonth(value: unknown): string | null {
+  return typeof value === "string" &&
+    /^(?!0000)\d{4}-(0[1-9]|1[0-2])$/.test(value)
+    ? value
+    : null;
+}
+
 export function parseAdminArticle(
   raw: Record<string, unknown>,
 ): Omit<AdminArticle, "id" | "status"> | null {

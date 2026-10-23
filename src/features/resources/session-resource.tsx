@@ -24,7 +24,7 @@ export function SessionResource({ id }: { id: string }) {
           </noscript>
         </>
       ) : article ? (
-        <article>
+        <article data-scroll-reveal>
           <header>
             <p className="section-tag">Published in this tab</p>
             <h1>{article.title}</h1>

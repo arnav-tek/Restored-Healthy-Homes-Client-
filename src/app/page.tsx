@@ -14,7 +14,6 @@ import { HomeStatistics } from "@/features/home/home-statistics";
 import { ReviewProcess } from "@/features/home/review-process";
 import { FeaturedExamples } from "@/features/home/featured-examples";
 import { HeroVideo } from "@/features/home/hero-video";
-import { ScrollEffects } from "@/features/home/scroll-effects";
 
 export const metadata: Metadata = {
   title: "Find healthy-home specialists",
@@ -25,15 +24,13 @@ export default async function Home() {
   const [catalog, locations, listings, featured] = await Promise.all([
     directoryRepository.getCategories(),
     locationAdapter.listSupported(),
-    directoryRepository
-      .listPublic()
-      .then((records) => records.map(({ id, state }) => ({ id, state })))
-      .catch(() => null),
+    directoryRepository.listPublic().catch(() => null),
     directoryRepository.listFeaturedPublic().catch(() => []),
   ]);
   return (
     <>
       <section className="home-hero">
+        <HeroVideo />
         <div className="container home-hero-inner">
           <div className="hero-copy">
             <p className="hero-kicker section-tag section-tag-inverse">
@@ -47,24 +44,29 @@ export default async function Home() {
             </p>
           </div>
           <HomeSearch catalog={catalog} locations={locations} />
-          <HomeStatistics listings={listings} />
+          <HomeStatistics
+            listings={listings?.map(({ id, state }) => ({ id, state })) ?? null}
+          />
           <div className="hero-followup">
-            <HeroVideo />
             <Link href="/directory">
               Browse specialists <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
         </div>
       </section>
-      <ScrollEffects>
+      <div className="homepage-sections">
         <HomeJourney />
         <CategoryBrowse catalog={catalog} />
         <HomeAbout />
         <HomeFeatures />
-        <FeaturedExamples professionals={featured} catalog={catalog} />
+        <FeaturedExamples
+          professionals={listings ?? []}
+          initialFeaturedIds={featured.map(({ id }) => id)}
+          catalog={catalog}
+        />
         <ReviewProcess />
         <HomeBusiness />
-      </ScrollEffects>
+      </div>
     </>
   );
 }

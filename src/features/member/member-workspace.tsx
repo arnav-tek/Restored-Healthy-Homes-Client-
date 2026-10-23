@@ -1,9 +1,10 @@
 "use client";
+import { ApplicationPublication } from "@/features/profiles/application-publication";
 import { ShowcasePreferences } from "./showcase-preferences";
 import Link from "next/link";
 import { useRef } from "react";
 import { ArrowRight, Building2, MapPin } from "lucide-react";
-import { formatMonthlyPrice } from "@/domain/categories";
+import { BillingDemo } from "./billing-demo";
 import {
   memberEligibilityMessage,
   memberFormFields,
@@ -61,9 +62,6 @@ export function MemberWorkspace({
     );
 
   const profile = record.profile;
-  const selectedCategories = sessionCatalog.filter((category) =>
-    profile.categoryIds.includes(category.id),
-  );
   const inbox = state.inquiries.filter((item) => item.memberId === record.id);
   const titles: Record<string, string> = {
     reviews: "Your published reviews",
@@ -81,14 +79,17 @@ export function MemberWorkspace({
         <div className="workspace-header-main">
           <nav aria-label="Breadcrumb" className="workspace-breadcrumb">
             <span>Member</span>
-            <span className="breadcrumb-separator" aria-hidden="true">›</span>
+            <span className="breadcrumb-separator" aria-hidden="true">
+              ›
+            </span>
             <span>{breadcrumbLabels[query.section] ?? "Overview"}</span>
           </nav>
           <h1 id="workspace-title" tabIndex={-1} className="workspace-title">
             {titles[query.section]}
           </h1>
           <p className="workspace-description">
-            Manage your profile, preview your directory presence, and track visitor inquiries.
+            Manage your profile, preview your directory presence, and track
+            visitor inquiries.
           </p>
         </div>
         <div className="workspace-header-action">
@@ -108,7 +109,9 @@ export function MemberWorkspace({
           </h2>
           <p className="business-card-loc">
             <MapPin size={14} aria-hidden="true" />
-            <span>{profile.city}, {profile.state}</span>
+            <span>
+              {profile.city}, {profile.state}
+            </span>
           </p>
         </div>
       </div>
@@ -141,7 +144,7 @@ export function MemberWorkspace({
                     : record.approval === "rejected"
                       ? "Review the decision below and refine your profile. Editing does not change the decision."
                       : record.subscription !== "active"
-                        ? "Your application is approved, but its subscription is inactive. Membership here is read-only."
+                        ? "Your application is approved. Open Membership to try simulated checkout or payment recovery."
                         : "Your listing meets the publication requirements. Review your profile and explore the inquiry inbox."}
               </p>
             </div>
@@ -162,13 +165,13 @@ export function MemberWorkspace({
               )}
               {record.suspensionReason && (
                 <p>
-                  Suspension / reinstatement reason:{" "}
-                  {record.suspensionReason}
+                  Suspension / reinstatement reason: {record.suspensionReason}
                 </p>
               )}
             </section>
           )}
 
+          <ApplicationPublication memberId={record.id} />
           <div className="overview-bottom-grid">
             <section className="overview-actions-card">
               <h2 className="overview-card-title">Quick shortcuts</h2>
@@ -181,7 +184,11 @@ export function MemberWorkspace({
                     <strong>{inbox.length} inquiries</strong>
                     <span className="action-item-sub">View your inquiries</span>
                   </span>
-                  <ArrowRight size={14} className="action-item-arrow" aria-hidden="true" />
+                  <ArrowRight
+                    size={14}
+                    className="action-item-arrow"
+                    aria-hidden="true"
+                  />
                 </Link>
 
                 <Link
@@ -190,9 +197,15 @@ export function MemberWorkspace({
                 >
                   <span className="action-item-label">
                     <strong>Membership details</strong>
-                    <span className="action-item-sub">View status and category prices</span>
+                    <span className="action-item-sub">
+                      View status and category prices
+                    </span>
                   </span>
-                  <ArrowRight size={14} className="action-item-arrow" aria-hidden="true" />
+                  <ArrowRight
+                    size={14}
+                    className="action-item-arrow"
+                    aria-hidden="true"
+                  />
                 </Link>
               </div>
             </section>
@@ -217,8 +230,13 @@ export function MemberWorkspace({
             Only profile fields can be edited here. Approval, subscription,
             suspension and verification decisions are protected.
           </p>
-          <section className="panel admin-detail-card" aria-labelledby="edit-heading">
-            <h2 id="edit-heading" className="admin-detail-heading">Edit profile</h2>
+          <section
+            className="panel admin-detail-card"
+            aria-labelledby="edit-heading"
+          >
+            <h2 id="edit-heading" className="admin-detail-heading">
+              Edit profile
+            </h2>
             <ProfileFieldsForm
               disabled={pending}
               key={`${record.id}-${state.revision}-${resetVersion}`}
@@ -244,7 +262,8 @@ export function MemberWorkspace({
             <summary>Public profile</summary>
             <p>
               This previews saved local content, including ineligible
-              applications. It does not publish or update the public directory.
+              applications. Submitted applications appear in the directory only
+              when approved, active and not suspended in this tab.
             </p>
             <PublicPreviewContent
               profile={projectDemoPublic(record)}
@@ -260,17 +279,21 @@ export function MemberWorkspace({
       {query.section === "inquiries" && (
         <section className="panel admin-detail-card member-inbox">
           <h2 className="admin-detail-heading">Inquiry inbox</h2>
-          <p><Link className="text-link" href={href({ section: "qa" })}>Open category question inbox →</Link></p>
-          <p className="field-help">
-            Email delivery is not connected yet.
+          <p>
+            <Link className="text-link" href={href({ section: "qa" })}>
+              Open category question inbox →
+            </Link>
           </p>
+          <p className="field-help">Email delivery is not connected yet.</p>
           {inbox.length ? (
             <div className="inbox-list">
               {inbox.map((item) => (
                 <details key={item.id} className="inbox-item-card">
                   <summary>{item.subject}</summary>
                   <div className="inbox-item-body">
-                    <p className="inbox-sender"><strong>Sender:</strong> {item.sender}</p>
+                    <p className="inbox-sender">
+                      <strong>Sender:</strong> {item.sender}
+                    </p>
                     <p className="inbox-message">{item.message}</p>
                   </div>
                 </details>
@@ -279,39 +302,19 @@ export function MemberWorkspace({
           ) : (
             <div className="workspace-empty">
               <h3>No messages yet.</h3>
-              <p>
-                New inquiries will appear here when delivery is connected.
-              </p>
+              <p>New inquiries will appear here when delivery is connected.</p>
             </div>
           )}
         </section>
       )}
 
       {query.section === "membership" && (
-        <section className="panel admin-detail-card">
-          <h2 className="admin-detail-heading">Subscription</h2>
-          <p>
-            Read-only status: <strong>{record.subscription}</strong>. Approval
-            alone does not make a listing public.
-          </p>
-          <div className="rate-list">
-            {selectedCategories.map((category) => (
-              <div key={category.id} className="rate-item">
-                <span>{category.name}</span>
-                <strong>
-                  {formatMonthlyPrice(category.monthlyUsd)}
-                  <span> / month</span>
-                  {category.previewPrice && <small> · preview</small>}
-                </strong>
-              </div>
-            ))}
-          </div>
-          <p className="field-help">
-            Individual-category prices in USD. Multi-category pricing is pending
-            confirmation; no combined total, checkout or payment changes are
-            available.
-          </p>
-        </section>
+        <BillingDemo
+          key={`${record.id}-${resetVersion}`}
+          record={record}
+          catalog={sessionCatalog}
+          disabled={pending}
+        />
       )}
     </>
   );

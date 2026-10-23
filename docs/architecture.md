@@ -56,6 +56,8 @@ Approval, subscription, suspension, credential verification and featured entitle
 
 ## Future integration/security
 
+The [public listing journey](public-listing-journey-handoff.md) adds the eligible accepted application to directory results through explicit public card/profile projections. Canonical server fixtures remain unchanged. The directory validates the actual tab catalog before accepting added-category filters, and clamps pages after merging local publication. Only the reserved application profile route uses a generic no-index session shell; all other unknown/private IDs retain 404s. This is browser-memory publication, not authentication, persistence or a production read adapter.
+
 The [admin completion follow-up](admin-completion-handoff.md) extends the session catalog with generated IDs/separate billing mappings and adds category-scoped education drafts/publication. Optional public name/email fields never default from application contacts. Published-only resource/certification selectors feed small public islands; static page shells and original public reference adapters remain server-rendered. Session-created resource IDs use neutral no-index HTML, with availability resolved from tab state; other missing resource slugs still return 404. No production authentication or persistence is introduced.
 
 The [admin workflow showcase](admin-showcase-handoff.md) adds shared listing edits, simulated memberships/featured entitlements, draft/review/publish resource previews, session activity and derived analytics. `src/domain/admin-showcase.ts` holds typed commands and calculations; `src/validation/admin-showcase.ts` validates editorial input. The existing reducer remains the sole accepted-state writer. Its activity wrapper records accepted admin changes only. No production auth/data service is implied; the handoff maps the future server boundary and preserves the deferred integration requirements.
@@ -72,6 +74,10 @@ Replace adapters at `src/data/index.ts`. Build authenticated owner/admin service
 - Expand the current framing/base/object/form CSP into a nonce-based script policy before real untrusted content/integrations. Current headers are not a complete script-src policy.
 
 No service-role credentials belong in the browser. Re-run threat modeling and real authorization/storage/payment security tests when services connect.
+
+## Featured and billing showcase
+
+The later [featured/billing demonstration](featured-billing-demo-handoff.md) adds a public-only homepage selector over explicit profile associations plus the accepted application's card allowlist. Stable public catalog order is a showcase convention, not a ranking policy. Billing commands have their own typed domain reducer called by the existing session reducer: member ownership, category/mapping/rate, prior status, stage and attempt revision are checked before changing only subscription status. No payment information or side effects exist; these client checks are not production authorization or evidence of payment.
 
 ## Phase 2E-1 Q&A boundary
 

@@ -8,7 +8,7 @@ export function ReviewProcess() {
       aria-labelledby="review-process-heading"
     >
       <div className="review-process-card">
-        <div className="review-process-left">
+        <div className="review-process-left" data-scroll-reveal>
           <div className="home-eyebrow">
 
             <h2 id="review-process-heading" className="eyebrow-text section-tag">
@@ -30,8 +30,8 @@ export function ReviewProcess() {
           </Link>
         </div>
 
-        <div className="review-process-right">
-          <div className="review-process-item">
+        <div className="review-process-right" data-scroll-stagger>
+          <div className="review-process-item" data-scroll-reveal>
             <div className="review-item-icon" aria-hidden="true">
               <FileText size={20} />
             </div>
@@ -44,7 +44,7 @@ export function ReviewProcess() {
             </div>
           </div>
 
-          <div className="review-process-item">
+          <div className="review-process-item" data-scroll-reveal>
             <div className="review-item-icon" aria-hidden="true">
               <Shield size={20} />
             </div>
@@ -56,7 +56,7 @@ export function ReviewProcess() {
             </div>
           </div>
 
-          <div className="review-process-item">
+          <div className="review-process-item" data-scroll-reveal>
             <div className="review-item-icon" aria-hidden="true">
               <Users size={20} />
             </div>

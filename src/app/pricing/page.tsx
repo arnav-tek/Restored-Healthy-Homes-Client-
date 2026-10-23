@@ -89,7 +89,7 @@ export default async function PricingPage() {
     <div className="pricing-page container">
       {/* Hero Section */}
       <header className="pricing-hero">
-        <div className="pricing-hero-left">
+        <div className="pricing-hero-left" data-scroll-reveal>
           <p className="pricing-eyebrow section-tag">
 
             PROFESSIONAL DIRECTORY MEMBERSHIPS
@@ -106,7 +106,7 @@ export default async function PricingPage() {
           </p>
         </div>
 
-        <div className="pricing-hero-card">
+        <div className="pricing-hero-card" data-scroll-reveal>
           <div className="pricing-benefit-item">
             <div className="pricing-benefit-icon" aria-hidden="true">
               <Users size={20} strokeWidth={1.75} />
@@ -148,12 +148,12 @@ export default async function PricingPage() {
         className="membership-comparison pricing-section"
         aria-labelledby="membership-heading"
       >
-        <div className="pricing-section-heading">
+        <div className="pricing-section-heading" data-scroll-reveal>
           <h2 id="membership-heading">Find your membership</h2>
           <p>Compare monthly membership prices for your specialty.</p>
         </div>
 
-        <div className="pricing-table-card">
+        <div className="pricing-table-card" data-scroll-reveal>
           <table className="membership-table" role="table">
             <caption className="sr-only">
               Monthly professional directory memberships in USD
@@ -246,9 +246,9 @@ export default async function PricingPage() {
         className="membership-guidance pricing-guidance-section"
         aria-labelledby="before-applying"
       >
-        <div className="pricing-guidance-grid">
+        <div className="pricing-guidance-grid" data-scroll-stagger>
           {/* Left card: Checklist card */}
-          <div className="pricing-guidance-card pricing-guidance-checklist-card">
+          <div className="pricing-guidance-card pricing-guidance-checklist-card" data-scroll-reveal>
             <div className="pricing-card-header">
               <div className="pricing-card-header-icon" aria-hidden="true">
                 <FileText size={20} strokeWidth={1.75} />
@@ -293,7 +293,7 @@ export default async function PricingPage() {
           </div>
 
           {/* Right card: Soft-sage CTA card with terracotta left border */}
-          <aside className="pricing-guidance-card pricing-guidance-cta-card">
+          <aside className="pricing-guidance-card pricing-guidance-cta-card" data-scroll-reveal>
             <div className="pricing-cta-icon-box" aria-hidden="true">
               <Home size={20} strokeWidth={1.75} />
             </div>

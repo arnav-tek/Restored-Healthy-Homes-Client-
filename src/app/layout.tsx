@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Brand } from "@/components/site/brand";
 import { Navigation } from "@/components/site/navigation";
 import { Footer } from "@/components/site/footer";
+import { ScrollEffects } from "@/components/ui/scroll-effects";
 import { assertDemoConfiguration } from "@/domain/config";
 import { DemoSessionProvider } from "@/features/member/demo-session";
 import { qaRepository, reviewRepository } from "@/data";
@@ -28,7 +29,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <a className="skip-link" href="#main">
+        <a className="skip-link" href="#main" tabIndex={0}>
           Skip to content
         </a>
         <DemoSessionProvider
@@ -45,6 +46,7 @@ export default async function RootLayout({
             </div>
           </header>
           <main id="main" tabIndex={-1}>
+            <ScrollEffects />
             {children}
           </main>
           <Footer />

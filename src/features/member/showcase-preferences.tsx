@@ -10,6 +10,7 @@ export function ShowcasePreferences({ memberId }: { memberId: string }) {
   const { draft, saveDraft, clearDraft } = useDemoDraft(`photo:${memberId}`);
   const ready = useDemoReady();
   const [error, setError] = useState("");
+  const photoInput = useRef<HTMLInputElement>(null);
   const generation = useRef(0);
   useEffect(
     () => () => {
@@ -58,6 +59,7 @@ export function ShowcasePreferences({ memberId }: { memberId: string }) {
           Choose a sample business photo
         </label>
         <input
+          ref={photoInput}
           id="sample-business-photo"
           type="file"
           accept="image/jpeg,image/png,image/webp"
@@ -134,6 +136,11 @@ export function ShowcasePreferences({ memberId }: { memberId: string }) {
               onClick={() => {
                 generation.current++;
                 clearDraft();
+                setError("");
+                if (photoInput.current) {
+                  photoInput.current.value = "";
+                  photoInput.current.focus();
+                }
               }}
             >
               Remove sample photo

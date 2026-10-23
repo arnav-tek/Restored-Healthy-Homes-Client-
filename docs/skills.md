@@ -1,5 +1,9 @@
 # Installed skills
 
+23 October featured/billing demonstration: the project-local `.agents/skills` directory remains absent; no unavailable skill was claimed or installed. Existing domain/provider boundaries, supplied AGENTS rules and installed Next.js server/client documentation guided this scoped extension. No new dependencies or real payment integrations were added.
+
+Checkout note, 22 October 2026: the `.agents/skills/` directories recorded below are absent from this checkout. The quality audit used the existing project conventions, tests and bundled `node_modules/next/dist/docs/` guides for production checks, lazy loading, video and Playwright. No missing skill was claimed as applied or reinstalled. The provenance below records earlier work.
+
 Installed with OpenAI Skill Installer: `install-skill-from-github.py --repo ... --ref <SHA> --path ... --dest .agents/skills`. Existing project/global locations were checked first; no matching development skills existed. Official GitHub trees were verified. All nine requested paths existed and installed successfully. Full directories, references, scripts, assets and bundled licenses were retained.
 
 | Skill | Official path | Revision | Use |

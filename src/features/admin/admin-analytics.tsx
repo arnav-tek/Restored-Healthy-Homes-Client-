@@ -3,6 +3,7 @@ import { useState } from "react";
 import { adminAnalytics } from "@/domain/admin-showcase";
 import { useDemoSession } from "@/features/member/demo-session";
 import type { ApplicationCategory } from "@/features/member/profile-fields-form";
+import { parseAnalyticsMonth } from "@/validation/admin-showcase";
 
 export function AdminAnalytics({
   catalog,
@@ -13,7 +14,8 @@ export function AdminAnalytics({
   const [month, setMonth] = useState(() =>
     new Date().toISOString().slice(0, 7),
   );
-  const data = adminAnalytics(state.records, month);
+  const selectedMonth = parseAnalyticsMonth(month);
+  const data = adminAnalytics(state.records, selectedMonth ?? "");
   return (
     <div className="admin-management-stack">
       <p className="workspace-note">
@@ -26,19 +28,29 @@ export function AdminAnalytics({
         <input
           type="month"
           id="analytics-month"
+          min="0001-01"
+          max="9999-12"
+          placeholder="YYYY-MM"
+          aria-invalid={!selectedMonth}
+          aria-describedby="analytics-month-help"
           value={month}
-          onChange={(event) => {
-            if (/^\d{4}-\d{2}$/.test(event.target.value))
-              setMonth(event.target.value);
-          }}
+          onChange={(event) => setMonth(event.target.value)}
         />
+        <p id="analytics-month-help" className="field-help">
+          {selectedMonth
+            ? "Use YYYY-MM if your browser shows a text field."
+            : "Enter a valid month as YYYY-MM. Monthly counts are unavailable until the month is complete."}
+        </p>
       </div>
       <dl className="admin-stat-grid" aria-label="Directory analytics">
         {[
           ["Total applications", data.total],
           ["Active memberships", data.active],
           ["Eligible listings", data.eligible],
-          ["Applications in selected month", data.newApplications],
+          [
+            "Applications in selected month",
+            selectedMonth ? data.newApplications : "—",
+          ],
         ].map(([label, value]) => (
           <div className="panel" key={label}>
             <dt>{label}</dt>

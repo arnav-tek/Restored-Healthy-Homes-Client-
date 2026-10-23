@@ -30,7 +30,7 @@ export default async function ResourcePage({ params }: Props) {
         {resourceCategories.find((item) => item.id === article.category)?.label}
       </Link>
       <article>
-        <header>
+        <header data-scroll-reveal>
           <p className="section-label section-tag">
             Sample editorial content · awaiting approval
           </p>
@@ -38,7 +38,7 @@ export default async function ResourcePage({ params }: Props) {
           <p className="resource-lead">{article.summary}</p>
         </header>
         {article.sections.map((section) => (
-          <section key={section.heading}>
+          <section key={section.heading} data-scroll-reveal>
             <h2>{section.heading}</h2>
             {section.paragraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
@@ -46,7 +46,7 @@ export default async function ResourcePage({ params }: Props) {
           </section>
         ))}
       </article>
-      <aside className="panel">
+      <aside className="panel" data-scroll-reveal>
         <h2>Explore further</h2>
         <p>
           <Link

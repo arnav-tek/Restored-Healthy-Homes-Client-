@@ -67,14 +67,14 @@ test("admin demonstrates membership, suspended featured eligibility, profile edi
   await page.getByRole("button", { name: "Apply featured scenario" }).click();
   await expect(
     page.getByTestId("featured-placement-preview").getByRole("listitem"),
-  ).toHaveText(["Showcase Studio"]);
+  ).toHaveText(["Showcase Studio", "Fern & Field Inspections"]);
   await page.getByRole("link", { name: "Open listing and profile" }).click();
   page.once("dialog", (dialog) => dialog.accept());
   await decision(page, "suspend", "Show suspension overrides payment");
   await page.getByRole("link", { name: "Manage featured placement" }).click();
   await expect(
     page.getByTestId("featured-placement-preview").getByRole("listitem"),
-  ).toHaveCount(0);
+  ).toHaveText(["Fern & Field Inspections"]);
   await expect(page.getByText(/entitlement is retained/)).toBeVisible();
   await section(page, "Admin", "Analytics");
   await expect(page.getByRole("table")).toBeVisible();

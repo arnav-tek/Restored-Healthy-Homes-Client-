@@ -33,7 +33,7 @@ export function ProfessionalCard({
       .join(" · ") || "Specialist";
 
   return (
-    <article className="professional-card" data-testid="professional-card">
+    <article className="professional-card" data-testid="professional-card" data-scroll-reveal>
       <div className="card-top">
         <span className="category-pill">{categoryName}</span>
         <div className="profile-photo-empty">
@@ -89,7 +89,11 @@ export function ProfessionalCard({
             </>
           )}
         </div>
-        {professional.freeConsultation && <p className="free-consultation-note">Free phone consultation available</p>}
+        {professional.freeConsultation && (
+          <p className="free-consultation-note">
+            Free phone consultation available
+          </p>
+        )}
       </div>
       <div className="card-footer">
         <details className="services">
@@ -100,8 +104,8 @@ export function ProfessionalCard({
           </summary>
           <div className="services-dropdown">
             <ul>
-              {professional.services.map((service) => (
-                <li key={service}>{service}</li>
+              {professional.services.map((service, index) => (
+                <li key={`${index}-${service}`}>{service}</li>
               ))}
             </ul>
             <p>Explore the profile for service details and an inquiry form.</p>

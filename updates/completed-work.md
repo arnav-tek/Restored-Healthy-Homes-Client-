@@ -1,6 +1,20 @@
 # What has been completed
 
-Updated: 21 October 2026
+24 October spacing follow-up: balanced the homepage section gaps, added breathing room below the hero and aligned heading-to-card spacing across desktop, tablet and mobile. The screenshot follow-up increases the gap above How it works to 96px on desktop, 80px on tablet and 56px on mobile. Details and checks are in the [homepage handoff](../docs/homepage-motion-handoff.md#responsive-homepage-spacing--24-october-2026).
+
+24 October scroll-motion update: expanded homepage section/card entrances and added coordinated scroll animations across the other public pages. Motion stays optional, text stays visible, and forms/workspaces remain steady. See the [scroll-motion handoff](../docs/scroll-motion-handoff.md) for coverage and verification.
+
+23 October hero update: removed the footage label and all video controls, including the circular icon requested in the follow-up. Automatic playback, first-frame fallback and static reduced-motion/data-saving behavior remain; the same placeholder clip uses a compatible MP4 encoding at 962,805 bytes (68% smaller). See the [motion handoff](../docs/homepage-motion-handoff.md).
+
+23 October: linked admin featured controls now update homepage cards in this tab. Member billing screens demonstrate checkout, failed payments, recovery and cancellation without card details or money. Eligibility, approval, suspension, credentials and featured entitlement remain independent. See the [featured/billing handoff](../docs/featured-billing-demo-handoff.md).
+
+Public-listing follow-up: an approved, active, unsuspended submitted application now joins public directory search and a full profile in the same tab. Private contacts/notes stay excluded; refresh/reset clears it. See the [journey handoff](../docs/public-listing-journey-handoff.md). Real shared records and integrations remain outstanding.
+
+Updated: 22 October 2026
+
+Quality follow-up: removed a duplicate hero-image download, corrected sample-photo removal/reselection and keyboard focus, fixed typed analytics months in Firefox, and made the skip link keyboard reachable in WebKit. Added a repeatable browser compatibility matrix, mobile performance measurements, an [owner walkthrough](../docs/admin-guide.md) and [client acceptance checklist](../docs/client-acceptance-checklist.md). Actual verification is recorded in the [quality handoff](../docs/quality-audit-handoff.md).
+
+Latest verification: typecheck, lint, 106 unit tests and demo build passed. All 268 applicable Chromium scenarios and 66 applicable Firefox/WebKit/Edge matrix scenarios were verified across completed runs and targeted corrections; intentional skips and initial failures are detailed in the handoff. Desktop/tablet/mobile screenshots were reviewed. The static homepage avoids one 88,265-byte duplicate image request. Local timing samples do not verify production speed or physical devices.
 
 Latest addition: the [admin completion follow-up](../docs/admin-completion-handoff.md) adds category creation, certification editing, separate public identity fields and published Resources/Certifications views in this tab. This extends profile editing, membership/featured scenarios, resource drafts, activity and analytics from the first admin round. Real accounts and integrations remain deferred.
 
@@ -90,6 +104,8 @@ Approval, membership, suspension, credentials and featured placement remain sepa
 - Kept the logo position and existing fonts/colors. New logo, final client film/banner media, alternative font/color choices, exact business pins and certification wording remain pending.
 
 ## 5. Verification and client walkthrough
+
+The [22 October quality handoff](../docs/quality-audit-handoff.md) records the latest checks and additional browser coverage. The showcase totals below describe the earlier revision.
 
 Typecheck, lint, all 92 unit tests and the demo build passed. All 216 runnable desktop/tablet/mobile browser scenarios passed across completed runs and targeted corrections; 9 intentional viewport-specific skips remain. The final affected browser run passed 12/12 checks. Desktop/tablet/mobile renders and 320px overflow were reviewed. Production mode still rejects missing opt-in. These checks do not replace physical iPhone/Android, Safari/Firefox/Edge or production-service testing.
 

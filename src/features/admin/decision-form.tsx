@@ -93,7 +93,7 @@ export function DecisionForm({
           else return;
           clearDraft();
           setFeedback(
-            `Local decision updated for ${record.profile.businessName}. Nothing sent or published.`,
+            `Local decision updated for ${record.profile.businessName}. No message was sent. Public visibility follows approval, membership and suspension in this tab.`,
           );
           requestAnimationFrame(() => status.current?.focus());
         }}

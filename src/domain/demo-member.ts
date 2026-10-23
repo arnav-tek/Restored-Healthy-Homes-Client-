@@ -37,6 +37,11 @@ import {
 import { parseConsultation } from "../validation/consultation";
 import type { DemoIdentity } from "./demo-identity";
 import {
+  reduceBillingDemo,
+  type BillingDemoAction,
+  type BillingDemoAttempt,
+} from "./billing-demo";
+import {
   createReviewSession,
   reduceReviewAction,
   type ReviewAction,
@@ -104,6 +109,7 @@ export interface DemoSession extends DemoSessionSeed {
   addedCategories: readonly Category[];
   articles: readonly AdminArticle[];
   adminActivity: readonly { id: number; summary: string }[];
+  billing: readonly BillingDemoAttempt[];
   publicProfessionalIds: readonly string[];
   reviews: ReviewSession;
   identity: DemoIdentity | null;
@@ -130,6 +136,7 @@ export type DemoMemberAction =
     }
   | { type: "publish-certification"; categoryId: string; published: boolean }
   | AdminShowcaseAction
+  | BillingDemoAction
   | { type: "set-free-consultation"; id: string; enabled: boolean }
   | ReviewAction
   | { type: "demo-sign-in"; fields: DemoSignInFields }
@@ -192,6 +199,7 @@ export function createDemoSession(
     certifications: structuredClone(seed.certifications ?? []),
     addedCategories: [],
     adminActivity: [],
+    billing: [],
     identity: null,
     publicProfessionalIds: [...publicProfessionalIds],
     reviews: createReviewSession(publicReviewSeed),
@@ -252,6 +260,11 @@ function reduceDemoSessionCore(
 ): DemoSession {
   const revision = state.revision + 1;
   switch (action.type) {
+    case "billing-start":
+    case "billing-result":
+    case "billing-cancel":
+    case "billing-close":
+      return reduceBillingDemo(state, action);
     case "create-category": {
       if (state.identity?.kind !== "admin") return state;
       const fields = parseNewCategory(action.fields, sessionCategories(state));
@@ -348,6 +361,10 @@ function reduceDemoSessionCore(
         records: state.records.map((item) =>
           item.id === record.id ? updated : item,
         ),
+        billing:
+          action.type === "simulate-membership"
+            ? state.billing.filter(({ memberId }) => memberId !== record.id)
+            : state.billing,
         revision,
         notice:
           "Showcase scenario updated in this tab. No payment or live listing was changed.",
@@ -435,6 +452,10 @@ function reduceDemoSessionCore(
       return {
         ...state,
         identity: null,
+        billing: state.billing.filter(
+          ({ stage }) =>
+            !["checkout", "recovery", "cancel-confirmation"].includes(stage),
+        ),
         revision,
         notice: "Signed out.",
       };
@@ -542,6 +563,7 @@ function reduceDemoSessionCore(
         ],
         selectedId: state.identity ? state.selectedId : record.id,
         applicationId: record.id,
+        billing: state.billing.filter(({ memberId }) => memberId !== record.id),
         revision,
         notice:
           "Application prepared. Delivery to the owner is not connected yet.",
@@ -607,7 +629,9 @@ function reduceDemoSessionCore(
             : record,
         ),
         revision,
-        notice: "Profile draft updated. The public directory has not changed.",
+        billing: state.billing.filter(({ memberId }) => memberId !== action.id),
+        notice:
+          "Profile draft updated. Billing reviews for this record were cleared.",
       };
     }
     case "rename-category": {
@@ -763,6 +787,8 @@ export function filterDemoRecords(
 }
 
 export function memberEligibilityMessage(record: DemoMemberRecord): string {
+  if (record.id === "demo-local-application" && isPubliclyEligible(record))
+    return "This application is visible in the public directory in this tab. Refresh or reset clears it.";
   return isPubliclyEligible(record)
     ? "This example meets the approval, active subscription and no-suspension rules. Local edits still do not update the public directory."
     : "This example is not eligible for public listing. Approval, an active subscription and no suspension are all required.";

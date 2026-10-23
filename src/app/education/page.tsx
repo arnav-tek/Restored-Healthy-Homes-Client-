@@ -20,7 +20,7 @@ export default async function EducationPage() {
   return (
     <div className="learning-page container">
       {/* Introduction above the category pathways. */}
-      <header className="public-page-intro education-hero">
+      <header className="public-page-intro education-hero" data-scroll-reveal>
         <div className="education-hero-left">
           <p className="public-eyebrow section-tag">FOR SPECIALISTS</p>
           <h1>
@@ -51,7 +51,7 @@ export default async function EducationPage() {
       />
 
       {/* Join our directory CTA banner */}
-      <aside className="public-closing-band education-closing-cta">
+      <aside className="public-closing-band education-closing-cta" data-scroll-reveal>
         <div className="closing-cta-content">
           <p className="closing-cta-eyebrow section-tag">JOIN OUR DIRECTORY</p>
           <h2>Bring your experience to the directory.</h2>

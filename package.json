@@ -12,6 +12,8 @@
     "lint": "eslint . --max-warnings=0",
     "test": "tsx --conditions=react-server --test tests/unit/*.test.ts",
     "test:e2e": "playwright test",
+    "test:compat": "playwright test --config=playwright.compat.config.ts",
+    "audit:performance": "node scripts/measure-performance.mjs",
     "check": "npm run typecheck && npm run lint && npm test && npm run build:demo",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"tests/**/*.ts\" \"*.{ts,mjs,json}\""
   },

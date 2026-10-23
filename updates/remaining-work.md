@@ -1,6 +1,16 @@
 # What remains, and what is needed
 
-Updated: 21 October 2026
+24 October: public-page scroll animations have been expanded locally; implementation and verification are in the [scroll-motion handoff](../docs/scroll-motion-handoff.md). Final client visual approval and physical-device acceptance remain part of the existing launch scope.
+
+23 October hero update: the footage label and all playback controls are removed, including the circular icon from the follow-up request. Automatic playback uses the smaller MP4 and first-frame/static fallbacks. Approved final client footage/branding still remain pending; the [motion handoff](../docs/homepage-motion-handoff.md) records the implementation and checks.
+
+23 October: [featured and billing demonstrations](../docs/featured-billing-demo-handoff.md) now cover same-tab homepage featured changes for linked public profiles and member checkout, cancellation, failed-payment and recovery screens. They collect no card details or money. The real integration and approval requirements below remain.
+
+Public-listing follow-up: an approved, active, unsuspended submitted application now joins public directory search and a full profile in the same tab. Private contacts/notes stay excluded; refresh/reset clears it. See the [journey handoff](../docs/public-listing-journey-handoff.md). Real shared records and integrations remain outstanding.
+
+Updated: 22 October 2026
+
+Quality follow-up: an owner prototype guide and client acceptance checklist are prepared, with repeatable browser/performance checks and fixes recorded in the [quality handoff](../docs/quality-audit-handoff.md). Final operating procedures and client acceptance remain pending; this does not complete real services or launch requirements.
 
 Admin completion update: profile editing, membership/featured scenarios, category creation/renaming, certification editing, optional public name/email, published resource list/detail and Certifications views, activity and basic analytics can be demonstrated in this tab. These do not complete durable production features, final client content or featured ranking. See the [completion handoff](../docs/admin-completion-handoff.md).
 
@@ -75,9 +85,9 @@ These include unfinished frontend/admin work as well as integrations. They must 
 
 - Connect and test the real services end to end, including independent member/admin/visitor sessions, payment changes, email failures and access restrictions.
 - Review production security, upload handling, dependencies, backups, monitoring and recovery. The present demo build guard is not a replacement for this work.
-- Test physical iPhone/Android and the agreed Chrome/Safari/Firefox/Edge versions. Automated checks so far use Chromium emulation. Measure performance against the original mobile speed target under agreed conditions; it is not verified yet.
+- Test physical iPhone/Android and agreed browser/device versions. Automated coverage now includes Chromium viewport emulation and focused Firefox/WebKit/Edge checks; Safari on Apple hardware remains unverified. Local lab measurements do not verify the original mobile speed target under production conditions.
 - Configure/verify the client-owned custom domain, DNS, HTTPS, production hosting and approved search-engine visibility. Confirm the deployment actually contains the intended source revision; a GitHub push alone does not prove that.
-- Complete client acceptance/revisions and provide the promised practical owner training/walkthrough and written admin guide. The demo walkthrough is not the final operating guide for payments, emails and publishing.
+- Complete client acceptance/revisions and owner training. Extend the prepared prototype admin guide with verified real operating procedures for accounts, payments, emails, saved publication and recovery.
 
 Vercel is the confirmed hosting choice, replacing the older brief's Netlify wording. On 22 October the user authorized pushing the verified admin/theme follow-up to GitHub. No separate Vercel deployment or live-service launch was requested.
 

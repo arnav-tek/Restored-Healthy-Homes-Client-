@@ -22,7 +22,11 @@ The [admin workflow showcase](docs/admin-showcase-handoff.md) adds listing edits
 
 The [admin completion follow-up](docs/admin-completion-handoff.md) adds category creation, certification editing, separate public identity fields and publication to the Resources/Certifications views in this tab. Refresh/reset clears these changes; the approved server directory/pricing catalog remains unchanged.
 
-The homepage also demonstrates licensed home-interior footage with pause/play and reduced-motion fallbacks, restrained scroll reveals, and on-demand city maps on profiles. See [media, behavior and verification](docs/homepage-motion-handoff.md); placeholder footage is not the client's company film.
+The [public listing journey](docs/public-listing-journey-handoff.md) connects a submitted application to public directory search and a full profile after admin approval and active membership, unless suspended. This is tab-only publication; refresh/reset clears it. Existing sample listings retain their behavior.
+
+The [featured and billing walkthrough](docs/featured-billing-demo-handoff.md) connects linked admin featured controls to homepage cards and adds member checkout, failed-payment/recovery and cancellation demonstrations. No card details or charges; all outcomes stay in the same tab. Final ranking, multi-category billing and real integrations remain pending.
+
+The homepage demonstrates licensed home-interior background footage with static/reduced-motion fallbacks and no playback controls. Public pages use coordinated section entrances and short card staggers; profiles retain on-demand city maps. See [scroll motion](docs/scroll-motion-handoff.md) and [media, behavior and verification](docs/homepage-motion-handoff.md); placeholder footage is not the client's company film.
 
 ## Run locally
 
@@ -44,6 +48,12 @@ All businesses and inquiries are fictional. Application, member and admin change
 ## Checks and documentation
 
 Run `npm run check` for typecheck, lint, unit tests and a demo build. For browser tests, install Chromium with `npx playwright install chromium`, then run `npm run test:e2e`.
+
+For the focused Firefox, WebKit and installed Microsoft Edge matrix, install engines with `npx playwright install firefox webkit`, then run `npm run test:compat`. WebKit tests exercise its engine; they do not replace Safari on Apple hardware. Edge must be installed locally. Run browser suites after the demo build finishes; do not rebuild while preview servers are using `.next`.
+
+Run `npm run audit:performance -- latest` after the demo build for three cold-cache mobile lab samples of the homepage, directory, resources and signed-out admin entry. It starts and stops its own local preview on port 3102 and writes JSON under ignored `output/`. Keep that port free and run it separately from builds/browser suites. Measurements use reduced motion, 4× CPU slowdown, 150 ms simulated latency and 200 KB/s download; they are not production or physical-device performance guarantees.
+
+The [owner walkthrough](docs/admin-guide.md), [client acceptance checklist](docs/client-acceptance-checklist.md) and [quality audit](docs/quality-audit-handoff.md) describe current behavior, repeatable checks and remaining acceptance work.
 
 Member and admin workspaces use focused, linkable sections. Unsaved drafts remain in React memory during client-side navigation. Sign-out clears identity and drafts, with a discard warning, while keeping submitted fictional records for the walkthrough. Confirmed reset or refresh clears the session.
 

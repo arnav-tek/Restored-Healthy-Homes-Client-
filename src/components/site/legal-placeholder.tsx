@@ -2,7 +2,7 @@ import Link from "next/link";
 export function LegalPlaceholder({ title }: { title: string }) {
   return (
     <div className="container public-content-page resources-page">
-      <header className="public-page-intro">
+      <header className="public-page-intro" data-scroll-reveal>
         <div>
           <p className="public-eyebrow section-tag">Awaiting client approval</p>
           <h1>{title}</h1>
@@ -11,7 +11,7 @@ export function LegalPlaceholder({ title }: { title: string }) {
           <p>Client-approved legal wording will appear here before launch.</p>
         </div>
       </header>
-      <section className="panel resource-article">
+      <section className="panel resource-article" data-scroll-reveal>
         <h2>Content pending</h2>
         <p>
           The final text and disclaimer placement are still to be supplied and

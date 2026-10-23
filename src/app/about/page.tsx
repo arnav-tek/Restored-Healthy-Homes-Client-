@@ -27,7 +27,7 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="about-hero" aria-labelledby="about-hero-title">
         <div className="about-hero-grid">
-          <div className="about-hero-content">
+          <div className="about-hero-content" data-scroll-reveal>
             <div className="about-eyebrow">
               <span className="about-eyebrow-text section-tag">
                 ABOUT RESTORED HEALTHY HOMES
@@ -57,7 +57,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="about-hero-sidebar">
+          <div className="about-hero-sidebar" data-scroll-reveal>
             <div className="about-hero-card">
               <div className="hero-benefit-row">
                 <div className="benefit-icon-badge" aria-hidden="true">
@@ -104,8 +104,8 @@ export default function AboutPage() {
         className="about-story-section"
         aria-labelledby="about-story-heading"
       >
-        <div className="about-story-grid">
-          <div className="about-story-copy">
+        <div className="about-story-grid" data-scroll-stagger>
+          <div className="about-story-copy" data-scroll-reveal>
             <div className="about-eyebrow">
               <span className="about-eyebrow-text section-tag">
                 THE STORY BEHIND THE NAME
@@ -122,7 +122,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="about-story-media">
+          <div className="about-story-media" data-scroll-reveal="scale">
             <h3 className="about-video-title">{content.video.heading}</h3>
             {content.video.src ? (
               <video
@@ -172,7 +172,7 @@ export default function AboutPage() {
         className="about-purpose-section"
         aria-labelledby="about-purpose-heading"
       >
-        <div className="about-purpose-card">
+        <div className="about-purpose-card" data-scroll-reveal>
           <div className="about-purpose-header">
             <p className="about-eyebrow-text section-tag">OUR PURPOSE</p>
             <h2 id="about-purpose-heading" className="about-purpose-title">
@@ -191,8 +191,8 @@ export default function AboutPage() {
 
       {/* Core Values Section */}
       <section className="about-values-section" aria-label="Core values">
-        <div className="about-values-grid">
-          <div className="about-value-card">
+        <div className="about-values-grid" data-scroll-stagger>
+          <div className="about-value-card" data-scroll-reveal>
             <div className="value-icon-badge" aria-hidden="true">
               <Users size={24} />
             </div>
@@ -202,7 +202,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="about-value-card">
+          <div className="about-value-card" data-scroll-reveal>
             <div className="value-icon-badge" aria-hidden="true">
               <FileText size={24} />
             </div>
@@ -212,7 +212,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="about-value-card">
+          <div className="about-value-card" data-scroll-reveal>
             <div className="value-icon-badge" aria-hidden="true">
               <Home size={24} />
             </div>
@@ -223,7 +223,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="about-value-card">
+          <div className="about-value-card" data-scroll-reveal>
             <div className="value-icon-badge" aria-hidden="true">
               <Shield size={24} />
             </div>
@@ -238,6 +238,7 @@ export default function AboutPage() {
       {/* Closing CTA Banner */}
       <section
         className="about-closing-section"
+        data-scroll-reveal
         aria-labelledby="about-closing-heading"
       >
         <div className="about-cta-banner">

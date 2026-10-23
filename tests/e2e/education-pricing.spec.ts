@@ -144,6 +144,8 @@ test("320px reflow, breakpoint menu and server content without JavaScript", asyn
   browser,
   request,
 }, info) => {
+  // Six page/viewport audits plus the no-script journey exceed a single-page budget.
+  test.setTimeout(90000);
   test.skip(info.project.name !== "desktop", "Explicit viewports run once");
   for (const width of [1359, 1360, 320]) {
     await page.setViewportSize({ width, height: 844 });

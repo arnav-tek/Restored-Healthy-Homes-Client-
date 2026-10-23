@@ -15,7 +15,7 @@ export default function ContactPage() {
       className="container public-content-page"
       style={{ paddingBlock: "64px 80px" }}
     >
-      <header className="public-page-intro">
+      <header className="public-page-intro" data-scroll-reveal>
         <div>
           <p className="public-eyebrow section-tag">Get in touch</p>
           <h1>Contact Us</h1>
@@ -29,6 +29,7 @@ export default function ContactPage() {
       </header>
 
       <section
+        data-scroll-reveal
         style={{
           maxWidth: "720px",
           display: "flex",
