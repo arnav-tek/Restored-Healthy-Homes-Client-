@@ -256,7 +256,7 @@ test("only the exact reserved route and bounded session category IDs are recogni
     assert.equal(isSessionCategoryId(id), false);
 });
 
-test("public catalog keeps canonical labels; new category search/returns, city matching and extra pagination share the public pipeline", () => {
+test("public catalog uses accepted labels while preserving IDs and prices; new category search/returns, city matching and extra pagination share the public pipeline", () => {
   const demo = application();
   demo.admin();
   demo.act({
@@ -274,7 +274,9 @@ test("public catalog keeps canonical labels; new category search/returns, city m
     name: "Local editor label",
   });
   const catalog = publicDirectoryCatalog(categories, demo.state);
-  assert.equal(catalog[0].name, categories[0].name);
+  assert.equal(catalog[0].name, "Local editor label");
+  assert.equal(catalog[0].monthlyUsd, categories[0].monthlyUsd);
+  assert.equal(catalog[0].billingKey, categories[0].billingKey);
   assert.equal(catalog.at(-1)?.id, category.id);
   const current = demo.state.records.find((item) => item.id === demo.id)!;
   demo.act({

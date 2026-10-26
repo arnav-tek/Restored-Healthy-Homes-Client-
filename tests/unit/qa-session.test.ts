@@ -1,3 +1,4 @@
+import { demoDirectory } from "../../src/data/demo/repository";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -46,7 +47,7 @@ test("answer validation trims plain text and rejects invalid types/lengths; note
 });
 test("all eligibility combinations enforce selected author ownership, forced pending and duplicate prevention", async () => {
   const snapshot = await demoQaRepository.listPublic();
-  const initial = createDemoSession(seed, snapshot);
+  const initial = createDemoSession(seed, snapshot, (await demoDirectory.listPublic()).map(({ id }) => id));
   for (const approval of ["pending", "approved", "rejected"] as const)
     for (const subscription of ["active", "inactive"] as const)
       for (const suspended of [true, false]) {
@@ -93,7 +94,7 @@ test("all eligibility combinations enforce selected author ownership, forced pen
 });
 test("session moderation preserves independent statuses, IDs, public allowlists and original reset snapshot", async () => {
   const snapshot = await demoQaRepository.listPublic();
-  let state = createDemoSession(seed, snapshot);
+  let state = createDemoSession(seed, snapshot, (await demoDirectory.listPublic()).map(({ id }) => id));
   const act = (action: DemoMemberAction) =>
     (state = reduceDemoSession(state, action, seed));
   act({

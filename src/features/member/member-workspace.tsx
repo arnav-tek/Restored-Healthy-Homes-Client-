@@ -1,4 +1,5 @@
 "use client";
+import { ownInquiries } from "@/domain/inquiry-session";
 import { ApplicationPublication } from "@/features/profiles/application-publication";
 import { ShowcasePreferences } from "./showcase-preferences";
 import Link from "next/link";
@@ -62,7 +63,7 @@ export function MemberWorkspace({
     );
 
   const profile = record.profile;
-  const inbox = state.inquiries.filter((item) => item.memberId === record.id);
+  const inbox = ownInquiries(state);
   const titles: Record<string, string> = {
     reviews: "Your published reviews",
     consultations: "Your consultations",
@@ -302,7 +303,7 @@ export function MemberWorkspace({
           ) : (
             <div className="workspace-empty">
               <h3>No messages yet.</h3>
-              <p>New inquiries will appear here when delivery is connected.</p>
+              <p>Fictional inquiries saved from your linked public profile appear here. No email is sent.</p>
             </div>
           )}
         </section>

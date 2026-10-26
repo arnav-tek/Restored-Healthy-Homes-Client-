@@ -3,6 +3,7 @@ export interface ProfessionalAssociation {
   readonly memberId: string;
   readonly professionalId: string;
 }
+export const PUBLIC_APPLICATION_ID = "demo-local-application";
 export const demoProfessionalAssociations: readonly ProfessionalAssociation[] =
   [
     { memberId: "member-example-builder", professionalId: "demo-healthy-builders" },
@@ -12,9 +13,14 @@ export const demoProfessionalAssociations: readonly ProfessionalAssociation[] =
       professionalId: "demo-mold-remediation",
     },
   ];
-export function professionalForMember(memberId: string): string | null {
+export function professionalForMember(memberId: string, applicationId: string | null = null): string | null {
+  if (memberId === PUBLIC_APPLICATION_ID && applicationId === memberId) return memberId;
   return (
     demoProfessionalAssociations.find((link) => link.memberId === memberId)
       ?.professionalId ?? null
   );
+}
+export function memberForProfessional(professionalId: string, applicationId: string | null = null): string | null {
+  if (professionalId === PUBLIC_APPLICATION_ID && applicationId === professionalId) return professionalId;
+  return demoProfessionalAssociations.find((link) => link.professionalId === professionalId)?.memberId ?? null;
 }

@@ -5,6 +5,7 @@ import {
 } from "@/domain/home-statistics";
 import { useDemoSession } from "@/features/member/demo-session";
 import { ReviewStars } from "@/features/reviews/review-content";
+import { eligiblePublicIds, publicSessionProfiles } from "@/domain/public-session";
 
 export function HomeStatistics({
   listings,
@@ -22,9 +23,9 @@ export function HomeStatistics({
       </section>
     );
   const stats = homeStatistics(
-    listings,
+    publicSessionProfiles(state),
     state.reviews,
-    state.publicProfessionalIds,
+    eligiblePublicIds(state),
   );
   return (
     <section

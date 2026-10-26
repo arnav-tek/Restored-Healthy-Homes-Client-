@@ -100,6 +100,8 @@ test("admin featured changes reach homepage through public links and eligibility
   await page
     .getByRole("link", { name: "View homepage featured examples", exact: true })
     .click();
+  await expect(page).toHaveURL("/#featured-heading");
+  await expect(page.getByRole("heading", { name: "Featured listing examples", exact: true })).toBeVisible();
   await expect(featured(page, "Fern & Field Inspections")).toHaveCount(0);
   await signIn(page, "admin");
   await feature(page, "Cedar Path Remediation", true);

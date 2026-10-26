@@ -15,6 +15,14 @@ import { demoReviews } from "./review-fixtures";
 import { publicReviewsFor } from "../../domain/review";
 const guard = () => assertDemoConfiguration(process.env);
 export const demoDirectory: DirectoryRepository = {
+  async listPublicProfiles() {
+    guard();
+    if (process.env.RHH_DEMO_SCENARIO === "error") throw new Error("Demo directory failure scenario");
+    return listPublicProfessionals(demoProfessionals).flatMap(({ id }) => {
+      const profile = findPublicProfile(demoProfessionals, id);
+      return profile ? [profile] : [];
+    });
+  },
   async listFeaturedPublic() {
     guard();
     if (process.env.RHH_DEMO_SCENARIO === "error") return [];

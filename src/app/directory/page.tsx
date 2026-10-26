@@ -5,7 +5,6 @@ import { parseSearchQuery, type RawSearchParams } from "@/validation/directory";
 import { directoryHref, type SearchResponse } from "@/domain/directory-search";
 import { DirectoryContent } from "@/features/directory/directory-content";
 import { isSessionCategoryId } from "@/domain/public-application";
-import type { PublicProfessional } from "@/domain/professional";
 export const metadata: Metadata = { title: "Find Specialists" };
 export default async function Directory({
   searchParams,
@@ -26,13 +25,9 @@ export default async function Directory({
   }
   let response: SearchResponse | undefined;
   let unavailable = false;
-  let professionals: PublicProfessional[] = [];
   if (Object.keys(validationErrors).length === 0) {
     try {
-      [response, professionals] = await Promise.all([
-        directoryRepository.search(query),
-        directoryRepository.listPublic(),
-      ]);
+      response = await directoryRepository.search(query);
     } catch {
       unavailable = true;
     }
@@ -72,7 +67,6 @@ export default async function Directory({
         locations={locations}
         params={params}
         response={response}
-        professionals={professionals}
         unavailable={unavailable}
       />
     </div>

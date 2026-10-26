@@ -5,7 +5,7 @@ import { Footer } from "@/components/site/footer";
 import { ScrollEffects } from "@/components/ui/scroll-effects";
 import { assertDemoConfiguration } from "@/domain/config";
 import { DemoSessionProvider } from "@/features/member/demo-session";
-import { qaRepository, reviewRepository } from "@/data";
+import { directoryRepository, qaRepository, reviewRepository } from "@/data";
 import "./globals.css";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -20,11 +20,12 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   assertDemoConfiguration(process.env);
-  const [publicQaSeed, publicReviewSeed] = await Promise.all([
+  const [publicQaSeed, publicReviewSeed, publicProfiles] = await Promise.all([
     qaRepository.listPublic().catch(() => []),
     reviewRepository
       .publicSnapshot()
       .catch(() => ({ professionals: [], reviews: [] })),
+    directoryRepository.listPublicProfiles().catch(() => []),
   ]);
   return (
     <html lang="en">
@@ -33,6 +34,7 @@ export default async function RootLayout({
           Skip to content
         </a>
         <DemoSessionProvider
+          publicProfiles={publicProfiles}
           publicQaSeed={publicQaSeed}
           publicProfessionalIds={publicReviewSeed.professionals.map(
             (profile) => profile.id,

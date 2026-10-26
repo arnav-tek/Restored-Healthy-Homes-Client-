@@ -43,10 +43,7 @@ export function ApplicationProfile({
       catalog={currentCatalog}
       returnTo={safeDirectoryReturn(returnTo, currentCatalog)}
       reviewPage={undefined}
-      sessionDetails={{
-        publicDisplayName: profile.publicDisplayName,
-        practices: profile.practices,
-      }}
+      sessionCreated
     />
   );
 }

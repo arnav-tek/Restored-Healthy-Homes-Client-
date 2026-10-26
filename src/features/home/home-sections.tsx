@@ -3,90 +3,17 @@ import Image from "next/image";
 import {
   ArrowRight,
   Search,
-  Shield,
-  Hammer,
   House,
-  Wrench,
-  Ruler,
-  HeartPulse,
-  Dog,
   MessageSquare,
   Calendar,
   Users,
   FileText,
   Sprout,
   Send,
-  type LucideIcon,
 } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
-import type { Category } from "@/domain/categories";
 
-// Presentation only; names and descriptions continue to come from the catalog.
-const categoryIcons: Readonly<Record<string, LucideIcon>> = {
-  "mold-inspection": Search,
-  "mold-remediation": Shield,
-  "healthy-renovations": Hammer,
-  "healthy-builders": House,
-  "healthy-trades": Wrench,
-  "healthy-designers": Ruler,
-  "health-practitioners": HeartPulse,
-  "mold-detection-dogs": Dog,
-};
-
-const highlightedCategories = new Set([
-  "mold-remediation",
-  "health-practitioners",
-]);
-
-export function CategoryBrowse({ catalog }: { catalog: readonly Category[] }) {
-  return (
-    <section
-      className="container home-section category-browse-section"
-      aria-labelledby="category-heading"
-    >
-      <div className="home-section-heading category-browse-header" data-scroll-reveal>
-        <div className="category-header-main">
-          <div className="category-pill-row">
-            <span className="category-pill section-tag">SPECIALTY</span>
-
-          </div>
-          <h2 id="category-heading">
-            Find the specialty you <br className="category-heading-break" />
-            need.
-          </h2>
-        </div>
-
-      </div>
-      <ul className="home-categories" aria-label="Browse specialties" data-scroll-stagger>
-        {catalog.map((category) => {
-          const Icon = categoryIcons[category.id] ?? House;
-          const isHighlighted = highlightedCategories.has(category.id);
-          return (
-            <li key={category.id} data-scroll-reveal>
-              <Link
-                href={`/directory?category=${encodeURIComponent(category.id)}`}
-                className={`category-card ${isHighlighted ? "category-card-accent" : ""}`}
-              >
-                <div className="category-card-header">
-                  <div className="category-icon-circle" aria-hidden="true">
-                    <Icon size={22} className="category-icon" />
-                  </div>
-                  <div className="category-arrow-circle" aria-hidden="true">
-                    <ArrowRight size={15} />
-                  </div>
-                </div>
-                <div className="category-copy">
-                  <h3>{category.name}</h3>
-                  <p>{category.description}</p>
-                </div>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
-  );
-}
+export { CategoryBrowse } from "./category-browse";
 
 export function HomeJourney() {
   return (
@@ -325,6 +252,49 @@ export function HomeFeatures() {
 }
 
 export function HomeAbout() {
+  const aboutCards = [
+    {
+      title: "Explore",
+      displayTitle: "Explore",
+      description: "Discover a range of healthy-home specialties.",
+      icon: Search,
+      href: "/directory",
+      waveColor: "#E8EFE4",
+      wavePath: "M 0 34 C 45 46, 105 22, 160 26 L 160 60 L 0 60 Z",
+    },
+    {
+      title: "Learn",
+      displayTitle: "Learn",
+      description: "Find helpful information and real homeowner questions.",
+      icon: FileText,
+      href: "/resources",
+      waveColor: "#F4EEDF",
+      wavePath: "M 0 38 C 55 46, 110 24, 160 22 L 160 60 L 0 60 Z",
+    },
+    {
+      title: "Compare",
+      displayTitle: "Compare",
+      description: "Understand your options and prepare for a conversation.",
+      icon: Users,
+      href: "/directory",
+      waveColor: "#E8EFE4",
+      wavePath: "M 0 28 C 50 20, 110 44, 160 26 L 160 60 L 0 60 Z",
+    },
+    {
+      title: "Healthier homes",
+      displayTitle: (
+        <>
+          Healthier<br />homes
+        </>
+      ),
+      description: "Take informed steps toward healthier indoor environments.",
+      icon: House,
+      href: "/about",
+      waveColor: "#F4EEDF",
+      wavePath: "M 0 32 C 45 44, 115 20, 160 30 L 160 60 L 0 60 Z",
+    },
+  ] as const;
+
   return (
     <section
       className="container home-about-section home-about"
@@ -333,13 +303,11 @@ export function HomeAbout() {
       <div className="home-about-grid">
         <div className="home-about-intro" data-scroll-reveal>
           <div className="home-eyebrow">
-
             <span className="eyebrow-text section-tag">About Us</span>
           </div>
           <h2 id="home-about-heading" className="home-about-title">
-            Different specialties.
-            <br />
-            One place to begin.
+            <span className="home-about-title-line">Different specialties.</span>
+            <span className="home-about-title-line">One place to begin.</span>
           </h2>
           <p className="home-about-paragraph">
             A healthier home and a healthy body can involve more than one kind of
@@ -348,56 +316,63 @@ export function HomeAbout() {
             conversation.
           </p>
           <Link className="home-about-cta-link text-link" href="/about">
-            About Us <ArrowRight size={15} aria-hidden="true" />
+            <span className="home-about-cta-text">About Us</span>{" "}
+            <ArrowRight size={15} aria-hidden="true" />
           </Link>
         </div>
 
         <div className="home-about-features" data-scroll-stagger>
-          {[
-            {
-              title: "Explore",
-              description: "Discover a range of healthy-home specialties.",
-              icon: Search,
-              href: "/directory",
-            },
-            {
-              title: "Learn",
-              description: "Find helpful information and real homeowner questions.",
-              icon: FileText,
-              href: "/resources",
-            },
-            {
-              title: "Compare",
-              description: "Understand your options and prepare for a conversation.",
-              icon: Users,
-              href: "/directory",
-            },
-            {
-              title: "Healthier homes",
-              description: "Take informed steps toward healthier indoor environments.",
-              icon: House,
-              href: "/about",
-            },
-          ].map(({ title, description, icon: Icon, href }, index) => (
-            <Link
-              key={title}
-              href={href}
-              className="home-about-feature-col"
-              aria-labelledby={`home-about-card-${index}-title`}
-              aria-describedby={`home-about-card-${index}-description`}
-              data-scroll-reveal
-            >
-              <span className="home-feature-icon-wrap" aria-hidden="true">
-                <Icon size={20} strokeWidth={1.8} />
-              </span>
-              <h3 id={`home-about-card-${index}-title`} className="home-feature-title">
-                {title}
-              </h3>
-              <p id={`home-about-card-${index}-description`} className="home-feature-desc">
-                {description}
-              </p>
-            </Link>
-          ))}
+          {aboutCards.map(
+            (
+              {
+                title,
+                displayTitle,
+                description,
+                icon: Icon,
+                href,
+                waveColor,
+                wavePath,
+              },
+              index,
+            ) => (
+              <Link
+                key={title}
+                href={href}
+                className="home-about-feature-card home-about-feature-col"
+                aria-labelledby={`home-about-card-${index}-title`}
+                aria-describedby={`home-about-card-${index}-description`}
+                data-scroll-reveal
+              >
+                <span className="home-about-card-icon-wrap" aria-hidden="true">
+                  <Icon size={22} strokeWidth={2} />
+                </span>
+                <h3
+                  id={`home-about-card-${index}-title`}
+                  className="home-about-card-title"
+                >
+                  {displayTitle}
+                </h3>
+                <p
+                  id={`home-about-card-${index}-description`}
+                  className="home-about-card-desc"
+                >
+                  {description}
+                </p>
+                <span className="home-about-card-arrow" aria-hidden="true">
+                  <ArrowRight size={15} strokeWidth={2.2} />
+                </span>
+                <svg
+                  className="home-about-card-wave"
+                  viewBox="0 0 160 60"
+                  fill="none"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <path d={wavePath} fill={waveColor} />
+                </svg>
+              </Link>
+            ),
+          )}
         </div>
       </div>
     </section>

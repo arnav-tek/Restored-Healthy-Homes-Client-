@@ -9,6 +9,7 @@ import { publicReviewsFor } from "./review";
 import type { DemoIdentity } from "./demo-identity";
 import type { DemoSession } from "./demo-member";
 import { professionalForMember } from "./professional-association";
+import { eligiblePublicIds } from "./public-session";
 import { parseReview } from "../validation/review";
 import {
   parseModerationNote,
@@ -118,14 +119,14 @@ export function memberReviewView(state: DemoSession): {
   const professionalId =
     identity?.kind === "member" &&
     state.records.some((record) => record.id === identity.memberId)
-      ? professionalForMember(identity.memberId)
+      ? professionalForMember(identity.memberId, state.applicationId)
       : null;
   return {
     professionalId,
     reviews: professionalId
       ? publicSessionReviews(
           state.reviews,
-          state.publicProfessionalIds,
+          eligiblePublicIds(state),
           professionalId,
         )
       : [],

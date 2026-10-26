@@ -37,9 +37,9 @@ export function FeaturedExamples({
             </h2>
           </div>
           <p className="featured-heading-title">
-            Real professionals.
+            Explore specialists.
             <br />
-            Real expertise.
+            Preview the possibilities.
           </p>
         </div>
         <div className="featured-header-right">

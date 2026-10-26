@@ -7,7 +7,7 @@ export type PublicListingLocation = Readonly<
 >;
 
 // Callers supply the directory repository's already eligible public projection.
-// Intersect with the existing review snapshot; member-demo decisions are separate.
+// Intersect with current public eligibility so listing and review decisions agree.
 export function homeStatistics(
   listings: readonly PublicListingLocation[],
   reviews: ReviewSession,

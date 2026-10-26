@@ -1,4 +1,5 @@
 "use client";
+import { eligiblePublicIds } from "@/domain/public-session";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
@@ -29,7 +30,7 @@ function LocalReviewForm({ professionalId }: { professionalId: string }) {
     `review:${professionalId}`,
   );
   const ready = useDemoReady();
-  const eligible = state.publicProfessionalIds.includes(professionalId);
+  const eligible = eligiblePublicIds(state).includes(professionalId);
   const [errors, setErrors] = useState<ReviewErrors>({});
   const [submittedHeight, setSubmittedHeight] = useState<number>();
   const form = useRef<HTMLFormElement>(null);

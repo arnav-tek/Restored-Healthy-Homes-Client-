@@ -1,9 +1,10 @@
 "use client";
-import Image from "next/image";
+import { SessionPhotoImage } from "./session-photo-image";
 import { useEffect, useRef, useState } from "react";
 import { useDemoDraft, useDemoSession } from "./demo-session";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { validSamplePhoto } from "@/validation/sample-photo";
+import { professionalForMember } from "@/domain/professional-association";
 
 export function ShowcasePreferences({ memberId }: { memberId: string }) {
   const { state, dispatch, resetVersion } = useDemoSession();
@@ -25,6 +26,7 @@ export function ShowcasePreferences({ memberId }: { memberId: string }) {
     state.identity?.kind === "member" &&
     state.identity.memberId === memberId;
   const photo = typeof draft?.photo === "string" ? draft.photo : "";
+  const acceptedPhoto = state.photos[memberId];
   return (
     <section
       className="panel showcase-preferences"
@@ -84,6 +86,7 @@ export function ShowcasePreferences({ memberId }: { memberId: string }) {
                 bitmap.height > 0 &&
                 bitmap.width <= 4096 &&
                 bitmap.height <= 4096;
+              const width = bitmap.width, height = bitmap.height;
               bitmap.close();
               if (!valid)
                 throw new Error(
@@ -95,7 +98,7 @@ export function ShowcasePreferences({ memberId }: { memberId: string }) {
                   version === generation.current &&
                   typeof reader.result === "string"
                 )
-                  saveDraft({ photo: reader.result });
+                  saveDraft({ photo: reader.result, width: String(width), height: String(height) });
               };
               reader.onerror = () => {
                 if (version === generation.current)
@@ -114,22 +117,28 @@ export function ShowcasePreferences({ memberId }: { memberId: string }) {
           aria-describedby="sample-photo-help sample-photo-error"
         />
         <p id="sample-photo-help" className="field-help">
-          Use a sample image. Preview only: nothing is uploaded or added to the
-          public directory. Refresh, sign-out and reset clear it.
+          Use a sample image. Choosing a file only creates a draft. Save it to
+          {professionalForMember(memberId, state.applicationId)
+            ? "show it on your linked public profile in this tab."
+            : "keep it in this workspace; this sample account has no linked public profile."} Nothing is uploaded.
+          Sign-out clears drafts; refresh or reset also clears saved photos.
         </p>
         <p id="sample-photo-error" role="alert" className="field-error">
           {error}
         </p>
         {photo && (
           <>
-            <Image
-              src={photo}
-              unoptimized
-              width={280}
-              height={180}
+            <p className="field-help">Unsaved photo draft</p>
+            <SessionPhotoImage
+              photo={{ dataUrl: photo, width: Number(draft?.width), height: Number(draft?.height) }}
               alt="Local business photo preview"
               className="sample-business-photo"
             />
+            <button type="button" className="button" disabled={!canEdit} onClick={() => {
+              dispatch({ type: "save-profile-photo", id: memberId, photo: { dataUrl: photo, width: Number(draft?.width), height: Number(draft?.height) } });
+              clearDraft();
+              if (photoInput.current) photoInput.current.value = "";
+            }}>Save sample photo</button>
             <button
               className="text-link"
               type="button"
@@ -147,6 +156,13 @@ export function ShowcasePreferences({ memberId }: { memberId: string }) {
             </button>
           </>
         )}
+        {acceptedPhoto && <div>
+          <p className="field-help">Saved in this demo session</p>
+          <SessionPhotoImage photo={acceptedPhoto} alt="Saved business photo" className="sample-business-photo" />
+          <button type="button" className="text-link" disabled={!canEdit} onClick={() => {
+            dispatch({ type: "save-profile-photo", id: memberId, photo: null });
+          }}>Remove saved photo</button>
+        </div>}
       </div>
     </section>
   );

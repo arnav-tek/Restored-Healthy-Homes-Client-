@@ -1,10 +1,13 @@
+"use client";
 import type { Category } from "@/domain/categories";
+import { useDemoSession } from "@/features/member/demo-session";
+import { publicDirectoryCatalog } from "@/domain/public-application";
 import type { DemoLocation } from "@/domain/location";
 import { MapPin, ChevronUp } from "lucide-react";
 import Link from "next/link";
 
 export function CategoryField({
-  catalog,
+  catalog: initialCatalog,
   selected,
   error,
 }: {
@@ -12,6 +15,8 @@ export function CategoryField({
   selected: string;
   error?: string;
 }) {
+  const { state } = useDemoSession();
+  const catalog = publicDirectoryCatalog(initialCatalog, state);
   return (
     <div className="search-field">
       <label htmlFor="category">Professional category</label>

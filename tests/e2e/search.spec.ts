@@ -1,3 +1,4 @@
+import { previewUrl } from "./helpers/preview-url";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
@@ -136,7 +137,7 @@ test("unsupported, ambiguous, malformed and zero-result searches stay honest", a
   ).toBeVisible();
   await page.getByRole("link", { name: "Browse specialists" }).click();
   await expect(page.getByTestId("professional-card")).toHaveCount(6);
-  await page.goto("http://127.0.0.1:3101/directory?q=mold&location=28801");
+  await page.goto(previewUrl("/directory?q=mold&location=28801", true));
   await expect(page.getByRole("link", { name: "Try again" })).toHaveAttribute(
     "href",
     "/directory?q=mold&location=28801",
@@ -180,7 +181,7 @@ test("search form remains functional without JavaScript", async ({
   const context = await browser.newContext({ javaScriptEnabled: false });
   try {
     const page = await context.newPage();
-    await page.goto("http://127.0.0.1:3100/");
+    await page.goto(previewUrl("/"));
     await page.getByLabel("City or ZIP code").fill("78701");
     const search = page.getByRole("button", { name: "Search", exact: true });
     // Let the native scroll settle before clicking below the mobile fold.

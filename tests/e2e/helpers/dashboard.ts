@@ -5,6 +5,7 @@ export async function section(
   area: "Member" | "Admin",
   name: string,
 ) {
+  await expect(page.locator("#workspace-title")).toBeVisible();
   const menu = page.locator(".workspace-mobile-nav");
   if ((await menu.isVisible()) && (await menu.getAttribute("open")) === null)
     await menu.locator("summary").click();

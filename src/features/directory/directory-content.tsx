@@ -2,12 +2,11 @@
 import Link from "next/link";
 import type { Category } from "@/domain/categories";
 import type { DemoLocation } from "@/domain/location";
-import type { PublicProfessional } from "@/domain/professional";
 import { directoryHref, type SearchResponse } from "@/domain/directory-search";
 import {
   publicDirectoryCatalog,
-  withPublicApplication,
 } from "@/domain/public-application";
+import { publicSessionProfessionals } from "@/domain/public-session";
 import { parseSearchQuery, type RawSearchParams } from "@/validation/directory";
 import { useDemoSession } from "@/features/member/demo-session";
 import { DirectoryFilters } from "./directory-filters";
@@ -19,14 +18,12 @@ export function DirectoryContent({
   locations,
   params,
   response,
-  professionals,
   unavailable,
 }: {
   catalog: readonly Category[];
   locations: readonly DemoLocation[];
   params: RawSearchParams;
   response?: SearchResponse;
-  professionals: readonly PublicProfessional[];
   unavailable: boolean;
 }) {
   const { state } = useDemoSession();
@@ -106,7 +103,7 @@ export function DirectoryContent({
           </div>
         ) : results ? (
           <DirectoryResults
-            professionals={withPublicApplication(professionals, state)}
+            professionals={publicSessionProfessionals(state)}
             catalog={currentCatalog}
             locations={locations}
             query={query}

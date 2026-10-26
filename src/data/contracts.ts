@@ -19,6 +19,7 @@ export interface QaRepository {
   getPublicQuestion(id: string): Promise<PublicQuestion | null>;
 }
 export interface DirectoryRepository {
+  listPublicProfiles(): Promise<PublicProfile[]>;
   listFeaturedPublic(): Promise<PublicProfessional[]>;
   getPublicProfile(id: string): Promise<PublicProfile | null>;
   getCategories(): Promise<readonly Category[]>;

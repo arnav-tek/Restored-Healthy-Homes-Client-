@@ -17,6 +17,7 @@ import { getDemoSessionSeed } from "@/data/demo/member-session";
 import type { ApplicationCategory } from "./profile-fields-form";
 import type { PublicQuestion } from "@/domain/qa";
 import type { PublicReviewSnapshot } from "@/domain/review";
+import type { PublicProfile } from "@/domain/professional";
 import { parseDemoSignIn } from "@/validation/demo-sign-in";
 import { sessionCategories } from "@/domain/session-catalog";
 
@@ -35,11 +36,13 @@ export function DemoSessionProvider({
   publicQaSeed,
   publicProfessionalIds,
   publicReviewSeed,
+  publicProfiles,
 }: {
   children: ReactNode;
   publicQaSeed: readonly PublicQuestion[];
   publicProfessionalIds: readonly string[];
   publicReviewSeed: PublicReviewSnapshot;
+  publicProfiles: readonly PublicProfile[];
 }) {
   const [state, reduce] = useReducer(
     (current: DemoSession, action: DemoMemberAction) =>
@@ -51,6 +54,7 @@ export function DemoSessionProvider({
         publicQaSeed,
         publicProfessionalIds,
         publicReviewSeed,
+        publicProfiles,
       ),
   );
   const [drafts, setDrafts] = useState<Record<string, DemoDraft>>({});

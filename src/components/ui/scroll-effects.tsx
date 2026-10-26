@@ -22,6 +22,14 @@ export function ScrollEffects() {
       return;
 
     const active = new Map<HTMLElement, Animation>();
+    const frozen = new Map<HTMLElement, { translate: string; scale: string }>();
+    function release() {
+      for (const [element, original] of frozen) {
+        element.style.translate = original.translate;
+        element.style.scale = original.scale;
+      }
+      frozen.clear();
+    }
     const observer = new IntersectionObserver(
       (entries) => {
         const groups = new Map<Element, number>();
@@ -93,17 +101,36 @@ export function ScrollEffects() {
     function stopForInteraction(event: Event) {
       if (!(event.target instanceof Node)) return;
       for (const [element, animation] of active) {
-        if (element.contains(event.target)) animation.cancel();
+        if (!element.contains(event.target)) continue;
+        if (event.type === "pointerdown") {
+          // Preserve the hit target between down and click. Canceling a moving
+          // card before pointerup otherwise moves the link out from under it.
+          const visual = getComputedStyle(element);
+          frozen.set(element, { translate: element.style.translate, scale: element.style.scale });
+          element.style.translate = visual.translate;
+          element.style.scale = visual.scale;
+          animation.cancel();
+        } else animation.finish();
       }
+    }
+    function outsideRelease(event: PointerEvent) {
+      if (!(event.target instanceof Node) || !root?.contains(event.target)) release();
     }
     root.addEventListener("focusin", stopForInteraction);
     root.addEventListener("pointerdown", stopForInteraction);
+    root.addEventListener("click", release);
+    root.addEventListener("pointercancel", release);
+    document.addEventListener("pointerup", outsideRelease);
     return () => {
       observer.disconnect();
       mutations?.disconnect();
       root.removeEventListener("focusin", stopForInteraction);
       root.removeEventListener("pointerdown", stopForInteraction);
+      root.removeEventListener("click", release);
+      root.removeEventListener("pointercancel", release);
+      document.removeEventListener("pointerup", outsideRelease);
       active.forEach((animation) => animation.cancel());
+      release();
     };
   }, [pathname, reducedMotion]);
 

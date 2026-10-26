@@ -1,5 +1,18 @@
 # Build milestones and acceptance
 
+## Connected demo workflows — 2026-10-24
+
+This follow-up supersedes the earlier snapshot-only public-data, unconnected inquiry/photo and new-application review limitations. Historical phase entries retain their original acceptance boundaries. See [connected-workflows handoff](connected-workflows-handoff.md) for the current walkthrough and exact checks.
+
+- [x] Safe public server snapshot and shared accepted-record projection across directory/search/pagination, profiles, featured examples, statistics, credentials, consultation participation and review/Q&A eligibility. Unlinked public examples are retained.
+- [x] Accepted category labels and session-created specialties reach homepage browse/search, directory, pricing and the existing session-aware forms, workspaces, Q&A, consultations and Certifications. IDs/billing keys/base prices remain stable; new-category prices are provisional.
+- [x] Eligible applications appear once and support counts, featured entitlement, reviews/member review visibility and moderated Q&A attribution through the shared association logic.
+- [x] Validated fictional profile inquiries stay in the intended member's session inbox; repeated submissions are guarded. Unlinked samples explicitly remain validation-only.
+- [x] Photo selection stays a private draft until saved. Accepted photos follow ownership, replacement/removal and reset/reload; local object URLs are revoked and image bytes are not placed in navigation or server HTML.
+- [x] Resource-card interactions retain their hit target while entrance animation is canceled. Reduced-motion/static/no-script behavior and moderated first-response policy remain intact. Featured wording now identifies examples appropriately.
+- [x] Typecheck, zero-warning lint, 126 unit tests, demo build and the default production guard pass. Affected Chromium regressions verify 163 distinct cases across completed runs/corrections, with 8 intentional skips. Desktop/tablet/mobile/320px renders were reviewed; exact coverage and local runner limits are in the handoff.
+- [ ] Client content/workflow policies, real authentication/authorization, durable storage, uploads, payments, email and deployment remain outside this demo completion.
+
 ## Homepage spacing — 2026-10-24
 
 - [x] Normalize section padding and heading-to-card gaps with responsive homepage spacing variables; add outer breathing room below the hero, around the feature band and before the footer.

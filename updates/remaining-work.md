@@ -1,5 +1,7 @@
 # What remains, and what is needed
 
+26 October publishing update: connected same-tab public profile edits, eligibility, category labels, counts, linked inquiries, saved sample photos and application reviews/Q&A are implemented locally. The [connected-workflow handoff](../docs/connected-workflows-handoff.md) supersedes earlier disconnected-demo limitations. Real persistence, email/uploads and independent-user sessions remain unfinished. Member featured-upgrade purchase screens, final directory priority rules and payment-method management are also still pending; admin featured controls and membership billing scenarios are demonstrated already.
+
 24 October: public-page scroll animations have been expanded locally; implementation and verification are in the [scroll-motion handoff](../docs/scroll-motion-handoff.md). Final client visual approval and physical-device acceptance remain part of the existing launch scope.
 
 23 October hero update: the footage label and all playback controls are removed, including the circular icon from the follow-up request. Automatic playback uses the smaller MP4 and first-frame/static fallbacks. Approved final client footage/branding still remain pending; the [motion handoff](../docs/homepage-motion-handoff.md) records the implementation and checks.

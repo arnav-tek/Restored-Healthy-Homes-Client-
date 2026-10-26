@@ -59,6 +59,17 @@ export async function signIn(page: Page, account = "approved") {
   await expect(
     page.getByRole("heading", { name: "Sign in", exact: true }),
   ).toBeVisible();
+  await expect(page.locator(".login-current, .demo-login-form fieldset:not([disabled])")).toBeVisible();
+  if (await page.getByRole("heading", { name: "You’re already signed in" }).isVisible()) {
+    const loginUrl = new URL(page.url());
+    const returnTo = loginUrl.searchParams.get("returnTo") || (loginUrl.pathname === "/admin/login" ? "/demo/admin" : "/demo/member");
+    const nextLogin = returnTo.split("?")[0] === "/demo/admin" ? "/admin/login" : "/login";
+    const accept = (dialog: import("@playwright/test").Dialog) => dialog.accept();
+    page.on("dialog", accept);
+    await page.getByRole("button", { name: "Switch account", exact: true }).click();
+    page.off("dialog", accept);
+    await expect.poll(() => new URL(page.url()).pathname).toBe(nextLogin);
+  }
   if (new URL(page.url()).pathname !== target) {
     if (account === "admin") {
       await signIn(page, "approved");
@@ -71,22 +82,10 @@ export async function signIn(page: Page, account = "approved") {
     await signIn(page, account);
     return;
   }
-  if (
-    await page
-      .getByRole("heading", { name: "You’re already signed in" })
-      .isVisible()
-  ) {
-    const accept = (dialog: import("@playwright/test").Dialog) =>
-      dialog.accept();
-    page.on("dialog", accept);
-    await page
-      .getByRole("button", { name: "Switch account", exact: true })
-      .click();
-    page.off("dialog", accept);
-  }
   const shortcuts = page.locator(".login-shortcuts");
   if ((await shortcuts.getAttribute("open")) === null)
     await shortcuts.locator("summary").press("Enter");
+  await expect(page.getByRole("button", { name: `Use ${labels[account]}`, exact: true })).toBeEnabled();
   await page
     .getByRole("button", { name: `Use ${labels[account]}`, exact: true })
     .press("Enter");

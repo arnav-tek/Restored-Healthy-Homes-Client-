@@ -21,7 +21,7 @@ test("filtered search to profile and local inquiry, validation, reset and return
   await expect(
     page.getByRole("link", { name: "Back to results" }),
   ).toHaveAttribute("href", results);
-  await expect(page.getByText(/Messages are not sent or saved/)).toBeVisible();
+  await expect(page.getByText(/This example has no linked demo member inbox/)).toBeVisible();
   await expect(page.getByLabel("Name", { exact: true })).toBeEnabled();
   await page.getByRole("button", { name: "Check inquiry" }).press("Enter");
   await expect(page.getByLabel("Name", { exact: true })).toBeFocused();
@@ -74,8 +74,8 @@ test("filtered search to profile and local inquiry, validation, reset and return
     page.getByRole("heading", { name: "Inquiry checked" }),
   ).toBeFocused();
   await expect(
-    page.getByText(/no professional will receive a message/),
-  ).toBeVisible();
+    page.locator(".inquiry-confirmation"),
+  ).toContainText("Nothing was sent or saved because this example has no linked demo member inbox.");
   expect(page.url()).toBe(before);
   expect(
     requests.some((request) =>

@@ -1,27 +1,23 @@
 import Link from "next/link";
 import { LocationPreview } from "./location-preview";
-import type { PublicProfile } from "@/domain/professional";
+import type { SessionPublicProfile } from "@/domain/public-session";
 import type { Category } from "@/domain/categories";
 import { InquiryForm } from "./inquiry-form";
 import { ReviewsSection } from "@/features/reviews/reviews-section";
-import { PublicIdentity } from "./public-identity";
-import type { PublicApplicationProfile } from "@/domain/public-application";
+import { PublicPhoto } from "./public-photo";
 
 export function ProfileView({
   profile,
   catalog,
   returnTo,
   reviewPage,
-  sessionDetails,
+  sessionCreated,
 }: {
-  profile: PublicProfile;
+  profile: SessionPublicProfile;
   catalog: readonly Category[];
   returnTo: string;
   reviewPage: unknown;
-  sessionDetails?: Pick<
-    PublicApplicationProfile,
-    "publicDisplayName" | "practices"
-  >;
+  sessionCreated?: boolean;
 }) {
   const categoryNames = profile.categoryIds.flatMap((id) => {
     const category = catalog.find((item) => item.id === id);
@@ -32,7 +28,7 @@ export function ProfileView({
   );
   return (
     <div className="container profile-page">
-      {sessionDetails && (
+      {sessionCreated && (
         <p className="workspace-note">
           Published in this tab. Refresh or reset clears this session-created
           listing.
@@ -45,14 +41,10 @@ export function ProfileView({
         <div className="profile-heading-copy">
           <p className="section-label section-tag">Specialist profile</p>
           <h1>{profile.businessName || "Professional"}</h1>
-          {sessionDetails ? (
-            sessionDetails.publicDisplayName && (
+          {profile.publicDisplayName && (
               <p className="profile-public-identity">
-                Professional / owner: {sessionDetails.publicDisplayName}
+                Professional / owner: {profile.publicDisplayName}
               </p>
-            )
-          ) : (
-            <PublicIdentity professionalId={profile.id} />
           )}
           <p className="category-label">
             {categoryNames.join(" · ") || "Category not provided"}
@@ -62,10 +54,7 @@ export function ProfileView({
               "Location not provided"}
           </p>
         </div>
-        <div className="profile-photo-placeholder">
-          <p>Business photo not provided</p>
-          <span>Profile images will appear here when available.</span>
-        </div>
+        <PublicPhoto professionalId={profile.id} businessName={profile.businessName} />
       </header>
       <div className="profile-layout">
         <div className="profile-details">
@@ -79,10 +68,10 @@ export function ProfileView({
                 "A business description has not been provided for this profile."}
             </p>
           </section>
-          {sessionDetails && (
+          {profile.practices && (
             <section aria-labelledby="practices-heading" data-scroll-reveal>
               <h2 id="practices-heading">Healthy-home practices</h2>
-              <p>{sessionDetails.practices}</p>
+              <p>{profile.practices}</p>
             </section>
           )}
           <section aria-labelledby="service-area-heading" data-scroll-reveal>
@@ -185,24 +174,14 @@ export function ProfileView({
               </Link>
             </section>
           )}
-          <InquiryForm />
+          <InquiryForm professionalId={profile.id} />
         </aside>
       </div>
-      {sessionDetails ? (
-        <section className="profile-reviews" aria-labelledby="reviews-heading">
-          <h2 id="reviews-heading">Reviews</h2>
-          <p>
-            No published reviews yet. Review submission for session-created
-            listings is not connected in this walkthrough.
-          </p>
-        </section>
-      ) : (
         <ReviewsSection
           professionalId={profile.id}
           requestedPage={reviewPage}
           returnTo={returnTo}
         />
-      )}
     </div>
   );
 }

@@ -12,6 +12,7 @@ import {
   type SearchQuery,
 } from "@/domain/directory-search";
 import { publicSessionReviews } from "@/domain/review-session";
+import { eligiblePublicIds } from "@/domain/public-session";
 import { useDemoSession } from "@/features/member/demo-session";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { ProfessionalCard } from "./professional-card";
@@ -38,7 +39,7 @@ export function DirectoryResults({
   const router = useRouter();
   const ready = useDemoReady();
   const reviews = professionals.flatMap(({ id }) =>
-    publicSessionReviews(state.reviews, state.publicProfessionalIds, id),
+    publicSessionReviews(state.reviews, eligiblePublicIds(state), id),
   );
   const results = searchPublicDirectory(
     professionals,

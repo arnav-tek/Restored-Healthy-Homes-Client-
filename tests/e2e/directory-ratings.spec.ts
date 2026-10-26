@@ -1,3 +1,4 @@
+import { previewUrl } from "./helpers/preview-url";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { signIn } from "./helpers/demo-sign-in";
@@ -162,7 +163,7 @@ test("state/rating search and seed summaries work without JavaScript, with priva
   const context = await browser.newContext({ javaScriptEnabled: false });
   try {
     const page = await context.newPage();
-    await page.goto("http://127.0.0.1:3100/directory");
+    await page.goto(previewUrl("/directory"));
     await page.getByLabel("State", { exact: true }).selectOption("NC");
     await page.getByLabel("Minimum review rating").selectOption("4.5");
     await page.getByRole("button", { name: "Apply filters" }).press("Enter");

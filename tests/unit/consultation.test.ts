@@ -1,3 +1,4 @@
+import { demoDirectory } from "../../src/data/demo/repository";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { parseConsultation } from "../../src/validation/consultation";
@@ -142,7 +143,7 @@ test("duplicate consultation actions are idempotent until deliberate restart; re
 });
 test("consultation requests remain separate from existing member, inbox and public Q&A workflows", async () => {
   const snapshot = await demoQaRepository.listPublic();
-  let state = createDemoSession(seed, snapshot);
+  let state = createDemoSession(seed, snapshot, (await demoDirectory.listPublic()).map(({ id }) => id));
   state = reduceDemoSession(
     state,
     { type: "request-consultation", fields: valid },

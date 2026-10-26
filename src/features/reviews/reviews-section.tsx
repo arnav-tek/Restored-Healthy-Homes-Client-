@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { reviewPageSize } from "@/domain/review";
 import { publicSessionReviews } from "@/domain/review-session";
+import { eligiblePublicIds } from "@/domain/public-session";
 import { useDemoSession } from "@/features/member/demo-session";
 import { parseReviewPage } from "@/validation/review";
 import { ReviewForm } from "./review-form";
@@ -20,7 +21,7 @@ export function ReviewsSection({
   // Public-only initial state keeps SSR/no-script content consistent with hydration.
   const reviews = publicSessionReviews(
     state.reviews,
-    state.publicProfessionalIds,
+    eligiblePublicIds(state),
     professionalId,
   );
   const { page, pages } = parseReviewPage(requestedPage, reviews.length);

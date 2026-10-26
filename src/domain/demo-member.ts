@@ -1,4 +1,8 @@
 import type { ApprovalStatus, SubscriptionStatus } from "./professional";
+import type { PublicProfile } from "./professional";
+import { eligiblePublicIds, seedPublicRecords } from "./public-session";
+import { reduceInquiry, type InquiryAction } from "./inquiry-session";
+import { validSessionPhoto, type SessionPhoto } from "../validation/sample-photo";
 import {
   membershipStatuses,
   type AdminArticle,
@@ -92,6 +96,7 @@ export interface DemoCredential {
   readonly verification: "unverified" | "verified";
 }
 export interface DemoInboxItem {
+  readonly professionalId?: string;
   readonly id: string;
   readonly memberId: string;
   readonly sender: string;
@@ -105,6 +110,9 @@ export interface DemoSessionSeed {
   inquiries: readonly DemoInboxItem[];
 }
 export interface DemoSession extends DemoSessionSeed {
+  readonly photos: Readonly<Record<string, SessionPhoto>>;
+  readonly currentInquiryByProfessional: Readonly<Record<string, string>>;
+  readonly publicProfiles: readonly PublicProfile[] | null;
   certifications: readonly CertificationEntry[];
   addedCategories: readonly Category[];
   articles: readonly AdminArticle[];
@@ -125,6 +133,8 @@ export interface DemoSession extends DemoSessionSeed {
   notice: string;
 }
 export type DemoMemberAction =
+  | InquiryAction
+  | { type: "save-profile-photo"; id: string; photo: SessionPhoto | null }
   | {
       type: "create-category";
       fields: { name: string; description: string; monthlyUsd: number };
@@ -192,9 +202,14 @@ export function createDemoSession(
   publicQaSeed: readonly PublicQuestion[] = [],
   publicProfessionalIds: readonly string[] = [],
   publicReviewSeed?: PublicReviewSnapshot,
+  publicProfiles: readonly PublicProfile[] | null = null,
 ): DemoSession {
   return {
     ...structuredClone(seed),
+    photos: {},
+    currentInquiryByProfessional: {},
+    publicProfiles: publicProfiles === null ? null : structuredClone(publicProfiles),
+    records: seedPublicRecords(structuredClone(seed.records), publicProfiles ?? []),
     articles: structuredClone(seed.articles ?? []),
     certifications: structuredClone(seed.certifications ?? []),
     addedCategories: [],
@@ -260,6 +275,17 @@ function reduceDemoSessionCore(
 ): DemoSession {
   const revision = state.revision + 1;
   switch (action.type) {
+    case "submit-inquiry":
+    case "new-inquiry":
+      return reduceInquiry(state, action);
+    case "save-profile-photo": {
+      if (!state.identity || (state.identity.kind === "member" && state.identity.memberId !== action.id) ||
+        !state.records.some((record) => record.id === action.id) || (action.photo !== null && !validSessionPhoto(action.photo))) return state;
+      const photos = { ...state.photos };
+      if (action.photo) photos[action.id] = { dataUrl: action.photo.dataUrl, width: action.photo.width, height: action.photo.height };
+      else delete photos[action.id];
+      return { ...state, photos, revision, notice: action.photo ? "Business photo saved in this demo session. Nothing was uploaded." : "Saved business photo removed." };
+    }
     case "billing-start":
     case "billing-result":
     case "billing-cancel":
@@ -415,7 +441,7 @@ function reduceDemoSessionCore(
       const reviews = reduceReviewAction(
         state.reviews,
         action,
-        state.publicProfessionalIds,
+        eligiblePublicIds(state),
         state.identity,
       );
       return reviews === state.reviews
@@ -530,6 +556,7 @@ function reduceDemoSessionCore(
           state.qa.snapshot,
           state.publicProfessionalIds,
           state.reviews.snapshot,
+          state.publicProfiles,
         ),
         revision,
         notice: "Workspace reset. All local changes were cleared.",
@@ -588,7 +615,7 @@ function reduceDemoSessionCore(
             : record,
         ),
         notice:
-          "Free phone consultation preference updated for this demo session. Public directory fixtures are unchanged.",
+          "Free phone consultation preference saved. Public participation labels and matching now reflect it in this tab.",
       };
     }
     case "edit": {
@@ -631,7 +658,7 @@ function reduceDemoSessionCore(
         revision,
         billing: state.billing.filter(({ memberId }) => memberId !== action.id),
         notice:
-          "Profile draft updated. Billing reviews for this record were cleared.",
+          "Profile saved in this demo session. Billing reviews for this record were cleared.",
       };
     }
     case "rename-category": {

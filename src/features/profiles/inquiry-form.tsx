@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { useDemoSession } from "@/features/member/demo-session";
+import { inquiryRecipient } from "@/domain/inquiry-session";
 import {
   inquiryLimits,
   validateInquiry,
@@ -11,16 +12,19 @@ import {
   type InquiryField,
 } from "@/validation/inquiry";
 
-export function InquiryForm() {
+export function InquiryForm({ professionalId }: { professionalId: string }) {
   const { resetVersion } = useDemoSession();
-  return <LocalInquiryForm key={resetVersion} />;
+  return <LocalInquiryForm key={`${professionalId}-${resetVersion}`} professionalId={professionalId} />;
 }
 
-function LocalInquiryForm() {
-  const { setDraft } = useDemoSession();
+function LocalInquiryForm({ professionalId }: { professionalId: string }) {
+  const { state, dispatch, setDraft } = useDemoSession();
   const ready = useDemoReady();
   const [errors, setErrors] = useState<InquiryErrors>({});
-  const [confirmed, setConfirmed] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const recipient = inquiryRecipient(state, professionalId);
+  const saved = !!state.currentInquiryByProfessional[professionalId];
+  const confirmed = saved || checked;
   const form = useRef<HTMLFormElement>(null);
   const confirmation = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -31,6 +35,7 @@ function LocalInquiryForm() {
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!ready || confirmed) return;
     const data = new FormData(event.currentTarget);
     const nextErrors = validateInquiry({
       name: data.get("name"),
@@ -48,7 +53,10 @@ function LocalInquiryForm() {
     }
     event.currentTarget.reset();
     setDraft("inquiry-dirty", null);
-    setConfirmed(true);
+    if (recipient) dispatch({ type: "submit-inquiry", professionalId, fields: {
+      name: String(data.get("name") ?? ""), email: String(data.get("email") ?? ""), message: String(data.get("message") ?? ""),
+    } });
+    else setChecked(true);
   }
   function fieldProps(field: InquiryField) {
     return {
@@ -71,22 +79,24 @@ function LocalInquiryForm() {
     <section className="inquiry-panel" aria-labelledby="inquiry-heading">
       <h2 id="inquiry-heading">Prepare an inquiry</h2>
       <p id="inquiry-demo-note" className="inquiry-notice">
-        Messages are not sent or saved. You can check your inquiry here before
-        contacting a professional.
+        Use fictional information only. {recipient
+          ? "Your inquiry is saved to the intended member’s inbox in this demo tab. No email is sent."
+          : "This example has no linked demo member inbox. You can check the form, but nothing will be saved or sent."}
       </p>
       {confirmed ? (
         <div className="inquiry-confirmation">
           <h3 ref={confirmation} tabIndex={-1}>
-            Inquiry checked
+            {saved ? "Inquiry saved to demo inbox" : "Inquiry checked"}
           </h3>
           <p>
-            Your entries passed validation and were cleared. Nothing was sent or
-            saved, and no professional will receive a message.
+            {saved ? "Saved to this demo session for the intended member. Your form was cleared; no email was sent. Refresh or reset clears the inquiry."
+              : "Your entries passed validation and were cleared. Nothing was sent or saved because this example has no linked demo member inbox."}
           </p>
           <Button
             type="button"
             onClick={() => {
-              setConfirmed(false);
+              dispatch({ type: "new-inquiry", professionalId });
+              setChecked(false);
               setErrors({});
               requestAnimationFrame(() =>
                 document.getElementById("inquiry-name")?.focus(),

@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { memberReviewView } from "@/domain/review-session";
+import { eligiblePublicIds } from "@/domain/public-session";
 import { useDemoSession } from "@/features/member/demo-session";
 import { ReviewList, ReviewSummary } from "./review-content";
 
@@ -16,7 +17,7 @@ export function MemberReviews() {
         </p>
       </div>
     );
-  if (!state.publicProfessionalIds.includes(professionalId))
+  if (!eligiblePublicIds(state).includes(professionalId))
     return (
       <p className="workspace-empty">
         Your linked public profile is unavailable. Reviews are not displayed for an ineligible profile.
@@ -31,9 +32,8 @@ export function MemberReviews() {
         Published reviews for your professional profile. Pending and rejected reviews are excluded.
       </p>
       <p className="field-help">
-        Admin review decisions affect this tab only. Member listing edits remain
-        separate from the public-directory snapshot. Refresh or reset restores
-        the original samples.
+        Accepted listing changes and admin review decisions affect this tab only.
+        Refresh or reset restores the original samples.
       </p>
       <Link
         className="text-link"

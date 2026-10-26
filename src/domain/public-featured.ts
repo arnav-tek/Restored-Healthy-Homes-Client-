@@ -2,7 +2,7 @@ import type { DemoSession } from "./demo-member";
 import type { PublicProfessional } from "./professional";
 import { isPubliclyEligible } from "./listing";
 import {
-  demoProfessionalAssociations,
+  memberForProfessional,
   professionalForMember,
 } from "./professional-association";
 import {
@@ -25,12 +25,7 @@ export function publicFeaturedExamples(
   state: Pick<DemoSession, "records" | "applicationId">,
 ): PublicProfessional[] {
   return withPublicApplication(professionals, state).filter((professional) => {
-    const memberId =
-      professional.id === PUBLIC_APPLICATION_ID
-        ? state.applicationId
-        : demoProfessionalAssociations.find(
-            (link) => link.professionalId === professional.id,
-          )?.memberId;
+    const memberId = memberForProfessional(professional.id, state.applicationId);
     if (!memberId) return initialFeaturedIds.includes(professional.id);
     const record = state.records.find((item) => item.id === memberId);
     return (

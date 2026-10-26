@@ -1,4 +1,5 @@
 "use client";
+import { eligiblePublicIds, publicSessionProfiles } from "@/domain/public-session";
 import Link from "next/link";
 import { CheckCircle2, Clock, ArrowRight, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,10 @@ export function AdminReviews() {
   const { state } = useDemoSession();
   const { query, href, navigate, pending } = useDashboardNavigation("admin");
   const ready = useDemoReady();
-  const professionals = state.reviews.snapshot.professionals;
+  const professionals = [...new Map([
+    ...state.reviews.snapshot.professionals,
+    ...publicSessionProfiles(state).map(({ id, businessName }) => ({ id, businessName })),
+  ].map((item) => [item.id, item])).values()];
   const reviews = moderationReviews(state.reviews);
   const selected = reviews.find((review) => review.id === query.review);
   const matching = reviews.filter(
@@ -25,7 +29,7 @@ export function AdminReviews() {
     professionals.find((item) => item.id === id)?.businessName ??
     "Professional unavailable";
   const available =
-    selected && state.publicProfessionalIds.includes(selected.professionalId);
+    selected && eligiblePublicIds(state).includes(selected.professionalId);
 
   const pendingReviewsCount = reviews.filter((r) => r.status === "pending").length;
   const publishedReviewsCount = reviews.filter((r) => r.status === "published").length;

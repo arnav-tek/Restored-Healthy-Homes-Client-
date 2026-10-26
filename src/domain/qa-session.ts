@@ -8,6 +8,7 @@ import type {
 import { projectQaContent } from "./qa";
 import { isPubliclyEligible } from "./listing";
 import { professionalForMember } from "./professional-association";
+import { eligiblePublicIds } from "./public-session";
 import { profileHref } from "../validation/profile";
 import { parseAnswer, parseModerationNote } from "../validation/qa-moderation";
 
@@ -98,18 +99,27 @@ export function qaReviewAnswers(state: DemoSession): ReviewAnswer[] {
   });
 }
 export function publicSessionQuestions(state: DemoSession): PublicQuestion[] {
+  const eligible = eligiblePublicIds(state);
   const answers = qaReviewAnswers(state).map((answer) => {
-    if (!answer.authorId) return answer;
+    if (!answer.authorId) {
+      if (!answer.profileHref) return answer;
+      const id = answer.profileHref.split("/").pop() ?? "";
+      if (eligible.includes(id)) return answer;
+      const { profileHref: previousHref, ...content } = answer;
+      void previousHref;
+      return content;
+    }
     const member = state.records.find((item) => item.id === answer.authorId);
-    const id = professionalForMember(answer.authorId);
+    const id = professionalForMember(answer.authorId, state.applicationId);
     const { profileHref: previousHref, ...content } = answer;
     void previousHref;
     return {
       ...content,
+      ...(member && isPubliclyEligible(member) ? { attribution: member.profile.businessName } : {}),
       ...(member &&
       isPubliclyEligible(member) &&
       id &&
-      state.publicProfessionalIds.includes(id)
+      eligible.includes(id)
         ? { profileHref: profileHref(id) }
         : {}),
     };

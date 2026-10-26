@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { directoryRepository } from "@/data";
 import { loadProfile } from "@/features/profiles/load-profile";
-import { ProfileView } from "@/features/profiles/profile-view";
-import { safeDirectoryReturn } from "@/validation/profile";
+import { SessionProfile } from "@/features/profiles/session-profile";
 import { isPublicApplicationId } from "@/domain/public-application";
-import { ApplicationProfile } from "@/features/profiles/application-profile";
 
 interface ProfilePageProps {
   params: Promise<{ id: string }>;
@@ -44,14 +42,14 @@ export default async function ProfilePage({
   // The server cannot know tab memory. Only this reserved route receives a
   // neutral no-index shell; all other unknown/private IDs keep real 404s.
   if (isPublicApplicationId(id))
-    return <ApplicationProfile catalog={catalog} returnTo={query.returnTo} />;
+    return <SessionProfile id={id} catalog={catalog} returnTo={query.returnTo} reviewPage={query.reviewPage} />;
   const profile = await loadProfile(id);
   if (!profile) notFound();
   return (
-    <ProfileView
-      profile={profile}
+    <SessionProfile
+      id={id}
       catalog={catalog}
-      returnTo={safeDirectoryReturn(query.returnTo, catalog)}
+      returnTo={query.returnTo}
       reviewPage={query.reviewPage}
     />
   );

@@ -1,4 +1,20 @@
 export const samplePhotoLimit = 3 * 1024 * 1024;
+export interface SessionPhoto {
+  dataUrl: string;
+  width: number;
+  height: number;
+}
+export function validSessionPhoto(photo: SessionPhoto): boolean {
+  if (!photo || !Number.isInteger(photo.width) || !Number.isInteger(photo.height) ||
+    photo.width <= 0 || photo.height <= 0 || photo.width > 4096 || photo.height > 4096 ||
+    typeof photo.dataUrl !== "string" || photo.dataUrl.length > samplePhotoLimit * 4 / 3 + 40) return false;
+  const match = /^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/]+={0,2})$/.exec(photo.dataUrl);
+  if (!match) return false;
+  try {
+    const bytes = atob(match[2]);
+    return validSamplePhoto(match[1], bytes.length, Uint8Array.from(bytes.slice(0, 12), (char) => char.charCodeAt(0)));
+  } catch { return false; }
+}
 export function validSamplePhoto(
   type: string,
   size: number,
