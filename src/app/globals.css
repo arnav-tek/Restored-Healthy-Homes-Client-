@@ -5879,6 +5879,9 @@ tbody tr:last-child > * {
   font-size: 14px;
   color: var(--muted);
 }
+#demo-sign-in-note {
+  margin-bottom: 18px;
+}
 .demo-gate .panel {
   padding: clamp(24px, 4vw, 40px);
 }
@@ -8525,7 +8528,7 @@ body:has(.homepage-sections) .site-footer {
   color: #4b5563;
   margin: 0;
   max-width: 680px;
-  animation: summary-intro-fade 0.2s ease-out;
+  animation: summary-intro-enter 0.2s ease-out;
 }
 .education-pathway[open] .indicator-plus {
   display: none;
@@ -8543,24 +8546,20 @@ body:has(.homepage-sections) .site-footer {
   animation: pathway-body-expand 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes summary-intro-fade {
+@keyframes summary-intro-enter {
   from {
-    opacity: 0;
     transform: translateY(-4px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes pathway-body-expand {
   from {
-    opacity: 0;
     transform: translateY(-8px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }
@@ -9514,7 +9513,12 @@ body:has(.homepage-sections) .site-footer {
   border-top: 1px solid #ebe8e1;
   font-size: 11.5px;
   text-align: center;
-  color: #777777;
+  color: var(--muted);
+}
+.home-stat-demo-label {
+  display: block;
+  margin-top: 4px;
+  line-height: 1.4;
 }
 /* Keep coordination notices readable against their soft green background. */
 .admin-notice-card { background: #edf2e7; }

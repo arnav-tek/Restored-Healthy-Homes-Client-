@@ -1,5 +1,15 @@
 # Build milestones and acceptance
 
+## Published client-showcase review — 2026-10-26
+
+See [review findings and evidence](client-showcase-review-2026-10-26.md). This reviews revision `f24faf6` and does not approve final content or real integrations.
+
+- [x] Check 14 public routes at desktop/tablet/mobile/320px (56 rendered checks), 33 discovered internal paths and mobile keyboard menu behavior on the published demo.
+- [x] Repair the Q&A queue/filter race, restore health-practitioner wording, clarify demo disclosures, supply the RHH icon and reconcile the owner guide. Final client content acceptance remains separate.
+- [x] Retain a control-less hero using a single introduction capped at 4.5 seconds; remove Certifications text opacity animation to preserve opening contrast.
+- [x] Record comprehensive hosted desktop results: 116 passed, 5 failed, 1 intentional skip; classify two failures from the same Q&A race, one copy mismatch, one animation-timing audit and one stale privacy heuristic. Five focused Edge checks pass. The review does not claim an all-green run.
+- [x] Verify the repair: typecheck/lint, 126 unit tests, demo build and production guard pass; all 47 applicable affected desktop/tablet/mobile cases and 4 focused Edge cases pass (4 intentional viewport skips). Fresh responsive screenshots reviewed; see [the repair handoff](client-showcase-fixes-handoff.md). This supersedes the earlier findings without changing their historical evidence.
+
 ## Connected demo workflows — 2026-10-24
 
 This follow-up supersedes the earlier snapshot-only public-data, unconnected inquiry/photo and new-application review limitations. Historical phase entries retain their original acceptance boundaries. See [connected-workflows handoff](connected-workflows-handoff.md) for the current walkthrough and exact checks.

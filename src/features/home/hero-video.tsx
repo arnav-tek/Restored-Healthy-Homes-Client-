@@ -6,12 +6,14 @@ import { showcaseMedia } from "@/data/content/showcase-media";
 
 export function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const introComplete = useRef(false);
+  const introTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hasFrame, setHasFrame] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   const reducedMotion = useReducedMotion();
   const play = useCallback(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || introComplete.current) return;
     // Set the native properties before attaching the source, including on Safari.
     video.muted = true;
     video.defaultMuted = true;
@@ -20,6 +22,19 @@ export function HeroVideo() {
     // A blocked or interrupted attempt leaves the poster visible. Media events
     // own frame visibility, so an older rejection cannot hide a newer frame.
     void video.play().catch(() => {});
+  }, []);
+
+  const finishIntro = useCallback(() => {
+    introComplete.current = true;
+    const video = videoRef.current;
+    if (video) {
+      video.autoplay = false;
+      video.pause();
+    }
+  }, []);
+
+  useEffect(() => () => {
+    if (introTimer.current !== null) clearTimeout(introTimer.current);
   }, []);
 
   useEffect(() => {
@@ -40,7 +55,8 @@ export function HeroVideo() {
         connection?.saveData ||
         document.hidden ||
         !inView ||
-        unavailable
+        unavailable ||
+        introComplete.current
       ) {
         video.autoplay = false;
         video.pause();
@@ -73,12 +89,17 @@ export function HeroVideo() {
         <video
           ref={videoRef}
           muted
-          loop
           playsInline
           preload="none"
           tabIndex={-1}
           className={hasFrame && !unavailable ? "has-frame" : ""}
-          onPlaying={() => setHasFrame(true)}
+          onPlaying={() => {
+            setHasFrame(true);
+            // One bounded introduction; returning to the hero never restarts it.
+            if (introTimer.current === null && !introComplete.current)
+              introTimer.current = setTimeout(finishIntro, 4500);
+          }}
+          onEnded={finishIntro}
           onError={() => {
             setUnavailable(true);
           }}

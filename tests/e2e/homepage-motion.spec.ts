@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-test("local hero video autoplays without controls, pauses offscreen and keeps responsive content readable", async ({
+test("hero introduction stops within five seconds, never loops or restarts, and keeps content readable", async ({
   page,
 }, info) => {
   // Sweep every section and card in the expanded homepage motion sequence.
@@ -26,6 +26,15 @@ test("local hero video autoplays without controls, pauses offscreen and keeps re
   await expect(page.getByRole("button", { name: /background video/ })).toHaveCount(0);
   await expect(page.locator(".hero-motion-control")).toHaveCount(0);
   await expect(video).not.toHaveAttribute("controls");
+  await expect(video).not.toHaveAttribute("loop");
+  // Native playback must stop while the hero is still visible, without a control.
+  await expect
+    .poll(() => video.evaluate((element: HTMLVideoElement) => element.paused), {
+      timeout: 7000,
+    })
+    .toBe(true);
+  expect(await video.evaluate((element: HTMLVideoElement) => element.currentTime))
+    .toBeLessThanOrEqual(5);
   for (const section of await page.locator("[data-scroll-reveal]").all()) {
     await section.scrollIntoViewIfNeeded();
     await expect(section).toHaveAttribute("data-revealed", "true");
@@ -34,12 +43,15 @@ test("local hero video autoplays without controls, pauses offscreen and keeps re
   await expect
     .poll(() => video.evaluate((element: HTMLVideoElement) => element.paused))
     .toBe(true);
-  // Offscreen pausing retains the decoded frame.
+  // The completed introduction retains its decoded frame after scrolling.
   await expect(video).toHaveCSS("opacity", "1");
   await page.evaluate(() => scrollTo(0, 0));
+  await video.evaluate(() => new Promise<void>((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+  }));
   await expect
     .poll(() => video.evaluate((element: HTMLVideoElement) => element.paused))
-    .toBe(false);
+    .toBe(true);
   await page.locator("#business-heading").scrollIntoViewIfNeeded();
   await expect
     .poll(() => video.evaluate((element: HTMLVideoElement) => element.paused))

@@ -15,7 +15,7 @@ import { QaModerationForm } from "./moderation-form";
 export function AdminQa() {
   const { state } = useDemoSession();
   const categories = useSessionCategories();
-  const { query, href } = useDashboardNavigation("admin");
+  const { query, href, navigate, pending } = useDashboardNavigation("admin");
   const questions = qaReviewQuestions(state);
   const answers = qaReviewAnswers(state);
   const answer =
@@ -47,7 +47,7 @@ export function AdminQa() {
 
 
   return (
-    <div className="qa-workspace">
+    <div className="qa-workspace" aria-busy={pending}>
       {/* Queue Switcher Summary Cards */}
       <nav className="qa-queue-nav" aria-label="Q&A queues">
         {(["questions", "answers"] as const).map((queue) => {
@@ -63,6 +63,11 @@ export function AdminQa() {
               aria-current={isSelected ? "page" : undefined}
               aria-label={`${queue === "questions" ? "Questions" : "Answers"} (${pendingCount} pending)`}
               href={href({ queue, question: "", answer: "" })}
+              onNavigate={(event) => {
+                event.preventDefault();
+                if (!pending) navigate({ queue, question: "", answer: "" });
+              }}
+              aria-disabled={pending}
               className={`qa-queue-card ${isSelected ? "is-selected" : ""}`}
             >
               <div className="qa-queue-card-header">
@@ -176,7 +181,7 @@ export function AdminQa() {
       ) : (
         <>
           <div className="admin-filter-card">
-            <QaWorkspaceFilters area="admin" />
+            <QaWorkspaceFilters area="admin" navigationPending={pending} />
           </div>
 
           <p role="status" className="result-count">

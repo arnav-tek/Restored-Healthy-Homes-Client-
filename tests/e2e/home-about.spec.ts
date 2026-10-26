@@ -35,6 +35,9 @@ test("homepage categories, truthful statistics and About Us navigation work with
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
   await expect(page).toHaveTitle(/Find healthy-home specialists/);
+  await expect(page.getByTestId("home-statistics")).toContainText(
+    "Sample figures · fictional listings and reviews",
+  );
   await expect(page.getByRole("main")).not.toContainText(
     /demo preview|fictional demo figures|published fictional/i,
   );

@@ -41,6 +41,42 @@ async function inspect(page: Page, name: string) {
     fullPage: true,
   });
 }
+test("Q&A filters cannot submit a stale queue while delayed queue navigation is pending", async ({ page }) => {
+  test.setTimeout(90000);
+  let released = false;
+  let release = () => {};
+  let intercepted = () => {};
+  const gate = new Promise<void>((resolve) => { release = resolve; });
+  const requested = new Promise<void>((resolve) => { intercepted = resolve; });
+  await page.route("**/demo/admin?**", async (route) => {
+    if (new URL(route.request().url()).searchParams.get("queue") === "answers" && !released) {
+      intercepted();
+      await gate;
+    }
+    await route.continue();
+  });
+  try {
+    await page.goto("/demo/admin?section=qa");
+    await signIn(page, "admin");
+    const answers = page.getByRole("navigation", { name: "Q&A queues" })
+      .getByRole("link", { name: /^Answers/ });
+    await answers.click();
+    await requested;
+    await expect(page.getByLabel("Publication status")).toBeDisabled();
+    await expect(page.getByRole("button", { name: "Filter Q&A", exact: true })).toBeDisabled();
+    released = true;
+    release();
+    await expect(answers).toHaveAttribute("aria-current", "page");
+    await page.getByLabel("Publication status").selectOption("pending");
+    await page.getByRole("button", { name: "Filter Q&A", exact: true }).click();
+    await expect(page).toHaveURL(/queue=answers.*qaStatus=pending/);
+    await expect(page.getByText("0 matching answers", { exact: true })).toBeVisible();
+  } finally {
+    released = true;
+    release();
+  }
+});
+
 test("session publications can add a third public results page without server clamping", async ({
   page,
 }, testInfo) => {

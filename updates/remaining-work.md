@@ -1,5 +1,7 @@
 # What remains, and what is needed
 
+26 October showcase-fix follow-up addresses the review's queue navigation, demo clarity, hero copy/media, icon and owner-guide issues; see [verification and limits](../docs/client-showcase-fixes-handoff.md). Final client content/assets/policies, member featured-upgrade/payment-method screens and real service integrations remain outstanding. These fixes do not create live authentication, email, payments or saved database records.
+
 26 October publishing update: connected same-tab public profile edits, eligibility, category labels, counts, linked inquiries, saved sample photos and application reviews/Q&A are implemented locally. The [connected-workflow handoff](../docs/connected-workflows-handoff.md) supersedes earlier disconnected-demo limitations. Real persistence, email/uploads and independent-user sessions remain unfinished. Member featured-upgrade purchase screens, final directory priority rules and payment-method management are also still pending; admin featured controls and membership billing scenarios are demonstrated already.
 
 24 October: public-page scroll animations have been expanded locally; implementation and verification are in the [scroll-motion handoff](../docs/scroll-motion-handoff.md). Final client visual approval and physical-device acceptance remain part of the existing launch scope.

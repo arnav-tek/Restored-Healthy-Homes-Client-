@@ -72,6 +72,9 @@ export function HomeStatistics({
         <p className="home-stat-review-count">
           Rating based on {stats.reviewCount} published{" "}
           {stats.reviewCount === 1 ? "review" : "reviews"}
+          <span className="home-stat-demo-label">
+            Sample figures · fictional listings and reviews
+          </span>
         </p>
       </div>
       <div className="home-statistics-note">

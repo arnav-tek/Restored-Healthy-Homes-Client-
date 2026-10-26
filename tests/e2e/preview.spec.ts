@@ -147,14 +147,20 @@ test("public output excludes private fixtures and unpublished businesses", async
   for (const privateText of [
     "synthetic-owner",
     "synthetic-customer",
-    "example.invalid",
+    "review-private@example.invalid",
+    "REVIEW_PRIVATE_NOTE",
     "internalNotes",
     "Example Practice",
     "subscriptionId",
   ])
     expect(html).not.toContain(privateText);
+  expect(html).not.toMatch(/member-\d+@example\.invalid/);
+  expect(html).toContain("hello@fern-field.example.invalid");
   expect(response.headers()["x-content-type-options"]).toBe("nosniff");
   expect(response.headers()["x-robots-tag"]).toContain("noindex");
+  const favicon = await request.get("/favicon.ico");
+  expect(favicon.status()).toBe(200);
+  expect(favicon.headers()["content-type"]).toContain("image/");
   await page.goto("/");
   await page
     .getByRole("link", { name: "Browse specialists", exact: true })

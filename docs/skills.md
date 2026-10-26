@@ -1,5 +1,7 @@
 # Installed skills
 
+26 October showcase fixes: the project-local frontend-design, react-best-practices (including transient refs) and Playwright guidance are available and were read for the scoped fixes. Bundled Next.js Link `onNavigate` and metadata icon documentation guided the implementation. No skills or dependencies were installed; the existing theme and fictional-data boundaries are retained. Earlier absence notes below describe those earlier checkouts.
+
 23 October featured/billing demonstration: the project-local `.agents/skills` directory remains absent; no unavailable skill was claimed or installed. Existing domain/provider boundaries, supplied AGENTS rules and installed Next.js server/client documentation guided this scoped extension. No new dependencies or real payment integrations were added.
 
 Checkout note, 22 October 2026: the `.agents/skills/` directories recorded below are absent from this checkout. The quality audit used the existing project conventions, tests and bundled `node_modules/next/dist/docs/` guides for production checks, lazy loading, video and Playwright. No missing skill was claimed as applied or reinstalled. The provenance below records earlier work.

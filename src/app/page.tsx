@@ -38,9 +38,8 @@ export default async function Home() {
             </p>
             <h1>Find a specialist for your healthier home.</h1>
             <p>
-              From a moisture concern to a new build, our network of health
-              professionals helps families heal. Find the specialists you
-              need — all in one place.
+              From a moisture concern to a new build and the health practitioners
+              who help families heal, find the specialists you need in one place.
             </p>
           </div>
           <HomeSearch catalog={catalog} locations={locations} />

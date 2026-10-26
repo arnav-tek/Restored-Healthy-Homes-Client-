@@ -96,10 +96,16 @@ export function DemoLoginForm({
         noValidate
         onSubmit={submit}
         autoComplete="off"
+        aria-describedby="demo-sign-in-note"
       >
         <h2 className="sr-only">{area === "member" ? "Professional access" : "Administrator access"}</h2>
         <p className="login-access-description">
           {area === "member" ? "Manage your professional profile and inquiries." : "Manage applications, listings and directory activity."}
+        </p>
+        <p id="demo-sign-in-note" className="field-help">
+          <strong>Demo sign-in.</strong> Use Quick access below to choose a
+          fictional account. Do not enter real credentials. Nothing is
+          transmitted; refresh clears this demo session.
         </p>
         <fieldset disabled={!ready} className="member-form-fields">
           <legend className="sr-only">Sign-in details</legend>

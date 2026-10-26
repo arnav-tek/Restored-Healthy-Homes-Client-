@@ -35,8 +35,15 @@ test("separate login pages reject the other account type", async ({ page }, info
 });
 async function inspect(page: Page, name: string) {
   await expect(page.locator("main")).not.toContainText(
-    /\b(demo|temp|temporary|fictional|synthetic)\b/i,
+    /\b(temp|temporary|synthetic)\b/i,
   );
+  if (new URL(page.url()).pathname.endsWith("/login")) {
+    const note = page.locator("#demo-sign-in-note");
+    await expect(note).toBeVisible();
+    await expect(note).toContainText("Demo sign-in.");
+    await expect(note).toContainText("Do not enter real credentials.");
+    await expect(note).toContainText("Quick access");
+  }
   expect(
     (
       await new AxeBuilder({ page })

@@ -1,5 +1,7 @@
 # Homepage video, motion and remaining client updates
 
+26 October repair: the hero now plays one introduction capped at 4.5 seconds, then holds its frame without looping or restarting. Playback controls remain absent; static/reduced-motion/data-saving fallbacks are retained. See [the current fix handoff](client-showcase-fixes-handoff.md) for verification. Older looping/playback behavior below is historical.
+
 20 October 2026. Follow-up to the client showcase; demo only.
 
 24 October: scroll entrances now extend across homepage cards/sections and other public pages through a shared controller. See the [scroll-motion handoff](scroll-motion-handoff.md) for the current behavior and checks. The video controls remain removed.

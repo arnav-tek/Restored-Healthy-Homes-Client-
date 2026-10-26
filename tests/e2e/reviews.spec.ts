@@ -64,6 +64,9 @@ test("published review summaries, same-profile pages, empty and long reviews sta
     `${profile}?returnTo=${encodeURIComponent("/directory?category=mold-inspection")}`,
   );
   await expect(page.getByTestId("review-summary")).toHaveText(summary);
+  await expect(page.locator("#reviews")).toContainText(
+    "Fictional sample reviews for this demo.",
+  );
   await expect(
     page.getByRole("list", { name: "Published reviews" }).getByRole("article"),
   ).toHaveCount(3);

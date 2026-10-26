@@ -4,16 +4,19 @@ import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { useSessionCategories } from "@/features/member/demo-session";
 import type { DashboardArea } from "@/validation/dashboard";
 import { useDashboardNavigation } from "@/features/dashboard/use-dashboard-navigation";
-export function QaWorkspaceFilters({ area }: { area: DashboardArea }) {
+export function QaWorkspaceFilters({ area, navigationPending = false }: {
+  area: DashboardArea;
+  navigationPending?: boolean;
+}) {
   const { query, navigate, pending } = useDashboardNavigation(area);
   const ready = useDemoReady();
   const categories = useSessionCategories();
   return (
     <form
-      key={`${query.q}-${query.category}-${query.qaStatus}`}
+      key={`${query.queue}-${query.q}-${query.category}-${query.qaStatus}`}
       onSubmit={(event) => {
         event.preventDefault();
-        if (!ready || pending) return;
+        if (!ready || pending || navigationPending) return;
         const data = new FormData(event.currentTarget);
         navigate({
           q: String(data.get("q") ?? ""),
@@ -24,7 +27,7 @@ export function QaWorkspaceFilters({ area }: { area: DashboardArea }) {
         });
       }}
     >
-      <fieldset disabled={!ready || pending} className="qa-filters">
+      <fieldset disabled={!ready || pending || navigationPending} className="qa-filters">
         <legend className="sr-only">Filter Q&A</legend>
         <div className="search-field">
           <label htmlFor="workspace-qa-q">Q&A keyword</label>

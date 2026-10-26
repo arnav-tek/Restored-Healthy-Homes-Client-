@@ -41,6 +41,7 @@ export function ReviewsSection({
     >
       <header className="reviews-heading">
         <h2 id="reviews-heading">Reviews</h2>
+        <p className="field-help">Fictional sample reviews for this demo.</p>
       </header>
       <ReviewSummary reviews={reviews} />
       <ReviewList reviews={visible} start={(page - 1) * reviewPageSize + 1} />
