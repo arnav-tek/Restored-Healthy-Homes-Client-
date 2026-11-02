@@ -1,5 +1,10 @@
 # Build milestones and acceptance
 
+## Homepage publication — 2026-11-03
+
+- [x] Push the reviewed homepage source (`90c139a`) to GitHub `main`, excluding unrelated local sign-in edits.
+- [x] Build a clean source export on the existing Vercel project and update the existing public demo alias. Verify live HTML/video HTTP 200, the new media reference, matching committed video hash and retained no-index header. See [publication evidence and limits](homepage-motion-handoff.md#github-and-vercel-publication--3-november-2026).
+
 ## Homepage background refresh — 2026-11-02
 
 - [x] Replace the rejected washed-out window treatment with recognizable licensed living-room footage and a matching first frame. Use cream hero text over a directional dark overlay, an opaque search card and responsive room crops so the footage stays visible.

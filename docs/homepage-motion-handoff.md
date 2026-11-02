@@ -1,5 +1,15 @@
 # Homepage video, motion and remaining client updates
 
+## GitHub and Vercel publication — 3 November 2026
+
+Published the homepage refresh after the user's explicit instruction. Application source commit: [`90c139a09ac5f5fe332fba5c4d8261e4e3755451`](https://github.com/arnav-tek/Restored-Healthy-Homes-Client-/commit/90c139a09ac5f5fe332fba5c4d8261e4e3755451), pushed to `main`. Separate local sign-in illustration/component/CSS work was excluded from both the commit and deployment.
+
+Vercel deployment `dpl_He7sy8BjNx1ExaRorYHT7o9m2uh9` completed successfully from a clean export of that commit. The existing public demo address [restored-healthy-homes-client.vercel.app](https://restored-healthy-homes-client.vercel.app/) now points to [the new deployment](https://restored-healthy-homes-client-g2vg3knni.vercel.app/). This retains the site's existing preview-build/public-alias arrangement, explicit demo mode, no-index headers and production guard; it does not enable real integrations or approve a production launch.
+
+Deployment preflight included 197 source/assets and excluded environment files, confidential sources, internal docs, tests and generated output. Vercel's Next.js build and TypeScript check passed. The live homepage and replacement MP4 return HTTP 200; served HTML references the new media and no longer references the old clip. The downloaded live MP4 matches the committed SHA-256 `fb63d7e341e84f3c7683c6652a539b44b4fde8928b563aabf41bdbd4b46de358`, and `X-Robots-Tag` remains `noindex, nofollow`. Local validation from the reviewed change remains typecheck/lint, 126 unit tests, demo build and 34 passing selected browser cases; a new full hosted browser suite was not run.
+
+Publication evidence: ignored `output/publish-homepage-2026-11-03/{receipt.json,deploy-preflight.json,deployment.log,alias.log,live-verification.json}`. The desktop browser handoff was unavailable after deployment; HTTP and asset-integrity checks above verify the live result independently.
+
 ## Visible living-room footage follow-up — 2 November 2026
 
 The user rejected the washed-out sunlit-window treatment below. Replaced it with a recognizable furnished living-room camera pan, removing the cream veil and bottom fade. Light cream hero copy sits over a directional dark-sage scrim; the room remains visible, especially at the right. The search card is opaque cream, its helper text has stronger contrast, and the browse link has its own dark backing. Statistics-card text stays dark; text outside the card is light. Tablet/mobile use a centered room crop and a vertical dark overlay instead of the former cream wash. The existing 4.5-second introduction, no-controls preference and static/failure fallbacks remain.
