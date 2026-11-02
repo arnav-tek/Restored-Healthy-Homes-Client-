@@ -1,5 +1,49 @@
 # Homepage video, motion and remaining client updates
 
+## Visible living-room footage follow-up — 2 November 2026
+
+The user rejected the washed-out sunlit-window treatment below. Replaced it with a recognizable furnished living-room camera pan, removing the cream veil and bottom fade. Light cream hero copy sits over a directional dark-sage scrim; the room remains visible, especially at the right. The search card is opaque cream, its helper text has stronger contrast, and the browse link has its own dark backing. Statistics-card text stays dark; text outside the card is light. Tablet/mobile use a centered room crop and a vertical dark overlay instead of the former cream wash. The existing 4.5-second introduction, no-controls preference and static/failure fallbacks remain.
+
+Current media provenance:
+
+- [Modern House Interior, Pexels video 5744424, Abdullah | 4K](https://www.pexels.com/video/modern-house-interior-5744424/), under the [Pexels license](https://www.pexels.com/license/), checked 2 November 2026. Free website use and modification are permitted; no endorsement or client-property claim is made.
+- Source: `https://videos.pexels.com/video-files/5744424/5744424-uhd_3840_2160_30fps.mp4`, 28,710,153 bytes, 3840×2160, 30fps, approximately 10.57 seconds, no audio. The local extract starts three seconds into the source to show the furnished room immediately.
+- Shipped `public/media/demo-living-room.mp4`: 2,256,545 bytes, five seconds, 1600×900, 24fps, silent H.264 Constrained Baseline level 4.0, yuv420p, CRF 24, fast-start metadata. SHA-256 `fb63d7e341e84f3c7683c6652a539b44b4fde8928b563aabf41bdbd4b46de358`.
+- Matching first-frame `public/media/demo-living-room.jpg`: 127,419 bytes; SHA-256 `091dea597cceaec71fae63a0b7759f2ec5dbd2356de8628f22bea4bde3cb8662`.
+- The rejected window assets are removed. Browser fixtures reference the new media. No new dependency, external player, runtime media host or integration.
+
+Verification for this follow-up:
+
+- `npm run check` passes typecheck, zero-warning lint, all 126 unit tests and the demo build. Explicit production-mode `npm run build` rejects with exit 1; the existing local demo opt-in and production guard remain unchanged.
+- Selected `npm run test:e2e` coverage: 34 passed, two intentional viewport skips across desktop/tablet/mobile. Checks cover actual playback, once-only introduction, accessibility/contrast, responsive overflow, 320px/200% text, no-script, blocked/failed media, reduced motion/data saving, optimized-poster requests, search, statistics and reviews. No test assertions or playback policy were changed; media-dependent fixtures reference the replacement.
+- Visually reviewed current desktop/tablet/mobile/320px screenshots. The furnished room is recognizable, copy is cream over the darker left side, and form controls stay clear on an opaque card. Stable copies: `output/playwright/hero-interior-{desktop,tablet,mobile,320}.png`.
+- Reloaded the user's existing preview on port 3205. Its live DOM confirms `/media/demo-living-room.mp4`, a decoded width of 1600, video opacity 1, cream heading text, dark hero background, no horizontal overflow, and the retained frame after approximately 4.51 seconds. The in-app browser screenshot API could not capture the tab; visual evidence comes from the completed browser-test renders above.
+- `git diff --check` passes. Logs are in ignored `output/hero-interior/{check,production-guard,e2e}.log`. This is selected Chromium coverage; physical devices, other engines and a new full-suite run remain unverified. Concurrent sign-in illustration/CSS edits are outside this task's scope. No deployment occurred.
+
+Earlier verification below describes the superseded treatment.
+
+## Superseded sunlit-window background refresh — 2 November 2026
+
+Replaced the living-room clip with a quiet view of sunlight and trees through a moving curtain. A directional cream veil is strongest behind the dark-sage copy, lighter behind the white search card, and fades to the hero's cream background at the bottom. Tablet/mobile use a uniform protective veil and a separate crop. The matching poster uses the first frame of the new clip, so reduced-motion, data-saving, blocked playback and no-script views retain the same composition. Existing layout, copy, form behavior and the single 4.5-second introduction are retained.
+
+Replacement media is a licensed demonstration placeholder, not a client property or final approved company film:
+
+- [View of a window with a curtain, Mixkit item 3977](https://mixkit.co/free-stock-video/view-of-a-window-with-a-curtain-3977/). The item explicitly permits commercial/personal use under the [Stock Video Free License](https://mixkit.co/license/modal/videoFree/), checked 2 November 2026.
+- Download: `https://assets.mixkit.co/videos/3977/3977-720.mp4`. Original: 3,262,232 bytes, 1280×720, approximately 11 seconds, 23.976fps, no audio. The shipped clip is trimmed to five seconds with H.264 Constrained Baseline level 3.1, yuv420p, CRF 26 and fast-start metadata. No new runtime dependency or external video request.
+- Shipped video: `public/media/demo-sunlit-window.mp4`, 783,136 bytes; SHA-256 `c7bcb782ccecdbbb16e849911b06fa95fd02a53047fb44908857f07b4f27c11d`.
+- Matching still: `public/media/demo-sunlit-window.jpg`, 36,143 bytes; SHA-256 `49be64df47477f74a6859413577de6f3cb32adfba2d0b60920408c2afd305073`.
+- The old living-room assets are removed. Media-dependent browser fixtures now reference the replacement. Older media provenance and presentation notes below are historical.
+
+Verification:
+
+- `npm run check` passes typecheck, zero-warning lint, all 126 unit tests and the demo build. A second demo build after the final mobile crop adjustment also passes.
+- Selected `npm run test:e2e` coverage verifies 40 distinct applicable cases across desktop/tablet/mobile, with two intentional viewport skips. The main run passed 39; the desktop static-homepage case hit `net::ERR_NETWORK_CHANGED` before its assertions and passed unchanged on a serial retry. Playback, once-only motion, static preferences, blocked/failed media, no-script, optimized poster, search, counts/reviews, accepted category updates and saved-photo ownership workflows are covered. After the final crop adjustment, all 18 affected hero/static-poster cases pass again. No assertion or timeout was relaxed.
+- Reviewed final 1440/768/390/320px renders in `output/playwright/hero-refresh-*.png`; heading/form remain readable, the mobile crop shows trees rather than the dark window frame, and the bottom fade keeps the browse link clear. The four render passes report no overflow or uncaught browser errors, actual 1280px decoded video, a retained frame around 4.5 seconds and no loop.
+- The checkout's existing `.env.local` explicitly opts into demo mode, so default `npm run build` succeeds as a demo build here. Explicit production mode rejects with exit 1; no guard or local environment change was made. Running the default build alongside the first browser launch briefly replaced `.next`, so that first launch ran no tests. Browser checks were rerun after the completed build. Evidence: `output/hero-refresh/{check,final-build,production-guard,production-guard-explicit,e2e,e2e-final,e2e-retry,e2e-final-crop,final-render}.log` and `render-results.json`.
+- `git diff --check` passes. This is selected local Chromium coverage, not a new full-suite/multi-engine or physical-device review. Concurrent sign-in illustration edits in the checkout are outside this task's verification. The local preview is on port 3205; no public deployment occurred.
+
+The confidential overview/alignment files and `.agents/skills/` are absent from this checkout; the supplied project conventions, existing implementation/handoffs and bundled Next.js video/CSS documentation guide this presentation-only edit.
+
 26 October repair: the hero now plays one introduction capped at 4.5 seconds, then holds its frame without looping or restarting. Playback controls remain absent; static/reduced-motion/data-saving fallbacks are retained. See [the current fix handoff](client-showcase-fixes-handoff.md) for verification. Older looping/playback behavior below is historical.
 
 20 October 2026. Follow-up to the client showcase; demo only.

@@ -102,8 +102,8 @@ test("static hero requests one optimized poster and no video", async ({
   const videos: string[] = [];
   page.on("request", (request) => {
     const path = new URL(request.url()).pathname;
-    if (path === "/media/demo-home-interior.jpg") originalPosters.push(path);
-    if (path === "/media/demo-home-interior.mp4") videos.push(path);
+    if (path === "/media/demo-living-room.jpg") originalPosters.push(path);
+    if (path === "/media/demo-living-room.mp4") videos.push(path);
   });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");

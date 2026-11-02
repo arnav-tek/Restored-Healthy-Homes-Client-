@@ -1,5 +1,11 @@
 # Build milestones and acceptance
 
+## Homepage background refresh — 2026-11-02
+
+- [x] Replace the rejected washed-out window treatment with recognizable licensed living-room footage and a matching first frame. Use cream hero text over a directional dark overlay, an opaque search card and responsive room crops so the footage stays visible.
+- [x] Preserve the brief introduction and static fallbacks. Typecheck/lint, 126 unit tests, demo build and explicit production guard pass; all 34 applicable selected browser cases pass with two intentional viewport skips. Current desktop/tablet/mobile/320px renders reviewed and the user's preview refreshed. See [current media provenance, evidence and coverage limits](homepage-motion-handoff.md#visible-living-room-footage-follow-up--2-november-2026).
+- [x] Keep real integrations and public deployment outside this scoped local update.
+
 ## Published client-showcase review — 2026-10-26
 
 See [review findings and evidence](client-showcase-review-2026-10-26.md). This reviews revision `f24faf6` and does not approve final content or real integrations.
