@@ -1,21 +1,48 @@
-interface AppEnvironment {
+export interface AppEnvironment {
   NODE_ENV?: string;
   RHH_APP_MODE?: string;
   VERCEL_ENV?: string;
+  NEXT_PUBLIC_SUPABASE_URL?: string;
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?: string;
 }
-export function assertDemoConfiguration(env: AppEnvironment): void {
-  // Live adapters/auth are not implemented: even explicit live mode must stop.
-  if (
-    env.VERCEL_ENV === "production" ||
-    (env.RHH_APP_MODE !== undefined && env.RHH_APP_MODE !== "demo")
-  ) {
+export const STAGING_PROJECT_REF = "xjecnuebalmmblowmtks";
+
+export function stagingConfiguration(env: AppEnvironment) {
+  const url = env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (url !== `https://${STAGING_PROJECT_REF}.supabase.co`) {
     throw new Error(
-      "Live operation is unavailable. Authentication and payment integration must be implemented before launch.",
+      "Set NEXT_PUBLIC_SUPABASE_URL to the approved staging project URL.",
     );
   }
-  if (env.NODE_ENV === "production" && env.RHH_APP_MODE !== "demo") {
+  if (!key || !/^sb_publishable_[A-Za-z0-9_-]+$/.test(key)) {
     throw new Error(
-      "Production is blocked. For a local demo build only, explicitly set RHH_APP_MODE=demo.",
+      "Set NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY to a staging publishable key.",
+    );
+  }
+  return { url, key };
+}
+
+export function applicationMode(env: AppEnvironment): "demo" | "staging" {
+  if (env.VERCEL_ENV === "production") {
+    throw new Error(
+      "Public launch is blocked pending production readiness review.",
+    );
+  }
+  if (env.RHH_APP_MODE === "staging") {
+    stagingConfiguration(env);
+    return "staging";
+  }
+  if (env.RHH_APP_MODE === "demo") return "demo";
+  throw new Error(
+    "Production is blocked. Explicitly select RHH_APP_MODE=demo or staging; public launch remains unavailable.",
+  );
+}
+
+export function assertDemoConfiguration(env: AppEnvironment): void {
+  if (applicationMode(env) !== "demo") {
+    throw new Error(
+      "Fictional demo adapters are unavailable in connected staging mode.",
     );
   }
 }

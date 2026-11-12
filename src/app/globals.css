@@ -1638,6 +1638,12 @@ tbody tr:last-child > * {
   }
 }
 @media (max-width: 560px) {
+  .account-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding-block: 16px;
+  }
   .brand {
     font-size: 21px;
     gap: 10px;
@@ -1972,6 +1978,29 @@ tbody tr:last-child > * {
 .inquiry-confirmation {
   display: grid;
   gap: 20px;
+}
+.connected-inbox-list {
+  display: grid;
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+.connected-inbox-card {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+.connected-inbox-card > a { display: inline-flex; align-items: center; min-height: 44px; }
+.connected-inbox-card p { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.connected-inquiry-detail { display: grid; gap: 16px; }
+.connected-inquiry-detail h2 { font-size: 27px; }
+.connected-inquiry-detail .inbox-message {
+  padding: 18px;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 10px;
 }
 .profile-card-link {
   display: inline-flex;

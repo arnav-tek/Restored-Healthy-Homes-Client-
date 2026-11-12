@@ -3,7 +3,8 @@ import { Brand } from "@/components/site/brand";
 import { Navigation } from "@/components/site/navigation";
 import { Footer } from "@/components/site/footer";
 import { ScrollEffects } from "@/components/ui/scroll-effects";
-import { assertDemoConfiguration } from "@/domain/config";
+import { applicationMode } from "@/domain/config";
+import { ConnectedNavigation } from "@/features/auth/connected-navigation";
 import { DemoSessionProvider } from "@/features/member/demo-session";
 import { directoryRepository, qaRepository, reviewRepository } from "@/data";
 import "./globals.css";
@@ -19,7 +20,34 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  assertDemoConfiguration(process.env);
+  if (applicationMode(process.env) === "staging")
+    return (
+      <html lang="en">
+        <body>
+          <a className="skip-link" href="#main">
+            Skip to content
+          </a>
+          <header className="site-header">
+            <div className="container header-inner account-header">
+              <Brand />
+              <ConnectedNavigation />
+            </div>
+          </header>
+          <main id="main" tabIndex={-1}>
+            {children}
+          </main>
+          <footer className="site-footer">
+            <div className="container">
+              <p>Restored Healthy Homes · Staging account access</p>
+              <p>
+                Applications, profiles and review decisions save to staging.
+                Payments and other workflows are not connected yet.
+              </p>
+            </div>
+          </footer>
+        </body>
+      </html>
+    );
   const [publicQaSeed, publicReviewSeed, publicProfiles] = await Promise.all([
     qaRepository.listPublic().catch(() => []),
     reviewRepository

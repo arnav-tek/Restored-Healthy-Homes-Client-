@@ -40,6 +40,7 @@ export interface PublicProfessional {
   verifiedCredentials: string[];
 }
 export interface PublicProfile extends PublicProfessional {
+  publicDisplayName?: string;
   serviceArea: string;
   listedCredentials: string[];
   contact: { email: string; phone: string; website: string };

@@ -346,6 +346,9 @@ After Phase 2H-2, await scoped prompts for the remaining demo milestones above; 
 
 ## Phase 3 — real accounts and administration integrations
 
+- [x] 2026-11-08 staging database foundation: 15 closed-by-default `rhh` tables, eight canonical categories, constraints/indexes and hosted RLS/grant verification. See [database foundation handoff](database-foundation-handoff.md).
+- [ ] Connect live server adapters/Auth and implement ownership/admin/public-projection policies. The foundation alone does not complete the integration items below.
+
 - [ ] Supabase schema/migrations, Auth/Storage, server authorization, RLS/grants and ownership tests.
 - [ ] Applications, approval/rejection/suspension, profile editing and safe uploads.
 - [ ] Member/admin portals, category renaming, credential review/badges, audit trails.

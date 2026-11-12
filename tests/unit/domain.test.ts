@@ -148,7 +148,7 @@ test("query validation rejects arrays, display names, unknown and oversized valu
   assert.deepEqual(parseDirectoryQuery(undefined, categories), { valid: true });
 });
 test("demo mode cannot silently become production authorization", () => {
-  assert.doesNotThrow(() =>
+  assert.throws(() =>
     assertDemoConfiguration({ NODE_ENV: "development" }),
   );
   assert.doesNotThrow(() =>

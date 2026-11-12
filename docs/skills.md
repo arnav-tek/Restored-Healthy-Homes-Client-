@@ -1,5 +1,7 @@
 # Installed skills
 
+8 November database foundation: used existing project-local Supabase and Supabase Postgres skills, plus the installed Supabase plugin's skill guidance. Read RLS, primary-key and foreign-key-index references. Official Supabase changelog/docs and CLI 3.0.0 help informed the migration workflow. No skill reinstall or application dependency change; PGlite 0.5.15 was installed only under ignored output for isolated SQL tests.
+
 26 October showcase fixes: the project-local frontend-design, react-best-practices (including transient refs) and Playwright guidance are available and were read for the scoped fixes. Bundled Next.js Link `onNavigate` and metadata icon documentation guided the implementation. No skills or dependencies were installed; the existing theme and fictional-data boundaries are retained. Earlier absence notes below describe those earlier checkouts.
 
 23 October featured/billing demonstration: the project-local `.agents/skills` directory remains absent; no unavailable skill was claimed or installed. Existing domain/provider boundaries, supplied AGENTS rules and installed Next.js server/client documentation guided this scoped extension. No new dependencies or real payment integrations were added.

@@ -4,17 +4,18 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { useDemoSession } from "@/features/member/demo-session";
+import { InquiryFields } from "./inquiry-fields";
 import { inquiryRecipient } from "@/domain/inquiry-session";
-import {
-  inquiryLimits,
-  validateInquiry,
-  type InquiryErrors,
-  type InquiryField,
-} from "@/validation/inquiry";
+import { validateInquiry, type InquiryErrors } from "@/validation/inquiry";
 
 export function InquiryForm({ professionalId }: { professionalId: string }) {
   const { resetVersion } = useDemoSession();
-  return <LocalInquiryForm key={`${professionalId}-${resetVersion}`} professionalId={professionalId} />;
+  return (
+    <LocalInquiryForm
+      key={`${professionalId}-${resetVersion}`}
+      professionalId={professionalId}
+    />
+  );
 }
 
 function LocalInquiryForm({ professionalId }: { professionalId: string }) {
@@ -53,33 +54,24 @@ function LocalInquiryForm({ professionalId }: { professionalId: string }) {
     }
     event.currentTarget.reset();
     setDraft("inquiry-dirty", null);
-    if (recipient) dispatch({ type: "submit-inquiry", professionalId, fields: {
-      name: String(data.get("name") ?? ""), email: String(data.get("email") ?? ""), message: String(data.get("message") ?? ""),
-    } });
+    if (recipient)
+      dispatch({
+        type: "submit-inquiry",
+        professionalId,
+        fields: {
+          name: String(data.get("name") ?? ""),
+          email: String(data.get("email") ?? ""),
+          message: String(data.get("message") ?? ""),
+        },
+      });
     else setChecked(true);
-  }
-  function fieldProps(field: InquiryField) {
-    return {
-      id: `inquiry-${field}`,
-      name: field,
-      required: true,
-      maxLength: inquiryLimits[field],
-      "aria-invalid": !!errors[field],
-      "aria-describedby": errors[field] ? `inquiry-${field}-error` : undefined,
-    };
-  }
-  function error(field: InquiryField) {
-    return errors[field] ? (
-      <p className="field-error" id={`inquiry-${field}-error`}>
-        {errors[field]}
-      </p>
-    ) : null;
   }
   return (
     <section className="inquiry-panel" aria-labelledby="inquiry-heading">
       <h2 id="inquiry-heading">Prepare an inquiry</h2>
       <p id="inquiry-demo-note" className="inquiry-notice">
-        Use fictional information only. {recipient
+        Use fictional information only.{" "}
+        {recipient
           ? "Your inquiry is saved to the intended member’s inbox in this demo tab. No email is sent."
           : "This example has no linked demo member inbox. You can check the form, but nothing will be saved or sent."}
       </p>
@@ -89,7 +81,8 @@ function LocalInquiryForm({ professionalId }: { professionalId: string }) {
             {saved ? "Inquiry saved to demo inbox" : "Inquiry checked"}
           </h3>
           <p>
-            {saved ? "Saved to this demo session for the intended member. Your form was cleared; no email was sent. Refresh or reset clears the inquiry."
+            {saved
+              ? "Saved to this demo session for the intended member. Your form was cleared; no email was sent. Refresh or reset clears the inquiry."
               : "Your entries passed validation and were cleared. Nothing was sent or saved because this example has no linked demo member inbox."}
           </p>
           <Button
@@ -129,44 +122,7 @@ function LocalInquiryForm({ professionalId }: { professionalId: string }) {
           </noscript>
           <fieldset disabled={!ready}>
             <legend className="sr-only">Inquiry details</legend>
-            <p className="field-help">All fields are required.</p>
-            {Object.keys(errors).length > 0 ? (
-              <p className="field-error" role="alert">
-                Check the highlighted fields below.
-              </p>
-            ) : null}
-            <div className="search-field">
-              <label htmlFor="inquiry-name">Name</label>
-              <input
-                {...fieldProps("name")}
-                type="text"
-                placeholder="Your name"
-              />
-              {error("name")}
-            </div>
-            <div className="search-field">
-              <label htmlFor="inquiry-email">Email</label>
-              <input
-                {...fieldProps("email")}
-                type="email"
-                placeholder="homeowner@example.invalid"
-                spellCheck={false}
-              />
-              {error("email")}
-            </div>
-            <div className="search-field">
-              <label htmlFor="inquiry-message">Message</label>
-              <textarea
-                {...fieldProps("message")}
-                rows={5}
-                minLength={10}
-                placeholder="I would like to learn about your services for a project."
-              />
-              <p className="field-help">
-                10–2,000 characters. Describe a project or service question.
-              </p>
-              {error("message")}
-            </div>
+            <InquiryFields errors={errors} />
             <Button type="submit">Check inquiry</Button>
           </fieldset>
         </form>

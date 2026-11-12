@@ -1,3 +1,5 @@
+import { applicationMode } from "@/domain/config";
+import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, House } from "lucide-react";
@@ -11,6 +13,7 @@ export default async function AdminLoginPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  if (applicationMode(process.env) === "staging") redirect("/login?returnTo=/admin");
   const params = await searchParams;
   return (
     <div className="container demo-login-page">

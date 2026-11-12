@@ -10,7 +10,7 @@
     "build:demo": "cross-env RHH_APP_MODE=demo next build",
     "typecheck": "cross-env RHH_APP_MODE=demo next typegen && tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
-    "test": "tsx --conditions=react-server --test tests/unit/*.test.ts",
+    "test": "cross-env RHH_APP_MODE=demo tsx --conditions=react-server --test tests/unit/*.test.ts",
     "test:e2e": "playwright test",
     "test:compat": "playwright test --config=playwright.compat.config.ts",
     "audit:performance": "node scripts/measure-performance.mjs",
@@ -21,6 +21,8 @@
     "node": ">=22.0.0"
   },
   "dependencies": {
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.119.0",
     "lucide-react": "1.49.0",
     "next": "16.3.7",
     "react": "19.3.0",

@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
-import { assertDemoConfiguration } from "./src/domain/config";
-assertDemoConfiguration(process.env);
+import { applicationMode } from "./src/domain/config";
+applicationMode(process.env);
 const config: NextConfig = {
+  logging: { incomingRequests: false },
   poweredByHeader: false,
   async headers() {
     return [

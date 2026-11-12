@@ -1,3 +1,5 @@
+import { applicationMode } from "@/domain/config";
+import { ConnectedProfileView } from "@/features/profiles/connected-profile-view";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { directoryRepository } from "@/data";
@@ -16,7 +18,7 @@ export async function generateMetadata({
   params,
 }: ProfilePageProps): Promise<Metadata> {
   const id = (await params).id;
-  if (isPublicApplicationId(id))
+  if (applicationMode(process.env) === "demo" && isPublicApplicationId(id))
     return {
       title: "Specialist profile",
       description: "A profile available only in the current demonstration tab.",
@@ -41,10 +43,11 @@ export default async function ProfilePage({
   ]);
   // The server cannot know tab memory. Only this reserved route receives a
   // neutral no-index shell; all other unknown/private IDs keep real 404s.
-  if (isPublicApplicationId(id))
+  if (applicationMode(process.env) === "demo" && isPublicApplicationId(id))
     return <SessionProfile id={id} catalog={catalog} returnTo={query.returnTo} reviewPage={query.reviewPage} />;
   const profile = await loadProfile(id);
   if (!profile) notFound();
+  if (applicationMode(process.env) === "staging") return <ConnectedProfileView profile={profile} catalog={catalog}/>;
   return (
     <SessionProfile
       id={id}

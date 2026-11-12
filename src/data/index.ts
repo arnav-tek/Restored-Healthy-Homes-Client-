@@ -1,6 +1,40 @@
 import "server-only";
-// Composition root: change adapters here when real services and auth are ready.
-export { demoDirectory as directoryRepository } from "./demo/repository";
-export { demoLocationAdapter as locationAdapter } from "./demo/locations";
-export { demoQaRepository as qaRepository } from "./demo/qa-repository";
-export { demoReviewRepository as reviewRepository } from "./demo/review-repository";
+import { connectedDirectory } from "./supabase/public-directory";
+import { applicationMode } from "../domain/config";
+import { demoDirectory } from "./demo/repository";
+import { demoLocationAdapter } from "./demo/locations";
+import { demoQaRepository } from "./demo/qa-repository";
+import { demoReviewRepository } from "./demo/review-repository";
+import type {
+  DirectoryRepository,
+  LocationAdapter,
+  QaRepository,
+  ReviewRepository,
+} from "./contracts";
+
+async function unavailable(): Promise<never> {
+  throw new Error("This connected data workflow is not implemented yet.");
+}
+const demo = applicationMode(process.env) === "demo";
+export const directoryRepository: DirectoryRepository = demo
+  ? demoDirectory
+  : connectedDirectory;
+export const locationAdapter: LocationAdapter = demo
+  ? demoLocationAdapter
+  : {
+      listSupported: unavailable,
+      resolve: unavailable,
+    };
+export const qaRepository: QaRepository = demo
+  ? demoQaRepository
+  : {
+      listPublic: unavailable,
+      search: unavailable,
+      getPublicQuestion: unavailable,
+    };
+export const reviewRepository: ReviewRepository = demo
+  ? demoReviewRepository
+  : {
+      listPublic: unavailable,
+      publicSnapshot: unavailable,
+    };

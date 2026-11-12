@@ -1,3 +1,5 @@
+import { applicationMode } from "@/domain/config";
+import { ConnectedDirectory } from "@/features/directory/connected-directory";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { directoryRepository, locationAdapter } from "@/data";
@@ -11,6 +13,7 @@ export default async function Directory({
 }: {
   searchParams: Promise<RawSearchParams>;
 }) {
+  if (applicationMode(process.env) === "staging") return <ConnectedDirectory params={await searchParams} />;
   const [catalog, locations, params] = await Promise.all([
     directoryRepository.getCategories(),
     locationAdapter.listSupported(),

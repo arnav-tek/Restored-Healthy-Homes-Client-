@@ -24,3 +24,5 @@ attachments/
 # Installed third-party guidance; provenance is recorded in docs/skills.md
 .agents/skills/
 .playwright-cli/
+supabase/.temp/
+supabase/.branches/
