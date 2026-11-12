@@ -82,7 +82,7 @@ test("reduced motion and data saving keep the hero static without video controls
 }) => {
   const clips: string[] = [];
   page.on("request", (request) => {
-    if (request.url().endsWith("demo-home-interior.mp4"))
+    if (request.url().endsWith("demo-living-room.mp4"))
       clips.push(request.url());
   });
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -135,7 +135,7 @@ test("blocked autoplay retains the poster without adding a playback control", as
   });
   await page.goto("/");
   const video = page.locator(".hero-video-backdrop video");
-  await expect(video).toHaveAttribute("src", "/media/demo-home-interior.mp4");
+  await expect(video).toHaveAttribute("src", "/media/demo-living-room.mp4");
   await expect(video).toHaveCSS("opacity", "0");
   await expect(page.locator(".hero-video-backdrop img")).toBeVisible();
   // Native `play` can fire before a decoder supplies the first frame.
@@ -153,13 +153,13 @@ test("video failure leaves a useful still-image fallback", async ({
   page,
   browserName,
 }) => {
-  await page.route("**/media/demo-home-interior.mp4", (route) => route.abort());
+  await page.route("**/media/demo-living-room.mp4", (route) => route.abort());
   await page.goto("/");
   if (browserName === "webkit") {
     // WebKit's native media transport can bypass request routing on Windows.
     // An invalid media source exercises the actual decoder/error event instead.
     await expect(page.locator(".hero-video-backdrop video")).toHaveAttribute(
-      "src", "/media/demo-home-interior.mp4",
+      "src", "/media/demo-living-room.mp4",
     );
     await page
       .locator(".hero-video-backdrop video")
@@ -189,7 +189,7 @@ test("no-script homepage remains visible with a poster and no video transfer", a
   const page = await context.newPage();
   const clips: string[] = [];
   page.on("request", (request) => {
-    if (request.url().endsWith("demo-home-interior.mp4"))
+    if (request.url().endsWith("demo-living-room.mp4"))
       clips.push(request.url());
   });
   await page.goto("/");

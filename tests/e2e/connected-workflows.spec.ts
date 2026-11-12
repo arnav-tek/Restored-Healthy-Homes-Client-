@@ -488,7 +488,7 @@ test("photo drafts stay private; accepted replacement/removal follows the owning
   await section(page, "Member", "Profile");
   await page
     .getByLabel("Choose a sample business photo")
-    .setInputFiles("public/media/demo-home-interior.jpg");
+    .setInputFiles("public/media/demo-living-room.jpg");
   await expect(page.getByAltText("Local business photo preview")).toBeVisible();
   await page
     .getByRole("button", { name: "Save sample photo", exact: true })
