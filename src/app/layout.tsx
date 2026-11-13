@@ -8,6 +8,7 @@ import { ConnectedNavigation } from "@/features/auth/connected-navigation";
 import { DemoSessionProvider } from "@/features/member/demo-session";
 import { directoryRepository, qaRepository, reviewRepository } from "@/data";
 import "./globals.css";
+import "./public-spacing.css";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: {

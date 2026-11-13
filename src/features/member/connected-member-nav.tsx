@@ -15,7 +15,7 @@ export function ConnectedMemberNav({ current }: { current: string }) {
   return (
     <nav
       aria-label="Member account"
-      className="mb-6 flex flex-wrap gap-x-5 gap-y-3 text-sm"
+      className="account-navigation text-sm"
     >
       {sections.map(([href, label]) => (
         <Link

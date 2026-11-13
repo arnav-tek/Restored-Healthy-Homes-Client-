@@ -11,10 +11,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div
-      className="container public-content-page"
-      style={{ paddingBlock: "64px 80px" }}
-    >
+    <div className="container public-content-page">
       <header className="public-page-intro" data-scroll-reveal>
         <div>
           <p className="public-eyebrow section-tag">Get in touch</p>
@@ -28,43 +25,27 @@ export default function ContactPage() {
         </div>
       </header>
 
-      <section
-        data-scroll-reveal
-        style={{
-          maxWidth: "720px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "28px",
-        }}
-      >
+      <section data-scroll-reveal className="contact-content">
         <div>
-          <h2 style={{ fontSize: "22px", marginBottom: "8px" }}>
+          <h2>
             General inquiries
           </h2>
-          <p style={{ color: "#575c4c", lineHeight: 1.65 }}>
+          <p>
             Public contact details are awaiting confirmation. An approved email
             address and support information will appear here before launch.
           </p>
         </div>
         <div>
-          <h2 style={{ fontSize: "22px", marginBottom: "8px" }}>
+          <h2>
             For Specialists
           </h2>
-          <p style={{ color: "#575c4c", lineHeight: 1.65 }}>
+          <p>
             Interested in listing your business or learning more about
             membership options? Explore our membership pricing or submit an
             application directly.
           </p>
         </div>
-        <div
-          style={{
-            marginTop: "16px",
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "16px",
-            alignItems: "center",
-          }}
-        >
+        <div className="public-page-actions">
           <ButtonLink href="/list-your-business">
             List Your Business <ArrowRight size={16} aria-hidden="true" />
           </ButtonLink>

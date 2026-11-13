@@ -190,13 +190,10 @@ export function ConnectedAdmin({
       >
         {failure || message}
       </p>
-      <nav aria-label="Application management">
+      <nav aria-label="Application management" className="account-navigation">
         <Link href="/admin/applications">Applications</Link>
-        {" · "}
         <Link href="/admin/listings">Listings</Link>
-        {" · "}
         <Link href="/directory">Public directory</Link>
-        {" · "}
         <Link href="/admin/notifications">Inquiry email jobs</Link>
         <Link href="/admin/credentials">Credential reviews</Link>
         <Link href="/admin/questions">Q&A moderation</Link>

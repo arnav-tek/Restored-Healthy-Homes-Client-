@@ -343,7 +343,7 @@ main:focus {
   color: #fffaf0;
   border: 1px solid rgba(255, 250, 240, 0.45);
   background: rgba(20, 36, 26, 0.42);
-  padding: 4px 14px;
+  padding: 4px 12px;
 }
 .hero-copy {
   grid-area: copy;
@@ -443,11 +443,11 @@ main:focus {
   align-self: flex-start;
   width: fit-content;
   max-width: 100%;
-  padding: 3px 12px;
+  padding: 4px 12px;
   border: 1px solid var(--section-tag-border);
   border-radius: 9999px;
   color: var(--section-tag-color);
-  font: 700 11px/1.4 var(--font-sans);
+  font: 700 11px/1.5 var(--font-sans);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   overflow-wrap: anywhere;
@@ -2193,7 +2193,7 @@ tbody tr:last-child > * {
   margin-bottom: 0;
 }
 .application-page-heading .section-label {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 .application-page-heading h1 {
   font-family: var(--font-serif);
@@ -2789,7 +2789,7 @@ tbody tr:last-child > * {
   margin: 16px 0;
 }
 .workspace-section-label {
-  margin: 0 0 8px 8px;
+  margin: 0 0 12px 8px;
 }
 .workspace-nav-list {
   display: flex;
@@ -2983,6 +2983,7 @@ tbody tr:last-child > * {
 .metric-content {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 .metric-number {
   order: -1;
@@ -3126,9 +3127,19 @@ tbody tr:last-child > * {
   background: #EEF3E9;
   border-color: #D2DEC9;
 }
+.action-item-label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.action-item-sub {
+  font-weight: 400;
+  color: var(--muted);
+}
 .action-item-arrow {
   margin-left: auto;
   color: #8F948E;
+  flex-shrink: 0;
 }
 .activity-card-header {
   display: flex;
@@ -5296,7 +5307,7 @@ tbody tr:last-child > * {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 .offer-card-eyebrow {
-  margin-bottom: 4px;
+  margin-bottom: 12px;
 }
 .consultation-price {
   font-family: Georgia, serif;
@@ -5336,7 +5347,7 @@ tbody tr:last-child > * {
   margin-bottom: 36px;
 }
 .process-header .section-eyebrow {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .process-title {
   font-family: Georgia, serif;
@@ -6309,8 +6320,8 @@ body:has(.homepage-sections) .site-footer {
   color: var(--dark-clay);
   border: 1px solid rgba(152, 75, 34, 0.45);
   border-radius: 9999px;
-  padding: 3px 12px;
-  line-height: 1.4;
+  padding: 4px 12px;
+  line-height: 1.5;
 }
 .category-browse-header h2 {
   font-family: Georgia, "Times New Roman", serif;
@@ -7789,7 +7800,7 @@ body:has(.homepage-sections) .site-footer {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 .about-purpose-header .about-eyebrow-text {
-  margin: 0;
+  margin: 0 0 12px;
 }
 .about-purpose-title {
   font-family: Georgia, "Times New Roman", serif;
@@ -7873,7 +7884,7 @@ body:has(.homepage-sections) .site-footer {
   gap: 32px;
 }
 .about-cta-content .about-eyebrow-text {
-  margin: 0;
+  margin: 0 0 12px;
 }
 .about-cta-title {
   font-family: Georgia, "Times New Roman", serif;
@@ -8805,7 +8816,7 @@ body:has(.homepage-sections) .site-footer {
   gap: 32px;
 }
 .closing-cta-eyebrow {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 .closing-cta-content h2 {
   font-family: Georgia, serif;
@@ -8815,7 +8826,7 @@ body:has(.homepage-sections) .site-footer {
   margin-bottom: 8px;
   line-height: 1.25;
 }
-.closing-cta-content p {
+.closing-cta-content p:not(.section-tag) {
   font-size: 14px;
   color: #4b5563;
   max-width: 620px;
@@ -9676,6 +9687,242 @@ body:has(.homepage-sections) .site-footer {
   margin: 0;
   font-weight: 600;
   color: var(--color-brown);
+}
+/* Member/admin text rhythm, scoped away from public pages and sign-in. */
+.workspace-page .workspace-breadcrumb {
+  margin-bottom: 12px;
+}
+.workspace-page .workspace-title {
+  margin-bottom: 12px;
+}
+.workspace-page .workspace-description {
+  line-height: 1.65;
+}
+.workspace-page :is(.workspace-header-main, .banner-content, .tab-summary-details, .activity-details, .business-card-info) {
+  min-width: 0;
+}
+.workspace-page :is(.metric-content, .tab-summary-details, .activity-details) {
+  gap: 6px;
+}
+.workspace-page :is(.metric-number, .metric-title, .tab-summary-num, .tab-summary-label) {
+  margin-bottom: 0;
+}
+.workspace-page :is(.metric-title, .metric-link-text, .tab-summary-label, .tab-summary-sub, .action-item-label, .activity-details) {
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.workspace-page :is(.overview-card-title, .banner-content h2) {
+  margin-bottom: 12px;
+}
+.workspace-page .overview-metrics-grid {
+  margin-top: 24px;
+}
+.workspace-page .admin-showcase-guide {
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.workspace-page .admin-showcase-guide h2 {
+  margin-block: 0 12px;
+}
+.workspace-page .admin-showcase-guide .section-tag,
+.billing-demo .panel > .section-tag,
+.billing-stage-intro .section-tag {
+  margin-bottom: 12px;
+}
+.workspace-page .admin-showcase-guide .admin-inline-actions {
+  margin-block: 0;
+}
+.workspace-page .category-select {
+  margin-bottom: 24px;
+}
+.workspace-page .category-price-info {
+  margin-block: 0;
+}
+.workspace-page :is(.admin-management-card, .admin-management-stack, .admin-editor-heading) > :is(h2, h3) + p {
+  margin-top: 0;
+}
+.workspace-page .qa-queue-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.workspace-page .qa-queue-card-header {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+:where(.workspace-page, #private-account) .qa-filters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+:where(.workspace-page, #private-account) .qa-filters .filter-actions {
+  grid-column: 1 / -1;
+  justify-content: flex-start;
+  gap: 12px;
+  margin: 0;
+}
+:where(.workspace-page, #private-account) .filter-actions {
+  flex-direction: row;
+  gap: 12px;
+}
+.workspace-page .qa-list {
+  display: grid;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.workspace-page .qa-list > li {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--paper);
+}
+.workspace-page .qa-list article > * + * {
+  margin-top: 12px;
+}
+.workspace-page .qa-list h3 {
+  font-size: 22px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.workspace-page .qa-workspace > h2 + .field-help {
+  margin-top: 0;
+}
+.workspace-page .qa-card-title {
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+.workspace-page .review-queue-list > li {
+  padding: 0;
+  border: 0;
+}
+.workspace-page :is(.review-card-header, .review-byline, .review-author-rating, .review-detail-header) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.workspace-page :is(.review-card-header, .review-detail-header) {
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.workspace-page .categories-cards-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+.workspace-page .category-card-title {
+  line-height: 1.45;
+}
+.workspace-page .dashboard-content > .field-help {
+  margin-block: 16px;
+}
+:where(.workspace-page, #private-account) :is(h2, h3) + p {
+  margin-top: 12px;
+}
+:where(.workspace-page, #private-account) p + p {
+  margin-top: 12px;
+}
+:where(.workspace-page, #private-account) .search-field > .field-help {
+  margin-block: 8px;
+}
+:where(.workspace-page, #private-account) .member-form-fields > .field-error:empty {
+  position: absolute;
+  margin: 0;
+}
+:where(.workspace-page, #private-account) :is(.session-status, .field-error):empty {
+  margin: 0;
+}
+:where(.workspace-page, #private-account) .member-form-fields > legend:not(.sr-only) {
+  margin-bottom: 16px;
+}
+:where(.workspace-page, #private-account) :is(.panel, .admin-detail-card, .workspace-note) > p + form {
+  margin-top: 20px;
+}
+:where(.workspace-page, #private-account) :is(.panel, .admin-detail-card) > h2 + form {
+  margin-top: 20px;
+}
+:where(.workspace-page, #private-account) :is(h2, h3) + fieldset {
+  margin-top: 20px;
+}
+.workspace-page .quick-action-item > svg {
+  flex-shrink: 0;
+}
+.workspace-page .workspace-status > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+#private-account {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+#private-account > :is(h1, h2) {
+  margin-bottom: 24px;
+}
+#private-account > section > * + * {
+  margin-top: 16px;
+}
+#private-account > section > dl {
+  margin-block: 20px;
+}
+#private-account dt + dd {
+  margin-top: 6px;
+}
+#private-account .admin-record-list {
+  display: grid;
+  gap: 16px;
+  margin-block: 20px;
+  padding: 0;
+  list-style: none;
+}
+#private-account .admin-record-list > li {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+#private-account .admin-record-list p {
+  margin-top: 8px;
+}
+.account-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  margin-block: 0 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.account-navigation > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  line-height: 1.5;
+}
+@media (max-width: 600px) {
+  :where(.workspace-page, #private-account) .qa-filters,
+  .workspace-page .qa-queue-nav {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .workspace-page .quick-actions-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  :where(.workspace-page, #private-account) .filter-actions {
+    align-items: stretch;
+  }
+  .workspace-page :is(.admin-detail-card, .overview-actions-card, .overview-activity-card, .workspace-empty) {
+    padding: 20px;
+  }
+  .workspace-page :is(.activity-card-header, .qa-queue-card-header) {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .workspace-page :is(.workspace-header-action, .workspace-public-link) {
+    max-width: 100%;
+  }
+  .workspace-page .workspace-public-link {
+    white-space: normal;
+  }
 }
 @media (max-width: 600px) {
   .billing-demo .billing-actions {
