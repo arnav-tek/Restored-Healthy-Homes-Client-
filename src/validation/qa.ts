@@ -49,7 +49,7 @@ export function parseQaQuery(
   const q = read("q", 120);
   const category = read("category", 80);
   if (category && !catalog.some((item) => item.id === category))
-    errors.category = "Choose one of the eight available categories.";
+    errors.category = "Choose an available category.";
   const rawPage = read("page", 5);
   let page = 1;
   if (rawPage) {

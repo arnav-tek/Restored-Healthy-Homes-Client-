@@ -198,6 +198,9 @@ export function ConnectedAdmin({
         <Link href="/directory">Public directory</Link>
         {" · "}
         <Link href="/admin/notifications">Inquiry email jobs</Link>
+        <Link href="/admin/credentials">Credential reviews</Link>
+        <Link href="/admin/questions">Q&A moderation</Link>
+        <Link href="/admin/reviews">Review moderation</Link>
       </nav>
       {record ? (
         <>

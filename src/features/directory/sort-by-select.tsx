@@ -34,6 +34,7 @@ export function SortBySelect({ query }: { query: SearchQuery }) {
         <option value="az">Business name: A–Z</option>
         <option value="za">Business name: Z–A</option>
         <option value="nearest">Nearest first</option>
+        <option value="rating">Highest rated</option>
       </select>
       {!ready && (
         <button className="button button-secondary" type="submit">

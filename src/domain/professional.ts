@@ -28,6 +28,7 @@ export interface ProfessionalRecord {
 }
 // Public data is an explicit allowlist, not Omit<ProfessionalRecord, ...>.
 export interface PublicProfessional {
+  photoId?: string | null;
   freeConsultation?: boolean;
   id: string;
   businessName: string;

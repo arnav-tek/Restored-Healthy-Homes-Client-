@@ -21,6 +21,82 @@ export type AuthDatabase = {
     Tables: Record<never, never>;
     Views: Record<never, never>;
     Functions: {
+      rhh_submit_review: {
+        Args: {
+          target: string;
+          payload: import("../../domain/connected-reviews").ReviewSubmission;
+        };
+        Returns: unknown;
+      };
+      rhh_member_reviews: { Args: Record<never, never>; Returns: unknown };
+      rhh_admin_reviews: {
+        Args: {
+          filters: import("../../domain/connected-reviews").ReviewFilters;
+        };
+        Returns: unknown;
+      };
+      rhh_moderate_review: {
+        Args: {
+          payload: import("../../domain/connected-reviews").ReviewDecisionInput;
+        };
+        Returns: unknown;
+      };
+
+      rhh_admin_qa: {
+        Args: { filters: import("../../domain/qa-admin").QaAdminFilters };
+        Returns: unknown;
+      };
+      rhh_moderate_qa: {
+        Args: { payload: import("../../domain/qa-admin").QaDecisionInput };
+        Returns: unknown;
+      };
+
+      rhh_member_credentials: {
+        Args: { payload: Record<string, unknown> };
+        Returns: unknown;
+      };
+      rhh_admin_credentials: {
+        Args: { page_number: number };
+        Returns: unknown;
+      };
+      rhh_review_credential: {
+        Args: {
+          payload: import("../../domain/credential-review").CredentialDecision;
+        };
+        Returns: unknown;
+      };
+      rhh_credential_file: {
+        Args: { target: string; admin_mode: boolean };
+        Returns: unknown;
+      };
+      rhh_public_qa: { Args: { target: string | null }; Returns: unknown };
+      rhh_submit_question: {
+        Args: {
+          payload: import("../../domain/connected-qa").QuestionSubmission;
+        };
+        Returns: unknown;
+      };
+      rhh_member_qa: {
+        Args: { target: string | null; page_number: number };
+        Returns: unknown;
+      };
+      rhh_submit_answer: {
+        Args: { payload: import("../../domain/connected-qa").AnswerSubmission };
+        Returns: unknown;
+      };
+      rhh_member_media: {
+        Args: {
+          action: string;
+          target: string | null;
+          expected_version: number | null;
+          publish: boolean;
+        };
+        Returns: unknown;
+      };
+      rhh_public_profile_media: {
+        Args: { target_id: string; media_id: string };
+        Returns: unknown;
+      };
       rhh_claim_inquiry_email: {
         Args: Record<never, never>;
         Returns: NotificationClaim | null;

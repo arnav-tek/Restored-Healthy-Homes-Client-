@@ -28,23 +28,16 @@ export default async function RootLayout({
             Skip to content
           </a>
           <header className="site-header">
-            <div className="container header-inner account-header">
+            <div className="container header-inner">
               <Brand />
               <ConnectedNavigation />
             </div>
           </header>
           <main id="main" tabIndex={-1}>
+            <ScrollEffects />
             {children}
           </main>
-          <footer className="site-footer">
-            <div className="container">
-              <p>Restored Healthy Homes · Staging account access</p>
-              <p>
-                Applications, profiles and review decisions save to staging.
-                Payments and other workflows are not connected yet.
-              </p>
-            </div>
-          </footer>
+          <Footer connected />
         </body>
       </html>
     );

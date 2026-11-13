@@ -1,3 +1,6 @@
+import { ConnectedReviewPages } from "@/features/reviews/connected-review-pages";
+import { ConnectedAdminQaPage } from "@/features/qa/connected-admin-qa-page";
+import { CredentialReviewPage } from "@/features/admin/credential-review-page";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { applicationMode } from "@/domain/config";
@@ -18,6 +21,12 @@ export default async function AdminPage({
 }) {
   if (applicationMode(process.env) === "demo") redirect("/demo/admin");
   const parts = (await params).section ?? [];
+  if (parts.length === 1 && parts[0] === "reviews")
+    return <ConnectedReviewPages query={await searchParams} />;
+  if (parts.length === 1 && parts[0] === "questions")
+    return <ConnectedAdminQaPage query={await searchParams} />;
+  if (parts.length === 1 && parts[0] === "credentials")
+    return <CredentialReviewPage pageValue={(await searchParams).page} />;
   if (parts.length === 1 && parts[0] === "notifications")
     return <NotificationOperationsPage pageValue={(await searchParams).page} />;
   if (

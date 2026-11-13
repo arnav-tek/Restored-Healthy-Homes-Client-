@@ -2,8 +2,9 @@
 import { useRef, useState } from "react";
 import { useDemoDraft, useDemoSession } from "@/features/member/demo-session";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
+import { AnswerFields } from "./answer-fields";
 import { Button } from "@/components/ui/button";
-import { parseAnswer, answerLimits } from "@/validation/qa-moderation";
+import { parseAnswer } from "@/validation/qa-moderation";
 import { answerSubmissionError } from "@/domain/qa-session";
 export function AnswerForm({
   memberId,
@@ -28,7 +29,8 @@ export function AnswerForm({
     <section className="panel">
       <h2>Your answer</h2>
       <p>
-        Share clear service information. Avoid personal medical details or clinical advice. Answers are reviewed before publication.
+        Share clear service information. Avoid personal medical details or
+        clinical advice. Answers are reviewed before publication.
       </p>
       {blocked && <p className="workspace-empty">{blocked}</p>}
       {!blocked && (
@@ -60,27 +62,12 @@ export function AnswerForm({
             className="member-form-fields"
           >
             <legend className="sr-only">Draft an answer</legend>
-            <div className="search-field">
-              <label htmlFor="qa-answer-body">Answer text</label>
-              <textarea
-                id="qa-answer-body"
-                name="body"
-                ref={input}
-                value={String(draft?.body ?? "")}
-                onChange={(event) => saveDraft({ body: event.target.value })}
-                rows={6}
-                maxLength={answerLimits.max}
-                aria-invalid={!!error}
-                aria-describedby="qa-answer-help qa-answer-error"
-              />
-              <p className="field-help" id="qa-answer-help">
-                20–3,000 characters. Drafts are kept per member and question
-                until submission or reset.
-              </p>
-              <p className="field-error" id="qa-answer-error" role="alert">
-                {error}
-              </p>
-            </div>
+            <AnswerFields
+              value={String(draft?.body ?? "")}
+              onChange={(body) => saveDraft({ body })}
+              error={error}
+              inputRef={input}
+            />
             <Button type="submit">Submit answer</Button>
           </fieldset>
         </form>

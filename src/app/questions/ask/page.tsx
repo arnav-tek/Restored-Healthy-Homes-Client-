@@ -1,3 +1,5 @@
+import { applicationMode } from "@/domain/config";
+import { ConnectedAsk } from "@/features/qa/connected-questions";
 import type { Metadata } from "next";
 import { categories } from "@/domain/categories";
 import { safeQaReturn } from "@/validation/qa";
@@ -12,6 +14,8 @@ export default async function AskPage({
   searchParams: Promise<{ returnTo?: string | string[] }>;
 }) {
   const params = await searchParams;
+  if (applicationMode(process.env) === "staging")
+    return <ConnectedAsk returnTo={params.returnTo} />;
   return (
     <div className="container qa-page qa-reading">
       <header className="page-heading" data-scroll-reveal>

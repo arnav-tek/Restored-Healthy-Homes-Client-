@@ -70,9 +70,7 @@ test("published review summaries, same-profile pages, empty and long reviews sta
   await expect(
     page.getByRole("list", { name: "Published reviews" }).getByRole("article"),
   ).toHaveCount(3);
-  await expect(page.getByRole("article").first()).toContainText(
-    "Visitor Alex",
-  );
+  await expect(page.getByRole("article").first()).toContainText("Visitor Alex");
   await inspect(page, `published-${info.project.name}`);
   await page
     .getByRole("link", { name: "Next reviews", exact: true })
@@ -97,9 +95,7 @@ test("published review summaries, same-profile pages, empty and long reviews sta
   );
   await inspect(page, `empty-${info.project.name}`);
   await page.goto("/professionals/demo-healthy-designers");
-  await expect(page.getByRole("article")).toContainText(
-    "shared library",
-  );
+  await expect(page.getByRole("article")).toContainText("shared library");
   await inspect(page, `long-${info.project.name}`);
 });
 
@@ -246,6 +242,7 @@ test("professional-scoped drafts survive navigation; sign-out discards drafts bu
   page.once("dialog", (dialog) => dialog.accept());
   await signOut(page);
   await expect(page).toHaveURL("/login");
+  await expect(page.locator("#primary-navigation")).not.toHaveClass(/is-open/);
   await signIn(page, "admin");
   await browseProfile(page, "Fern & Field Inspections");
   await expect(page.getByLabel("Written review", { exact: true })).toHaveValue(

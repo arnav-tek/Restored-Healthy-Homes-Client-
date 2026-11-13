@@ -1,3 +1,5 @@
+import { ConnectedReviewPages } from "@/features/reviews/connected-review-pages";
+import { ConnectedMemberQa } from "@/features/qa/connected-member-qa";
 import { notFound, redirect } from "next/navigation";
 import { applicationMode } from "@/domain/config";
 import { authenticatedIdentity } from "@/data/supabase/auth";
@@ -24,6 +26,18 @@ export default async function MemberPage({
     );
   if (section.length === 1 && section[0] === "membership")
     return <ConnectedMemberPage view="membership" />;
+  if (section.length === 1 && section[0] === "reviews")
+    return <ConnectedReviewPages member query={await searchParams} />;
+  if (section[0] === "questions" && section.length <= 2) {
+    if (section[1] && !inquiryUuid.test(section[1])) notFound();
+    const query = await searchParams;
+    const page =
+      typeof query.page === "string" || query.page === undefined
+        ? parseInboxPage(query.page ?? null)
+        : null;
+    if (!page || Object.keys(query).some((k) => k !== "page")) notFound();
+    return <ConnectedMemberQa id={section[1]} page={page} />;
+  }
   if (section[0] === "inquiries" && section.length <= 2) {
     if (section[1] && !inquiryUuid.test(section[1])) notFound();
     const query = await searchParams;

@@ -7,11 +7,11 @@ export default function NotFound() {
       <h1>This page could not be found.</h1>
       <p>
         {connected
-          ? "Return to your account to continue."
+          ? "Return home or explore the directory to continue."
           : "Explore the directory to find your next step."}
       </p>
-      <ButtonLink href={connected ? "/member" : "/directory"}>
-        {connected ? "Your account" : "Find Specialists"}
+      <ButtonLink href={connected ? "/" : "/directory"}>
+        {connected ? "Return home" : "Find Specialists"}
       </ButtonLink>
     </div>
   );

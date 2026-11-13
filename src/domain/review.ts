@@ -66,12 +66,13 @@ export function summarizeReviews(reviews: readonly PublicReview[]): {
   count: number;
   average: number | null;
 } {
+  const unique = [...new Map(reviews.map((r) => [r.id, r])).values()];
   return {
-    count: reviews.length,
-    average: reviews.length
+    count: unique.length,
+    average: unique.length
       ? Math.round(
-          (reviews.reduce((sum, review) => sum + review.rating, 0) /
-            reviews.length) *
+          (unique.reduce((sum, review) => sum + review.rating, 0) /
+            unique.length) *
             10,
         ) / 10
       : null,

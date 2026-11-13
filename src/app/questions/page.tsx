@@ -1,3 +1,5 @@
+import { applicationMode } from "@/domain/config";
+import { ConnectedQuestions } from "@/features/qa/connected-questions";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { qaRepository } from "@/data";
@@ -15,6 +17,8 @@ export default async function QuestionsPage({
   searchParams: Promise<RawSearchParams>;
 }) {
   const params = await searchParams;
+  if (applicationMode(process.env) === "staging")
+    return <ConnectedQuestions params={params} />;
   const { query, errors } = parseQaQuery(params);
   let unavailable = false;
   if (!Object.keys(errors).length) {

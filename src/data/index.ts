@@ -1,3 +1,4 @@
+import { connectedQa } from "./supabase/qa";
 import "server-only";
 import { connectedDirectory } from "./supabase/public-directory";
 import { applicationMode } from "../domain/config";
@@ -25,13 +26,7 @@ export const locationAdapter: LocationAdapter = demo
       listSupported: unavailable,
       resolve: unavailable,
     };
-export const qaRepository: QaRepository = demo
-  ? demoQaRepository
-  : {
-      listPublic: unavailable,
-      search: unavailable,
-      getPublicQuestion: unavailable,
-    };
+export const qaRepository: QaRepository = demo ? demoQaRepository : connectedQa;
 export const reviewRepository: ReviewRepository = demo
   ? demoReviewRepository
   : {

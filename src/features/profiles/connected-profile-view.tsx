@@ -1,3 +1,7 @@
+import { ConnectedReviewsSection } from "@/features/reviews/connected-reviews-section";
+import type { PublicReview } from "@/domain/review";
+import { ProfileImage } from "./profile-image";
+import { publicProfileImageHref } from "@/domain/profile-media";
 import Link from "next/link";
 import type { PublicProfile } from "@/domain/professional";
 import type { Category } from "@/domain/categories";
@@ -5,9 +9,13 @@ import { ConnectedInquiryForm } from "./connected-inquiry-form";
 export function ConnectedProfileView({
   profile,
   catalog,
+  reviews,
+  reviewPage,
 }: {
   profile: PublicProfile;
   catalog: readonly Category[];
+  reviews?: readonly PublicReview[];
+  reviewPage?: unknown;
 }) {
   const website = /^https?:\/\//i.test(profile.contact.website)
     ? profile.contact.website
@@ -35,7 +43,16 @@ export function ConnectedProfileView({
               .join(" · ")}
           </p>
         </div>
-        <div className="profile-photo-empty">No photo yet</div>
+        <ProfileImage
+          src={
+            profile.photoId
+              ? publicProfileImageHref(profile.id, profile.photoId)
+              : null
+          }
+          alt={`${profile.businessName} profile image`}
+          className="profile-photo-placeholder"
+          style={{ width: "100%", maxWidth: 320, height: 240 }}
+        />
       </header>
       <div className="panel profile-details">
         <section>
@@ -74,10 +91,12 @@ export function ConnectedProfileView({
           {!profile.contact.email && !profile.contact.phone && !website && (
             <p>No public contact details provided.</p>
           )}
-          <p className="field-help">
-            Reviews are not connected yet.
-          </p>
         </section>
+        <ConnectedReviewsSection
+          professionalId={profile.id}
+          reviews={reviews}
+          requestedPage={reviewPage}
+        />
         <ConnectedInquiryForm professionalId={profile.id} />
       </div>
     </div>

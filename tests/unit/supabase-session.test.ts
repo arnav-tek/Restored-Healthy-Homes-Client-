@@ -214,7 +214,8 @@ test("connected routes and repositories never fall back to demo records", async 
   const response = await proxy(
     new NextRequest("http://localhost/consultations"),
   );
-  assert.equal(response.status, 503);
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("x-middleware-rewrite")!, /availability/);
   assert.match(response.headers.get("cache-control")!, /no-store/);
   const {
     directoryRepository,
@@ -230,7 +231,7 @@ test("connected routes and repositories never fall back to demo records", async 
     /temporarily unavailable/,
   );
   await assert.rejects(reviewRepository.publicSnapshot(), /not implemented/);
-  await assert.rejects(qaRepository.listPublic(), /not implemented/);
+  await assert.rejects(qaRepository.listPublic(), /temporarily unavailable/);
   await assert.rejects(locationAdapter.listSupported(), /not implemented/);
 });
 

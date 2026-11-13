@@ -43,7 +43,9 @@ export function parseSearchQuery(
   }
   const category = read("category", 80);
   if (parseDirectoryQuery(category, catalog).valid) query.category = category;
-  else errors.category = "Choose an available category. Session categories require the tab where they were created.";
+  else
+    errors.category =
+      "Choose an available category. Session categories require the tab where they were created.";
   const radius = read("radius", 3);
   if (radius) {
     if (/^\d+$/.test(radius) && Number(radius) >= 1 && Number(radius) <= 500)
@@ -53,7 +55,8 @@ export function parseSearchQuery(
         "Enter a whole number from 1 to 500 miles, or leave blank for this city only.";
   }
   const sort = read("sort", 10);
-  if (sort === "az" || sort === "za" || sort === "nearest") query.sort = sort;
+  if (sort === "az" || sort === "za" || sort === "nearest" || sort === "rating")
+    query.sort = sort;
   else if (sort) errors.sort = "Choose an available sort order.";
   const page = read("page", 5);
   if (page) {

@@ -157,6 +157,7 @@ test("admin and public DTO projections omit all fields outside their allowlists"
   assert.equal(JSON.stringify(admin).includes("ownerId"), false);
   assert.equal(admin.applications[0].internalNotes, "Private note");
   const publicData = projectPublicDirectory({
+    reviews: [],
     catalog,
     profiles: [
       {

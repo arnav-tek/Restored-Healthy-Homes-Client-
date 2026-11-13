@@ -1,3 +1,7 @@
+import { redirect } from "next/navigation";
+import { createServerSupabaseClient } from "@/data/supabase/server";
+import { loadAccountNavigation } from "@/data/supabase/account-workspace";
+import { accountReturnPath } from "@/validation/auth";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, House } from "lucide-react";
@@ -15,6 +19,12 @@ export default async function LoginPage({
 }) {
   const params = await searchParams;
   if (applicationMode(process.env) === "staging") {
+    const account = await loadAccountNavigation(
+      await createServerSupabaseClient(),
+    );
+    // Recovery/logout notices remain readable; do not erase them with a redirect.
+    if (!params.notice && (account === "admin" || account === "member"))
+      redirect(accountReturnPath(account, params.returnTo));
     const notices: Record<string, string> = {
       "link-invalid":
         "This link is invalid, expired or already used. Request a new email and open it in the same browser that started the request.",

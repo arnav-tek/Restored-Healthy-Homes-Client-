@@ -1,3 +1,4 @@
+import { loadPublicDirectory } from "@/data/supabase/public-directory";
 import { applicationMode } from "@/domain/config";
 import { ConnectedProfileView } from "@/features/profiles/connected-profile-view";
 import type { Metadata } from "next";
@@ -44,10 +45,25 @@ export default async function ProfilePage({
   // The server cannot know tab memory. Only this reserved route receives a
   // neutral no-index shell; all other unknown/private IDs keep real 404s.
   if (applicationMode(process.env) === "demo" && isPublicApplicationId(id))
-    return <SessionProfile id={id} catalog={catalog} returnTo={query.returnTo} reviewPage={query.reviewPage} />;
+    return (
+      <SessionProfile
+        id={id}
+        catalog={catalog}
+        returnTo={query.returnTo}
+        reviewPage={query.reviewPage}
+      />
+    );
   const profile = await loadProfile(id);
   if (!profile) notFound();
-  if (applicationMode(process.env) === "staging") return <ConnectedProfileView profile={profile} catalog={catalog}/>;
+  if (applicationMode(process.env) === "staging")
+    return (
+      <ConnectedProfileView
+        profile={profile}
+        catalog={catalog}
+        reviews={(await loadPublicDirectory()).reviews}
+        reviewPage={query.reviewPage}
+      />
+    );
   return (
     <SessionProfile
       id={id}

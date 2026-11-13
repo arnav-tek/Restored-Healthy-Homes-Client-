@@ -1,3 +1,5 @@
+import { ProfileImage } from "@/features/profiles/profile-image";
+import { publicProfileImageHref } from "@/domain/profile-media";
 import { ChevronDown, MapPin, FileCheck2, Sprout } from "lucide-react";
 import type { PublicProfessional } from "@/domain/professional";
 import type { Category } from "@/domain/categories";
@@ -33,15 +35,28 @@ export function ProfessionalCard({
       .join(" · ") || "Specialist";
 
   return (
-    <article className="professional-card" data-testid="professional-card" data-scroll-reveal>
+    <article
+      className="professional-card"
+      data-testid="professional-card"
+      data-scroll-reveal
+    >
       <div className="card-top">
         <span className="category-pill">{categoryName}</span>
-        <div className="profile-photo-empty">
-          <span className="avatar" aria-hidden="true">
-            {initials}
-          </span>
-          <span>No photo yet</span>
-        </div>
+        {professional.photoId ? (
+          <ProfileImage
+            src={publicProfileImageHref(professional.id, professional.photoId)}
+            alt={`${professional.businessName} profile image`}
+            className="profile-photo-empty"
+            style={{ width: 64, height: 64, borderRadius: 8 }}
+          />
+        ) : (
+          <div className="profile-photo-empty">
+            <span className="avatar" aria-hidden="true">
+              {initials}
+            </span>
+            <span>No photo yet</span>
+          </div>
+        )}
       </div>
       <div className="card-body">
         <h3 className="business-name">{professional.businessName}</h3>

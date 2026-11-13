@@ -4,10 +4,12 @@ import { applicationMode } from "../../domain/config";
 import {
   validateAuth,
   safeAuthReturn,
+  accountReturnPath,
   type AuthAction,
 } from "../../validation/auth";
 import { createRequestSupabaseClient } from "./server";
 import { authenticatedIdentity } from "./auth";
+import { loadAccountNavigation } from "./account-workspace";
 import { preventSharedCaching } from "./cache";
 import {
   authConfiguration,
@@ -145,7 +147,13 @@ export async function handleAuthPost(request: NextRequest, action: string) {
           401,
         );
       }
-      return ctx.json({ redirect: safeAuthReturn(fields.returnTo) });
+      const account = await loadAccountNavigation(ctx.client);
+      return ctx.json({
+        redirect:
+          account === "admin" || account === "member"
+            ? accountReturnPath(account, fields.returnTo)
+            : safeAuthReturn(fields.returnTo),
+      });
     }
     if (action === "reset") {
       const identity = await authenticatedIdentity(ctx.client);

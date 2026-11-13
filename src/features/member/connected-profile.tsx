@@ -1,4 +1,7 @@
 "use client";
+
+import { CredentialEvidenceEditor } from "./credential-evidence-editor";
+import { ProfileMediaEditor } from "./profile-media-editor";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import type { MemberWorkspace } from "@/domain/member-account";
@@ -84,12 +87,17 @@ export function ConnectedProfile({ initial }: { initial: MemberWorkspace }) {
           {application.suspended && " · Listing suspended"}
         </p>
       )}
-      {application?.decisionReason && <p>Application decision: {application.decisionReason}</p>}
-      {application?.suspensionReason && <p>Listing status update: {application.suspensionReason}</p>}
+      {application?.decisionReason && (
+        <p>Application decision: {application.decisionReason}</p>
+      )}
+      {application?.suspensionReason && (
+        <p>Listing status update: {application.suspensionReason}</p>
+      )}
       <p className="field-help">
         Only profile details can be changed here. Edits do not change approval,
         membership, suspension or credential decisions. New or changed
-        credential claims need review. Photos and uploads are not connected.
+        credential claims need review. Profile images have their own save
+        controls below.
       </p>
       <p
         ref={feedback}
@@ -127,20 +135,9 @@ export function ConnectedProfile({ initial }: { initial: MemberWorkspace }) {
         submitLabel={application ? "Save profile" : "Submit application"}
         onValid={save}
       />
-      {application && application.credentials.length > 0 && (
-        <section className="section" aria-label="Credential review status">
-          <h2>Credential claims</h2>
-          <ul>
-            {application.credentials.map((claim, index) => (
-              <li key={`${claim.name}-${index}`}>
-                {claim.name} —{" "}
-                {claim.verification === "verified"
-                  ? "Reviewed credential"
-                  : "Submitted claim · not reviewed"}
-              </li>
-            ))}
-          </ul>
-        </section>
+      {application && <ProfileMediaEditor />}
+      {application && (
+        <CredentialEvidenceEditor profileVersion={application.version} />
       )}
     </>
   );

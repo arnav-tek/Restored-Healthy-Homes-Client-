@@ -1,16 +1,19 @@
 "use client";
+import { QuestionFieldsEditor } from "./question-fields";
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { SessionReset } from "@/features/dashboard/session-reset";
-import { useDemoDraft, useDemoSession, useDemoCatalog } from "@/features/member/demo-session";
+import {
+  useDemoDraft,
+  useDemoSession,
+  useDemoCatalog,
+} from "@/features/member/demo-session";
 import {
   parseQuestion,
   questionFieldOrder,
-  questionLimits,
   type QuestionErrors,
-  type QuestionField,
 } from "@/validation/qa";
 
 export function QuestionForm({
@@ -40,11 +43,14 @@ export function QuestionForm({
     event.preventDefault();
     if (!ready) return;
     const data = new FormData(event.currentTarget);
-    const result = parseQuestion({
-      title: data.get("title"),
-      categoryId: data.get("categoryId"),
-      body: data.get("body"),
-    }, sessionCatalog);
+    const result = parseQuestion(
+      {
+        title: data.get("title"),
+        categoryId: data.get("categoryId"),
+        body: data.get("body"),
+      },
+      sessionCatalog,
+    );
     if (!result.ok) {
       setErrors(result.errors);
       const first = questionFieldOrder.find((field) => result.errors[field]);
@@ -55,15 +61,6 @@ export function QuestionForm({
     setErrors({});
     dispatch({ type: "submit-question", question: result.question });
     clearDraft();
-  }
-  function props(field: QuestionField) {
-    return {
-      id: `question-${field}`,
-      name: field,
-      required: true,
-      "aria-invalid": !!errors[field],
-      "aria-describedby": `${field}-help ${field}-error`,
-    };
   }
   return (
     <>
@@ -117,8 +114,13 @@ export function QuestionForm({
           aria-describedby="question-demo-note"
         >
           <p id="question-demo-note">
-            Your question is intended for public display: do not include names, email addresses, phone numbers or other personal details in the question. In this demo, approved questions appear in matching specialists’ category inboxes. The first eligible response is reviewed by admin before publication. No emails are sent. Questions stay in this tab and are not sent to specialists or
-            saved permanently. Please leave out sensitive personal information.
+            Your question is intended for public display: do not include names,
+            email addresses, phone numbers or other personal details in the
+            question. In this demo, approved questions appear in matching
+            specialists’ category inboxes. The first eligible response is
+            reviewed by admin before publication. No emails are sent. Questions
+            stay in this tab and are not sent to specialists or saved
+            permanently. Please leave out sensitive personal information.
           </p>
           <noscript>
             <p>
@@ -139,65 +141,16 @@ export function QuestionForm({
           )}
           <fieldset disabled={!ready} className="member-form-fields">
             <legend className="sr-only">Your question</legend>
-            <div className="search-field">
-              <label htmlFor="question-title">Question title</label>
-              <input
-                {...props("title")}
-                value={String(draft?.title ?? "")}
-                maxLength={questionLimits.title}
-                onChange={(event) =>
-                  saveDraft({ ...draft, title: event.target.value })
-                }
-              />
-              <p id="title-help" className="field-help">
-                10–160 characters. Summarize a service or home-project question.
-              </p>
-              <p id="title-error" className="field-error">
-                {errors.title}
-              </p>
-            </div>
-            <div className="search-field">
-              <label htmlFor="question-categoryId">Relevant category</label>
-              <select
-                {...props("categoryId")}
-                value={String(draft?.categoryId ?? "")}
-                onChange={(event) =>
-                  saveDraft({ ...draft, categoryId: event.target.value })
-                }
-              >
-                <option value="">Choose a category</option>
-                {sessionCatalog.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-              <p id="categoryId-help" className="field-help">
-                Choose the one category that best fits your question.
-              </p>
-              <p id="categoryId-error" className="field-error">
-                {errors.categoryId}
-              </p>
-            </div>
-            <div className="search-field">
-              <label htmlFor="question-body">Question text</label>
-              <textarea
-                {...props("body")}
-                value={String(draft?.body ?? "")}
-                rows={7}
-                maxLength={questionLimits.body}
-                onChange={(event) =>
-                  saveDraft({ ...draft, body: event.target.value })
-                }
-              />
-              <p id="body-help" className="field-help">
-                20–2,000 characters. Describe a project and what you would like
-                to ask.
-              </p>
-              <p id="body-error" className="field-error">
-                {errors.body}
-              </p>
-            </div>
+            <QuestionFieldsEditor
+              value={{
+                title: String(draft?.title ?? ""),
+                categoryId: String(draft?.categoryId ?? ""),
+                body: String(draft?.body ?? ""),
+              }}
+              onChange={(value) => saveDraft({ ...value })}
+              errors={errors}
+              catalog={sessionCatalog}
+            />
             <Button type="submit">Submit question</Button>
           </fieldset>
         </form>

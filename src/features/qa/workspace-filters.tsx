@@ -1,10 +1,15 @@
 "use client";
+import { QaFilterFields } from "./qa-filter-fields";
+
 import { Button } from "@/components/ui/button";
 import { useDemoReady } from "@/components/ui/use-demo-ready";
 import { useSessionCategories } from "@/features/member/demo-session";
 import type { DashboardArea } from "@/validation/dashboard";
 import { useDashboardNavigation } from "@/features/dashboard/use-dashboard-navigation";
-export function QaWorkspaceFilters({ area, navigationPending = false }: {
+export function QaWorkspaceFilters({
+  area,
+  navigationPending = false,
+}: {
   area: DashboardArea;
   navigationPending?: boolean;
 }) {
@@ -27,47 +32,16 @@ export function QaWorkspaceFilters({ area, navigationPending = false }: {
         });
       }}
     >
-      <fieldset disabled={!ready || pending || navigationPending} className="qa-filters">
+      <fieldset
+        disabled={!ready || pending || navigationPending}
+        className="qa-filters"
+      >
         <legend className="sr-only">Filter Q&A</legend>
-        <div className="search-field">
-          <label htmlFor="workspace-qa-q">Q&A keyword</label>
-          <input
-            id="workspace-qa-q"
-            name="q"
-            maxLength={120}
-            defaultValue={query.q}
-          />
-        </div>
-        <div className="search-field">
-          <label htmlFor="workspace-qa-category">Q&A category</label>
-          <select
-            id="workspace-qa-category"
-            name="category"
-            defaultValue={query.category}
-          >
-            <option value="">All categories</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        {area === "admin" && (
-          <div className="search-field">
-            <label htmlFor="workspace-qa-status">Publication status</label>
-            <select
-              id="workspace-qa-status"
-              name="qaStatus"
-              defaultValue={query.qaStatus}
-            >
-              <option value="all">All statuses</option>
-              <option value="pending">Pending</option>
-              <option value="published">Published</option>
-              <option value="rejected">Rejected</option>
-            </select>
-          </div>
-        )}
+        <QaFilterFields
+          query={query}
+          categories={categories}
+          admin={area === "admin"}
+        />
         <div className="filter-actions">
           <Button type="submit">Filter Q&A</Button>
           <Button

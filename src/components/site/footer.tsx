@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Brand } from "./brand";
 
-export function Footer() {
+export function Footer({ connected = false }: { connected?: boolean }) {
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
@@ -28,8 +28,8 @@ export function Footer() {
           <h2>For Specialists</h2>
           <Link href="/pricing">Membership pricing</Link>
           <Link href="/list-your-business">List Your Business</Link>
-          <Link href="/login">Sign in</Link>
-          <Link href="/demo/member">Member area</Link>
+          {!connected && <Link href="/login">Sign in</Link>}
+          <Link href={connected ? "/member" : "/demo/member"}>Member area</Link>
         </div>
 
         <div className="footer-connect-col">
@@ -58,8 +58,9 @@ export function Footer() {
         </div>
       </div>
       <p className="container preview-notice">
-        Client preview · fictional listings and local demo workflows. Changes
-        clear when this tab is reloaded.
+        {connected
+          ? "Staging preview · public listings reflect saved eligible records. Some services are awaiting connection."
+          : "Client preview · fictional listings and local demo workflows. Changes clear when this tab is reloaded."}
       </p>
     </footer>
   );

@@ -1,3 +1,4 @@
+import { minimumRatings } from "@/domain/directory-search";
 import Link from "next/link";
 import { connectedDirectory } from "@/data/supabase/public-directory";
 import { ProfessionalCard } from "./professional-card";
@@ -72,6 +73,29 @@ export async function ConnectedDirectory({
             maxLength={2}
           />
         </div>
+        <div className="search-field">
+          <label htmlFor="directory-min-rating">Minimum rating</label>
+          <select
+            id="directory-min-rating"
+            name="minRating"
+            defaultValue={query.minRating ?? ""}
+          >
+            <option value="">Any rating</option>
+            {minimumRatings.map((n) => (
+              <option key={n} value={n}>
+                {n} and up
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="search-field">
+          <label htmlFor="directory-sort">Sort by</label>
+          <select id="directory-sort" name="sort" defaultValue={query.sort}>
+            <option value="az">Business name: A–Z</option>
+            <option value="za">Business name: Z–A</option>
+            <option value="rating">Highest rated</option>
+          </select>
+        </div>
         <button type="submit" className="button button-primary">
           Search professionals
         </button>
@@ -94,6 +118,7 @@ export async function ConnectedDirectory({
                 key={hit.professional.id}
                 professional={hit.professional}
                 catalog={catalog}
+                reviewSummary={hit.reviewSummary}
               />
             ))}
           </div>

@@ -1,7 +1,10 @@
+import { parsePublicReviews } from "../../validation/connected-reviews";
+import type { PublicReview } from "../../domain/review";
 import "server-only";
 import { cache } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { stagingConfiguration } from "../../domain/config";
+import { mediaUuid } from "../../domain/profile-media";
 import { isRecord } from "../../validation/member-account";
 import type { PublicProfile } from "../../domain/professional";
 import type { MemberWorkspace } from "../../domain/member-account";
@@ -10,6 +13,7 @@ import { searchPublicDirectory } from "../../domain/directory-search";
 import type { AuthDatabase } from "./database.types";
 export interface PublicDirectorySnapshot {
   catalog: MemberWorkspace["catalog"];
+  reviews: PublicReview[];
   profiles: (PublicProfile & { featured: boolean })[];
 }
 export function projectPublicDirectory(
@@ -28,7 +32,10 @@ export function projectPublicDirectory(
     !Array.isArray(value.profiles)
   )
     return invalid();
-  return {
+  const reviews = parsePublicReviews(value.reviews);
+  if (!reviews) return invalid();
+  const projected: PublicDirectorySnapshot = {
+    reviews,
     catalog: value.catalog.map((c) => {
       if (
         !isRecord(c) ||
@@ -69,6 +76,10 @@ export function projectPublicDirectory(
       return {
         id: String(p.id),
         businessName: String(p.businessName),
+        photoId:
+          typeof p.photoId === "string" && mediaUuid.test(p.photoId)
+            ? p.photoId
+            : null,
         publicDisplayName: String(p.publicDisplayName),
         city: String(p.city),
         state: String(p.state),
@@ -89,20 +100,34 @@ export function projectPublicDirectory(
       };
     }),
   };
+  projected.reviews = reviews.filter((r) =>
+    projected.profiles.some((p) => p.id === r.professionalId),
+  );
+  return projected;
 }
 // Anonymous publishable client only. Request memoization, never shared cache; no cookies.
-export const loadPublicDirectory = cache(async () => {
+export function createPublicSupabaseClient() {
   const { url, key } = stagingConfiguration(process.env);
-  const client = createClient<AuthDatabase>(url, key, {
+  return createClient<AuthDatabase>(url, key, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
       detectSessionInUrl: false,
     },
     global: {
-      fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }),
+      fetch: (input, init) =>
+        fetch(input, {
+          ...init,
+          cache: "no-store",
+          signal: init?.signal
+            ? AbortSignal.any([init.signal, AbortSignal.timeout(10_000)])
+            : AbortSignal.timeout(10_000),
+        }),
     },
   });
+}
+export const loadPublicDirectory = cache(async () => {
+  const client = createPublicSupabaseClient();
   const { data, error } = await client.rpc("rhh_public_directory");
   if (error) throw new Error("Public directory is temporarily unavailable.");
   return projectPublicDirectory(data);
@@ -144,11 +169,6 @@ export const connectedDirectory: DirectoryRepository = {
             "Distance search is not connected yet. Search by state or specialty.",
         },
       };
-    if (query.minRating !== undefined)
-      return {
-        ok: false,
-        errors: { minRating: "Review filtering is not connected yet." },
-      };
     return {
       ok: true,
       results: searchPublicDirectory(
@@ -156,6 +176,8 @@ export const connectedDirectory: DirectoryRepository = {
         await this.getCategories(),
         query,
         [],
+        undefined,
+        (await loadPublicDirectory()).reviews,
       ),
     };
   },

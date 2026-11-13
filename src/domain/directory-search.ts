@@ -12,7 +12,7 @@ export interface SearchQuery {
   state: string;
   minRating?: number;
   radius?: number;
-  sort: "az" | "za" | "nearest";
+  sort: "az" | "za" | "nearest" | "rating";
   page: number;
 }
 export const defaultSearch: SearchQuery = {
@@ -131,6 +131,15 @@ export function searchPublicDirectory(
       { sensitivity: "base" },
     ) || a.professional.id.localeCompare(b.professional.id);
   hits.sort((a, b) => {
+    if (query.sort === "rating") {
+      const left = a.reviewSummary.average,
+        right = b.reviewSummary.average;
+      if (left === null && right !== null) return 1;
+      if (right === null && left !== null) return -1;
+      if (left !== right) return (right ?? 0) - (left ?? 0);
+      if (a.reviewSummary.count !== b.reviewSummary.count)
+        return b.reviewSummary.count - a.reviewSummary.count;
+    }
     if (query.sort === "nearest") {
       if (a.distanceMiles === undefined && b.distanceMiles !== undefined)
         return 1;
