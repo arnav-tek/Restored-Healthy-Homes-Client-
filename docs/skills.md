@@ -66,4 +66,3 @@ Phase 2G-1 reused the installed frontend-design, React best-practices and Playwr
 Phase 2G-2 reused those same installed skills for the existing dashboard patterns, public-only review snapshot and requested unit/browser coverage. Review presentation now reads the shared session overlay while retaining server-rendered public seeds. No skills or dependencies were installed; typography and theme tokens remain unchanged.
 
 Phase 2H-1 reused frontend-design, React best-practices, Playwright and web-design-guidelines. Applied the retrieved accessibility guidance to the affected public pages/navigation, retained static server-rendered content and isolated session statistics. User-requested tests extend the existing browser suite. No skills or dependencies were installed.
-
