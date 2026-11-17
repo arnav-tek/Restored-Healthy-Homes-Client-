@@ -9,6 +9,7 @@ export interface SearchQuery {
   q: string;
   category: string;
   location: string;
+  place?: string;
   state: string;
   minRating?: number;
   radius?: number;
@@ -46,6 +47,7 @@ export function directoryHref(query: SearchQuery): string {
   if (query.q) params.set("q", query.q);
   if (query.category) params.set("category", query.category);
   if (query.location) params.set("location", query.location);
+  if (query.place) params.set("place", query.place);
   if (query.state) params.set("state", query.state);
   if (query.minRating !== undefined)
     params.set("minRating", String(query.minRating));

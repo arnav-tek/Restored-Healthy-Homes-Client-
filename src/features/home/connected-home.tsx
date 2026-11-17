@@ -2,6 +2,8 @@ import { summarizeReviews, type PublicReview } from "@/domain/review";
 import { ReviewStars } from "@/features/reviews/review-content";
 import type { Category } from "@/domain/categories";
 import type { PublicListingLocation } from "@/domain/home-statistics";
+import { ConnectedSearchForm } from "@/features/directory/connected-search-form";
+import { defaultSearch } from "@/domain/directory-search";
 export function ConnectedHomeSearch({
   catalog,
   unavailable,
@@ -12,40 +14,9 @@ export function ConnectedHomeSearch({
   return (
     <div className="hero-search">
       <h2 className="sr-only">Find professionals</h2>
-      <form
-        action="/directory"
-        method="get"
-        className="search-form"
-        aria-label="Find professionals"
-      >
-        <div className="search-field">
-          <label htmlFor="home-state">State abbreviation</label>
-          <input
-            id="home-state"
-            name="state"
-            maxLength={2}
-            placeholder="e.g. NC"
-            aria-describedby="home-search-help"
-          />
-        </div>
-        <div className="search-field">
-          <label htmlFor="home-category">Professional category</label>
-          <select id="home-category" name="category">
-            <option value="">All professionals</option>
-            {catalog.map((c) => (
-              <option value={c.id} key={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <button className="button" type="submit">
-          Search
-        </button>
-      </form>
+      <ConnectedSearchForm catalog={catalog} query={defaultSearch} home />
       <p id="home-search-help" className="field-help">
-        Search by state or specialty. City, ZIP and radius search are not
-        available yet.
+        Search by specialty, state or a selected city/ZIP center.
       </p>
       {unavailable && (
         <p role="alert">

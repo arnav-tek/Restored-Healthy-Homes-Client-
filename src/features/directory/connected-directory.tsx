@@ -1,22 +1,19 @@
-import { minimumRatings } from "@/domain/directory-search";
 import Link from "next/link";
 import { connectedDirectory } from "@/data/supabase/public-directory";
-import { ProfessionalCard } from "./professional-card";
+import { searchConnectedDirectory } from "@/data/locations/directory";
 import { parseSearchQuery, type RawSearchParams } from "@/validation/directory";
 import { directoryHref } from "@/domain/directory-search";
+import { ConnectedSearchForm } from "./connected-search-form";
+import { ResultsMap } from "./results-map";
+import { ProfessionalCard } from "./professional-card";
 export async function ConnectedDirectory({
   params,
 }: {
   params: RawSearchParams;
 }) {
-  let catalog, response, query;
+  let catalog;
   try {
     catalog = await connectedDirectory.getCategories();
-    const parsed = parseSearchQuery(params, catalog);
-    query = parsed.query;
-    response = Object.keys(parsed.errors).length
-      ? { ok: false as const, errors: parsed.errors }
-      : await connectedDirectory.search(query);
   } catch {
     return (
       <div className="container directory-page">
@@ -28,6 +25,22 @@ export async function ConnectedDirectory({
       </div>
     );
   }
+  const { query, errors } = parseSearchQuery(params, catalog);
+  if (params.latitude !== undefined || params.longitude !== undefined)
+    errors.location =
+      "Choose a city or ZIP using the location controls; raw coordinates are not accepted.";
+  let results: Awaited<ReturnType<typeof searchConnectedDirectory>> | undefined;
+  let failure = Object.values(errors).join(" ");
+  if (!failure) {
+    try {
+      results = await searchConnectedDirectory(query);
+    } catch (e) {
+      failure =
+        e instanceof Error
+          ? e.message
+          : "The directory is temporarily unavailable.";
+    }
+  }
   return (
     <div className="container directory-page">
       <header className="page-heading directory-hero">
@@ -35,118 +48,57 @@ export async function ConnectedDirectory({
         <h1>Find professionals</h1>
         <p>Explore approved professionals with active membership.</p>
       </header>
-      <form
-        action="/directory"
-        method="get"
-        className="panel member-form-fields"
-      >
-        <div className="search-field">
-          <label htmlFor="directory-q">Business, service or specialty</label>
-          <input
-            id="directory-q"
-            name="q"
-            defaultValue={query.q}
-            maxLength={100}
-          />
-        </div>
-        <div className="search-field">
-          <label htmlFor="directory-category">Category</label>
-          <select
-            id="directory-category"
-            name="category"
-            defaultValue={query.category}
-          >
-            <option value="">All categories</option>
-            {catalog.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="search-field">
-          <label htmlFor="directory-state">State abbreviation</label>
-          <input
-            id="directory-state"
-            name="state"
-            defaultValue={query.state}
-            maxLength={2}
-          />
-        </div>
-        <div className="search-field">
-          <label htmlFor="directory-min-rating">Minimum rating</label>
-          <select
-            id="directory-min-rating"
-            name="minRating"
-            defaultValue={query.minRating ?? ""}
-          >
-            <option value="">Any rating</option>
-            {minimumRatings.map((n) => (
-              <option key={n} value={n}>
-                {n} and up
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="search-field">
-          <label htmlFor="directory-sort">Sort by</label>
-          <select id="directory-sort" name="sort" defaultValue={query.sort}>
-            <option value="az">Business name: A–Z</option>
-            <option value="za">Business name: Z–A</option>
-            <option value="rating">Highest rated</option>
-          </select>
-        </div>
-        <button type="submit" className="button button-primary">
-          Search professionals
-        </button>
-        <Link href="/directory">Clear filters</Link>
-      </form>
-      {!response.ok ? (
+      <ConnectedSearchForm
+        key={directoryHref(query)}
+        catalog={catalog}
+        query={query}
+        origin={results?.origin}
+      />
+      {failure && (
         <p role="alert" className="field-error">
-          {Object.values(response.errors).join(" ")}
+          {failure}
         </p>
-      ) : (
+      )}
+      {results && (
         <>
           <p>
-            {response.results.total}{" "}
-            {response.results.total === 1 ? "professional" : "professionals"}{" "}
-            found
+            {results.total}{" "}
+            {results.total === 1 ? "professional" : "professionals"} found
           </p>
+          {results.missingCoordinates > 0 && (
+            <p className="field-help">
+              {results.missingCoordinates} matching listings have no saved
+              search coordinates. They remain in ordinary searches, but are
+              excluded from radius/nearest searches and map markers.
+            </p>
+          )}
+          <ResultsMap points={results.points} returnTo={directoryHref(query)} />
           <div className="professional-grid">
-            {response.results.hits.map((hit) => (
+            {results.hits.map((hit) => (
               <ProfessionalCard
                 key={hit.professional.id}
                 professional={hit.professional}
                 catalog={catalog}
                 reviewSummary={hit.reviewSummary}
+                distanceMiles={hit.distanceMiles}
+                returnTo={directoryHref(query)}
               />
             ))}
           </div>
-          {!response.results.total && (
+          {!results.total && (
             <p className="workspace-empty">
-              No published professionals match this search. Try another category
-              or state. Approved applications remain unpublished until
-              membership is active.
+              No published professionals match this search. Try another
+              category, state or distance.
             </p>
           )}
           <nav aria-label="Results pages">
-            {response.results.page > 1 && (
-              <Link
-                href={directoryHref({
-                  ...query,
-                  page: response.results.page - 1,
-                })}
-              >
+            {results.page > 1 && (
+              <Link href={directoryHref({ ...query, page: results.page - 1 })}>
                 Previous page
               </Link>
             )}{" "}
-            {response.results.page < response.results.pages && (
-              <Link
-                href={directoryHref({
-                  ...query,
-                  page: response.results.page + 1,
-                })}
-              >
+            {results.page < results.pages && (
+              <Link href={directoryHref({ ...query, page: results.page + 1 })}>
                 Next page
               </Link>
             )}

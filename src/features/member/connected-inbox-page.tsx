@@ -21,7 +21,9 @@ export async function ConnectedInboxPage({
   const client = await createServerSupabaseClient();
   const identity = await authenticatedIdentity(client);
   if (!identity)
-    redirect(`/login?returnTo=${encodeURIComponent("/member/inquiries")}`);
+    redirect(
+      `/login?returnTo=${encodeURIComponent(id ? `/member/inquiries/${id}` : "/member/inquiries")}`,
+    );
   let inbox,
     detail,
     failure = "";

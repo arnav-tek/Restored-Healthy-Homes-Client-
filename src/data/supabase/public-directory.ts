@@ -9,10 +9,9 @@ import { isRecord } from "../../validation/member-account";
 import type { PublicProfile } from "../../domain/professional";
 import type { MemberWorkspace } from "../../domain/member-account";
 import type { DirectoryRepository } from "../contracts";
-import { searchPublicDirectory } from "../../domain/directory-search";
 import type { AuthDatabase } from "./database.types";
 export interface PublicDirectorySnapshot {
-  catalog: MemberWorkspace["catalog"];
+  catalog: (MemberWorkspace["catalog"][number] & { description?: string })[];
   reviews: PublicReview[];
   profiles: (PublicProfile & { featured: boolean })[];
 }
@@ -50,6 +49,10 @@ export function projectPublicDirectory(
         name: c.name,
         monthlyUsd: Number(c.monthlyUsd),
         active: c.active,
+        description:
+          typeof c.description === "string" && c.description.length <= 300
+            ? c.description
+            : "",
       };
     }),
     profiles: value.profiles.map((p) => {
@@ -70,7 +73,9 @@ export function projectPublicDirectory(
           (x) => typeof x === "string",
         ) ||
         typeof p.freeConsultation !== "boolean" ||
-        typeof p.featured !== "boolean"
+        typeof p.featured !== "boolean" ||
+        (p.editorialFeatured !== undefined &&
+          typeof p.editorialFeatured !== "boolean")
       )
         return invalid();
       return {
@@ -88,6 +93,9 @@ export function projectPublicDirectory(
         serviceArea: String(p.serviceArea),
         freeConsultation: p.freeConsultation,
         featured: p.featured,
+        ...(typeof p.editorialFeatured === "boolean"
+          ? { editorialFeatured: p.editorialFeatured }
+          : {}),
         categoryIds: strings(p.categoryIds),
         services: strings(p.services),
         verifiedCredentials: strings(p.verifiedCredentials),
@@ -132,11 +140,19 @@ export const loadPublicDirectory = cache(async () => {
   if (error) throw new Error("Public directory is temporarily unavailable.");
   return projectPublicDirectory(data);
 });
+export const loadPublicCategoryCatalog = cache(async () => {
+  const { data, error } = await createPublicSupabaseClient().rpc(
+    "rhh_public_categories",
+  );
+  if (error) throw new Error("Categories are temporarily unavailable.");
+  return projectPublicDirectory({ catalog: data, profiles: [], reviews: [] })
+    .catalog;
+});
 export const connectedDirectory: DirectoryRepository = {
   async getCategories() {
-    return (await loadPublicDirectory()).catalog.map((c) => ({
+    return (await loadPublicCategoryCatalog()).map((c) => ({
       ...c,
-      description: "",
+      description: c.description ?? "",
       billingKey: "",
     }));
   },
@@ -154,31 +170,29 @@ export const connectedDirectory: DirectoryRepository = {
     );
   },
   async listFeaturedPublic() {
-    return (await loadPublicDirectory()).profiles.filter((p) => p.featured);
+    return (await loadPublicDirectory()).profiles.filter(
+      (p) => p.featured || p.editorialFeatured === true,
+    );
   },
   async search(query) {
-    if (
-      query.location ||
-      query.radius !== undefined ||
-      query.sort === "nearest"
-    )
+    if (query.location && !query.place)
       return {
         ok: false,
         errors: {
-          location:
-            "Distance search is not connected yet. Search by state or specialty.",
+          location: "Choose the intended city or ZIP before searching.",
         },
       };
+    const { searchConnectedDirectory } = await import("../locations/directory");
+    const results = await searchConnectedDirectory(query);
     return {
       ok: true,
-      results: searchPublicDirectory(
-        await this.listPublic(),
-        await this.getCategories(),
-        query,
-        [],
-        undefined,
-        (await loadPublicDirectory()).reviews,
-      ),
+      results: {
+        hits: results.hits,
+        total: results.total,
+        page: results.page,
+        pages: results.pages,
+        missingCoordinates: results.missingCoordinates,
+      },
     };
   },
 };

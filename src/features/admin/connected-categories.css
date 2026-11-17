@@ -1,0 +1,7 @@
+.connected-categories { min-width: 0; overflow-wrap: anywhere; }
+.connected-categories .admin-editor-panel { padding: 1.25rem; }
+.connected-categories :is(input,textarea,fieldset) { min-width: 0; max-width: 100%; }
+.connected-categories :is(input,textarea) { width: 100%; }
+.connected-categories button { min-height: 44px; }
+.connected-categories details { margin-block: 1.5rem; }
+.connected-categories details article { margin-block: 1rem; }

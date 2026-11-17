@@ -2,6 +2,8 @@
 
 import { CredentialEvidenceEditor } from "./credential-evidence-editor";
 import { ProfileMediaEditor } from "./profile-media-editor";
+import { PublicLocationEditor } from "./public-location-editor";
+import { ConsultationPreference } from "./consultation-preference";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import type { MemberWorkspace } from "@/domain/member-account";
@@ -136,6 +138,8 @@ export function ConnectedProfile({ initial }: { initial: MemberWorkspace }) {
         onValid={save}
       />
       {application && <ProfileMediaEditor />}
+      {application && <PublicLocationEditor />}
+      {application && <ConsultationPreference />}
       {application && (
         <CredentialEvidenceEditor profileVersion={application.version} />
       )}

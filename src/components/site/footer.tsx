@@ -51,6 +51,7 @@ export function Footer({ connected = false }: { connected?: boolean }) {
             ·
           </span>
           <Link href="/privacy">Privacy</Link>
+          {connected && <Link href="/disclaimer">Disclaimer</Link>}
           <span className="footer-legal-sep" aria-hidden="true">
             ·
           </span>

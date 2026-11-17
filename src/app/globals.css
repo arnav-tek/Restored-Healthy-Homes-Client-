@@ -1,4 +1,18 @@
 @import "tailwindcss";
+
+.directory-page .connected-search-form { padding: 1.25rem; }
+.location-choice { min-width: 0; }
+.location-candidates { display: grid; gap: .6rem; min-width: 0; }
+.location-candidates button { white-space: normal; text-align: left; }
+.results-map-section { margin-block: 1.5rem; }
+.results-map-panel { margin-block: 1rem; min-width: 0; }
+.results-map-canvas { height: 380px; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #cdd5c9; }
+.results-map-marker { width: 36px; height: 36px; border-radius: 50%; background: #3d5d3d; color: #fff; border: 2px solid #fff; cursor: pointer; }
+.results-map-marker:focus-visible { outline: 3px solid #a24b25; outline-offset: 3px; }
+.results-map-popup { color: #263c26; max-height: 220px; overflow: auto; overflow-wrap: anywhere; }
+.results-map-popup section + section { margin-top: .8rem; }
+.results-map-popup a { text-decoration: underline; }
+@media (max-width: 480px) { .results-map-canvas { height: 290px; } }
 @source "../**/*.{ts,tsx}";
 
 /* Admin showcase extends the existing workspace tokens and native form patterns. */

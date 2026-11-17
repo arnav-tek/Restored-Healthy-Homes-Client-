@@ -1,5 +1,46 @@
 # Build milestones and acceptance
 
+## Connected featured controls and operational reporting — 2026-11-16
+
+- [x] Current-admin editorial selection/removal with saved versions, immutable history, retained failed/stale drafts and bounded candidate/selection pages. Existing featured entitlement remains read only; no membership, approval or credential activation.
+- [x] Eligibility-filtered editorial labels/featured union on connected homepage/directory; suspension hides selection without deleting it. Deterministic ordering, no invented ranking or paid upgrade policy.
+- [x] Server-side application/membership/eligibility/category/featured metrics and UTC monthly submissions; current versus historical definitions, multi-category overlap, unavailable metrics and paginated supporting rows documented.
+- [x] New staging migration recorded (27 total), no real listings/memberships/selections changed. 103 isolated SQL, 225 units, 38 controlled browser and ten real anonymous checks; responsive anonymous pages, four focused demo cases, typecheck/lint/demo build passed. Exact boundaries/advisor notices are in the backend handoff.
+- [ ] Live authenticated admin/A/B operations, separate-browser persistence/populated public refresh and independent concurrent-session acceptance require designated access and authorized disposable eligible fixtures. No membership activation shortcut added.
+- [ ] Paid featured terms, entitlement/billing workflow, historical membership/tracking metrics and audit retention decisions remain separate. Email delivery remains disabled.
+
+
+## Connected administrator content — 2026-11-16
+
+- [x] Protected Content workspace for resource articles, category education, About story/why/video metadata, public contact and client legal copy. Existing layouts and demo behavior reused.
+- [x] Separate saved draft/published versions, private previews, explicit approval/publication/unpublication, stable resource URLs, stale-save recovery and immutable database-authorized history. Public projections/metadata exclude drafts/private fields.
+- [x] Connected safe public routes and pending/error/404 states; no fictional fallback or automatically published client copy. Pricing continues using the saved category catalog with application links and no checkout.
+- [x] New staging content and URL-validation migrations recorded (26 total), no seeded content or changed client categories. 73 isolated SQL, 28 controlled browser and 22 real anonymous staging checks passed; actual responsive public checks, eight focused demo cases (one recheck), 220 units/typecheck/lint/demo build are documented in the backend handoff.
+- [ ] Live authenticated admin/member publication, populated public persistence/privacy and independent concurrent-session acceptance: designated usable sessions and disposable authorized content required.
+- [ ] Approved articles, education/provider details, company story/why, film/poster/English captions/transcript, public contacts and client-supplied legal wording/placement. All remain unpublished.
+- [ ] Application-email setup remains deferred; no provider, worker registration, scheduler or sending enabled by this task.
+
+
+## Connected administrator categories — 2026-11-16
+
+- [x] Protected Categories section with explicit configuration on creation and name-only renaming. Stable IDs, billing keys, prices, existing relationships and the original eight staging categories preserved.
+- [x] Current database admin/session checks, strict fields, version conflicts, immutable change history and no-script safeguards. No deletion/deactivation or existing-price editing controls.
+- [x] Saved labels feed connected public/application/profile/Q&A/consultation readers and safe connected pricing; demo session behavior preserved.
+- [x] 214 unit tests, 69 isolated SQL assertions, ten focused component browser cases, four existing demo browser regressions and ten real anonymous hosted/local checks passed; typecheck/lint/demo build and responsive public pricing checks passed. Exact fixture/live boundaries are in the backend handoff.
+- [ ] Live authenticated admin/A/B and independent concurrent-session acceptance: arrange designated access and an explicitly authorized disposable category. No real client category was changed to test.
+
+
+## Connected city/ZIP search and results map — 2026-11-15
+
+- [x] Existing connected search extended with explicit city/ZIP candidate selection, shared URL filters, Any distance / 10 / 25 / 50 / 100 miles, nearest ordering and unchanged published-review semantics.
+- [x] New staging PostGIS migration recorded; private normalized approximate centers, owner-bound/versioned saves, public eligibility, GiST/radius queries, stable six-item pagination and explicit public projections. No legacy coordinate backfill or membership activation.
+- [x] Server-only Geoapify adapter, protected durable gateway/cache/budgets and honest missing-key state; provider access remains disabled.
+- [x] On-demand MapLibre/OpenFreeMap map with current-page markers, overlap handling, safe keyboard popups, attribution and list/error/retry alternative. Existing desktop hero and mobile search priority preserved.
+- [x] Unit/PostGIS/anonymous hosted checks, typecheck/lint/demo build and focused desktop/mobile regressions; actual anonymous pages and controlled populated map reviewed at 1440/768/390/320px. See [exact evidence and operating instructions](location-search-handoff.md).
+- [ ] Approved Geoapify key, server-only gateway capability/hash registration and a real lookup test.
+- [ ] Designated confirmed A/B sessions/disposable owned listings and authorized eligible fixture for real saved-location persistence/isolation and populated hosted radius/nearest/map acceptance. Service coverage remains existing descriptive text, not inferred geography.
+- [ ] Separate production dependency/security review; current pre-existing audit advisories remain unresolved. No deployment or email activation in this feature.
+
 ## Homepage publication — 2026-11-03
 
 - [x] Push the reviewed homepage source (`90c139a`) to GitHub `main`, excluding unrelated local sign-in edits.
@@ -614,3 +655,17 @@ Adding the second eligible fixture required existing count assertions and one li
 - [x] 2026-10-08 sign-in refinement: responsive brand/form card, Professional/Administrator choices, masked access code and collapsed Quick access presets. Typecheck, lint, 85 unit tests, demo build and 33 focused responsive sign-in/member/admin browser cases pass. Four viewport screenshots reviewed; session-only identity behavior preserved. See [verification](normal-website-copy.md#sign-in-presentation-refinement--2026-10-08).
 
 - [x] 2026-10-09 separate login entry points: member-only public `/login`, dedicated `/admin/login`, no public admin toggle/shortcut/footer link, account-type validation and appropriate workspace return paths. Existing internal walkthrough navigation retained. Typecheck, lint, 86 unit tests, demo build and 59 unique focused browser cases passed across completed runs; see [verification and limitations](normal-website-copy.md). No real authentication, push or deployment added.
+# Connected consultations — 15 November 2026
+
+- [x] Saved free-phone requests, admin assignment/reassignment/notes/cancellation, owner-bound member accept/decline, persistent private visitor receipt/status/cancellation.
+- [x] Staging migration, isolated security/workflow tests and real public save/reload/cancel browser verification. See [consultation handoff](connected-consultations-handoff.md).
+- [ ] Populated real admin/member A/B acceptance, overlapping decisions and email delivery. Do not infer these from demo or isolated test passes.
+
+## Connected consultation audit corrections — 15 November 2026
+
+- [x] Intake disabled before hydration, clear no-script explanation and JSON-only POST fallback; recent cross-tab cancellation ID/version check retained.
+- [x] Connected owner-only, versioned free-phone participation editor; migration `20261114201534_member_consultation_participation` applied to approved staging (23 migrations), no automatic opt-ins.
+- [x] Page/refresh follow validated current server props; late responses ignored; per-request/version drafts survive paging/history/server errors in the identity/scope-bound React workspace, with explicit conflict comparison.
+- [x] Follow-up confirmed the existing fixes and applied migration without duplicate implementation: six focused units, 74 isolated SQL assertions, 14 single-worker focused browser cases and ten real anonymous staging checks passed again; exact fresh/prior evidence and local resource limitations are in the fixes handoff.
+- [x] Final typecheck/lint, 210 unit tests, 74 isolated SQL assertions, 14 focused browser cases, 10 real anonymous staging checks and demo build pass. Missing-mode build rejects. Security advisor results unchanged; desktop/tablet/mobile/320px screenshots reviewed.
+- [ ] Real authenticated participation save/reload across A/B sessions, populated admin/member acceptance and overlapping transactions: designated sessions/eligible disposable listings unavailable. See [fixes handoff](connected-consultations-fixes-2026-11-15.md); no production-readiness inference from isolated/mocked checks.

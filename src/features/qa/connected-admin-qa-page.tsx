@@ -15,7 +15,7 @@ export async function ConnectedAdminQaPage({
   if (!filters) notFound();
   const client = await createServerSupabaseClient(),
     identity = await authenticatedIdentity(client);
-  if (!identity) redirect("/login?returnTo=/admin");
+  if (!identity) redirect("/login?returnTo=/admin/questions");
   let data,
     missing = false,
     error = "";

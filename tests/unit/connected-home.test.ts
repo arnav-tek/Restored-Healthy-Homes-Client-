@@ -57,7 +57,7 @@ test("connected homepage uses only projected public data, and distinguishes zero
   });
   assert.equal(search.ok, false);
 });
-test("public homepage is allowed and future public routes are readable rewrites", async (t) => {
+test("public homepage and connected content routes are allowed; unknown routes remain readable", async (t) => {
   const old = { ...process.env };
   Object.assign(process.env, env);
   delete process.env.VERCEL_ENV;
@@ -68,9 +68,22 @@ test("public homepage is allowed and future public routes are readable rewrites"
   assert.equal(home.headers.get("location"), null);
   assert.equal(home.headers.get("x-middleware-next"), "1");
   assert.match(home.headers.get("cache-control")!, /no-store/);
-  const pending = await proxy(new NextRequest("http://localhost/education"));
-  assert.match(pending.headers.get("x-middleware-rewrite")!, /availability/);
-  assert.equal(pending.status, 200);
+  for (const path of [
+    "/education",
+    "/about",
+    "/resources",
+    "/resources/approved-slug",
+    "/contact",
+    "/terms",
+    "/privacy",
+    "/disclaimer",
+    "/pricing",
+  ]) {
+    const ready = await proxy(new NextRequest("http://localhost" + path));
+    assert.equal(ready.status, 200);
+    assert.equal(ready.headers.get("x-middleware-rewrite"), null);
+    assert.equal(ready.headers.get("x-middleware-next"), "1");
+  }
   const missing = await proxy(
     new NextRequest("http://localhost/not-a-real-page"),
   );
@@ -97,4 +110,43 @@ test("role-aware returns stay local, preserve member destinations, and never rou
     "/member/membership",
   );
   assert.equal(accountReturnPath("admin", "/"), "/");
+});
+
+test("new dashboard sections survive sign-in without crossing account roles", () => {
+  for (const path of [
+    "/admin/featured",
+    "/admin/reports",
+    "/admin/content",
+    "/admin/categories",
+    "/admin/credentials",
+    "/admin/notifications",
+    "/admin/questions",
+    "/admin/reviews",
+    "/admin/consultations",
+    "/admin/applications",
+    "/admin/listings",
+  ]) {
+    assert.equal(accountReturnPath("admin", path), path);
+    assert.equal(accountReturnPath("member", path), "/member");
+  }
+  for (const path of [
+    "/member/consultations",
+    "/member/inquiries/00000000-0000-4000-8000-000000000001",
+  ]) {
+    assert.equal(accountReturnPath("member", path), path);
+    assert.equal(accountReturnPath("admin", path), "/admin");
+  }
+  const detail = "/admin/applications/00000000-0000-4000-8000-000000000001";
+  assert.equal(accountReturnPath("admin", detail), detail);
+  assert.equal(accountReturnPath("member", detail), "/member");
+  for (const path of [
+    "/admin/unknown",
+    "/admin/reports?next=//evil.invalid",
+    "/admin/../member",
+    "/admin/listings/not-a-uuid",
+    "/member/inquiries/00000000-0000-4000-8000-000000000001/extra",
+  ]) {
+    assert.equal(accountReturnPath("admin", path), "/admin");
+    assert.equal(accountReturnPath("member", path), "/member");
+  }
 });

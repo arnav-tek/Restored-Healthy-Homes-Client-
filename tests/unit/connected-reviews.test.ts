@@ -306,3 +306,99 @@ test("review adapters authorize every admin action and sanitize stale/denied res
   );
   assert.equal(calls, 2);
 });
+
+test("review adapter/API preserve only explicit boolean unchanged and retain the normal allowlisted response", async (t) => {
+  const old = { ...process.env };
+  const url = "https://xjecnuebalmmblowmtks.supabase.co";
+  const origin = "http://127.0.0.1:3230";
+  Object.assign(process.env, {
+    RHH_APP_MODE: "staging",
+    NEXT_PUBLIC_SUPABASE_URL: url,
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_test",
+    RHH_AUTH_ORIGIN: origin,
+    RHH_AUTH_COOKIE_SECRET: "test-only-secret-00000000000000000000",
+  });
+  delete process.env.VERCEL_ENV;
+  t.after(() => {
+    process.env = old;
+  });
+  const user = {
+    id,
+    aud: "authenticated",
+    email: "fixture@example.invalid",
+    email_confirmed_at: "2026-11-13T00:00:00Z",
+    app_metadata: {},
+    user_metadata: {},
+    created_at: "2026-11-13T00:00:00Z",
+  };
+  const expires = Math.floor(Date.now() / 1000) + 3600;
+  const token =
+    [
+      { alg: "HS256", typ: "JWT" },
+      { sub: id, exp: expires, iat: expires - 3600, aud: "authenticated" },
+    ]
+      .map((p) => Buffer.from(JSON.stringify(p)).toString("base64url"))
+      .join(".") + ".c2lnbmF0dXJl";
+  const cookie =
+    "sb-xjecnuebalmmblowmtks-auth-token=base64-" +
+    Buffer.from(
+      JSON.stringify({
+        access_token: token,
+        refresh_token: "synthetic-refresh",
+        expires_at: expires,
+        expires_in: 3600,
+        token_type: "bearer",
+        user,
+      }),
+    ).toString("base64url");
+  const decision = {
+    id,
+    version: 3,
+    action: "publish" as const,
+    reason: "Confirm saved private note",
+    note: "Existing note",
+  };
+  const normal = { saved: true, status: "published", version: 3 };
+  let databaseResult: Record<string, unknown> = normal;
+  let rpcCalls = 0;
+  t.mock.method(globalThis, "fetch", async (input: RequestInfo | URL) => {
+    const target = String(input);
+    if (target === `${url}/auth/v1/user`) return Response.json(user);
+    assert.ok(
+      target.startsWith(`${url}/rest/v1/rpc/rhh_moderate_review`),
+      "Only the expected moderation RPC may run",
+    );
+    rpcCalls++;
+    return Response.json(databaseResult);
+  });
+  const client = createClient<AuthDatabase>(url, "sb_publishable_test", {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  for (const [extra, expected] of [
+    [{ unchanged: true }, { ...normal, unchanged: true }],
+    [{}, normal],
+    [{ unchanged: false }, normal],
+    [{ unchanged: "true" }, normal],
+  ] as const) {
+    databaseResult = {
+      ...normal,
+      ...extra,
+      contactEmail: "PRIVATE",
+      actorId: "PRIVATE",
+      diagnostics: "PRIVATE",
+    };
+    assert.deepEqual(await moderateConnectedReview(client, decision), expected);
+    const response = await handleReviewRequest(
+      new NextRequest(`${origin}/api/admin/reviews`, {
+        method: "POST",
+        headers: { origin, "content-type": "application/json", cookie },
+        body: JSON.stringify(decision),
+      }),
+      "admin",
+    );
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), expected);
+    assert.match(response.headers.get("cache-control")!, /private.*no-store/);
+  }
+  assert.equal(rpcCalls, 8);
+});

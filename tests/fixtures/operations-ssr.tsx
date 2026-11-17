@@ -1,0 +1,11 @@
+import {renderToString} from "react-dom/server";
+import {ConnectedFeatured} from "../../src/features/admin/connected-featured";
+import {ConnectedReport} from "../../src/features/admin/connected-report";
+import {FeaturedListingsView} from "../../src/features/home/featured-listings-view";
+import {ProfessionalCard} from "../../src/features/directory/professional-card";
+import {parseOperationsInput} from "../../src/validation/admin-operations";
+import type {FeaturedWorkspace,OperationsReport,FeaturedItem} from "../../src/domain/admin-operations";
+export const parse=parseOperationsInput;
+export const editor=(initial:FeaturedWorkspace)=>renderToString(<ConnectedFeatured initial={initial}/>);
+export const report=(value:OperationsReport)=>renderToString(<ConnectedReport report={value}/>);
+export const publicViews=(items:FeaturedItem[])=>{const profiles=items.filter(i=>i.eligible).map(i=>({id:i.id,businessName:i.businessName,categoryIds:[],city:"Fixture city",state:"CA",specialty:"Synthetic specialty",summary:"Synthetic public profile for controlled component testing.",services:[],verifiedCredentials:[],editorialFeatured:i.selected,featured:i.entitlement==="active"}));return renderToString(<><FeaturedListingsView connected catalog={[]} professionals={profiles.filter(i=>i.editorialFeatured||i.featured)}/><h2>Directory results</h2>{profiles.map(p=><ProfessionalCard key={p.id} professional={p} catalog={[]}/>)}</>);};

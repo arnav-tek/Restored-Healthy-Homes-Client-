@@ -29,6 +29,12 @@ export function parseSearchQuery(
   };
   query.q = read("q", 100);
   query.location = read("location", 80);
+  const place = read("place", 36);
+  if (place) {
+    if (/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(place))
+      query.place = place;
+    else errors.place = "Choose a valid city or ZIP search origin.";
+  }
   const state = read("state", 2).toUpperCase();
   if (!state || usStates.some(([code]) => code === state)) query.state = state;
   else errors.state = "Choose an available state.";
@@ -64,7 +70,7 @@ export function parseSearchQuery(
       query.page = Number(page);
     else errors.page = "Page must be a whole number from 1 to 10000.";
   }
-  if (!query.location && (radius || query.sort === "nearest"))
+  if (!query.location && !query.place && (radius || query.sort === "nearest"))
     errors.location ??=
       "Enter a city or ZIP to use a radius or nearest-first sorting.";
   return { query, errors };

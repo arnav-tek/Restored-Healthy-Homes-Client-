@@ -22,7 +22,7 @@ export async function NotificationOperationsPage({
   if (!page) notFound();
   const client = await createServerSupabaseClient();
   const identity = await authenticatedIdentity(client);
-  if (!identity) redirect("/login?returnTo=/admin");
+  if (!identity) redirect("/login?returnTo=/admin/notifications");
   let jobs,
     failure = "";
   try {

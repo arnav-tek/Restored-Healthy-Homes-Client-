@@ -41,7 +41,7 @@ export function FeaturedListingsView({
         <div className="featured-header-right">
           <p className="featured-disclaimer">
             {connected ? (
-              "Featured placement is separate from credential review. Only eligible public listings appear here."
+              "Featured placement is separate from credential review. Only eligible public listings appear here. Editorial selections are labelled separately."
             ) : (
               <>
                 These are fictional examples showing how featured listings
@@ -95,6 +95,14 @@ export function FeaturedListingsView({
                 </div>
 
                 <div className="featured-card-body">
+                  {connected && professional.editorialFeatured === true && (
+                    <p
+                      className="section-tag"
+                      data-testid="editorial-selection"
+                    >
+                      Editorial selection
+                    </p>
+                  )}
                   <div className="featured-card-identity">
                     {professional.photoId ? (
                       <ProfileImage

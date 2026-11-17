@@ -18,6 +18,18 @@ export async function proxy(request: NextRequest) {
   } catch {
     if (
       request.nextUrl.pathname === "/" ||
+      request.nextUrl.pathname === "/consultations" ||
+      [
+        "/pricing",
+        "/education",
+        "/about",
+        "/resources",
+        "/contact",
+        "/terms",
+        "/privacy",
+        "/disclaimer",
+      ].includes(request.nextUrl.pathname) ||
+      request.nextUrl.pathname.startsWith("/resources/") ||
       request.nextUrl.pathname === "/questions" ||
       request.nextUrl.pathname.startsWith("/questions/") ||
       pendingPublicSections[request.nextUrl.pathname]
@@ -57,14 +69,35 @@ export async function proxy(request: NextRequest) {
       "/list-your-business",
       "/directory",
       "/questions",
+      "/consultations",
+      "/pricing",
+      "/education",
+      "/about",
+      "/resources",
+      "/contact",
+      "/terms",
+      "/privacy",
+      "/disclaimer",
       "/admin",
     ].includes(path) ||
     path.startsWith("/admin/") ||
     path.startsWith("/professionals/") ||
     path.startsWith("/questions/") ||
+    path.startsWith("/resources/") ||
     path === "/api/questions" ||
+    path === "/api/consultations" ||
+    path === "/api/member/consultations" ||
+    path === "/api/member/consultation-preference" ||
+    path === "/api/admin/consultations" ||
+    path === "/api/locations" ||
+    path === "/api/map-worker" ||
+    path === "/api/member/location" ||
     path === "/api/member/questions" ||
     path === "/api/admin/applications" ||
+    path === "/api/admin/categories" ||
+    path === "/api/admin/content" ||
+    path === "/api/admin/featured" ||
+    path === "/api/admin/reports" ||
     path === "/api/admin/inquiry-notifications" ||
     path === "/api/inquiries" ||
     path === "/api/member/inquiries" ||

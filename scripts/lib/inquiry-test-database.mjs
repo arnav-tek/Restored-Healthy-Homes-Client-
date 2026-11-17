@@ -4,8 +4,8 @@ export const b = "00000000-0000-4000-8000-000000000002";
 export const unconfirmed = "00000000-0000-4000-8000-000000000003";
 const { PGlite } =
   await import("../../output/database-test/node_modules/@electric-sql/pglite/dist/index.js");
-export async function openInquiryTestDatabase() {
-  const db = new PGlite();
+export async function openInquiryTestDatabase(options = {}) {
+  const db = new PGlite(options);
   await db.exec(`create role anon; create role authenticated; create schema auth;
   create table auth.users(id uuid primary key, email_confirmed_at timestamptz, email text, banned_until timestamptz, deleted_at timestamptz, is_anonymous boolean default false);
   create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;

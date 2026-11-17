@@ -1,3 +1,8 @@
+import { applicationMode } from "@/domain/config";
+import {
+  ConnectedArticle,
+  siteMetadata,
+} from "@/features/content/connected-pages";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,7 +13,10 @@ import { SessionResource } from "@/features/resources/session-resource";
 type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = (await params).slug;
-  if (isSessionArticleId(slug)) return { title: "Resource", robots: { index: false, follow: false } };
+  if (applicationMode(process.env) === "staging")
+    return siteMetadata("resource", slug);
+  if (isSessionArticleId(slug))
+    return { title: "Resource", robots: { index: false, follow: false } };
   const article = await resourceRepository.get(slug);
   return {
     title: article?.title ?? "Resource unavailable",
@@ -17,6 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 export default async function ResourcePage({ params }: Props) {
   const slug = (await params).slug;
+  if (applicationMode(process.env) === "staging")
+    return <ConnectedArticle slug={slug} />;
   if (isSessionArticleId(slug)) return <SessionResource id={slug} />;
   const article = await resourceRepository.get(slug);
   if (!article) notFound();

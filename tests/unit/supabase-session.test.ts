@@ -211,11 +211,10 @@ test("expired session refresh forwards new cookies to browser and downstream ser
 
 test("connected routes and repositories never fall back to demo records", async (t) => {
   setup(t);
-  const response = await proxy(
-    new NextRequest("http://localhost/consultations"),
-  );
+  const response = await proxy(new NextRequest("http://localhost/about"));
   assert.equal(response.status, 200);
-  assert.match(response.headers.get("x-middleware-rewrite")!, /availability/);
+  assert.equal(response.headers.get("x-middleware-rewrite"), null);
+  assert.equal(response.headers.get("x-middleware-next"), "1");
   assert.match(response.headers.get("cache-control")!, /no-store/);
   const {
     directoryRepository,
@@ -230,6 +229,9 @@ test("connected routes and repositories never fall back to demo records", async 
     directoryRepository.listPublic(),
     /temporarily unavailable/,
   );
+  const { publicContent } =
+    await import("../../src/data/supabase/site-content");
+  await assert.rejects(publicContent("resource"), /temporarily unavailable/);
   await assert.rejects(reviewRepository.publicSnapshot(), /not implemented/);
   await assert.rejects(qaRepository.listPublic(), /temporarily unavailable/);
   await assert.rejects(locationAdapter.listSupported(), /not implemented/);

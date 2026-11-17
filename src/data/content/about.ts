@@ -1,7 +1,8 @@
 // Public editorial content only. Replace placeholders after client approval.
 // Asset paths are local; no third-party player or requests are needed.
 type LocalAsset = `/${string}`;
-interface AboutContent {
+export interface AboutContent {
+  heroTitle?: string;
   introduction: string;
   story: { heading: string; label: string; body: string };
   purpose: { heading: string; label: string; body: string };
@@ -11,7 +12,11 @@ interface AboutContent {
     src: LocalAsset | null;
     poster: LocalAsset | null;
     captions: { src: LocalAsset; language: string; label: string } | null;
-    transcript: { href: LocalAsset; label: string } | null;
+    transcript: {
+      href: LocalAsset | `#${string}`;
+      label: string;
+      text?: string;
+    } | null;
   };
 }
 export const aboutContent: AboutContent = {

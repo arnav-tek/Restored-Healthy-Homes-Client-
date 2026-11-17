@@ -21,6 +21,30 @@ export type AuthDatabase = {
     Tables: Record<never, never>;
     Views: Record<never, never>;
     Functions: {
+      rhh_admin_operations: {Args:{payload:Record<string,unknown>};Returns:unknown};
+      rhh_admin_content: { Args: {payload:Record<string,unknown>}; Returns:unknown };
+      rhh_public_content: { Args: {kind_name:string; content_key?:string; page_number?:number; category_filter?:string}; Returns:unknown };
+      rhh_admin_categories: {Args:{payload:Record<string,unknown>};Returns:unknown};
+      rhh_public_categories: {Args:Record<never,never>;Returns:unknown};
+      rhh_member_consultation_preference: { Args: {payload:Record<string,unknown>};Returns:unknown };
+      rhh_consultation_public: { Args: {action:string;payload:Record<string,unknown>};Returns:unknown };
+      rhh_consultation_workspace: { Args: {admin_view:boolean;action:string;payload:Record<string,unknown>};Returns:unknown };
+      rhh_geocoding: {
+        Args: {
+          gateway: string;
+          operation: string;
+          payload: Record<string, unknown>;
+        };
+        Returns: unknown;
+      };
+      rhh_directory_search: {
+        Args: { filters: Record<string, unknown> };
+        Returns: unknown;
+      };
+      rhh_member_location: {
+        Args: { payload: Record<string, unknown> };
+        Returns: unknown;
+      };
       rhh_submit_review: {
         Args: {
           target: string;

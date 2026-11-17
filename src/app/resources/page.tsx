@@ -1,3 +1,5 @@
+import { applicationMode } from "@/domain/config";
+import { ConnectedResources } from "@/features/content/connected-pages";
 import type { Metadata } from "next";
 import { ResourceListing } from "@/features/resources/resource-listing";
 import { resourceRepository } from "@/data/content/resources";
@@ -5,14 +7,15 @@ import { resourceCategories } from "@/domain/resource";
 import { NewsletterForm } from "@/features/resources/newsletter-form";
 export const metadata: Metadata = {
   title: "Resources",
-  description:
-    "Explore sample editorial layouts for project planning and professional education.",
+  description: "Explore project planning and professional education.",
 };
 export default async function ResourcesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string | string[] }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  if (applicationMode(process.env) === "staging")
+    return <ConnectedResources query={await searchParams} />;
   const requested = (await searchParams).category;
   const category = typeof requested === "string" ? requested : "";
   const valid =

@@ -18,7 +18,7 @@ export async function CredentialReviewPage({
   if (!page) notFound();
   const client = await createServerSupabaseClient(),
     identity = await authenticatedIdentity(client);
-  if (!identity) redirect("/login?returnTo=/admin");
+  if (!identity) redirect("/login?returnTo=/admin/credentials");
   let data;
   try {
     data = await loadAdminCredentials(client, page);

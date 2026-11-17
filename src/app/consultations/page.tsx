@@ -10,15 +10,21 @@ import {
 } from "lucide-react";
 import { consultationOfferLabel } from "@/domain/consultation";
 import { ConsultationRequestForm } from "@/features/consultations/request-form";
+import { ConnectedConsultationRequest } from "@/features/consultations/connected-request";
+import { applicationMode } from "@/domain/config";
+import { loadPublicDirectory } from "@/data/supabase/public-directory";
 
 export const metadata: Metadata = {
   title: "Consultations",
   description:
-    "Request a free phone consultation with a participating specialist. This demo does not book an appointment.",
+    "Request a free phone consultation with a participating specialist. Timing is agreed separately.",
   robots: { index: false, follow: false },
 };
 
-export default function ConsultationsPage() {
+export default async function ConsultationsPage() {
+  const connected = applicationMode(process.env) === "staging";
+  let catalog: {id:string;name:string}[] = [], unavailable = false;
+  if (connected) try { catalog = (await loadPublicDirectory()).catalog; } catch { unavailable = true; }
   return (
     <div className="container consultation-page">
       {/* Hero: 2-column desktop layout */}
@@ -80,8 +86,7 @@ export default function ConsultationsPage() {
           </h2>
           <p className="process-title">Start with a simple process.</p>
           <p className="process-subtitle">
-            Begin by preparing a request. Appointment scheduling is not connected
-            yet.
+            {connected ? 'Send a request, then check its saved coordination status. Call timing is agreed separately.' : 'Begin by preparing a request. Appointment scheduling is not connected yet.'}
           </p>
         </div>
         <ol className="process-steps" data-scroll-stagger>
@@ -95,7 +100,7 @@ export default function ConsultationsPage() {
             </div>
             <div className="step-content">
               <h3>Request</h3>
-              <p>Select a relevant category and a consultation format preference.</p>
+              <p>{connected ? 'Choose the specialty and describe what you would like to discuss.' : 'Select a relevant category and a consultation format preference.'}</p>
             </div>
           </li>
           <li className="process-step" data-scroll-reveal>
@@ -109,8 +114,7 @@ export default function ConsultationsPage() {
             <div className="step-content">
               <h3>Coordination</h3>
               <p>
-                Specialist selection and availability
-                would need to be agreed.
+                {connected ? 'An administrator assigns a participating specialist in your selected category.' : 'Specialist selection and availability would need to be agreed.'}
               </p>
             </div>
           </li>
@@ -124,8 +128,7 @@ export default function ConsultationsPage() {
             <div className="step-content">
               <h3>Confirmation</h3>
               <p>
-                An appointment would require a separate confirmation once
-                arrangements are settled.
+                {connected ? 'The specialist accepts or declines. Acceptance starts coordination; it does not book an appointment.' : 'An appointment would require a separate confirmation once arrangements are settled.'}
               </p>
             </div>
           </li>
@@ -138,7 +141,7 @@ export default function ConsultationsPage() {
       </section>
 
       {/* Form card and session actions */}
-      <ConsultationRequestForm />
+      {connected ? unavailable ? <p role="alert">Consultation categories are temporarily unavailable. Please try again later.</p> : <ConnectedConsultationRequest categories={catalog}/> : <ConsultationRequestForm />}
     </div>
   );
 }

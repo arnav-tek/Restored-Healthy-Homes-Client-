@@ -1,4 +1,5 @@
 import { ConnectedReviewPages } from "@/features/reviews/connected-review-pages";
+import { ConnectedConsultationPage } from "@/features/consultations/connected-pages";
 import { ConnectedMemberQa } from "@/features/qa/connected-member-qa";
 import { notFound, redirect } from "next/navigation";
 import { applicationMode } from "@/domain/config";
@@ -20,6 +21,8 @@ export default async function MemberPage({
 }) {
   if (applicationMode(process.env) !== "staging") notFound();
   const { section = [] } = await params;
+  if (section.length === 1 && section[0] === "consultations")
+    return <ConnectedConsultationPage admin={false} query={await searchParams}/>;
   if (!section.length || (section.length === 1 && section[0] === "profile"))
     return (
       <ConnectedMemberPage view={!section.length ? "account" : "profile"} />

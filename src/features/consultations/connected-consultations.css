@@ -1,0 +1,14 @@
+.connected-consultations { overflow-wrap: anywhere; }
+.connected-consultations p { margin-block: .75rem; }
+.connected-consultations fieldset { min-width: 0; border: 0; padding: 0; }
+.connected-consultations legend { font-weight: 700; margin-block: 1.25rem .75rem; }
+.connected-consultations label { display: grid; gap: .5rem; font-weight: 600; margin-block: 1rem; }
+.connected-consultations input, .connected-consultations select, .connected-consultations textarea { width: 100%; min-width: 0; padding: .8rem; border: 1px solid #82917b; border-radius: .5rem; background: #fff; color: #263e29; font: inherit; }
+.connected-consultations textarea { resize: vertical; }
+.connected-consultations button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .65rem 1rem; margin: .25rem .5rem .25rem 0; border: 1px solid #405f3d; border-radius: .5rem; background: #405f3d; color: white; font: inherit; cursor: pointer; }
+.connected-consultations button:disabled { opacity: .6; cursor: wait; }
+.connected-consultations :is(button,input,select,textarea):focus-visible { outline: 3px solid #a65526; outline-offset: 3px; }
+.connected-consultations [role="alert"], .connected-consultations [role="status"] { font-weight: 600; }
+.connected-consultations .consultation-record-card { min-width: 0; }
+.consultation-preference .showcase-checkbox { display: flex; align-items: center; gap: .75rem; }
+.consultation-preference input[type="checkbox"] { width: 1.2rem; height: 1.2rem; flex-shrink: 0; }

@@ -20,10 +20,10 @@ import {
   inquiryUuid,
   parseInboxPage,
 } from "../../validation/connected-inquiry";
-export async function readQaBody(request: NextRequest): Promise<unknown> {
+export async function readQaBody(request: NextRequest, maximumBytes = 16384): Promise<unknown> {
   if (!request.headers.get("content-type")?.startsWith("application/json"))
     throw new QaDataError(415, "Use a JSON request.");
-  if (Number(request.headers.get("content-length")) > 16384)
+  if (Number(request.headers.get("content-length")) > maximumBytes)
     throw new QaDataError(413, "The submission is too large.");
   const reader = request.body?.getReader();
   const decoder = new TextDecoder();
@@ -34,7 +34,7 @@ export async function readQaBody(request: NextRequest): Promise<unknown> {
       const { done, value } = await reader.read();
       if (done) break;
       size += value.length;
-      if (size > 16384) {
+      if (size > maximumBytes) {
         await reader.cancel();
         throw new QaDataError(413, "The submission is too large.");
       }

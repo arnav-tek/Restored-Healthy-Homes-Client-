@@ -28,6 +28,9 @@ export interface ProfessionalRecord {
 }
 // Public data is an explicit allowlist, not Omit<ProfessionalRecord, ...>.
 export interface PublicProfessional {
+  /** Saved editorial placement, separate from the existing paid featured projection. */
+  editorialFeatured?: boolean;
+  featured?: boolean;
   photoId?: string | null;
   freeConsultation?: boolean;
   id: string;

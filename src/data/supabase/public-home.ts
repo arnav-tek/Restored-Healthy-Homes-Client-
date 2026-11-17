@@ -20,12 +20,16 @@ export async function loadConnectedHome(): Promise<ConnectedHomeSnapshot> {
         .map((c) => ({
           ...c,
           description:
-            categories.find((item) => item.id === c.id)?.description ?? "",
+            c.description ||
+            categories.find((item) => item.id === c.id)?.description ||
+            "",
           billingKey: "",
         })),
       profiles: data.profiles,
       reviews: data.reviews,
-      featured: data.profiles.filter((p) => p.featured),
+      featured: data.profiles.filter(
+        (p) => p.featured || p.editorialFeatured === true,
+      ),
       unavailable: false,
     };
   } catch {

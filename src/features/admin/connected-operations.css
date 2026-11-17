@@ -1,0 +1,54 @@
+.connected-operations {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.connected-operations fieldset {
+  min-width: 0;
+}
+.connected-operations input:not([type="checkbox"]),
+.connected-operations textarea {
+  max-width: 100%;
+  width: 100%;
+  min-width: 0;
+}
+.connected-operations button {
+  min-height: 44px;
+  white-space: normal;
+  max-width: 100%;
+}
+.connected-operations label:has(input[type="checkbox"]) {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.connected-operations input[type="checkbox"] {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+.connected-operations .admin-table-scroll {
+  max-width: 100%;
+  overflow: auto;
+}
+.connected-operations table {
+  width: 100%;
+  min-width: 560px;
+}
+.connected-operations details {
+  padding-block: 12px;
+}
+
+.connected-operations th,
+.connected-operations td {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+.connected-operations th:not(:first-child),
+.connected-operations td:not(:first-child) {
+  white-space: nowrap;
+}
+.connected-operations th:first-child {
+  min-width: 160px;
+  max-width: 280px;
+  overflow-wrap: anywhere;
+}

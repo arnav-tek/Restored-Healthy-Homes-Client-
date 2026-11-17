@@ -1,0 +1,37 @@
+.connected-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.connected-content textarea,
+.connected-content input:not([type="checkbox"]),
+.connected-content select {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.connected-content button {
+  min-height: 44px;
+  white-space: normal;
+}
+.connected-content fieldset {
+  min-width: 0;
+}
+.connected-content details {
+  padding-block: 12px;
+}
+.connected-content video {
+  max-width: 100%;
+}
+.connected-content .admin-inline-actions {
+  flex-wrap: wrap;
+}
+.connected-content label:has(input[type="checkbox"]) {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.connected-content input[type="checkbox"] {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}

@@ -13,17 +13,37 @@ export function safeAuthReturn(value: unknown): string {
     ([
       "/",
       "/admin",
+      "/admin/applications",
+      "/admin/listings",
+      "/admin/categories",
+      "/admin/content",
+      "/admin/featured",
+      "/admin/reports",
+      "/admin/credentials",
+      "/admin/notifications",
+      "/admin/questions",
+      "/admin/reviews",
+      "/admin/consultations",
       "/member",
       "/member/profile",
       "/member/reviews",
       "/member/membership",
       "/member/inquiries",
       "/member/questions",
+      "/member/consultations",
+      "/member/billing",
       "/list-your-business",
     ].includes(value) ||
-      (value.startsWith("/member/questions/") &&
-        value.split("/").length === 4 &&
-        inquiryUuid.test(value.slice("/member/questions/".length))))
+      [
+        "/member/questions/",
+        "/member/inquiries/",
+        "/admin/applications/",
+        "/admin/listings/",
+      ].some(
+        (prefix) =>
+          value.startsWith(prefix) &&
+          inquiryUuid.test(value.slice(prefix.length)),
+      ))
     ? value
     : "/member";
 }
@@ -63,6 +83,7 @@ export function validateAuth(
 export function accountReturnPath(role: "admin" | "member", value: unknown) {
   const path = safeAuthReturn(value);
   if (path === "/") return path;
-  if (role === "admin") return "/admin";
-  return path === "/admin" ? "/member" : path;
+  const adminPath = path === "/admin" || path.startsWith("/admin/");
+  if (role === "admin") return adminPath ? path : "/admin";
+  return adminPath ? "/member" : path;
 }

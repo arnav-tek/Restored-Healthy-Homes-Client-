@@ -1,4 +1,6 @@
+import { ConnectedOperationsPage } from "@/features/admin/connected-operations-page";
 import { ConnectedReviewPages } from "@/features/reviews/connected-review-pages";
+import { ConnectedConsultationPage } from "@/features/consultations/connected-pages";
 import { ConnectedAdminQaPage } from "@/features/qa/connected-admin-qa-page";
 import { CredentialReviewPage } from "@/features/admin/credential-review-page";
 import Link from "next/link";
@@ -9,6 +11,8 @@ import { authenticatedIdentity } from "@/data/supabase/auth";
 import { loadAdminWorkspace } from "@/data/supabase/admin-account";
 import { MemberDataError } from "@/data/supabase/member-account";
 import { ConnectedAdmin } from "@/features/admin/connected-admin";
+import { ConnectedContentPage } from "@/features/admin/connected-content-page";
+import { ConnectedCategoriesPage } from "@/features/admin/connected-categories-page";
 import { SessionBoundary } from "@/features/auth/session-boundary";
 import { NotificationOperationsPage } from "@/features/admin/notification-operations-page";
 export const metadata = { title: "Application management" };
@@ -21,6 +25,19 @@ export default async function AdminPage({
 }) {
   if (applicationMode(process.env) === "demo") redirect("/demo/admin");
   const parts = (await params).section ?? [];
+  if (parts.length === 1 && ["featured", "reports"].includes(parts[0]))
+    return (
+      <ConnectedOperationsPage
+        query={await searchParams}
+        report={parts[0] === "reports"}
+      />
+    );
+  if (parts.length === 1 && parts[0] === "content")
+    return <ConnectedContentPage query={await searchParams} />;
+  if (parts.length === 1 && parts[0] === "categories")
+    return <ConnectedCategoriesPage query={await searchParams} />;
+  if (parts.length === 1 && parts[0] === "consultations")
+    return <ConnectedConsultationPage admin query={await searchParams} />;
   if (parts.length === 1 && parts[0] === "reviews")
     return <ConnectedReviewPages query={await searchParams} />;
   if (parts.length === 1 && parts[0] === "questions")
@@ -36,7 +53,10 @@ export default async function AdminPage({
     notFound();
   const client = await createServerSupabaseClient();
   const identity = await authenticatedIdentity(client);
-  if (!identity) redirect("/login?returnTo=/admin");
+  if (!identity)
+    redirect(
+      `/login?returnTo=${encodeURIComponent(parts.length ? `/admin/${parts.join("/")}` : "/admin")}`,
+    );
   let workspace;
   try {
     workspace = await loadAdminWorkspace(client);

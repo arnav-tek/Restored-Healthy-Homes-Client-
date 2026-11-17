@@ -198,6 +198,11 @@ export function ConnectedAdmin({
         <Link href="/admin/credentials">Credential reviews</Link>
         <Link href="/admin/questions">Q&A moderation</Link>
         <Link href="/admin/reviews">Review moderation</Link>
+        <Link href="/admin/consultations">Consultations</Link>
+        <Link href="/admin/content">Content</Link>
+        <Link href="/admin/featured">Featured listings</Link>
+        <Link href="/admin/reports">Reports</Link>
+        <Link href="/admin/categories">Categories</Link>
       </nav>
       {record ? (
         <>

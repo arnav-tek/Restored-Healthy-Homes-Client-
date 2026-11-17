@@ -59,6 +59,11 @@ export function ProfessionalCard({
         )}
       </div>
       <div className="card-body">
+        {professional.editorialFeatured === true && (
+          <p className="section-tag" data-testid="editorial-selection">
+            Editorial selection
+          </p>
+        )}
         <h3 className="business-name">{professional.businessName}</h3>
         <p className="location">
           <MapPin size={13} aria-hidden="true" />
@@ -68,7 +73,8 @@ export function ProfessionalCard({
         </p>
         {distanceMiles !== undefined ? (
           <p className="distance">
-            Approx. {Math.round(distanceMiles)} miles from search city
+            Approx. {distanceMiles.toFixed(1)} miles from the selected center to
+            this listed location
           </p>
         ) : null}
         <p className="specialty">{professional.specialty}</p>

@@ -24,7 +24,9 @@ export async function ConnectedReviewPages({
   const client = await createServerSupabaseClient(),
     identity = await authenticatedIdentity(client);
   if (!identity)
-    redirect(`/login?returnTo=${member ? "/member/reviews" : "/admin"}`);
+    redirect(
+      `/login?returnTo=${member ? "/member/reviews" : "/admin/reviews"}`,
+    );
   let own,
     admin,
     missing = false,

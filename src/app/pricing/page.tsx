@@ -4,6 +4,8 @@ import { Users, FileText, Check, Home } from "lucide-react";
 import { directoryRepository } from "@/data";
 import { ButtonLink } from "@/components/ui/button";
 import { MembershipTable } from "@/features/member/membership-table";
+import { MembershipTableView } from "@/features/member/membership-table-view";
+import { applicationMode } from "@/domain/config";
 
 export const metadata: Metadata = {
   title: "Membership Pricing",
@@ -12,7 +14,14 @@ export const metadata: Metadata = {
 };
 
 export default async function PricingPage() {
-  const categories = await directoryRepository.getCategories();
+  let unavailable = false;
+  const categories =
+    applicationMode(process.env) === "staging"
+      ? await directoryRepository.getCategories().catch(() => {
+          unavailable = true;
+          return [];
+        })
+      : await directoryRepository.getCategories();
 
   return (
     <div className="pricing-page container">
@@ -20,7 +29,6 @@ export default async function PricingPage() {
       <header className="pricing-hero">
         <div className="pricing-hero-left" data-scroll-reveal>
           <p className="pricing-eyebrow section-tag">
-
             PROFESSIONAL DIRECTORY MEMBERSHIPS
           </p>
           <h1 className="pricing-hero-title">
@@ -83,18 +91,30 @@ export default async function PricingPage() {
         </div>
 
         <div className="pricing-table-card" data-scroll-reveal>
-          <MembershipTable catalog={categories} />
+          {unavailable ? (
+            <p role="alert">
+              Category pricing is temporarily unavailable. Please try again
+              later.
+            </p>
+          ) : applicationMode(process.env) === "staging" ? (
+            <MembershipTableView categories={categories} />
+          ) : (
+            <MembershipTable catalog={categories} />
+          )}
         </div>
       </section>
 
-{/* Before you apply section */}
+      {/* Before you apply section */}
       <section
         className="membership-guidance pricing-guidance-section"
         aria-labelledby="before-applying"
       >
         <div className="pricing-guidance-grid" data-scroll-stagger>
           {/* Left card: Checklist card */}
-          <div className="pricing-guidance-card pricing-guidance-checklist-card" data-scroll-reveal>
+          <div
+            className="pricing-guidance-card pricing-guidance-checklist-card"
+            data-scroll-reveal
+          >
             <div className="pricing-card-header">
               <div className="pricing-card-header-icon" aria-hidden="true">
                 <FileText size={20} strokeWidth={1.75} />
@@ -139,11 +159,16 @@ export default async function PricingPage() {
           </div>
 
           {/* Right card: Soft-sage CTA card with terracotta left border */}
-          <aside className="pricing-guidance-card pricing-guidance-cta-card" data-scroll-reveal>
+          <aside
+            className="pricing-guidance-card pricing-guidance-cta-card"
+            data-scroll-reveal
+          >
             <div className="pricing-cta-icon-box" aria-hidden="true">
               <Home size={20} strokeWidth={1.75} />
             </div>
-            <p className="pricing-cta-eyebrow section-tag">START WITH AN APPLICATION</p>
+            <p className="pricing-cta-eyebrow section-tag">
+              START WITH AN APPLICATION
+            </p>
             <h3>List your business in the directory.</h3>
             <p className="pricing-cta-copy">
               Explore the application process and choose the membership that

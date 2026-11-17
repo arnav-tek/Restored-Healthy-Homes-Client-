@@ -96,5 +96,10 @@ export async function moderateConnectedReview(
       503,
       "Decision could not be confirmed. Reload history before retrying.",
     );
-  return { saved: true, status: data.status, version: Number(data.version) };
+  return {
+    saved: true,
+    status: data.status,
+    version: Number(data.version),
+    ...(data.unchanged === true ? { unchanged: true } : {}),
+  };
 }

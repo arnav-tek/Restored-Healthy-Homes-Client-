@@ -1,3 +1,5 @@
+import { applicationMode } from "@/domain/config";
+import { ConnectedEducation } from "@/features/content/connected-pages";
 import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
 
@@ -14,6 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function EducationPage() {
+  if (applicationMode(process.env) === "staging") return <ConnectedEducation />;
   const pathways = getEducationPathways(
     await directoryRepository.getCategories(),
   );
@@ -51,7 +54,10 @@ export default async function EducationPage() {
       />
 
       {/* Join our directory CTA banner */}
-      <aside className="public-closing-band education-closing-cta" data-scroll-reveal>
+      <aside
+        className="public-closing-band education-closing-cta"
+        data-scroll-reveal
+      >
         <div className="closing-cta-content">
           <p className="closing-cta-eyebrow section-tag">JOIN OUR DIRECTORY</p>
           <h2>Bring your experience to the directory.</h2>
